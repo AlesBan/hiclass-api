@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "FU3I6f7tivesAZNmFG8oYFO4FBIvTDn9/L50KXGR2ay6iiXKSHqqAIg2f5D7qnpAa59Sv79nsLLgaIuVpO68vg==",
+  "success": true,
+  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj",
+  "expectedPackageFiles": [
+    "D:\\Прога\\.nuget\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}

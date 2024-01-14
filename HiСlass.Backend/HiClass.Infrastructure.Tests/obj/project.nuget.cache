@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZDQyEhI50+swkQSLuaZRtw6X9B0y3e+zrGVfFswaqv+E/YZvPNvfdVuV7QYpdC2EAosiV0a8dIA8Sf3vXREs/w==",
+  "success": true,
+  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure.Tests\\HiClass.Infrastructure.Tests.csproj",
+  "expectedPackageFiles": [
+    "D:\\Прога\\.nuget\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}

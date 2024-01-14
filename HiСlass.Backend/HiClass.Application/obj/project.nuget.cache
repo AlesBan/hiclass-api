@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "o85vnVArMqoR4Fb+zfQGeOTUFKWnVnf3d+gMSrFOSWkjb7D+zC1xYGlwWxjm4dAE06bPesaJGs1DrP1i4mpwjg==",
+  "success": true,
+  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj",
+  "expectedPackageFiles": [
+    "D:\\Прога\\.nuget\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}
