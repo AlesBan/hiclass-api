@@ -6,4 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="xunit" Version="2.6.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HiClass.Application.Tests\HiClass.Application.Tests.csproj" />
+    </ItemGroup>
+
 </Project>

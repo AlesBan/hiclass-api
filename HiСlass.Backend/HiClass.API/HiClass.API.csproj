@@ -4,14 +4,25 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>9660ea79-fd8c-4a64-a063-17ba3d6afd7d</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.26" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
+      <Folder Include="Controllers\Middleware" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HiClass.Application\HiClass.Application.csproj" />
+      <ProjectReference Include="..\HiClass.Domain\HiClass.Domain.csproj" />
+      <ProjectReference Include="..\HiClass.Infrastructure\HiClass.Infrastructure.csproj" />
+      <ProjectReference Include="..\HiClass.Persistence\HiClass.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

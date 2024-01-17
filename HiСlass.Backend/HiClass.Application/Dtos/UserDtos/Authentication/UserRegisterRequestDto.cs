@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using HiClass.Application.Common.Mappings;
 using HiClass.Domain.Entities.Main;
-using Wonderworld.Application.Common.Mappings;
 
 namespace HiClass.Application.Dtos.UserDtos.Authentication;
 

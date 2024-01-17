@@ -1,4 +1,4 @@
-namespace Wonderworld.Application.Helpers;
+namespace HiClass.Application.Helpers;
 
 public static class FileHelper
 {

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Wonderworld.Application.Common.Exceptions.User.CreateAccount;
+using HiClass.Application.Common.Exceptions.User.CreateAccount;
 
 namespace HiClass.Application.Attributes;
 

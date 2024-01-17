@@ -6,4 +6,24 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="coverlet.collector" Version="6.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+      <PackageReference Include="Moq" Version="4.20.70" />
+      <PackageReference Include="xunit" Version="2.6.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HiClass.API\HiClass.API.csproj" />
+      <ProjectReference Include="..\HiClass.Application.Tests\HiClass.Application.Tests.csproj" />
+      <ProjectReference Include="..\HiClass.Application\HiClass.Application.csproj" />
+      <ProjectReference Include="..\HiClass.Domain\HiClass.Domain.csproj" />
+      <ProjectReference Include="..\HiClass.Infrastructure\HiClass.Infrastructure.csproj" />
+      <ProjectReference Include="..\HiClass.Persistence\HiClass.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

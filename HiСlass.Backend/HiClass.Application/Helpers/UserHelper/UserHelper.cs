@@ -1,6 +1,8 @@
 using System.Text;
 using AutoMapper;
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.User;
+using HiClass.Application.Common.Exceptions.User.Forbidden;
 using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Dtos.InstitutionDtos;
 using HiClass.Application.Dtos.UserDtos;
@@ -9,8 +11,6 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserBy
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Domain.Entities.Main;
 using MediatR;
-using Wonderworld.Application.Common.Exceptions.User;
-using Wonderworld.Application.Common.Exceptions.User.Forbidden;
 
 namespace HiClass.Application.Helpers.UserHelper;
 

@@ -1,11 +1,11 @@
 using AutoMapper;
+using HiClass.Application.Common.Mappings;
 using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Dtos.InstitutionDtos;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
-using Wonderworld.Application.Common.Mappings;
 
 namespace HiClass.Application.Dtos.UserDtos;
 

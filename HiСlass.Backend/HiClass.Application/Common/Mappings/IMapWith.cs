@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace Wonderworld.Application.Common.Mappings;
+namespace HiClass.Application.Common.Mappings;
 
 public interface IMapWith<T>
 {

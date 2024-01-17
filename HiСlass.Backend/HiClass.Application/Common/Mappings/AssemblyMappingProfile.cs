@@ -1,7 +1,7 @@
 using System.Reflection;
 using AutoMapper;
 
-namespace Wonderworld.Application.Common.Mappings;
+namespace HiClass.Application.Common.Mappings;
 
 public class AssemblyMappingProfile : Profile
 {

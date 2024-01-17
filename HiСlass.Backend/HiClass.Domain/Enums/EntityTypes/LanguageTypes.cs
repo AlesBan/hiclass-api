@@ -1,0 +1,22 @@
+namespace HiClass.Domain.Enums.EntityTypes;
+
+public enum LanguageTypes
+{
+    Russian,
+    English,
+    German,
+    Italian,
+    Spanish,
+    French,
+    Hungarian,
+    Portuguese,
+    Belarusian,
+    Ukrainian,
+    Armenian,
+    Georgian,
+    Azerbaijani,
+    Kazakh,
+    Kyrgyz,
+    Tajik,
+    Uzbek
+}

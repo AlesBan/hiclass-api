@@ -1,5 +1,5 @@
+using HiClass.Application.Common.Exceptions.User;
 using HiClass.Domain.Entities.Main;
-using Wonderworld.Application.Common.Exceptions.User;
 
 namespace HiClass.Application.Helpers;
 

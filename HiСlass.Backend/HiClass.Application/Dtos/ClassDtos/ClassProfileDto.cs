@@ -1,7 +1,7 @@
 using AutoMapper;
+using HiClass.Application.Common.Mappings;
 using HiClass.Domain.Entities.Education;
 using HiClass.Domain.Entities.Main;
-using Wonderworld.Application.Common.Mappings;
 
 namespace HiClass.Application.Dtos.ClassDtos;
 

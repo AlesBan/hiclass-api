@@ -1,6 +1,6 @@
 using HiClass.Application.Interfaces.Exceptions;
 
-namespace Wonderworld.Application.Common.Exceptions.User;
+namespace HiClass.Application.Common.Exceptions.User;
 
 public class InvalidInputCredentialsException : Exception, IUiException
 {

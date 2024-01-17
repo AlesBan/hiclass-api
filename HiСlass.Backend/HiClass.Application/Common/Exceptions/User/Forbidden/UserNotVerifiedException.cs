@@ -1,6 +1,6 @@
 using HiClass.Application.Interfaces.Exceptions;
 
-namespace Wonderworld.Application.Common.Exceptions.User.Forbidden;
+namespace HiClass.Application.Common.Exceptions.User.Forbidden;
 
 public class UserNotVerifiedException : Exception, IUiForbiddenException
 {

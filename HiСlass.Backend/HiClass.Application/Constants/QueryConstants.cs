@@ -1,4 +1,4 @@
-namespace Wonderworld.Application.Constants;
+namespace HiClass.Application.Constants;
 
 public static class QueryConstants
 {

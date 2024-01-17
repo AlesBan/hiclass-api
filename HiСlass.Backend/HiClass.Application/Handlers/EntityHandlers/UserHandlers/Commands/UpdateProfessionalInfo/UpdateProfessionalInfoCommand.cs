@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
@@ -5,17 +6,8 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Upda
 
 public class UpdateProfessionalInfoCommand : IRequest<User>
 {
-    public Guid UserId { get; set; }
-    public IEnumerable<string> LanguageTitles { get; set; } 
-    public IEnumerable<string> DisciplineTitles { get; set; } 
-    public IEnumerable<int> GradeNumbers{ get; set; }
-
-
-    public UpdateProfessionalInfoCommand(Guid userId, IEnumerable<string> languageTitles, IEnumerable<string> disciplineTitles, IEnumerable<int> gradeNumbers)
-    {
-        UserId = userId;
-        LanguageTitles = languageTitles;
-        DisciplineTitles = disciplineTitles;
-        GradeNumbers = gradeNumbers;
-    }
+    [Required] public Guid UserId { get; set; }
+    [Required] public IEnumerable<string> LanguageTitles { get; set; }
+    [Required] public IEnumerable<string> DisciplineTitles { get; set; }
+    [Required] public IEnumerable<int> GradeNumbers { get; set; }
 }
