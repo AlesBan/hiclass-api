@@ -106,8 +106,8 @@ public static class ModelBuilderExtensions
     {
         modelBuilder.Entity<InstitutionType>()
             .HasData(
-                Enum.GetValues(typeof(HiClass.Domain.Enums.EntityTypes.InstitutionTypes))
-                    .Cast<HiClass.Domain.Enums.EntityTypes.InstitutionTypes>()
+                Enum.GetValues(typeof(InstitutionTypes))
+                    .Cast<InstitutionTypes>()
                     .Select(et => new InstitutionType
                     {
                         InstitutionTypeId = Guid.NewGuid(),

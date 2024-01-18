@@ -1,22 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "F5oqpyURSGqY40gr37e67yIovrtzUJZkVfi1kr0k9lSIEqxyRte+DNg+ongWeqzDfjx9FVYfhnWIyDQsNo6Z0Q==",
+  "dgSpecHash": "lEqVfp5r5cFLBnBtUb1+tRZREQKeB1WJj0ZRgE/lT3siE8ld3pluJl/uLi1KCWJRnS1vIkuFr7BLwn61+rJwBw==",
   "success": true,
   "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.API\\HiClass.API.csproj",
   "expectedPackageFiles": [
     "D:\\Прога\\.nuget\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "D:\\Прога\\.nuget\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "D:\\Прога\\.nuget\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
+    "D:\\Прога\\.nuget\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "D:\\Прога\\.nuget\\mailkit\\4.3.0\\mailkit.4.3.0.nupkg.sha512",
-    "D:\\Прога\\.nuget\\mediatr\\12.2.0\\mediatr.12.2.0.nupkg.sha512",
-    "D:\\Прога\\.nuget\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
-    "D:\\Прога\\.nuget\\mediatr.extensions.microsoft.dependencyinjection\\11.1.0\\mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
+    "D:\\Прога\\.nuget\\mediatr\\6.0.0\\mediatr.6.0.0.nupkg.sha512",
+    "D:\\Прога\\.nuget\\mediatr.extensions.microsoft.dependencyinjection\\6.0.1\\mediatr.extensions.microsoft.dependencyinjection.6.0.1.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.26\\microsoft.aspnetcore.authentication.jwtbearer.6.0.26.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.entityframeworkcore\\6.0.26\\microsoft.entityframeworkcore.6.0.26.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.entityframeworkcore.abstractions\\6.0.26\\microsoft.entityframeworkcore.abstractions.6.0.26.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.entityframeworkcore.analyzers\\6.0.26\\microsoft.entityframeworkcore.analyzers.6.0.26.nupkg.sha512",
-    "D:\\Прога\\.nuget\\microsoft.entityframeworkcore.relational\\6.0.22\\microsoft.entityframeworkcore.relational.6.0.22.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.entityframeworkcore.design\\6.0.26\\microsoft.entityframeworkcore.design.6.0.26.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.entityframeworkcore.relational\\6.0.26\\microsoft.entityframeworkcore.relational.6.0.26.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.caching.abstractions\\6.0.0\\microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.caching.memory\\6.0.1\\microsoft.extensions.caching.memory.6.0.1.nupkg.sha512",
@@ -26,7 +27,7 @@
     "D:\\Прога\\.nuget\\microsoft.extensions.configuration.json\\6.0.0\\microsoft.extensions.configuration.json.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.configuration.usersecrets\\6.0.1\\microsoft.extensions.configuration.usersecrets.6.0.1.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.dependencyinjection\\6.0.1\\microsoft.extensions.dependencyinjection.6.0.1.nupkg.sha512",
-    "D:\\Прога\\.nuget\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.fileproviders.abstractions\\6.0.0\\microsoft.extensions.fileproviders.abstractions.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.fileproviders.physical\\6.0.0\\microsoft.extensions.fileproviders.physical.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.filesystemglobbing\\6.0.0\\microsoft.extensions.filesystemglobbing.6.0.0.nupkg.sha512",
@@ -63,16 +64,5 @@
     "D:\\Прога\\.nuget\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1608",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 12.2.0 was resolved.",
-      "libraryId": "MediatR",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

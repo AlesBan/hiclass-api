@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XrdH25bph8PJVrtj8qEbXDhstV0MK3bU7uJTyBheCN2hvK8Zla15LnlpIA/B1lpbc+XslxpY0M7lV36J6xVOhQ==",
+  "dgSpecHash": "93UsJFLFdCvTZqPMojRXxW4TN9c6R6etKyTgk5ioCfsN+dasbLA92pvPLJv7KH9wqCJRr67bBusyu2cDkxUNHQ==",
   "success": true,
   "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure.Tests\\HiClass.Infrastructure.Tests.csproj",
   "expectedPackageFiles": [
@@ -9,9 +9,8 @@
     "D:\\Прога\\.nuget\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\diffengine\\11.3.0\\diffengine.11.3.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\emptyfiles\\4.4.0\\emptyfiles.4.4.0.nupkg.sha512",
-    "D:\\Прога\\.nuget\\mediatr\\12.2.0\\mediatr.12.2.0.nupkg.sha512",
-    "D:\\Прога\\.nuget\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
-    "D:\\Прога\\.nuget\\mediatr.extensions.microsoft.dependencyinjection\\11.1.0\\mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
+    "D:\\Прога\\.nuget\\mediatr\\6.0.0\\mediatr.6.0.0.nupkg.sha512",
+    "D:\\Прога\\.nuget\\mediatr.extensions.microsoft.dependencyinjection\\6.0.1\\mediatr.extensions.microsoft.dependencyinjection.6.0.1.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.codecoverage\\17.9.0-release-23619-01\\microsoft.codecoverage.17.9.0-release-23619-01.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.entityframeworkcore\\6.0.26\\microsoft.entityframeworkcore.6.0.26.nupkg.sha512",
@@ -24,7 +23,7 @@
     "D:\\Прога\\.nuget\\microsoft.extensions.configuration\\6.0.1\\microsoft.extensions.configuration.6.0.1.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.dependencyinjection\\6.0.1\\microsoft.extensions.dependencyinjection.6.0.1.nupkg.sha512",
-    "D:\\Прога\\.nuget\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "D:\\Прога\\.nuget\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.logging\\6.0.0\\microsoft.extensions.logging.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
@@ -61,16 +60,5 @@
     "D:\\Прога\\.nuget\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
     "D:\\Прога\\.nuget\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1608",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 12.2.0 was resolved.",
-      "libraryId": "MediatR",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

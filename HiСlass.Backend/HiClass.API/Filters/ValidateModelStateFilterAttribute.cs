@@ -1,8 +1,8 @@
+using HiClass.API.Models.Authentication;
 using HiClass.Application.Common;
 using HiClass.Application.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Wonderworld.API.Models.Authentication;
 
 namespace HiClass.API.Filters;
 

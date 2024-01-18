@@ -1,4 +1,4 @@
-namespace Wonderworld.API.Models.JwtModels;
+namespace HiClass.API.Models.JwtModels;
 
 public class JwtSettings
 {

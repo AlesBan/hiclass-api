@@ -1,6 +1,6 @@
+using HiClass.API.Models;
+using HiClass.API.Models.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Wonderworld.API.Models;
-using Wonderworld.API.Models.Authentication;
 
 namespace HiClass.API.Helpers;
 

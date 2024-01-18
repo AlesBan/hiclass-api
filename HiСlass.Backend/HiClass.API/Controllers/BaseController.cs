@@ -8,7 +8,6 @@ namespace HiClass.API.Controllers;
 
 [Route("api/[controller]")]
 [ValidateModelStateFilter]
-[ExceptionFilter]
 [ApiController]
 public class BaseController : ControllerBase
 {

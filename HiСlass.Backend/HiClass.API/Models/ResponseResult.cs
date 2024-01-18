@@ -1,4 +1,4 @@
-namespace Wonderworld.API.Models;
+namespace HiClass.API.Models;
 
 public class ResponseResult
 {
