@@ -20,8 +20,8 @@ public class DeleteUserLanguageCommandHandlerTests : TestCommonBase
         // Act
         await handler.Handle(new DeleteUserLanguageCommand
         {
-            User = user!,
-            Language = languageForDelete
+            UserId = user.UserId,
+            LanguageId = languageForDelete.LanguageId
         }, CancellationToken.None);
 
         // Assert
@@ -45,8 +45,8 @@ public class DeleteUserLanguageCommandHandlerTests : TestCommonBase
         await Assert.ThrowsAsync<NotFoundException>(async () =>
             await handler.Handle(new DeleteUserLanguageCommand
             {
-                User = user!,
-                Language = languageForDelete
+                UserId = user.UserId,
+                LanguageId = languageForDelete.LanguageId
             }, CancellationToken.None));
     }
 }

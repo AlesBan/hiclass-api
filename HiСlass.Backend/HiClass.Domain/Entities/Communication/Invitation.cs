@@ -17,5 +17,5 @@ public class Invitation
     public DateTime DateOfInvitation { get; set; }
     public string Status { get; set; } = string.Empty;
     public string? InvitationText { get; set; } = string.Empty;
-    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
 }

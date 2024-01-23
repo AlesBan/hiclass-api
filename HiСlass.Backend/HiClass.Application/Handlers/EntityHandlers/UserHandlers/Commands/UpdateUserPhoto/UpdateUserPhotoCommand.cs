@@ -5,6 +5,6 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Upda
 
 public class UpdateUserPhotoCommand : IRequest<Unit>
 {
-    public User User { get; set; }
+    public Guid UserId { get; set; }
     public string NewPhotoUrl { get; set; }
 }

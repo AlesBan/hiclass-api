@@ -19,7 +19,7 @@ public class GetClassByIdQueryHandler : IRequestHandler<GetClassByIdQuery, Class
     {
         var @class = await _context.Classes
             .Include(c => c.User)
-            .ThenInclude(u => u.ReceivedReviews)
+            .ThenInclude(u => u.ReceivedFeedbacks)
             .Include(c => c.Grade)
             .Include(c => c.ClassDisciplines)
             .ThenInclude(cd => cd.Discipline)

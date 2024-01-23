@@ -18,13 +18,13 @@ public class DeleteUserGradeCommandHandler : IRequestHandler<DeleteUserGradeComm
     public async Task<Unit> Handle(DeleteUserGradeCommand request, CancellationToken cancellationToken)
     {
         var userGrade = await _context.UserGrades.FirstOrDefaultAsync(ug =>
-                ug.User == request.User &&
-                ug.Grade == request.Grade,
+                ug.UserId == request.UserId &&
+                ug.GradeId == request.GradeId,
             cancellationToken);
 
         if (userGrade == null)
         {
-            throw new NotFoundException(nameof(UserGrade), request.User.UserId, request.Grade.GradeId);
+            throw new NotFoundException(nameof(UserGrade), request.UserId, request.GradeId);
         }
 
         _context.UserGrades.Remove(userGrade);

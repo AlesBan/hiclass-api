@@ -22,8 +22,8 @@ public class DeleteUserGradeCommandHandlerTests : TestCommonBase
         // Act
         await handler.Handle(new DeleteUserGradeCommand
         {
-            User = user!,
-            Grade = gradeForDelete
+            UserId = userId,
+            GradeId = gradeForDelete.GradeId
         }, CancellationToken.None);
 
         // Assert
@@ -47,8 +47,8 @@ public class DeleteUserGradeCommandHandlerTests : TestCommonBase
         await Assert.ThrowsAsync<NotFoundException>(async () =>
             await handler.Handle(new DeleteUserGradeCommand
             {
-                User = user!,
-                Grade = gradeForDelete
+                UserId = user.UserId,
+                GradeId = gradeForDelete.GradeId
             }, CancellationToken.None));
     }
 }

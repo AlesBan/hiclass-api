@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Domain.Entities.Main;
 
@@ -28,9 +29,11 @@ public class PasswordHelper
 
     public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
-        using var hmac = new System.Security.Cryptography.HMACSHA512();
-        passwordSalt = hmac.Key;
-        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8
-            .GetBytes(password));
+        using var hmac = new HMACSHA512();
+        passwordSalt = new byte[64]; 
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(passwordSalt);
+
+        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password + Convert.ToBase64String(passwordSalt)));
     }
 }

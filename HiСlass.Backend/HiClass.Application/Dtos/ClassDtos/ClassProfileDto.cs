@@ -11,7 +11,7 @@ public class ClassProfileDto : IMapWith<Class>
     public string Title { get; set; } = string.Empty;
     public string UserFullName { get; set; } = string.Empty;
     public double UserRating { get; set; }
-    public int UserReviewsCount { get; set; }
+    public int UserFeedbacksCount { get; set; }
     public int Grade { get; set; }
     public List<string> Languages { get; set; } = new();
     public List<string> Disciplines { get; set; } = new();
@@ -32,8 +32,8 @@ public class ClassProfileDto : IMapWith<Class>
                     u.User.FirstName + " " + u.User.LastName))
             .ForMember(up => up.UserRating,
                 opt => opt.MapFrom(u => u.User.Rating))
-            .ForMember(up => up.UserReviewsCount,
-                opt => opt.MapFrom(u => u.User.ReceivedReviews.Count))
+            .ForMember(up => up.UserFeedbacksCount,
+                opt => opt.MapFrom(u => u.User.ReceivedFeedbacks.Count))
             .ForMember(up => up.Grade,
                 opt => opt.MapFrom(u => u.Grade.GradeNumber))
             .ForMember(up => up.PhotoUrl,

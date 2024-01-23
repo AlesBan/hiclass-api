@@ -484,3 +484,10 @@ $RECYCLE.BIN/
 *.swp
 
 .yml
+
+# Diagrams
+.bkp
+.drawio
+
+# Exel
+.xlsx

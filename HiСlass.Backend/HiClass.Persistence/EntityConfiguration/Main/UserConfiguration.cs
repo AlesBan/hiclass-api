@@ -15,6 +15,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasDefaultValueSql("gen_random_uuid()")
             .ValueGeneratedOnAdd();
 
+        builder.Property(u => u.PasswordHash)
+            .IsRequired();
+        
         builder.Property(u => u.IsCreatedAccount)
             .HasDefaultValue(false)
             .IsRequired();
@@ -25,7 +28,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsVerified)
             .HasDefaultValue(false)
             .IsRequired();
-        
+
         builder.Property(u => u.IsInstitutionVerified)
             .HasDefaultValue(false)
             .IsRequired();

@@ -40,8 +40,8 @@ public class SharedLessonDbContextFactory
     public static readonly Guid InvitationBId = Guid.NewGuid();
     public static readonly Guid InvitationForDeleteId = Guid.NewGuid();
 
-    public static readonly Guid ReviewAId = Guid.NewGuid();
-    public static readonly Guid ReviewBId = Guid.NewGuid();
+    public static readonly Guid FeedbackAId = Guid.NewGuid();
+    public static readonly Guid FeedbackBId = Guid.NewGuid();
     public static readonly Guid FeedbackForDeleteId = Guid.NewGuid();
 
     private static IConfiguration? _configuration;
@@ -81,7 +81,7 @@ public class SharedLessonDbContextFactory
         AppendInvitations(context);
         context.SaveChangesAsync();
 
-        AppendReviews(context);
+        AppendFeedbacks(context);
         context.SaveChangesAsync();
         return context;
     }
@@ -242,12 +242,12 @@ public class SharedLessonDbContextFactory
         );
     }
 
-    private static void AppendReviews(ISharedLessonDbContext context)
+    private static void AppendFeedbacks(ISharedLessonDbContext context)
     {
-        context.Reviews.AddRangeAsync(
-            new Review()
+        context.Feedbacks.AddRangeAsync(
+            new Feedback()
             {
-                ReviewId = ReviewAId,
+                FeedbackId = FeedbackAId,
                 Invitation = context.Invitations.FirstOrDefault(i
                     => i.InvitationId == InvitationAId)!,
                 UserRecipient = context.Users.FirstOrDefault(u =>
@@ -256,12 +256,12 @@ public class SharedLessonDbContextFactory
                     u.UserId == UserBId)!,
                 WasTheJointLesson = true,
                 ReasonForNotConducting = null,
-                ReviewText = "ABOBA",
+                FeedbackText = "ABOBA",
                 Rating = 5
             },
-            new Review()
+            new Feedback()
             {
-                ReviewId = ReviewBId,
+                FeedbackId = FeedbackBId,
                 Invitation = context.Invitations.FirstOrDefault(i
                     => i.InvitationId == InvitationBId)!,
                 UserRecipient = context.Users.FirstOrDefault(u =>
@@ -270,17 +270,17 @@ public class SharedLessonDbContextFactory
                     u.UserId == UserAId)!,
                 WasTheJointLesson = true,
                 ReasonForNotConducting = null,
-                ReviewText = "ABOBA",
+                FeedbackText = "ABOBA",
                 Rating = 5
             },
-            new Review()
+            new Feedback()
             {
-                ReviewId = FeedbackForDeleteId,
+                FeedbackId = FeedbackForDeleteId,
                 Invitation = context.Invitations.FirstOrDefault(i
                     => i.InvitationId == InvitationForDeleteId)!,
                 WasTheJointLesson = true,
                 ReasonForNotConducting = null,
-                ReviewText = "ABOBA",
+                FeedbackText = "ABOBA",
                 Rating = 5
             }
         );

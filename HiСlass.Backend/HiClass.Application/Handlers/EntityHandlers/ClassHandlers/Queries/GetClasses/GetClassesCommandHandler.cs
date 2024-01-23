@@ -18,7 +18,7 @@ public class GetClassesCommandHandler : IRequestHandler<GetClassesCommand, IEnum
     public async Task<IEnumerable<Class>> Handle(GetClassesCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
-            .Include(u => u.ReceivedReviews)
+            .Include(u => u.ReceivedFeedbacks)
             .Include(u => u.Classes)
             .ThenInclude(c => c.ClassDisciplines)
             .ThenInclude(cd => cd.Discipline)

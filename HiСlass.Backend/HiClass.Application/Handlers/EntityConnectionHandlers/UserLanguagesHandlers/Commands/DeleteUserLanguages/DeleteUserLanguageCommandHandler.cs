@@ -25,12 +25,13 @@ public class DeleteUserLanguageCommandHandler : IRequestHandler<DeleteUserLangua
     public async Task<Unit> Handle(DeleteUserLanguageCommand request, CancellationToken cancellationToken)
     {
         var userLanguage = await _context.UserLanguages.FirstOrDefaultAsync(ul=>
-            ul.User == request.User &&
-            ul.Language == request.Language, cancellationToken);
+            ul.UserId == request.UserId &&
+            ul.LanguageId == request.LanguageId, cancellationToken);
         
         if (userLanguage == null)
         {
-            throw new NotFoundException(nameof(UserLanguage), request.User.UserId, request.Language.LanguageId);
+            throw new NotFoundException(nameof(UserLanguage), 
+                request.UserId, request.LanguageId);
         }
 
         await RemoveUserLanguages(userLanguage, cancellationToken);

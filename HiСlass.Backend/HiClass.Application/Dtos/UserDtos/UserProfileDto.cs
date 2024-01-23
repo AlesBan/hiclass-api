@@ -32,7 +32,7 @@ public class UserProfileDto : IMapWith<User>
     public List<string> LanguageTitles { get; set; } = new();
     public List<string> DisciplineTitles { get; set; } = new();
     public List<int> GradeNumbers { get; set; } = new();
-    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
 
     public void Mapping(Profile profile)
     {

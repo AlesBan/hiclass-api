@@ -5,5 +5,5 @@ namespace HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.
 
 public class DeleteFeedbackCommand : IRequest<Unit>
 {
-    public Review Feedback { get; set; }
+    public Feedback Feedback { get; set; }
 }

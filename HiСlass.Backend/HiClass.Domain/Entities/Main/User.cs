@@ -9,8 +9,8 @@ public class User
 {
     public Guid UserId { get; set; } = Guid.NewGuid();
     public string Email { get; set; } = string.Empty;
-    public byte[] PasswordHash { get; set; } = new byte[32];
-    public byte[] PasswordSalt { get; set; } = new byte[32];
+    public byte[] PasswordHash { get; set; } = new byte[64];
+    public byte[] PasswordSalt { get; set; } = new byte[64];
     public string? AccessToken { get; set; } = string.Empty;
     public string? PasswordResetToken { get; set; } = string.Empty;
     public DateTime? ResetTokenExpires { get; set; }
@@ -36,8 +36,8 @@ public class User
     public ICollection<UserGrade> UserGrades { get; set; } = new List<UserGrade>();
     public ICollection<Invitation> ReceivedInvitations { get; set; } = new List<Invitation>();
     public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();
-    public ICollection<Review> ReceivedReviews { get; set; } = new List<Review>();
-    public ICollection<Review> SentReviews { get; set; } = new List<Review>();
+    public ICollection<Feedback> ReceivedFeedbacks { get; set; } = new List<Feedback>();
+    public ICollection<Feedback> SentFeedbacks { get; set; } = new List<Feedback>();
     public double Rating { get; set; }
     public string? Description { get; set; } = string.Empty;
     public string? PhotoUrl { get; set; } = string.Empty;

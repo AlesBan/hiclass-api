@@ -30,7 +30,7 @@ public static class ModelBuilderExtensions
         modelBuilder.ApplyConfiguration(new InstitutionTypeConfiguration());
         modelBuilder.ApplyConfiguration(new CityConfiguration());
         modelBuilder.ApplyConfiguration(new CountryConfiguration());
-        modelBuilder.ApplyConfiguration(new ReviewConfiguration());
+        modelBuilder.ApplyConfiguration(new FeedbackConfiguration());
         modelBuilder.ApplyConfiguration(new InvitationConfiguration());
 
         modelBuilder.ApplyConfiguration(new UserRoleConfiguration());

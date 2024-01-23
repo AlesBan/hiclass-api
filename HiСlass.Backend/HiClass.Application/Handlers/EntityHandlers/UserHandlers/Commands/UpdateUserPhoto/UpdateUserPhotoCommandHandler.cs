@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +17,18 @@ public class UpdateUserPhotoCommandHandler : IRequestHandler<UpdateUserPhotoComm
 
     public async Task<Unit> Handle(UpdateUserPhotoCommand request, CancellationToken cancellationToken)
     {
-        request.User.PhotoUrl = request.NewPhotoUrl;
+        var user = await _context.Users
+            .FirstOrDefaultAsync(x =>
+                x.UserId == request.UserId, cancellationToken: cancellationToken);
 
-        _context.Users.Attach(request.User).State = EntityState.Modified;
+        if (user == null)
+        {
+            throw new UserNotFoundException(request.UserId);
+        }
+
+        user.PhotoUrl = request.NewPhotoUrl;
+
+        _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

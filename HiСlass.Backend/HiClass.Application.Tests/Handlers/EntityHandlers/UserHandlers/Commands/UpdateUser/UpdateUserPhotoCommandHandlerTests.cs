@@ -11,8 +11,7 @@ public class UpdateUserPhotoCommandHandlerTests : TestCommonBase
     public async Task UpdateUserPhotoCommandHandler_Handle_ShouldUpdateUserPhoto()
     {
         // Arrange
-        var user = await Context.Users.SingleOrDefaultAsync(u =>
-            u.UserId == SharedLessonDbContextFactory.UserAId);
+        var userId = SharedLessonDbContextFactory.UserAId;
         const string newPhotoUrl = "NewPhotoUrl";
 
         var handler = new UpdateUserPhotoCommandHandler(Context);
@@ -20,13 +19,13 @@ public class UpdateUserPhotoCommandHandlerTests : TestCommonBase
         // Act
         await handler.Handle(new UpdateUserPhotoCommand()
         {
-            User = user!,
+            UserId = userId,
             NewPhotoUrl = newPhotoUrl
         }, CancellationToken.None);
 
         // Assert
         Assert.NotNull(await Context.Users.SingleOrDefaultAsync(u =>
-            u.UserId == user!.UserId &&
+            u.UserId == userId &&
             u.PhotoUrl == newPhotoUrl));
     }
 }

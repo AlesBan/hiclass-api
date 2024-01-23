@@ -24,7 +24,7 @@ public class CreateFeedbackCommandHandlerTests : TestCommonBase
         // Act
         var result = await handler.Handle(new CreateFeedbackCommand
         {
-            Invitation = invitation!,
+            InvitationId = invitation.InvitationId,
             WasTheJointLesson = wasTheJointLesson,
             ReasonForNotConducting = reasonForNotConducting,
             FeedbackText = feedbackText,
@@ -32,7 +32,7 @@ public class CreateFeedbackCommandHandlerTests : TestCommonBase
         }, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(await Context.Reviews.FirstOrDefaultAsync(f =>
-            f.ReviewId == result));
+        Assert.NotNull(await Context.Feedbacks.FirstOrDefaultAsync(f =>
+            f.FeedbackId == result));
     }
 }

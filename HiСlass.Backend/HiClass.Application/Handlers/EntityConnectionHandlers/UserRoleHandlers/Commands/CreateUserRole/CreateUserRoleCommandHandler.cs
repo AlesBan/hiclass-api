@@ -17,8 +17,8 @@ public class CreateUserRoleCommandHandler : IRequestHandler<CreateUserRoleComman
     {
         var userRole = new UserRole()
         {
-            User = request.User,
-            Role = request.Role
+            UserId = request.UserId,
+            RoleId = request.RoleId
         };
 
         await _context.UserRoles.AddAsync(userRole, cancellationToken);

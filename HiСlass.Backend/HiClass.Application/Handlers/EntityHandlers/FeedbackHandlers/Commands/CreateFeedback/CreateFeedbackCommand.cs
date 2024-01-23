@@ -5,7 +5,7 @@ namespace HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.
 
 public class CreateFeedbackCommand : IRequest<Guid>
 {
-    public Invitation Invitation { get; set; }
+    public Guid InvitationId { get; set; }
     public bool WasTheJointLesson { get; set; }
     public string? ReasonForNotConducting { get; set; }
     public string? FeedbackText { get; set; }

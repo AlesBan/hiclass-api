@@ -6,6 +6,6 @@ namespace HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHan
 
 public class DeleteUserLanguageCommand : IRequest<Unit>
 {
-    public User User { get; set; }
-    public Language Language { get; set; }
+    public Guid UserId { get; set; }
+    public Guid LanguageId { get; set; }
 }

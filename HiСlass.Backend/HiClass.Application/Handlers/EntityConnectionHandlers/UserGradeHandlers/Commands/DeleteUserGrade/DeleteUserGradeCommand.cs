@@ -6,6 +6,6 @@ namespace HiClass.Application.Handlers.EntityConnectionHandlers.UserGradeHandler
 
 public class DeleteUserGradeCommand : IRequest<Unit>
 {
-    public User User { get; set; }
-    public Grade Grade { get; set; }
+    public Guid UserId { get; set; }
+    public Guid GradeId { get; set; }
 }

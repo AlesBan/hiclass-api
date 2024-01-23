@@ -2,9 +2,9 @@ using HiClass.Domain.Entities.Main;
 
 namespace HiClass.Domain.Entities.Communication;
 
-public class Review
+public class Feedback
 {
-    public Guid ReviewId { get; set; }
+    public Guid FeedbackId { get; set; }
     public Guid InvitationId { get; set; }
     public Invitation Invitation { get; set; }
     public Guid UserSenderId { get; set; }
@@ -13,6 +13,6 @@ public class Review
     public User UserRecipient { get; set; }
     public bool WasTheJointLesson  { get; set; }
     public string? ReasonForNotConducting  { get; set; }
-    public string? ReviewText { get; set; }
+    public string? FeedbackText { get; set; }
     public int? Rating { get; set; }
 }

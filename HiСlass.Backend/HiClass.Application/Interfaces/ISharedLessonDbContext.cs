@@ -20,7 +20,7 @@ public interface ISharedLessonDbContext
     DbSet<InstitutionType> InstitutionTypes { get; set; }
     DbSet<City> Cities { get; set; }
     DbSet<Country> Countries { get; set; }
-    DbSet<Review> Reviews { get; set; }
+    DbSet<Feedback> Feedbacks { get; set; }
     DbSet<Invitation> Invitations { get; set; }
     DbSet<UserRole> UserRoles { get; set; }
     DbSet<UserDiscipline> UserDisciplines { get; set; }
