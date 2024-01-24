@@ -1,24 +1,24 @@
 using System.Net;
 using HiClass.API.Helpers.JwtHelpers;
-using HiClass.Application.Common.Exceptions.User.Forbidden;
+using HiClass.Application.Common.Exceptions.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace HiClass.API.Filters;
+namespace HiClass.API.Filters.Abilities;
 
-public class CheckUserCreateAccountAttribute : TypeFilterAttribute
+public class CheckUserCreateAccountAbilityAttribute : TypeFilterAttribute
 {
-    public CheckUserCreateAccountAttribute() : base(typeof(CheckUserCreateAccountImplementation))
+    public CheckUserCreateAccountAbilityAttribute() : base(typeof(CheckUserCreateAccountAbilityImplementation))
     {
     }
 
-    private class CheckUserCreateAccountImplementation : IAsyncActionFilter
+    private class CheckUserCreateAccountAbilityImplementation : IAsyncActionFilter
     {
         public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var isCreateAccount = JwtHelper.GetIsCreatedAccountFromClaims(context.HttpContext);
 
-            if (isCreateAccount)
+            if (!isCreateAccount)
             {
                 return next();
             }
@@ -26,7 +26,7 @@ public class CheckUserCreateAccountAttribute : TypeFilterAttribute
             context.Result = new StatusCodeResult((int)HttpStatusCode.MethodNotAllowed);
 
             var userId = JwtHelper.GetUserIdFromClaims(context.HttpContext);
-            throw new UserHasNotAccountException(userId);
+            throw new UserAlreadyHasAccountException(userId);
         }
     }
 }

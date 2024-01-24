@@ -1,4 +1,6 @@
 using HiClass.API.Filters;
+using HiClass.API.Filters.Exceptions;
+using HiClass.API.Filters.Validation;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Common.Exceptions.Common;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,7 @@ namespace HiClass.API.Controllers;
 
 [Route("api/[controller]")]
 [ValidateModelStateFilter]
+[ExceptionFilter]
 [ApiController]
 public class BaseController : ControllerBase
 {

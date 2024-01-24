@@ -1,4 +1,5 @@
 using HiClass.API.Filters;
+using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Dtos.UserDtos.Update;
 using HiClass.Infrastructure.Services.EditUserServices;

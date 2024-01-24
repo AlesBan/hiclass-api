@@ -1,4 +1,5 @@
 using HiClass.API.Filters;
+using HiClass.API.Filters.Abilities;
 using HiClass.Application.Dtos.SearchDtos;
 using HiClass.Application.Dtos.SearchDtos.Data;
 using HiClass.Infrastructure.Services.DataBaseDataService;

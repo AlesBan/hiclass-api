@@ -1,10 +1,9 @@
 using HiClass.API.Models.Authentication;
-using HiClass.Application.Common;
 using HiClass.Application.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace HiClass.API.Filters;
+namespace HiClass.API.Filters.Validation;
 
 public class ValidateModelStateFilterAttribute : TypeFilterAttribute
 {

@@ -4,7 +4,7 @@ using HiClass.Application.Common.Exceptions.User.Forbidden;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace HiClass.API.Filters;
+namespace HiClass.API.Filters.UserVerification;
 
 public class CheckUserVerificationAttribute : TypeFilterAttribute
 {

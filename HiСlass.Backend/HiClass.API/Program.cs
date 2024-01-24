@@ -27,7 +27,7 @@ builder.Services.AddAutoMapper(conf =>
 {
     conf.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
     conf.AddProfile(new AssemblyMappingProfile(typeof(ISharedLessonDbContext).Assembly));
-});
+}); 
 
 builder.Services.AddApplication();
 builder.Services.AddPersistence(config);
