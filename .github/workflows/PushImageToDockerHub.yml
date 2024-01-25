@@ -20,4 +20,4 @@ jobs:
         with:
           context: HiClass.Backend/
           push: true
-          tags: alesban/hiclassbackend:latest
+          tags: alesban/hiclass-api:latest
