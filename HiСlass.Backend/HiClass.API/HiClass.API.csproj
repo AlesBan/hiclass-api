@@ -20,10 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\Middleware" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\HiClass.Application\HiClass.Application.csproj" />
       <ProjectReference Include="..\HiClass.Domain\HiClass.Domain.csproj" />
       <ProjectReference Include="..\HiClass.Infrastructure\HiClass.Infrastructure.csproj" />

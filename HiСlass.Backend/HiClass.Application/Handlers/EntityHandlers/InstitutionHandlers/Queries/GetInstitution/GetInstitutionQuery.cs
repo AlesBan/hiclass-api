@@ -1,7 +1,7 @@
 using HiClass.Domain.Entities.Job;
 using MediatR;
 
-namespace HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetEstablishment;
+namespace HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetInstitution;
 
 public class GetInstitutionQuery : IRequest<Institution>
 {

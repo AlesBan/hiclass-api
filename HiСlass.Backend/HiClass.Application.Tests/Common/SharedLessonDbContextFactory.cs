@@ -484,7 +484,7 @@ public class SharedLessonDbContextFactory
             {
                 InstitutionTypeId = context.InstitutionTypes.SingleAsync(
                         et
-                            => et.Title == InstitutionTypes.School.ToString())
+                            => et.Title == "School")
                     .Result.InstitutionTypeId,
 
                 InstitutionId = EstablishmentAId
@@ -492,7 +492,7 @@ public class SharedLessonDbContextFactory
             new InstitutionTypeInstitution
             {
                 InstitutionTypeId = context.InstitutionTypes.SingleAsync(et
-                        => et.Title == InstitutionTypes.Gymnasium.ToString())
+                        => et.Title == "Gymnasium")
                     .Result.InstitutionTypeId,
                 InstitutionId = EstablishmentAId
             },
@@ -500,7 +500,7 @@ public class SharedLessonDbContextFactory
             {
                 InstitutionTypeId = context.InstitutionTypes.SingleAsync(
                         et
-                            => et.Title == InstitutionTypes.School.ToString())
+                            => et.Title == "School")
                     .Result.InstitutionTypeId,
 
                 InstitutionId = EstablishmentBId

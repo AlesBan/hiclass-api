@@ -13,6 +13,7 @@ using HiClass.Infrastructure.Services.EditUserServices;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using HiClass.Infrastructure.Services.InvitationServices;
 using HiClass.Infrastructure.Services.SearchService;
+using HiClass.Infrastructure.Services.StaticDataServices;
 using HiClass.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -102,6 +103,7 @@ builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<IDataBaseDataService, DataBaseDataService>();
+builder.Services.AddScoped<IStaticDataService, StaticDataService>();
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();

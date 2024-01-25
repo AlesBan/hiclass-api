@@ -489,5 +489,8 @@ $RECYCLE.BIN/
 .bkp
 .drawio
 
-# Exel
+# Excel
 .xlsx
+
+# Txt
+.txt
