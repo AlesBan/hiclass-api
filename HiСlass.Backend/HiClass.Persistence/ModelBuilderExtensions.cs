@@ -44,11 +44,11 @@ public static class ModelBuilderExtensions
 
     public static void SeedingDefaultData(this ModelBuilder modelBuilder, IConfiguration configuration)
     {
+        modelBuilder.SeedingRoles();
         modelBuilder.SeedingGrades();
         modelBuilder.SeedingDisciplines(configuration);
-        modelBuilder.SeedingLanguages();
-        modelBuilder.SeedingRoles();
-        modelBuilder.SeedingEstablishmentTypes();
+        modelBuilder.SeedingLanguages(configuration);
+        modelBuilder.SeedingEstablishmentTypes(configuration);
     }
 
     private static void SeedingGrades(this ModelBuilder modelBuilder)
@@ -67,7 +67,7 @@ public static class ModelBuilderExtensions
 
     private static void SeedingDisciplines(this ModelBuilder modelBuilder, IConfiguration configuration)
     {
-        var filePath = configuration["DefaultData:DisciplinesFilePath"];
+        var filePath = configuration["StaticDataSources:DisciplinesFilePath"];
         var disciplines = FileHelper.GetLines(filePath);
         modelBuilder.Entity<Discipline>().HasData(disciplines
             .Select(d =>
@@ -78,15 +78,17 @@ public static class ModelBuilderExtensions
                 }).ToList());
     }
 
-    private static void SeedingLanguages(this ModelBuilder modelBuilder)
+    private static void SeedingLanguages(this ModelBuilder modelBuilder, IConfiguration configuration)
     {
-        modelBuilder.Entity<Language>().HasData(((LanguageTypes[])
-            Enum.GetValues(typeof(LanguageTypes))).Select(l =>
-            new Language
-            {
-                LanguageId = Guid.NewGuid(),
-                Title = l.ToString()
-            }).ToList());
+        var filePath = configuration["StaticDataSources:LanguagesFilePath"];
+        var languages = FileHelper.GetLines(filePath);
+        modelBuilder.Entity<Language>().HasData(languages
+            .Select(l =>
+                new Language
+                {
+                    LanguageId = Guid.NewGuid(),
+                    Title = l.ToString()
+                }).ToList());
     }
 
     private static void SeedingRoles(this ModelBuilder modelBuilder)
@@ -102,18 +104,16 @@ public static class ModelBuilderExtensions
                     }).ToList());
     }
 
-    private static void SeedingEstablishmentTypes(this ModelBuilder modelBuilder)
+    private static void SeedingEstablishmentTypes(this ModelBuilder modelBuilder, IConfiguration configuration)
     {
-        modelBuilder.Entity<InstitutionType>()
-            .HasData(
-                Enum.GetValues(typeof(InstitutionTypes))
-                    .Cast<InstitutionTypes>()
-                    .Select(et => new InstitutionType
-                    {
-                        InstitutionTypeId = Guid.NewGuid(),
-                        Title = et.ToString()
-                    })
-                    .ToArray()
-            );
+        var filePath = configuration["StaticDataSources:InstitutionTypesFilePath"];
+        var institutions = FileHelper.GetLines(filePath);
+        modelBuilder.Entity<InstitutionType>().HasData(institutions
+            .Select(l =>
+                new InstitutionType
+                {
+                    InstitutionTypeId = Guid.NewGuid(),
+                    Title = l.ToString()
+                }).ToList());
     }
 }

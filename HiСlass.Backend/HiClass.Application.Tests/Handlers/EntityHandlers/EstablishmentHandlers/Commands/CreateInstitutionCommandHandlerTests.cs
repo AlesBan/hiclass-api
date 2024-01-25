@@ -15,7 +15,7 @@ public class CreateInstitutionCommandHandlerTests : TestCommonBase
         // Arrange
         const string address = "address";
         const string title = "Establishment1";
-        var typeTitle = InstitutionTypes.School.ToString();
+        var typeTitle = "School";
 
         var command = new CreateInstitutionCommand
         {

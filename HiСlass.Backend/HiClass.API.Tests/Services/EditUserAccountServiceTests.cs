@@ -12,7 +12,7 @@ using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandler
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.GradeHandlers.Queries.GetGrades;
 using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Commands.CreateInstitution;
-using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetEstablishment;
+using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetInstitution;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdatePersonalInfo;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateProfessionalInfo;
@@ -368,8 +368,8 @@ public class EditUserAccountServiceTests : TestCommonBase
 
         var languageTitles = new List<string>()
         {
-            LanguageTypes.English.ToString(),
-            LanguageTypes.Russian.ToString()
+            "English",
+            "Russian"
         };
         var disciplineTitles = new List<string>()
         {

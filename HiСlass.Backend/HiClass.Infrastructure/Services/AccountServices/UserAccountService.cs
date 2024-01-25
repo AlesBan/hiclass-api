@@ -7,7 +7,7 @@ using HiClass.Application.Handlers.EntityHandlers.CityHandlers.Queries.GetCity;
 using HiClass.Application.Handlers.EntityHandlers.CountryHandlers.Queries.GetCountryByTitle;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.GradeHandlers.Queries.GetGrades;
-using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetEstablishment;
+using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetInstitution;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;

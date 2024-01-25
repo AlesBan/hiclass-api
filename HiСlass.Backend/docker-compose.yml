@@ -1,0 +1,39 @@
+version: '3.9'
+
+networks:
+  dev:
+    driver: bridge
+services:
+  hiclass:
+    image: alesban/hiclassbackend
+    container_name: hiclassbackend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7280:80"
+    depends_on:
+      - "hiclass-db"
+    networks:
+      - dev
+    restart: always
+    volumes:
+      - ../../${DISCIPLINES_FILE_PATH}:/${DISCIPLINES_FILE_PATH}
+      - $APPDATA/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  hiclass-db:
+    image: postgres
+    container_name: hiclass-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - dev
+    volumes:
+      - hiclass-data:/var/lib/postgresql/data
+volumes:
+  hiclass-data:
+      

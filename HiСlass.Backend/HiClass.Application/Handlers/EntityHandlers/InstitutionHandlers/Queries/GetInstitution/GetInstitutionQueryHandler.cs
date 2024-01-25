@@ -4,7 +4,7 @@ using HiClass.Domain.Entities.Job;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetEstablishment;
+namespace HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetInstitution;
 
 public class GetInstitutionQueryHandler : IRequestHandler<GetInstitutionQuery, Institution>
 {

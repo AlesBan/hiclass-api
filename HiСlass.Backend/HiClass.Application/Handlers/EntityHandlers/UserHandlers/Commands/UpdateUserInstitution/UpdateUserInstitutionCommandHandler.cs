@@ -1,5 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
-using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetEstablishment;
+using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetInstitution;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
 using MediatR;

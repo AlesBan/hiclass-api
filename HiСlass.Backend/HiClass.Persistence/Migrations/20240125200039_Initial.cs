@@ -412,35 +412,35 @@ namespace HiClass.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
+                name: "Feedbacks",
                 columns: table => new
                 {
-                    ReviewId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    FeedbackId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     InvitationId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserSenderId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserRecipientId = table.Column<Guid>(type: "uuid", nullable: false),
                     WasTheJointLesson = table.Column<bool>(type: "boolean", nullable: false),
                     ReasonForNotConducting = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    ReviewText = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    FeedbackText = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     Rating = table.Column<short>(type: "SMALLINT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.ReviewId);
+                    table.PrimaryKey("PK_Feedbacks", x => x.FeedbackId);
                     table.ForeignKey(
-                        name: "FK_Reviews_Invitations_InvitationId",
+                        name: "FK_Feedbacks_Invitations_InvitationId",
                         column: x => x.InvitationId,
                         principalTable: "Invitations",
                         principalColumn: "InvitationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_Users_UserRecipientId",
+                        name: "FK_Feedbacks_Users_UserRecipientId",
                         column: x => x.UserRecipientId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_Users_UserSenderId",
+                        name: "FK_Feedbacks_Users_UserSenderId",
                         column: x => x.UserSenderId,
                         principalTable: "Users",
                         principalColumn: "UserId",
@@ -452,34 +452,34 @@ namespace HiClass.Persistence.Migrations
                 columns: new[] { "DisciplineId", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("09cbff99-719b-4d7b-a19f-797ccea6b2d8"), "Social science" },
-                    { new Guid("0ef1a191-9611-4544-82b6-b233bc991a05"), "World art" },
-                    { new Guid("1a40572f-91f4-4f11-87c3-f922a247742d"), "German as a foreign language" },
-                    { new Guid("337abea7-1415-4937-b311-2278125ba3ae"), "Crafts" },
-                    { new Guid("3cdb9e49-2924-40ae-a04e-b67f2dc9b449"), "Chinese as a foreign language" },
-                    { new Guid("4018cae9-a812-45dc-867e-f4a645d8c03b"), "Russian literature" },
-                    { new Guid("4053a10b-304a-4c65-a582-81a3389aa790"), "Vacation education" },
-                    { new Guid("480b561c-5ded-4359-a3c8-28231c9cfc4e"), "French as a foreign language" },
-                    { new Guid("4c55afb4-d23a-43f2-8c28-32848f5a58d4"), "Russian language" },
-                    { new Guid("4dc6942c-6ea1-468b-8f31-f5a97717d7a6"), "Computer science" },
-                    { new Guid("569c0e0a-68fd-4081-9e15-9eeeb20ceb1d"), "Italian as a foreign language" },
-                    { new Guid("56a1fdcc-19f1-46f5-92dc-c72e549da754"), "Spanish as a foreign language" },
-                    { new Guid("5c93bf57-725a-4191-adc6-117a0ab4da91"), "Music" },
-                    { new Guid("5f1c300a-aeef-4e2a-8276-e1c22e668477"), "Physics" },
-                    { new Guid("60b51b03-7e21-4f0f-9d98-88b5042c31d6"), "Project-based learning" },
-                    { new Guid("6fb8b96d-5ef4-4771-a346-f2cdde905a44"), "Chemistry" },
-                    { new Guid("75aef381-c80b-414a-9b37-0396621118bf"), "Technology" },
-                    { new Guid("7bec3001-7978-4fd5-ae57-2c88829c1b92"), "Cultural exchange" },
-                    { new Guid("94e4774e-bbb4-441c-94a4-6f1b55b701b6"), "Mathematics" },
-                    { new Guid("9557f2f1-2c5e-467c-b2e0-9e62bff34991"), "Natural science" },
-                    { new Guid("a1251358-4375-4184-ac17-fb7746221997"), "Biology" },
-                    { new Guid("b3a9b8f9-b457-4476-b3f1-011e47e0bc2c"), "Fine arts" },
-                    { new Guid("bdb9c610-cd2f-4f66-802a-3a35e7c4b8b8"), "Geography" },
-                    { new Guid("c517fcb8-0eb4-43c0-a932-d388d01aec2d"), "Economics" },
-                    { new Guid("c9204aaa-2f32-41eb-8399-b3d46add9247"), "History" },
-                    { new Guid("dfd06a69-2519-45db-adaa-cc70363c7ee6"), "Astronomy" },
-                    { new Guid("e10da506-728f-495d-899d-89d765812343"), "Regional studies" },
-                    { new Guid("f0434994-eefc-4632-a5d3-cb36cd87124b"), "English as a foreign language" }
+                    { new Guid("0cc2c2b7-546e-41b7-a5cd-ab58a1b18f02"), "Russian literature" },
+                    { new Guid("22a59cd1-b2b5-4237-86ee-103028d95b6e"), "Regional studies" },
+                    { new Guid("37d30e49-3f94-43cf-9796-8f1e141ba2fa"), "Natural science" },
+                    { new Guid("38975553-53ef-4251-9d7c-85bc0314503a"), "Vacation education" },
+                    { new Guid("49826045-a769-4974-8b92-86bf35fe3850"), "World art" },
+                    { new Guid("5483a508-c65a-4cb8-b244-78c774825fcf"), "Music" },
+                    { new Guid("55be45bb-4db9-4b35-8932-ec3631fa1342"), "Cultural exchange" },
+                    { new Guid("5697de9b-7d51-48e2-a17f-37b0a7dc2364"), "French as a foreign language" },
+                    { new Guid("590b963b-4691-4138-ace4-72a05b6c2869"), "Physics" },
+                    { new Guid("65cf077d-7934-4e76-a794-b1f1fa35a6a9"), "Social science" },
+                    { new Guid("71c4d935-6681-463a-8f0c-9f034cc62e43"), "Astronomy" },
+                    { new Guid("81ecb3c1-1923-4af8-b2c8-c030dfc0bc55"), "Fine arts" },
+                    { new Guid("83032e96-2bad-4592-90e6-d2c95ea39814"), "Chemistry" },
+                    { new Guid("9c09a62f-2b03-4385-b518-85e201768949"), "Chinese as a foreign language" },
+                    { new Guid("a3e53db1-b71f-42c5-b3ec-cbfe2a7874e2"), "History" },
+                    { new Guid("a403d2bd-6152-4ad2-b119-ac04b9b17b18"), "English as a foreign language" },
+                    { new Guid("aa9a5ee7-f750-4d93-944e-0f82fdd8e0b0"), "Crafts" },
+                    { new Guid("c1aff891-5217-432b-b292-f8799b84b77f"), "Spanish as a foreign language" },
+                    { new Guid("c288b6ba-488f-4cbd-a919-44f12854ae25"), "Computer science" },
+                    { new Guid("cc8835d9-eb10-4a9c-865d-6b53c46b5bb8"), "Geography" },
+                    { new Guid("d5257fef-c979-4082-a168-7bc47ab67c85"), "Project-based learning" },
+                    { new Guid("d7a7c51a-164c-4b2b-9bb1-21c5698bd11a"), "Economics" },
+                    { new Guid("dd23051d-ca0d-4ebe-b5b8-8fc6dc1944b7"), "Russian language" },
+                    { new Guid("ddac2ef3-c28c-4b62-815c-355f0ba78817"), "Italian as a foreign language" },
+                    { new Guid("e53d5728-fda4-4f87-8808-52ad434cea13"), "Technology" },
+                    { new Guid("e941b2d6-6920-45c2-a364-72a48eba4713"), "German as a foreign language" },
+                    { new Guid("e9db31c6-e0f8-4bb3-9583-f1dbab383a88"), "Biology" },
+                    { new Guid("f82ba4b2-9822-4478-9c13-15689b03d6df"), "Mathematics" }
                 });
 
             migrationBuilder.InsertData(
@@ -487,18 +487,18 @@ namespace HiClass.Persistence.Migrations
                 columns: new[] { "GradeId", "GradeNumber" },
                 values: new object[,]
                 {
-                    { new Guid("00c66b7a-06ab-4477-b20e-571702267ceb"), 12 },
-                    { new Guid("2255f732-4a11-4e5c-bc3e-7ceda27bacd9"), 3 },
-                    { new Guid("2bbb6c3e-2c3f-4009-bd9b-0f1e43ce33ba"), 10 },
-                    { new Guid("64dbd017-ebbe-4069-b92e-388b24097686"), 5 },
-                    { new Guid("86cbe4a1-89e5-426f-b0bb-a4497a1415cb"), 2 },
-                    { new Guid("9db15e60-2d4b-4610-ab50-f33541e1c3c6"), 8 },
-                    { new Guid("9e452ed0-9079-443d-91c5-6d80164add18"), 1 },
-                    { new Guid("b050ea7b-057f-4b91-a1a9-bb184d36233d"), 9 },
-                    { new Guid("b8047931-8913-4536-969c-749bb203af1b"), 11 },
-                    { new Guid("c9a03837-8057-4c84-9783-4038cee41300"), 7 },
-                    { new Guid("d724b1ac-9486-49c8-af12-0c9af10d7d2f"), 4 },
-                    { new Guid("f965bdd8-fc54-4095-9d3f-0ac3c61d29ea"), 6 }
+                    { new Guid("0c3a8dbe-0cfe-4d64-a110-59b105ed6b21"), 11 },
+                    { new Guid("15b5170e-b767-4385-941c-b19810e17a95"), 2 },
+                    { new Guid("2956798a-72a2-442b-8117-4dbe5b5b1a07"), 8 },
+                    { new Guid("2f73e6f5-1be0-4bb1-a2d2-757c9d66d211"), 10 },
+                    { new Guid("350ef882-f289-4a29-9b56-34bd57fc9518"), 6 },
+                    { new Guid("384ef411-6a63-4e98-9e1b-058ddae1212d"), 1 },
+                    { new Guid("3ed987ea-a5ac-4643-883c-5f521aabd0b9"), 5 },
+                    { new Guid("50a4388e-a98f-453e-a1a8-480f6297478d"), 3 },
+                    { new Guid("8e36cd92-491b-4663-823f-181bae28ee45"), 12 },
+                    { new Guid("980008ea-cfda-4a2b-adcf-9bcf436e5144"), 7 },
+                    { new Guid("b5c94e0c-d1ee-4a22-9153-308436705ff4"), 4 },
+                    { new Guid("c7425242-3473-4eab-8c0b-0ca15c3b29a9"), 9 }
                 });
 
             migrationBuilder.InsertData(
@@ -506,10 +506,10 @@ namespace HiClass.Persistence.Migrations
                 columns: new[] { "InstitutionTypeId", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("284651e0-bd8f-46a9-b7fb-07aff1a232a5"), "College" },
-                    { new Guid("5a167097-699e-48f3-97db-d6f1ecbb3b90"), "School" },
-                    { new Guid("68741f87-137f-4d6c-8d40-1b8effcef242"), "Gymnasium" },
-                    { new Guid("f85a7898-d0ec-4bef-925d-76fca251e837"), "Lyceum" }
+                    { new Guid("2512d581-1589-4c94-acc2-26bd9e9a472b"), "Gymnasium" },
+                    { new Guid("73998bf5-10ea-4404-a9a9-d9e43f426326"), "College" },
+                    { new Guid("ac11ba64-38c4-466d-ad6b-7490f56b4ae9"), "Lyceum" },
+                    { new Guid("c47425a5-f086-44d4-82f3-5c917cc6bbd8"), "School" }
                 });
 
             migrationBuilder.InsertData(
@@ -517,23 +517,23 @@ namespace HiClass.Persistence.Migrations
                 columns: new[] { "LanguageId", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("010384ec-2c1a-4608-b042-966e197d788c"), "Uzbek" },
-                    { new Guid("27f18704-5290-4e88-8f33-af958db279d2"), "English" },
-                    { new Guid("29852c01-7915-41f5-8ea3-7ea51ffe674a"), "Hungarian" },
-                    { new Guid("2d46efe6-c1a2-4703-a565-ad056c934141"), "Spanish" },
-                    { new Guid("2dd6d00a-ae9b-4ffc-b802-9d0aba33e427"), "Georgian" },
-                    { new Guid("430dfa30-4a14-421a-82a3-2ea29c220b58"), "Portuguese" },
-                    { new Guid("49736615-80f7-423a-a5be-7002ea65df30"), "Tajik" },
-                    { new Guid("5cdbd342-11ad-4795-8a8f-b5b4d3673f33"), "Kazakh" },
-                    { new Guid("6b7cfb17-e862-43f0-b2d0-1cae3470cd49"), "Armenian" },
-                    { new Guid("835217ba-20ac-4514-a92a-2e60ffd91ad2"), "Kyrgyz" },
-                    { new Guid("8fe73360-2344-4adc-86fe-f706e1c555fe"), "Belarusian" },
-                    { new Guid("a374806f-06e1-4768-9008-d434217a8ec1"), "Ukrainian" },
-                    { new Guid("bb7b3a2d-25a8-4ce4-9210-7c4a5d2056b1"), "German" },
-                    { new Guid("cfdd2b5c-51cb-4a65-b371-a9a6a4f4c606"), "Russian" },
-                    { new Guid("d32c0860-7f11-478d-8123-a8e7e1386f22"), "Azerbaijani" },
-                    { new Guid("e0b5736f-0f1e-41f6-82e4-defa24f9c0fd"), "French" },
-                    { new Guid("eec0d474-0f9b-44b5-98bb-fdb16907fd29"), "Italian" }
+                    { new Guid("0219a2ae-391b-4195-8e1b-0578d64af8c1"), "French" },
+                    { new Guid("03de94c2-3063-4f3c-b0af-afea144c18bb"), "Russian" },
+                    { new Guid("098216ed-94aa-4fc9-8805-962f6cd53375"), "Uzbek" },
+                    { new Guid("10c6e370-d290-41c8-afc9-cfd6384ae85c"), "Ukrainian" },
+                    { new Guid("1fa1dd9a-50b5-4362-8ed7-c9685ea11e83"), "Georgian" },
+                    { new Guid("31ddf0eb-1dd1-45f3-9bfc-6a2b60f6f112"), "Spanish" },
+                    { new Guid("37d2a656-0a26-4b3c-823a-41cf21943c05"), "English" },
+                    { new Guid("49dde30b-4db9-4db7-9cd8-2802b713715b"), "Tajik" },
+                    { new Guid("7c374e70-3b86-4253-8319-a5b372b5e471"), "Azerbaijani" },
+                    { new Guid("870596fa-ed0a-479f-a6d5-23602538fda6"), "Kazakh" },
+                    { new Guid("92841a98-d634-411e-a7e6-23440ba9a3e6"), "Hungarian" },
+                    { new Guid("9a1de628-37bd-44ec-84a1-f89b1039f2ea"), "Italian" },
+                    { new Guid("9d909f71-ce02-414c-934e-2eb8ce6018f3"), "Kyrgyz" },
+                    { new Guid("9fdb0ebc-83ad-4b0c-bb9e-1007bd2a90fe"), "Portuguese" },
+                    { new Guid("b8c5e54a-080d-4182-82cd-164c9eef9376"), "Belarusian" },
+                    { new Guid("cabdc706-e6bb-4c19-811a-c92f4b62e499"), "German" },
+                    { new Guid("eff1dce2-c276-4413-b7ca-00dfb95598e3"), "Armenian" }
                 });
 
             migrationBuilder.InsertData(
@@ -541,9 +541,9 @@ namespace HiClass.Persistence.Migrations
                 columns: new[] { "RoleId", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("6b2560af-66f9-42bd-a4c2-c943cd62935e"), "Manager" },
-                    { new Guid("902dc8f3-0a7d-4dd2-9a02-abc1a4bfb21f"), "User" },
-                    { new Guid("a4e32536-215d-4075-a04b-97421ff50782"), "Admin" }
+                    { new Guid("841603e6-2bff-4c4c-ae08-3947bb193c41"), "Admin" },
+                    { new Guid("ba2847d1-9520-4517-9cce-27180a253ff9"), "Manager" },
+                    { new Guid("f634fbfb-bdf3-4cac-886f-817d0b3593f3"), "User" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -606,6 +606,27 @@ namespace HiClass.Persistence.Migrations
                 table: "Disciplines",
                 column: "DisciplineId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_FeedbackId",
+                table: "Feedbacks",
+                column: "FeedbackId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_InvitationId",
+                table: "Feedbacks",
+                column: "InvitationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_UserRecipientId",
+                table: "Feedbacks",
+                column: "UserRecipientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_UserSenderId",
+                table: "Feedbacks",
+                column: "UserSenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Grades_GradeId",
@@ -672,27 +693,6 @@ namespace HiClass.Persistence.Migrations
                 table: "Languages",
                 column: "LanguageId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_InvitationId",
-                table: "Reviews",
-                column: "InvitationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ReviewId",
-                table: "Reviews",
-                column: "ReviewId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_UserRecipientId",
-                table: "Reviews",
-                column: "UserRecipientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_UserSenderId",
-                table: "Reviews",
-                column: "UserSenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_RoleId",
@@ -775,10 +775,10 @@ namespace HiClass.Persistence.Migrations
                 name: "ClassLanguages");
 
             migrationBuilder.DropTable(
-                name: "InstitutionTypesInstitutions");
+                name: "Feedbacks");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "InstitutionTypesInstitutions");
 
             migrationBuilder.DropTable(
                 name: "UserDisciplines");
@@ -793,10 +793,10 @@ namespace HiClass.Persistence.Migrations
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "InstitutionTypes");
+                name: "Invitations");
 
             migrationBuilder.DropTable(
-                name: "Invitations");
+                name: "InstitutionTypes");
 
             migrationBuilder.DropTable(
                 name: "Disciplines");
