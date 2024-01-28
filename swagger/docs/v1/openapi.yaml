@@ -1,0 +1,1413 @@
+---
+openapi: 3.0.1
+info:
+  title: HiClass.API
+  version: "1.0"
+paths:
+  /api/Class/create-class:
+    post:
+      tags:
+        - Class
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateClassRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CreateClassRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CreateClassRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/Class:
+    get:
+      tags:
+        - Class
+      parameters:
+        - name: classId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success
+  "/api/Class/update-class/{classId}":
+    put:
+      tags:
+        - Class
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateClassRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateClassRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateClassRequestDto"
+      responses:
+        "200":
+          description: Success
+  "/api/Class/delete-class/{classId}":
+    delete:
+      tags:
+        - Class
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success
+  /api/EditUser/personal-info:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonalInfoRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonalInfoRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonalInfoRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/EditUser/institution:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInstitutionRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInstitutionRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateInstitutionRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/EditUser/professional-info:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfessionalInfoRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfessionalInfoRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfessionalInfoRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/EditUser/email:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserEmailRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserEmailRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserEmailRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/EditUser/password:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserPasswordHashRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserPasswordHashRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserPasswordHashRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/Invitation/create-invitation:
+    post:
+      tags:
+        - Invitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvitationRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvitationRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CreateInvitationRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/Search/search-request:
+    get:
+      tags:
+        - Search
+      parameters:
+        - name: Disciplines
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: Languages
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: Grades
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: Countries
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResponseDto"
+  /api/Search/default-search-request:
+    get:
+      tags:
+        - Search
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultSearchResponseDto"
+  /api/Search/all-country-locations:
+    get:
+      tags:
+        - Search
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExistingCountriesDto"
+  /api/StaticDataSources/get-available-disciplines:
+    get:
+      tags:
+        - StaticDataSources
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/AvailableDisciplinesDto"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableDisciplinesDto"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AvailableDisciplinesDto"
+  /api/StaticDataSources/get-available-languages:
+    get:
+      tags:
+        - StaticDataSources
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/AvailableLanguagesDto"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableLanguagesDto"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AvailableLanguagesDto"
+  /api/StaticDataSources/get-available-institution-types:
+    get:
+      tags:
+        - StaticDataSources
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/AvailableInstitutionTypesDto"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableInstitutionTypesDto"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AvailableInstitutionTypesDto"
+  /api/User/all-users:
+    get:
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+  /api/User/register:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegisterRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UserRegisterRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UserRegisterRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/User/login:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UserLoginRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/User/confirm-email:
+    get:
+      tags:
+        - User
+      parameters:
+        - name: verificationCode
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+  /api/User/create-account:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserAccountRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserAccountRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CreateUserAccountRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/User/forgot-password:
+    post:
+      tags:
+        - User
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+  /api/User/check-reset-password-code:
+    post:
+      tags:
+        - User
+      parameters:
+        - name: code
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+  /api/User/reset-password:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequestDto"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequestDto"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequestDto"
+      responses:
+        "200":
+          description: Success
+  /api/User/get-userprofile:
+    get:
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+  /api/User/delete-user:
+    delete:
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+  /api/User/delete-all-users:
+    delete:
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+components:
+  schemas:
+    AvailableDisciplinesDto:
+      type: object
+      properties:
+        availableDisciplines:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    AvailableInstitutionTypesDto:
+      type: object
+      properties:
+        availableInstitutionTypes:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    AvailableLanguagesDto:
+      type: object
+      properties:
+        availableLanguages:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    City:
+      type: object
+      properties:
+        cityId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        countryId:
+          type: string
+          format: uuid
+        country:
+          $ref: "#/components/schemas/Country"
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+          nullable: true
+        establishments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Institution"
+          nullable: true
+      additionalProperties: false
+    Class:
+      type: object
+      properties:
+        classId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+        title:
+          type: string
+          nullable: true
+        gradeId:
+          type: string
+          format: uuid
+        grade:
+          $ref: "#/components/schemas/Grade"
+        photoUrl:
+          type: string
+          nullable: true
+        classLanguages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassLanguage"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+        classDisciplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassDiscipline"
+          nullable: true
+        receivedInvitations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Invitation"
+          nullable: true
+        sentInvitations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Invitation"
+          nullable: true
+      additionalProperties: false
+    ClassDiscipline:
+      type: object
+      properties:
+        disciplineId:
+          type: string
+          format: uuid
+        discipline:
+          $ref: "#/components/schemas/Discipline"
+        classId:
+          type: string
+          format: uuid
+        class:
+          $ref: "#/components/schemas/Class"
+      additionalProperties: false
+    ClassLanguage:
+      type: object
+      properties:
+        languageId:
+          type: string
+          format: uuid
+        language:
+          $ref: "#/components/schemas/Language"
+        classId:
+          type: string
+          format: uuid
+        class:
+          $ref: "#/components/schemas/Class"
+      additionalProperties: false
+    ClassProfileDto:
+      type: object
+      properties:
+        classId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        userFullName:
+          type: string
+          nullable: true
+        userRating:
+          type: number
+          format: double
+        userFeedbacksCount:
+          type: integer
+          format: int32
+        grade:
+          type: integer
+          format: int32
+        languages:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplines:
+          type: array
+          items:
+            type: string
+          nullable: true
+        photoUrl:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Country:
+      type: object
+      properties:
+        countryId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        cities:
+          type: array
+          items:
+            $ref: "#/components/schemas/City"
+          nullable: true
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+          nullable: true
+      additionalProperties: false
+    CreateClassRequestDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        gradeNumber:
+          type: integer
+          format: int32
+        photoUrl:
+          type: string
+          nullable: true
+        languageTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplineTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    CreateInvitationRequestDto:
+      required:
+        - classReceiverId
+        - classSenderId
+        - dateOfInvitation
+        - invitationText
+      type: object
+      properties:
+        classSenderId:
+          type: string
+          format: uuid
+        classReceiverId:
+          type: string
+          format: uuid
+        dateOfInvitation:
+          minLength: 1
+          type: string
+        invitationText:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    CreateUserAccountRequestDto:
+      required:
+        - cityLocation
+        - countryLocation
+        - disciplines
+        - firstName
+        - grades
+        - institutionDto
+        - isAnExpert
+        - isATeacher
+        - languages
+        - lastName
+        - photoUrl
+      type: object
+      properties:
+        firstName:
+          minLength: 1
+          type: string
+        lastName:
+          minLength: 1
+          type: string
+        isATeacher:
+          type: boolean
+        isAnExpert:
+          type: boolean
+        cityLocation:
+          minLength: 1
+          type: string
+        countryLocation:
+          minLength: 1
+          type: string
+        institutionDto:
+          $ref: "#/components/schemas/InstitutionDto"
+        disciplines:
+          type: array
+          items:
+            type: string
+        languages:
+          type: array
+          items:
+            type: string
+        grades:
+          type: array
+          items:
+            type: integer
+            format: int32
+        photoUrl:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    DefaultSearchResponseDto:
+      type: object
+      properties:
+        teacherProfilesByCountry:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfileDto"
+          nullable: true
+        expertProfilesByCountry:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfileDto"
+          nullable: true
+        teacherProfilesByDisciplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfileDto"
+          nullable: true
+        expertProfilesByDisciplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfileDto"
+          nullable: true
+        classProfilesByCountry:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassProfileDto"
+          nullable: true
+        classProfilesByDisciplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassProfileDto"
+          nullable: true
+      additionalProperties: false
+    Discipline:
+      type: object
+      properties:
+        disciplineId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        classDisciplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassDiscipline"
+          nullable: true
+        userDisciplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserDiscipline"
+          nullable: true
+      additionalProperties: false
+    ExistingCountriesDto:
+      type: object
+      properties:
+        countryTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    Feedback:
+      type: object
+      properties:
+        feedbackId:
+          type: string
+          format: uuid
+        invitationId:
+          type: string
+          format: uuid
+        invitation:
+          $ref: "#/components/schemas/Invitation"
+        userSenderId:
+          type: string
+          format: uuid
+        userSender:
+          $ref: "#/components/schemas/User"
+        userRecipientId:
+          type: string
+          format: uuid
+        userRecipient:
+          $ref: "#/components/schemas/User"
+        wasTheJointLesson:
+          type: boolean
+        reasonForNotConducting:
+          type: string
+          nullable: true
+        feedbackText:
+          type: string
+          nullable: true
+        rating:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    Grade:
+      type: object
+      properties:
+        gradeId:
+          type: string
+          format: uuid
+        gradeNumber:
+          type: integer
+          format: int32
+        classes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Class"
+          nullable: true
+        userGrades:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserGrade"
+          nullable: true
+      additionalProperties: false
+    Institution:
+      type: object
+      properties:
+        institutionId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+          nullable: true
+        institutionTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/InstitutionTypeInstitution"
+          nullable: true
+      additionalProperties: false
+    InstitutionDto:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+      additionalProperties: false
+    InstitutionType:
+      type: object
+      properties:
+        institutionTypeId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        institutionTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/InstitutionTypeInstitution"
+          nullable: true
+      additionalProperties: false
+    InstitutionTypeInstitution:
+      type: object
+      properties:
+        institutionTypeId:
+          type: string
+          format: uuid
+        institutionType:
+          $ref: "#/components/schemas/InstitutionType"
+        institutionId:
+          type: string
+          format: uuid
+        institution:
+          $ref: "#/components/schemas/Institution"
+      additionalProperties: false
+    Invitation:
+      type: object
+      properties:
+        invitationId:
+          type: string
+          format: uuid
+        userSenderId:
+          type: string
+          format: uuid
+        userSender:
+          $ref: "#/components/schemas/User"
+        userReceiverId:
+          type: string
+          format: uuid
+        userReceiver:
+          $ref: "#/components/schemas/User"
+        classSenderId:
+          type: string
+          format: uuid
+        classSender:
+          $ref: "#/components/schemas/Class"
+        classReceiverId:
+          type: string
+          format: uuid
+        classReceiver:
+          $ref: "#/components/schemas/Class"
+        createdAt:
+          type: string
+          format: date-time
+        dateOfInvitation:
+          type: string
+          format: date-time
+        status:
+          type: string
+          nullable: true
+        invitationText:
+          type: string
+          nullable: true
+        feedbacks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feedback"
+          nullable: true
+      additionalProperties: false
+    Language:
+      type: object
+      properties:
+        languageId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        teacherLanguages:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserLanguage"
+          nullable: true
+        classLanguages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassLanguage"
+          nullable: true
+      additionalProperties: false
+    ResetPasswordRequestDto:
+      required:
+        - password
+      type: object
+      properties:
+        password:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    Role:
+      type: object
+      properties:
+        roleId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        userRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserRole"
+          nullable: true
+      additionalProperties: false
+    SearchResponseDto:
+      type: object
+      properties:
+        teacherProfiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfileDto"
+          nullable: true
+        expertProfiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfileDto"
+          nullable: true
+        classProfiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassProfileDto"
+          nullable: true
+      additionalProperties: false
+    UpdateClassRequestDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        gradeNumber:
+          type: integer
+          format: int32
+        photoUrl:
+          type: string
+          nullable: true
+        languageTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplineTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    UpdateInstitutionRequestDto:
+      type: object
+      properties:
+        institutionTitle:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        types:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    UpdatePersonalInfoRequestDto:
+      type: object
+      properties:
+        isATeacher:
+          type: boolean
+        isAnExpert:
+          type: boolean
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        cityTitle:
+          type: string
+          nullable: true
+        countryTitle:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UpdateProfessionalInfoRequestDto:
+      type: object
+      properties:
+        languages:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplines:
+          type: array
+          items:
+            type: string
+          nullable: true
+        grades:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+      additionalProperties: false
+    UpdateUserEmailRequestDto:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UpdateUserPasswordHashRequestDto:
+      type: object
+      properties:
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          nullable: true
+        passwordHash:
+          type: string
+          format: byte
+          nullable: true
+        passwordSalt:
+          type: string
+          format: byte
+          nullable: true
+        accessToken:
+          type: string
+          nullable: true
+        passwordResetToken:
+          type: string
+          nullable: true
+        resetTokenExpires:
+          type: string
+          format: date-time
+          nullable: true
+        passwordResetCode:
+          type: string
+          nullable: true
+        verificationCode:
+          type: string
+          nullable: true
+        userRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserRole"
+          nullable: true
+        isCreatedAccount:
+          type: boolean
+        isVerified:
+          type: boolean
+        isInstitutionVerified:
+          type: boolean
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        isATeacher:
+          type: boolean
+          nullable: true
+        isAnExpert:
+          type: boolean
+          nullable: true
+        classes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Class"
+          nullable: true
+        institutionId:
+          type: string
+          format: uuid
+          nullable: true
+        institution:
+          $ref: "#/components/schemas/Institution"
+        cityId:
+          type: string
+          format: uuid
+          nullable: true
+        city:
+          $ref: "#/components/schemas/City"
+        countryId:
+          type: string
+          format: uuid
+          nullable: true
+        country:
+          $ref: "#/components/schemas/Country"
+        userLanguages:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserLanguage"
+          nullable: true
+        userDisciplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserDiscipline"
+          nullable: true
+        userGrades:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserGrade"
+          nullable: true
+        receivedInvitations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Invitation"
+          nullable: true
+        sentInvitations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Invitation"
+          nullable: true
+        receivedFeedbacks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feedback"
+          nullable: true
+        sentFeedbacks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feedback"
+          nullable: true
+        rating:
+          type: number
+          format: double
+        description:
+          type: string
+          nullable: true
+        photoUrl:
+          type: string
+          nullable: true
+        bannerPhotoUrl:
+          type: string
+          nullable: true
+        registeredAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        verifiedAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastOnlineAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+        fullName:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    UserDiscipline:
+      type: object
+      properties:
+        disciplineId:
+          type: string
+          format: uuid
+        discipline:
+          $ref: "#/components/schemas/Discipline"
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+      additionalProperties: false
+    UserGrade:
+      type: object
+      properties:
+        gradeId:
+          type: string
+          format: uuid
+        grade:
+          $ref: "#/components/schemas/Grade"
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+      additionalProperties: false
+    UserLanguage:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+        languageId:
+          type: string
+          format: uuid
+        language:
+          $ref: "#/components/schemas/Language"
+      additionalProperties: false
+    UserLoginRequestDto:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          format: email
+        password:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    UserProfileDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          nullable: true
+        accessToken:
+          type: string
+          nullable: true
+        isVerified:
+          type: boolean
+        verificationCode:
+          type: string
+          nullable: true
+        isCreateAccount:
+          type: boolean
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        photoUrl:
+          type: string
+          nullable: true
+        bannerPhotoUrl:
+          type: string
+          nullable: true
+        isATeacher:
+          type: boolean
+        isAnExpert:
+          type: boolean
+        cityTitle:
+          type: string
+          nullable: true
+        countryTitle:
+          type: string
+          nullable: true
+        institution:
+          $ref: "#/components/schemas/InstitutionDto"
+        rating:
+          type: number
+          format: double
+        classeDtos:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClassProfileDto"
+          nullable: true
+        languageTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplineTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+        gradeNumbers:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+        feedbacks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feedback"
+          nullable: true
+      additionalProperties: false
+    UserRegisterRequestDto:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          format: email
+        password:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    UserRole:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+        roleId:
+          type: string
+          format: uuid
+        role:
+          $ref: "#/components/schemas/Role"
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: JWT Authorization header using the Bearer scheme.
+      scheme: Bearer
+      bearerFormat: JWT
+security:
+  - Bearer: []

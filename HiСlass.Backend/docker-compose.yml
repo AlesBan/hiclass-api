@@ -5,8 +5,8 @@ networks:
     driver: bridge
 services:
   hiclass:
-    image: alesban/hiclassbackend
-    container_name: hiclassbackend
+    image: alesban/hiclass-api
+    container_name: hiclass-api
     build:
       context: .
       dockerfile: Dockerfile
@@ -18,7 +18,6 @@ services:
       - dev
     restart: always
     volumes:
-      - ../../${DISCIPLINES_FILE_PATH}:/${DISCIPLINES_FILE_PATH}
       - $APPDATA/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
   hiclass-db:
     image: postgres
