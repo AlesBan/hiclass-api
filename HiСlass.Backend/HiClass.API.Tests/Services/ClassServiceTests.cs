@@ -2,6 +2,7 @@ using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.CreateClass;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
+using HiClass.Application.Models.Class;
 using HiClass.Application.Tests.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

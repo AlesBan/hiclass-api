@@ -4,11 +4,12 @@ using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Common.Exceptions.User.Forbidden;
 using HiClass.Application.Dtos.ClassDtos;
-using HiClass.Application.Dtos.InstitutionDtos;
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByClass;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
+using HiClass.Application.Models.Class;
+using HiClass.Application.Models.Institution;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

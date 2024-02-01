@@ -1,5 +1,6 @@
 using AutoMapper;
 using HiClass.Application.Dtos.ClassDtos;
+using HiClass.Application.Models.Class;
 using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClassProfile;

@@ -1,11 +1,10 @@
 using AutoMapper;
 using HiClass.Application.Common.Mappings;
 using HiClass.Domain.Entities.Education;
-using HiClass.Domain.Entities.Main;
 
-namespace HiClass.Application.Dtos.ClassDtos;
+namespace HiClass.Application.Models.Class;
 
-public class ClassProfileDto : IMapWith<Class>
+public class ClassProfileDto : IMapWith<Domain.Entities.Main.Class>
 {
     public Guid ClassId { get; set; }
     public string Title { get; set; } = string.Empty;
@@ -19,10 +18,10 @@ public class ClassProfileDto : IMapWith<Class>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Class, Grade>()
+        profile.CreateMap<Domain.Entities.Main.Class, Grade>()
             .ForMember(up => up.GradeNumber,
                 opt => opt.MapFrom(u => u.Grade));
-        profile.CreateMap<Class, ClassProfileDto>()
+        profile.CreateMap<Domain.Entities.Main.Class, ClassProfileDto>()
             .ForMember(cp => cp.ClassId,
                 opt => opt.MapFrom(u => u.ClassId))
             .ForMember(up => up.Title,
@@ -45,4 +44,8 @@ public class ClassProfileDto : IMapWith<Class>
                 opt => opt.MapFrom(u => u.ClassDisciplines.Select(cd =>
                     cd.Discipline.Title)));
     }
+}
+
+class ClassProfileDtoImpl : ClassProfileDto
+{
 }

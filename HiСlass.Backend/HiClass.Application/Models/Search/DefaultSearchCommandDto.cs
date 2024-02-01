@@ -1,4 +1,4 @@
-namespace HiClass.Application.Dtos.SearchDtos;
+namespace HiClass.Application.Models.Search;
 
 public class DefaultSearchCommandDto
 {

@@ -1,7 +1,6 @@
 using AutoMapper;
-using HiClass.Domain.Entities.Job;
 
-namespace HiClass.Application.Dtos.InstitutionDtos;
+namespace HiClass.Application.Models.Institution;
 
 public class InstitutionDto
 {
@@ -11,7 +10,7 @@ public class InstitutionDto
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Institution, InstitutionDto>()
+        profile.CreateMap<Domain.Entities.Job.Institution, InstitutionDto>()
             .ForMember(dest => dest.Address,
                 opt => opt.MapFrom(src => src.Address))
             .ForMember(dest => dest.Title,

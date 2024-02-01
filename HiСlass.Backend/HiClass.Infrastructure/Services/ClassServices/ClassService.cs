@@ -6,6 +6,7 @@ using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.UpdateC
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
+using HiClass.Application.Models.Class;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.ClassServices;

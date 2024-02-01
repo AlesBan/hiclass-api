@@ -1,8 +1,7 @@
-namespace HiClass.Application.Dtos.SearchDtos;
+namespace HiClass.Application.Models.Search;
 
-public class SearchCommandDto
+public class SearchRequestDto
 {
-    public Guid UserId { get; init; }
     public IEnumerable<string> Disciplines { get; init; } = new List<string>();
     public IEnumerable<string> Languages { get; init; } = new List<string>();
     public IEnumerable<string> Grades { get; init; } = new List<string>();

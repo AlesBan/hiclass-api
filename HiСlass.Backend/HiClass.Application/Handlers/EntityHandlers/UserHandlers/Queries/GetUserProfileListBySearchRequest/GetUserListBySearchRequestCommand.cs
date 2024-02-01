@@ -1,4 +1,4 @@
-using HiClass.Application.Dtos.SearchDtos;
+using HiClass.Application.Models.Search;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

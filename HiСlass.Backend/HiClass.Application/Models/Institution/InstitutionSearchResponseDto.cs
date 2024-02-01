@@ -1,4 +1,4 @@
-namespace HiClass.Application.Dtos.InstitutionDtos;
+namespace HiClass.Application.Models.Institution;
 
 public class InstitutionSearchResponseDto
 {

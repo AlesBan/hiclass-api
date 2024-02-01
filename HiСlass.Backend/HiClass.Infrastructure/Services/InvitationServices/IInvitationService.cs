@@ -1,4 +1,4 @@
-using HiClass.Application.Dtos.InvitationDtos;
+using HiClass.Application.Models.Invitation;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.InvitationServices;

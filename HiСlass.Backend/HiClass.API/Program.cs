@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using Amazon.S3;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
 using HiClass.Application.Helpers.TokenHelper;
@@ -11,6 +12,7 @@ using HiClass.Infrastructure.Services.DataBaseDataService;
 using HiClass.Infrastructure.Services.DefaultDataServices;
 using HiClass.Infrastructure.Services.EditUserServices;
 using HiClass.Infrastructure.Services.EmailHandlerService;
+using HiClass.Infrastructure.Services.ImageServices;
 using HiClass.Infrastructure.Services.InvitationServices;
 using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
@@ -104,9 +106,12 @@ builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<IDataBaseDataService, DataBaseDataService>();
 builder.Services.AddScoped<IStaticDataService, StaticDataService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+
+builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 
 
 var app = builder.Build();
