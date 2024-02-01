@@ -494,3 +494,6 @@ $RECYCLE.BIN/
 
 # Txt
 .txt
+
+#cache
+.cache
