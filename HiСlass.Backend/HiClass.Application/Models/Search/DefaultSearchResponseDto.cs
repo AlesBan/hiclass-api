@@ -1,7 +1,7 @@
-using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Dtos.UserDtos;
+using HiClass.Application.Models.Class;
 
-namespace HiClass.Application.Dtos.SearchDtos;
+namespace HiClass.Application.Models.Search;
 
 public class DefaultSearchResponseDto
 {

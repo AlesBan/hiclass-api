@@ -1,7 +1,7 @@
 using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
-using HiClass.Application.Dtos.SearchDtos;
-using HiClass.Application.Dtos.SearchDtos.Data;
+using HiClass.Application.Models.Search;
+using HiClass.Application.Models.StaticData;
 using HiClass.Infrastructure.Services.DataBaseDataService;
 using HiClass.Infrastructure.Services.DefaultDataServices;
 using HiClass.Infrastructure.Services.SearchService;
@@ -41,7 +41,7 @@ public class SearchController : BaseController
     }
 
     [HttpGet("all-country-locations")]
-    public async Task<ExistingCountriesDto> GetAllCountryLocations()
+    public async Task<AvailableCountriesDto> GetAllCountryLocations()
     {
         var result = await _searchDataService.GetAllCounties(Mediator);
 

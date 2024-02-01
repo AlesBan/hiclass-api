@@ -1,4 +1,5 @@
 using HiClass.Application.Dtos.ClassDtos;
+using HiClass.Application.Models.Class;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

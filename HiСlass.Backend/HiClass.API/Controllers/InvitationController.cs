@@ -1,7 +1,7 @@
 using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
-using HiClass.Application.Dtos.InvitationDtos;
+using HiClass.Application.Models.Invitation;
 using HiClass.Infrastructure.Services.InvitationServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

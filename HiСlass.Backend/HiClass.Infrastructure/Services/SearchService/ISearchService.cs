@@ -1,4 +1,4 @@
-using HiClass.Application.Dtos.SearchDtos;
+using HiClass.Application.Models.Search;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.SearchService;

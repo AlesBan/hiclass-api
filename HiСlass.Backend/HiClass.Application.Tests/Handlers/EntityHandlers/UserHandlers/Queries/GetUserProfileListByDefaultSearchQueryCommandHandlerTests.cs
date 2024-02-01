@@ -1,7 +1,7 @@
 using AutoMapper;
 using HiClass.Application.Common.Mappings;
-using HiClass.Application.Dtos.SearchDtos;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserProfileListByDefaultSearchRequest;
+using HiClass.Application.Models.Search;
 using HiClass.Application.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;

@@ -1,4 +1,4 @@
-namespace HiClass.Application.Dtos.StaticDataDtos;
+namespace HiClass.Application.Models.StaticData;
 
 public class AvailableLanguagesDto
 {

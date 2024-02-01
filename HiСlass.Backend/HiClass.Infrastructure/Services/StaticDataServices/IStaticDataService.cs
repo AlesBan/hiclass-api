@@ -1,4 +1,4 @@
-using HiClass.Application.Dtos.StaticDataDtos;
+using HiClass.Application.Models.StaticData;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.StaticDataServices;

@@ -1,4 +1,4 @@
-using HiClass.Application.Dtos.StaticDataDtos;
+using HiClass.Application.Models.StaticData;
 using HiClass.Infrastructure.Services.StaticDataServices;
 using Microsoft.AspNetCore.Mvc;
 

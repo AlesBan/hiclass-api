@@ -1,7 +1,7 @@
-using HiClass.Application.Dtos.StaticDataDtos;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetAllDisciplineTitles;
 using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetAllInstitutionTypes;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetAllLanguageTitles;
+using HiClass.Application.Models.StaticData;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.StaticDataServices;

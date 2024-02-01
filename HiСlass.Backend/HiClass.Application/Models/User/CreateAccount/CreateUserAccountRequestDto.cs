@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using HiClass.Application.Attributes;
-using HiClass.Application.Dtos.InstitutionDtos;
+using HiClass.Application.Models.Institution;
 
 namespace HiClass.Application.Dtos.UserDtos.CreateAccount;
 

@@ -1,8 +1,9 @@
 using HiClass.Application.Dtos.ClassDtos;
-using HiClass.Application.Dtos.SearchDtos;
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserProfileListBySearchRequest;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Models.Class;
+using HiClass.Application.Models.Search;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
