@@ -5,25 +5,26 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <UserSecretsId>d7e00d47-2978-474d-a907-ded85ade9192</UserSecretsId>
+<!--        <UserSecretsId>d7e00d47-2978-474d-a907-ded85ade9192</UserSecretsId>-->
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.26"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="DotNetEnv" Version="3.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.26" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.26">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HiClass.Application\HiClass.Application.csproj"/>
-        <ProjectReference Include="..\HiClass.Domain\HiClass.Domain.csproj"/>
-        <ProjectReference Include="..\HiClass.Infrastructure\HiClass.Infrastructure.csproj"/>
-        <ProjectReference Include="..\HiClass.Persistence\HiClass.Persistence.csproj"/>
+        <ProjectReference Include="..\HiClass.Application\HiClass.Application.csproj" />
+        <ProjectReference Include="..\HiClass.Domain\HiClass.Domain.csproj" />
+        <ProjectReference Include="..\HiClass.Infrastructure\HiClass.Infrastructure.csproj" />
+        <ProjectReference Include="..\HiClass.Persistence\HiClass.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

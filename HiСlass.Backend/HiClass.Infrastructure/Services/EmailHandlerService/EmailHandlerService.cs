@@ -1,33 +1,37 @@
 using HiClass.Application.Constants;
+using HiClass.Application.Models.EmailManager;
 using MailKit.Security;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 
 namespace HiClass.Infrastructure.Services.EmailHandlerService;
 
 public class EmailHandlerService : IEmailHandlerService
 {
-    private readonly IConfiguration _configuration;
-
-    public EmailHandlerService(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
-    public async Task SendVerificationEmail(string userEmail, string verificationCode)
+    public async Task SendVerificationEmail(EmailManagerCredentials credentials, string userEmail,
+        string verificationCode)
     {
         var message = EmailConstants.EmailConfirmationMessage + verificationCode;
-        await SendAsync(_configuration, userEmail,
+        await SendAsync(credentials, userEmail,
             EmailConstants.EmailConfirmationSubject,
             message);
     }
 
-    public async Task SendAsync(IConfiguration configuration, string emailReceiver, string subject, string message)
+    public async Task SendResetPasswordEmail(EmailManagerCredentials credentials, string userEmail,
+        string resetPasswordCode)
+    {
+        var message = EmailConstants.EmailResetPasswordMessage + resetPasswordCode;
+        await SendAsync(credentials, userEmail,
+            EmailConstants.EmailResetPasswordSubject,
+            message);
+    }
+
+    public async Task SendAsync(EmailManagerCredentials credentials, string emailReceiver, string subject,
+        string message)
     {
         var email = new MimeMessage();
 
-        var managerEmail = configuration["HiClassManagerEmail:Email"];
-        var managerPassword = configuration["HiClassManagerEmail:Password"];
+        var managerEmail = credentials.Email;
+        var managerPassword = credentials.Email;
 
         email.From.Add(MailboxAddress.Parse(managerEmail));
         email.To.Add(MailboxAddress.Parse(emailReceiver));
@@ -40,13 +44,5 @@ public class EmailHandlerService : IEmailHandlerService
         await client.AuthenticateAsync(managerEmail, managerPassword);
         await client.SendAsync(email);
         await client.DisconnectAsync(true);
-    }
-
-    public async Task SendResetPasswordEmail(string userEmail, string resetPasswordCode)
-    {
-        var message = EmailConstants.EmailResetPasswordMessage + resetPasswordCode;
-        await SendAsync(_configuration, userEmail,
-            EmailConstants.EmailResetPasswordSubject,
-            message);
     }
 }

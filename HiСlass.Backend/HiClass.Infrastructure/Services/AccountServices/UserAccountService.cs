@@ -22,12 +22,14 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserBy
 using HiClass.Application.Helpers;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Models.EmailManager;
 using HiClass.Domain.Entities.Education;
 using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.AccountServices;
 
@@ -36,13 +38,15 @@ public class UserAccountService : IUserAccountService
     private readonly ITokenHelper _tokenHelper;
     private readonly IUserHelper _userHelper;
     private readonly IEmailHandlerService _emailHandlerService;
+    private IConfiguration Configuration { get; set; }
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
-        IEmailHandlerService emailHandlerService)
+        IEmailHandlerService emailHandlerService, IConfiguration configuration)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
         _emailHandlerService = emailHandlerService;
+        Configuration = configuration;
     }
 
     public async Task<IEnumerable<UserProfileDto>> GetAllUsers(IMediator mediator)
@@ -62,7 +66,14 @@ public class UserAccountService : IUserAccountService
                 requestUserDto.Email,
                 requestUserDto.Password));
 
-        await _emailHandlerService.SendVerificationEmail(registeredUser.Email, registeredUser.VerificationCode);
+        var emailCredentials = new EmailManagerCredentials
+        {
+            Email = Configuration["EMAIL_MANAGER:EMAIL"],
+            Password = Configuration["EMAIL_MANAGER:PASSWORD"]
+        };
+
+        await _emailHandlerService.SendVerificationEmail(emailCredentials, registeredUser.Email,
+            registeredUser.VerificationCode);
 
         var loginResponseDto = new LoginResponseDto
         {
@@ -111,7 +122,13 @@ public class UserAccountService : IUserAccountService
 
         var updatedUser = await mediator.Send(new UpdateUserResetPasswordInfoCommand(user.UserId));
 
-        await _emailHandlerService.SendResetPasswordEmail(user.Email, updatedUser.PasswordResetCode);
+        var emailCredentials = new EmailManagerCredentials
+        {
+            Email = Configuration["EMAIL_MANAGER:EMAIL"],
+            Password = Configuration["EMAIL_MANAGER:PASSWORD"]
+        };
+
+        await _emailHandlerService.SendResetPasswordEmail(emailCredentials, user.Email, updatedUser.PasswordResetCode);
         return updatedUser.PasswordResetToken;
     }
 

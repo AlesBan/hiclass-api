@@ -17,9 +17,6 @@ services:
     networks:
       - dev
     restart: always
-    volumes:
-      - ../../${DISCIPLINES_FILE_PATH}:/${DISCIPLINES_FILE_PATH}
-      - $APPDATA/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
   hiclass-db:
     image: postgres
     container_name: hiclass-db
