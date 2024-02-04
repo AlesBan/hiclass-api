@@ -67,7 +67,7 @@ public static class ModelBuilderExtensions
 
     private static void SeedingDisciplines(this ModelBuilder modelBuilder, IConfiguration configuration)
     {
-        var filePath = configuration["StaticDataSources:DisciplinesFilePath"];
+        var filePath = configuration["STATIC_DATA_SOURCES:DISCIPLINES_FILEPATH"];
         var disciplines = FileHelper.GetLines(filePath);
         modelBuilder.Entity<Discipline>().HasData(disciplines
             .Select(d =>
@@ -80,7 +80,7 @@ public static class ModelBuilderExtensions
 
     private static void SeedingLanguages(this ModelBuilder modelBuilder, IConfiguration configuration)
     {
-        var filePath = configuration["StaticDataSources:LanguagesFilePath"];
+        var filePath = configuration["STATIC_DATA_SOURCES:LANGUAGES_FILEPATH"];
         var languages = FileHelper.GetLines(filePath);
         modelBuilder.Entity<Language>().HasData(languages
             .Select(l =>
@@ -106,7 +106,7 @@ public static class ModelBuilderExtensions
 
     private static void SeedingEstablishmentTypes(this ModelBuilder modelBuilder, IConfiguration configuration)
     {
-        var filePath = configuration["StaticDataSources:InstitutionTypesFilePath"];
+        var filePath = configuration["STATIC_DATA_SOURCES:INSTITUTIONTYPES_FILEPATH"];
         var institutions = FileHelper.GetLines(filePath);
         modelBuilder.Entity<InstitutionType>().HasData(institutions
             .Select(l =>

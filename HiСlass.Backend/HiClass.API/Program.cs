@@ -1,5 +1,9 @@
 using System.Reflection;
 using System.Text;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Internal;
+using Amazon.Runtime;
 using Amazon.S3;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
@@ -22,7 +26,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var config = builder.Configuration;
+
+DotNetEnv.Env.Load();
+var configuration = builder.Configuration
+    .AddEnvironmentVariables()
+    .Build();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -30,10 +38,10 @@ builder.Services.AddAutoMapper(conf =>
 {
     conf.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
     conf.AddProfile(new AssemblyMappingProfile(typeof(ISharedLessonDbContext).Assembly));
-}); 
+});
 
 builder.Services.AddApplication();
-builder.Services.AddPersistence(config);
+builder.Services.AddPersistence(configuration);
 
 builder.Services.AddCors(options =>
 {
@@ -55,14 +63,15 @@ builder.Services.AddAuthentication(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = config["JwtSettings:ValidIssuer"],
-            ValidAudience = config["JwtSettings:ValidAudience"],
-            IssuerSigningKey = new SymmetricSecurityKey
-                (Encoding.UTF8.GetBytes(config["JwtSettings:IssuerSigningKey"])),
-            ValidateIssuer = bool.Parse(config["JwtSettings:ValidateIssuer"]),
-            ValidateAudience = bool.Parse(config["JwtSettings:ValidateAudience"]),
-            ValidateLifetime = bool.Parse(config["JwtSettings:ValidateLifetime"]),
-            ValidateIssuerSigningKey = bool.Parse(config["JwtSettings:ValidateIssuerSigningKey"]),
+            ValidIssuer = configuration["JWT_SETTINGS:VALID_ISSUER"],
+            ValidAudience = configuration["JWT_SETTINGS:VALID_AUDIENCE"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(configuration["JWT_SETTINGS:ISSUER_SIGNING_KEY"])),
+            ValidateIssuer = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_ISSUER"]),
+            ValidateAudience = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_AUDIENCE"]),
+            ValidateLifetime = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_LIFETIME"]),
+            RequireExpirationTime = bool.Parse(configuration["JWT_SETTINGS:REQUIRE_EXPIRATION_TIME"]),
+            ValidateIssuerSigningKey = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_ISSUER_SIGNING_KEY"]),
         };
     });
 
@@ -94,6 +103,18 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
+});
+
+builder.Services.AddDefaultAWSOptions(new AWSOptions
+{
+    Profile = null,
+    ProfilesLocation = null,
+    Credentials = new BasicAWSCredentials(
+        configuration["AWS_CONFIGURATION:AWS_KEY"],
+        configuration["AWS_CONFIGURATION:AWS_SECRETKEY"]
+    ),
+    DefaultConfigurationMode = null,
+    Logging = null
 });
 
 builder.Services.AddScoped<ISharedLessonDbContext, SharedLessonDbContext>();

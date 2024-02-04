@@ -11,8 +11,8 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddScoped<ISharedLessonDbContext, SharedLessonDbContext>();
-        
-        var connection = configuration.GetConnectionString("DefaultConnection");
+
+        var connection = configuration["CONNECTIONSTRINGS:DB_CONNECTION"];
         services.AddEntityFrameworkNpgsql()
             .AddDbContext<SharedLessonDbContext>(options =>
                 {

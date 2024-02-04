@@ -1,51 +1,31 @@
 using Amazon.Runtime;
 using Amazon.S3;
-using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using HiClass.Application.Models.AwsS3;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.ImageServices;
 
 public class ImageService : IImageService
 {
-    private readonly string _bucketName;
-    private readonly string _awsKey;
-    private readonly string _awsSecretKey;
-    private readonly string _userImageFolder;
-    private readonly string _classImageFolder;
-
-
-    public ImageService(IConfiguration configuration)
+    public async Task<AwsS3UploadResponseDto> UploadImageAsync(AwsS3Object s3Object)
     {
-        _awsKey = configuration["AwsConfiguration:AwsKey"];
-        _awsSecretKey = configuration["AwsConfiguration:AwsSecretKey"];
-        _bucketName = configuration["AwsConfiguration:BucketName"];
-        _userImageFolder = configuration["AwsConfiguration:UserImageFolder"];
-        _classImageFolder = configuration["AwsConfiguration:ClassImageFolder"];
-    }
-
-    public async Task<AwsS3ResponseDto> UploadImageAsync(AwsS3Object s3Object)
-    {
-        var credentials = new BasicAWSCredentials(_awsKey, _awsSecretKey);
         var config = new AmazonS3Config()
         {
             RegionEndpoint = Amazon.RegionEndpoint.EUNorth1
         };
 
-        var response = new AwsS3ResponseDto();
+        var response = new AwsS3UploadResponseDto();
         try
         {
             var uploadRequest = new TransferUtilityUploadRequest()
             {
                 InputStream = s3Object.InputStream,
-                Key = s3Object.Title,
-                BucketName = _bucketName,
+                Key = s3Object.FolderTitle + "/" + s3Object.Title,
+                BucketName = s3Object.BucketTitle,
                 CannedACL = S3CannedACL.NoACL,
             };
 
-            var client = new AmazonS3Client(credentials, config);
+            var client = new AmazonS3Client(config);
 
             var transferUtility = new TransferUtility(client);
 
