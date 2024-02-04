@@ -7,16 +7,14 @@ namespace HiClass.Infrastructure.Services.ImageServices;
 
 public class ImageService : IImageService
 {
-    public async Task<AwsS3ResponseDto> UploadImageAsync(AwsS3Object s3Object, AwsCredentials awsCredentials)
+    public async Task<AwsS3UploadResponseDto> UploadImageAsync(AwsS3Object s3Object)
     {
-        var credentials = new BasicAWSCredentials(awsCredentials.AwsKey, awsCredentials.AwsSecretKey);
-        
         var config = new AmazonS3Config()
         {
             RegionEndpoint = Amazon.RegionEndpoint.EUNorth1
         };
 
-        var response = new AwsS3ResponseDto();
+        var response = new AwsS3UploadResponseDto();
         try
         {
             var uploadRequest = new TransferUtilityUploadRequest()
@@ -27,7 +25,7 @@ public class ImageService : IImageService
                 CannedACL = S3CannedACL.NoACL,
             };
 
-            var client = new AmazonS3Client(credentials, config);
+            var client = new AmazonS3Client(config);
 
             var transferUtility = new TransferUtility(client);
 

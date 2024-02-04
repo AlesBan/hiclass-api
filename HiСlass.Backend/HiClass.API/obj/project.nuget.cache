@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "TtETuBIxsBw8XtD9eR52zAQL0taPQSfaZprfsbaPT4w0NojG5i79uQ5+p1c9mSIjnJPhpecuX9XiT5EbmygZNw==",
+  "dgSpecHash": "T8g6M5UpwybVXH363lT7YXavluWu/Zix933DXorowAX+l44lt8dGlwt3bvFn3aGScQ1S4xOFB+eN39bS5G6vLw==",
   "success": true,
   "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.API\\HiClass.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\awssdk.core\\3.7.302\\awssdk.core.3.7.302.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\awssdk.extensions.netcore.setup\\3.7.300\\awssdk.extensions.netcore.setup.3.7.300.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\awssdk.s3\\3.7.305.17\\awssdk.s3.3.7.305.17.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\dotnetenv\\3.0.0\\dotnetenv.3.0.0.nupkg.sha512",

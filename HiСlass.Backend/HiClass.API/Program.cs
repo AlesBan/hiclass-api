@@ -1,5 +1,9 @@
 using System.Reflection;
 using System.Text;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Internal;
+using Amazon.Runtime;
 using Amazon.S3;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
@@ -99,6 +103,18 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
+});
+
+builder.Services.AddDefaultAWSOptions(new AWSOptions
+{
+    Profile = null,
+    ProfilesLocation = null,
+    Credentials = new BasicAWSCredentials(
+        configuration["AWS_CONFIGURATION:AWS_KEY"],
+        configuration["AWS_CONFIGURATION:AWS_SECRETKEY"]
+    ),
+    DefaultConfigurationMode = null,
+    Logging = null
 });
 
 builder.Services.AddScoped<ISharedLessonDbContext, SharedLessonDbContext>();

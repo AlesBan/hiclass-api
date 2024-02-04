@@ -5,5 +5,5 @@ namespace HiClass.Infrastructure.Services.ImageServices;
 
 public interface IImageService
 {
-    Task<AwsS3ResponseDto> UploadImageAsync(AwsS3Object s3Object, AwsCredentials awsCredentials);
-}
+    Task<AwsS3UploadResponseDto> UploadImageAsync(AwsS3Object s3Object);
+}   

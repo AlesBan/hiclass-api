@@ -1,3 +1,4 @@
+using HiClass.Application.Common.Exceptions.EmailManager;
 using HiClass.Application.Constants;
 using HiClass.Application.Models.EmailManager;
 using MailKit.Security;
@@ -41,8 +42,21 @@ public class EmailHandlerService : IEmailHandlerService
 
         using var client = new MailKit.Net.Smtp.SmtpClient();
         await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        await client.AuthenticateAsync(managerEmail, managerPassword);
-        await client.SendAsync(email);
+
+        try
+        {
+            await client.AuthenticateAsync(managerEmail, managerPassword);
+            await client.SendAsync(email);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new EmailManagerAuthenticationException();
+        }
+        catch (Exception e)
+        {
+            throw new SendEmailException();
+        }
+
         await client.DisconnectAsync(true);
     }
 }

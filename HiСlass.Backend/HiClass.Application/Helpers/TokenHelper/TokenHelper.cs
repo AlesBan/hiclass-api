@@ -22,7 +22,7 @@ public class TokenHelper : ITokenHelper
     public string CreateToken(User user)
     {
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(_configuration["JwtSettings:IssuerSigningKey"]));
+            .GetBytes(_configuration["JWT_SETTINGS:ISSUER_SIGNING_KEY"]));
 
         var jwtClaims = GetClaims(user);
         var expiresTime = AuthConstants.TokenLifeTime;
@@ -32,8 +32,8 @@ public class TokenHelper : ITokenHelper
         {
             Subject = new ClaimsIdentity(jwtClaims),
             Expires = expiresTime,
-            Issuer = _configuration["JwtSettings:ValidIssuer"],
-            Audience = _configuration["JwtSettings:ValidAudience"],
+            Issuer = _configuration["JWT_SETTINGS:VALID_ISSUER"],
+            Audience = _configuration["JWT_SETTINGS:VALID_AUDIENCE"],
             SigningCredentials = credentials
         };
 
