@@ -495,8 +495,10 @@ $RECYCLE.BIN/
 # Txt
 .txt
 
+<<<<<<< HEAD
 #cache
 .cache
-
+=======
 #Migrations
 Migrations
+>>>>>>> Development
