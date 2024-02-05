@@ -1,9 +1,19 @@
 version: '3.9'
-
-networks:
-  dev:
-    driver: bridge
 services:
+  hiclass-db:
+    image: postgres:latest
+    container_name: hiclass-db
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default
   hiclass:
     image: alesban/hiclass-api
     container_name: hiclass-api
@@ -12,22 +22,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "7280:80"
-    depends_on:
-      - "hiclass-db"
     networks:
-      - dev
+      - default
     env_file:
       - .env
-    restart: always
-  hiclass-db:
-    image: postgres
-    container_name: hiclass-db
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    networks:
-      - dev
+
