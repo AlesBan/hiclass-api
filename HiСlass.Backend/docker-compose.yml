@@ -5,8 +5,8 @@ networks:
     driver: bridge
 services:
   hiclass:
-    image: alesban/hiclassbackend
-    container_name: hiclassbackend
+    image: alesban/hiclass-api
+    container_name: hiclass-api
     build:
       context: .
       dockerfile: Dockerfile
