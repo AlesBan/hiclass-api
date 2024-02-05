@@ -17,14 +17,11 @@ public class SearchController : BaseController
 {
     private readonly IDefaultSearchService _defaultSearchDataService;
     private readonly ISearchService _searchService;
-    private readonly IDataBaseDataService _searchDataService;
 
-    public SearchController(IDefaultSearchService defaultSearchDataService, ISearchService searchService,
-        IDataBaseDataService searchDataService)
+    public SearchController(IDefaultSearchService defaultSearchDataService, ISearchService searchService)
     {
         _defaultSearchDataService = defaultSearchDataService;
         _searchService = searchService;
-        _searchDataService = searchDataService;
     }
 
     [HttpGet("search-request")]
@@ -38,13 +35,5 @@ public class SearchController : BaseController
     public async Task<DefaultSearchResponseDto> GetTeachersAndClassesDependingOnDefaultSearchRequest()
     {
         return await _defaultSearchDataService.GetDefaultTeacherAndClassProfiles(UserId, Mediator);
-    }
-
-    [HttpGet("all-country-locations")]
-    public async Task<AvailableCountriesDto> GetAllCountryLocations()
-    {
-        var result = await _searchDataService.GetAllCounties(Mediator);
-
-        return result;
     }
 }

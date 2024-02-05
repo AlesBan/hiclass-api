@@ -30,4 +30,12 @@ public class StaticDataSourcesController : BaseController
     {
         return await _staticDataService.GetAvailableInstitutionTypes(Mediator);
     }
+    
+    [HttpGet("get-available-country-locations")]
+    public async Task<AvailableCountriesDto> GetAllCountryLocations()
+    {
+        var result = await _staticDataService.GetAvailableCountries(Mediator);
+
+        return result;
+    }
 }
