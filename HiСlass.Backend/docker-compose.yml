@@ -16,6 +16,8 @@ services:
       - "hiclass-db"
     networks:
       - dev
+    env_file:
+      - .env
     restart: always
   hiclass-db:
     image: postgres
@@ -29,8 +31,3 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     networks:
       - dev
-    volumes:
-      - hiclass-data:/var/lib/postgresql/data
-volumes:
-  hiclass-data:
-      

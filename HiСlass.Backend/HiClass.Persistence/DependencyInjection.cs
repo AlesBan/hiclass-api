@@ -18,7 +18,6 @@ public static class DependencyInjection
                 {
                     options.UseNpgsql(connection);
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-
                 }
             );
         

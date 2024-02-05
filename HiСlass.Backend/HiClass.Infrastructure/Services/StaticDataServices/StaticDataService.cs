@@ -1,3 +1,4 @@
+using HiClass.Application.Handlers.EntityHandlers.CountryHandlers.Queries.GetAllCountryTitles;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetAllDisciplineTitles;
 using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetAllInstitutionTypes;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetAllLanguageTitles;
@@ -12,7 +13,7 @@ public class StaticDataService : IStaticDataService
     {
         var query = new GetAllDisciplineTitlesQuery();
         var result = await mediator.Send(query);
-        
+
         var availableDisciplinesDto = new AvailableDisciplinesDto()
         {
             AvailableDisciplines = result
@@ -44,5 +45,12 @@ public class StaticDataService : IStaticDataService
         };
 
         return availableInstitutionTypesDto;
+    }
+
+    public async Task<AvailableCountriesDto> GetAvailableCountries(IMediator mediator)
+    {
+        var result = await mediator.Send(new GetAllCountryTitlesQuery());
+
+        return new AvailableCountriesDto(result);
     }
 }
