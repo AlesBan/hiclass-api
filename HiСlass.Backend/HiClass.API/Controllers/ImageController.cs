@@ -1,5 +1,6 @@
 using HiClass.API.Helpers;
 using HiClass.Application.Interfaces.Services;
+using HiClass.Infrastructure.Services.ImageServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Controllers
@@ -10,6 +11,7 @@ namespace HiClass.API.Controllers
     {
         private readonly IUploadImageService _imageService;
         private readonly IConfiguration _configuration;
+        
 
         public ImageController(IUploadImageService imageService, IConfiguration configuration)
         {

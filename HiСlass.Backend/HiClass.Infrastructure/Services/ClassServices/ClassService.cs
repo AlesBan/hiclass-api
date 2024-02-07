@@ -8,6 +8,7 @@ using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.Get
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
+using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 

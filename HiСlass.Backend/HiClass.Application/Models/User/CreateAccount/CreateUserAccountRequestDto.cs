@@ -23,5 +23,5 @@ public class CreateUserAccountRequestDto
     [Required] public IEnumerable<string> Disciplines { get; set; } = new List<string>();
     [Required] public IEnumerable<string> Languages { get; set; } = new List<string>();
     [Required] public IEnumerable<int> Grades { get; set; } = new List<int>();
-    [Required] public IFormFile PhotoFormFile{ get; set; }
+    [Required] public IFormFile ImageFormFile{ get; set; }
 }

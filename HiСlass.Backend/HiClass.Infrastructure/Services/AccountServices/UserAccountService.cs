@@ -2,6 +2,7 @@ using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Dtos.UserDtos.Login;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
@@ -12,12 +13,15 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Helpers;
+using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.User.CreateAccount;
+using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.EmailHandlerService;
+using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 
@@ -27,16 +31,22 @@ public class UserAccountService : IUserAccountService
 {
     private readonly ITokenHelper _tokenHelper;
     private readonly IUserHelper _userHelper;
+    private readonly IUserDataHelper _dataUserHelper;
     private readonly IEmailHandlerService _emailHandlerService;
+    private readonly IConfiguration _configuration;
+    private readonly IUploadImageService _uploadImageService;
     private IConfiguration Configuration { get; set; }
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
-        IEmailHandlerService emailHandlerService, IConfiguration configuration)
+        IEmailHandlerService emailHandlerService, IConfiguration configuration, IUserDataHelper dataUserHelper, IUploadImageService uploadImageService)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
         _emailHandlerService = emailHandlerService;
+        _configuration = configuration;
         Configuration = configuration;
+        _dataUserHelper = dataUserHelper;
+        _uploadImageService = uploadImageService;
     }
 
     public async Task<IEnumerable<UserProfileDto>> GetAllUsers(IMediator mediator)
@@ -149,7 +159,8 @@ public class UserAccountService : IUserAccountService
         var user = await _userHelper.GetUserById(userId, mediator);
 
         _userHelper.CheckUserVerification(user);
-        var userWithAccount = await _userHelper.CreateUserAccount(userId, requestUserDto, mediator);
+        
+        var userWithAccount = await GetCreatedUserAccount(userId, requestUserDto, mediator);
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(userWithAccount);
 
@@ -171,5 +182,45 @@ public class UserAccountService : IUserAccountService
     public async Task DeleteAllUsers(IMediator mediator)
     {
         await mediator.Send(new DeleteAllUsersCommand());
+    }
+    
+    public async Task<User> GetCreatedUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto,
+        IMediator mediator)
+    {
+        var command = await GetCreateUserAccountCommand(userId, requestUserDto, mediator);
+        return await mediator.Send(command);
+    }
+    
+    private async Task<CreateUserAccountCommand> GetCreateUserAccountCommand(Guid userId,
+        CreateUserAccountRequestDto requestUserDto, IMediator mediator)
+    {
+        var country = await _dataUserHelper.GetCountryByTitle(requestUserDto.CountryLocation, mediator);
+        var city = await _dataUserHelper.GetCityByCountryId(country.CountryId, requestUserDto.CityLocation, mediator);
+        var institution = await _dataUserHelper.GetInstitution(requestUserDto, mediator);
+        var disciplines = await _dataUserHelper.GetDisciplinesByTitles(requestUserDto.Disciplines, mediator);
+        var languages = await _dataUserHelper.GetLanguagesByTitles(requestUserDto.Languages, mediator);
+        var grades = await _dataUserHelper.GetGradesByNumbers(requestUserDto.Grades, mediator);
+
+        var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestUserDto.ImageFormFile,
+            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId);
+        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
+
+        var query = new CreateUserAccountCommand
+        {
+            UserId = userId,
+            FirstName = requestUserDto.FirstName,
+            LastName = requestUserDto.LastName,
+            IsATeacher = requestUserDto.IsATeacher,
+            IsAnExpert = requestUserDto.IsAnExpert,
+            CountryId = country.CountryId,
+            CityId = city.CityId,
+            InstitutionId = institution.InstitutionId,
+            DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
+            LanguageIds = languages.Select(l => l.LanguageId).ToList(),
+            ImageUrl = imageUrl,
+            GradeIds = grades.Select(g => g.GradeId).ToList()
+        };
+
+        return query;
     }
 }

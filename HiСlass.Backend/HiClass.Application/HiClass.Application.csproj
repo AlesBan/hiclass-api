@@ -21,4 +21,8 @@
       <ProjectReference Include="..\HiClass.Domain\HiClass.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Interfaces\Services" />
+    </ItemGroup>
+
 </Project>

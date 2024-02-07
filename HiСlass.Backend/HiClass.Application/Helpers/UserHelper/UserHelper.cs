@@ -4,35 +4,23 @@ using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Common.Exceptions.User.Forbidden;
 using HiClass.Application.Dtos.UserDtos;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByClass;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
-using HiClass.Application.Helpers.DataHelper;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
-using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Domain.Entities.Main;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Application.Helpers.UserHelper;
 
 public class UserHelper : IUserHelper
 {
     private readonly IMapper _mapper;
-    private readonly IUserDataHelper _userDataHelper;
-    private readonly IUploadImageService _uploadImageService;
-    private readonly IConfiguration _configuration;
 
-    public UserHelper(IMapper mapper, IUserDataHelper userDataHelper, IUploadImageService uploadImageService,
-        IConfiguration configuration)
+    public UserHelper(IMapper mapper)
     {
         _mapper = mapper;
-        _userDataHelper = userDataHelper;
-        _uploadImageService = uploadImageService;
-        _configuration = configuration;
     }
 
     public async Task<User> GetUserById(Guid userId, IMediator mediator)
@@ -72,12 +60,7 @@ public class UserHelper : IUserHelper
         }
     }
 
-    public async Task<User> CreateUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto,
-        IMediator mediator)
-    {
-        var command = await GetCreateUserAccountCommand(userId, requestUserDto, mediator);
-        return await mediator.Send(command);
-    }
+
 
     public async Task<UserProfileDto> MapUserToUserProfileDto(User user)
     {
@@ -130,39 +113,6 @@ public class UserHelper : IUserHelper
         {
             throw new InvalidResetPasswordCodeException();
         }
-    }
-
-    private async Task<CreateUserAccountCommand> GetCreateUserAccountCommand(Guid userId,
-        CreateUserAccountRequestDto requestUserDto, IMediator mediator)
-    {
-        var country = await _userDataHelper.GetCountryByTitle(requestUserDto.CountryLocation, mediator);
-        var city = await _userDataHelper.GetCityByCountryId(country.CountryId, requestUserDto.CityLocation, mediator);
-        var institution = await _userDataHelper.GetInstitution(requestUserDto, mediator);
-        var disciplines = await _userDataHelper.GetDisciplinesByTitles(requestUserDto.Disciplines, mediator);
-        var languages = await _userDataHelper.GetLanguagesByTitles(requestUserDto.Languages, mediator);
-        var grades = await _userDataHelper.GetGradesByNumbers(requestUserDto.Grades, mediator);
-
-        var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestUserDto.PhotoFormFile,
-            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId);
-        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
-
-        var query = new CreateUserAccountCommand
-        {
-            UserId = userId,
-            FirstName = requestUserDto.FirstName,
-            LastName = requestUserDto.LastName,
-            IsATeacher = requestUserDto.IsATeacher,
-            IsAnExpert = requestUserDto.IsAnExpert,
-            CountryId = country.CountryId,
-            CityId = city.CityId,
-            InstitutionId = institution.InstitutionId,
-            DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
-            LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            ImageUrl = imageUrl,
-            GradeIds = grades.Select(g => g.GradeId).ToList()
-        };
-
-        return query;
     }
 
     private static Task<List<ClassProfileDto>> MapClassProfileDtos(IEnumerable<Class> classes)
