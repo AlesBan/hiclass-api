@@ -26,7 +26,7 @@ using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
 using HiClass.Domain.Enums.EntityTypes;
-using HiClass.Infrastructure.Services.EditUserServices;
+using HiClass.Infrastructure.Services.UpdateUserAccountService;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -90,10 +90,10 @@ public class EditUserAccountServiceTests : TestCommonBase
 
         var mapper = confMapper.CreateMapper();
 
-        var service = new EditUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
+        var service = new UpdateUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
 
         // Act
-        var result = await service.EditUserPersonalInfoAsync(userId, requestUserDto, mediatorMock.Object);
+        var result = await service.UpdateUserPersonalInfoAsync(userId, requestUserDto, mediatorMock.Object);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -165,12 +165,12 @@ public class EditUserAccountServiceTests : TestCommonBase
 
         var mapper = confMapper.CreateMapper();
 
-        var service = new EditUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
+        var service = new UpdateUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
 
         // Act
         // Assert
         await Assert.ThrowsAsync<UserNotFoundException>(async () =>
-            await service.EditUserPersonalInfoAsync(userId, requestUserDto, mediatorMock.Object));
+            await service.UpdateUserPersonalInfoAsync(userId, requestUserDto, mediatorMock.Object));
     }
 
     [Fact]
@@ -241,9 +241,9 @@ public class EditUserAccountServiceTests : TestCommonBase
 
         var mapper = confMapper.CreateMapper();
 
-        var service = new EditUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
+        var service = new UpdateUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
         // Act
-        var result = await service.EditUserInstitutionAsync(userId, requestUserDto, mediatorMock.Object);
+        var result = await service.UpdateUserInstitutionAsync(userId, requestUserDto, mediatorMock.Object);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -293,10 +293,10 @@ public class EditUserAccountServiceTests : TestCommonBase
 
         var mapper = confMapper.CreateMapper();
 
-        var service = new EditUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
+        var service = new UpdateUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
 
         // Act
-        var result = await service.EditUserEmailAsync(userId, requestUserDto, mediatorMock.Object);
+        var result = await service.UpdateUserEmailAsync(userId, requestUserDto, mediatorMock.Object);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -346,10 +346,10 @@ public class EditUserAccountServiceTests : TestCommonBase
 
         var mapper = confMapper.CreateMapper();
 
-        var service = new EditUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
+        var service = new UpdateUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
 
         // Act
-        var result = await service.EditUserPasswordAsync(userId, requestUserDto, mediatorMock.Object);
+        var result = await service.UpdateUserPasswordAsync(userId, requestUserDto, mediatorMock.Object);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -513,10 +513,10 @@ public class EditUserAccountServiceTests : TestCommonBase
 
         var mapper = confMapper.CreateMapper();
 
-        var service = new EditUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
+        var service = new UpdateUserAccountService(userHelperMock.Object, tokenHelperMock.Object);
 
         // Act
-        var result = await service.EditUserProfessionalInfoAsync(userId, requestUserDto, mediatorMock.Object);
+        var result = await service.UpdateUserProfessionalInfoAsync(userId, requestUserDto, mediatorMock.Object);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);

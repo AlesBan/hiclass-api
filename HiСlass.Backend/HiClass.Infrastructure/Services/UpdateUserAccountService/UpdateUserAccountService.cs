@@ -13,20 +13,20 @@ using HiClass.Application.Models.User.Update;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
-namespace HiClass.Infrastructure.Services.EditUserServices;
+namespace HiClass.Infrastructure.Services.UpdateUserAccountService;
 
-public class EditUserAccountService : IEditUserAccountService
+public class UpdateUserAccountService : IUpdateUserAccountService
 {
     private readonly IUserHelper _userHelper;
     private readonly ITokenHelper _tokenHelper;
 
-    public EditUserAccountService(IUserHelper userHelper, ITokenHelper tokenHelper)
+    public UpdateUserAccountService(IUserHelper userHelper, ITokenHelper tokenHelper)
     {
         _userHelper = userHelper;
         _tokenHelper = tokenHelper;
     }
 
-    public async Task<UserProfileDto> EditUserPersonalInfoAsync(Guid userId,
+    public async Task<UserProfileDto> UpdateUserPersonalInfoAsync(Guid userId,
         UpdatePersonalInfoRequestDto requestUserDto,
         IMediator mediator)
     {
@@ -37,7 +37,7 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserInstitutionAsync(Guid userId, UpdateInstitutionRequestDto requestUserDto,
+    public async Task<UserProfileDto> UpdateUserInstitutionAsync(Guid userId, UpdateInstitutionRequestDto requestUserDto,
         IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
@@ -47,7 +47,7 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserEmailAsync(Guid userId, UpdateUserEmailRequestDto requestUserDto,
+    public async Task<UserProfileDto> UpdateUserEmailAsync(Guid userId, UpdateUserEmailRequestDto requestUserDto,
         IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
@@ -61,7 +61,7 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserProfessionalInfoAsync(Guid userId,
+    public async Task<UserProfileDto> UpdateUserProfessionalInfoAsync(Guid userId,
         UpdateProfessionalInfoRequestDto requestUserDto, IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
@@ -71,7 +71,7 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserPasswordAsync(Guid userId,
+    public async Task<UserProfileDto> UpdateUserPasswordAsync(Guid userId,
         UpdateUserPasswordHashRequestDto requestUserDto,
         IMediator mediator)
     {

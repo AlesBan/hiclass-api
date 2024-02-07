@@ -1,9 +1,7 @@
-using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.Update;
-using HiClass.Infrastructure.Services.EditUserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +9,11 @@ namespace HiClass.API.Controllers;
 
 [Authorize]
 [CheckUserCreateAccount]
-public class EditUserController : BaseController
+public class UpdateUserController : BaseController
 {
-    private readonly IEditUserAccountService _editUserAccountService;
+    private readonly IUpdateUserAccountService _editUserAccountService;
 
-    public EditUserController(IEditUserAccountService editUserAccountService)
+    public UpdateUserController(IUpdateUserAccountService editUserAccountService)
     {
         _editUserAccountService = editUserAccountService;
     }
@@ -36,7 +34,7 @@ public class EditUserController : BaseController
     [HttpPut("personal-info")]
     public async Task<IActionResult> EditUserPersonalInfo([FromBody] UpdatePersonalInfoRequestDto requestUserDto)
     {
-        var result = await _editUserAccountService.EditUserPersonalInfoAsync(UserId, requestUserDto, Mediator);
+        var result = await _editUserAccountService.UpdateUserPersonalInfoAsync(UserId, requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
@@ -56,7 +54,7 @@ public class EditUserController : BaseController
     [HttpPut("institution")]
     public async Task<IActionResult> EditUserInstitution([FromBody] UpdateInstitutionRequestDto requestUserDto)
     {
-        var result = await _editUserAccountService.EditUserInstitutionAsync(UserId, requestUserDto, Mediator);
+        var result = await _editUserAccountService.UpdateUserInstitutionAsync(UserId, requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
@@ -77,7 +75,7 @@ public class EditUserController : BaseController
     public async Task<IActionResult> EditUserProfessionalInfo(
         [FromBody] UpdateProfessionalInfoRequestDto requestUserDto)
     {
-        var result = await _editUserAccountService.EditUserProfessionalInfoAsync(UserId, requestUserDto, Mediator);
+        var result = await _editUserAccountService.UpdateUserProfessionalInfoAsync(UserId, requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
@@ -97,7 +95,7 @@ public class EditUserController : BaseController
     [HttpPut("email")]
     public async Task<IActionResult> EditUserEmail([FromBody] UpdateUserEmailRequestDto requestUserDto)
     {
-        var result = await _editUserAccountService.EditUserEmailAsync(UserId, requestUserDto, Mediator);
+        var result = await _editUserAccountService.UpdateUserEmailAsync(UserId, requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
@@ -117,7 +115,7 @@ public class EditUserController : BaseController
     [HttpPut("password")]
     public async Task<IActionResult> EditUserPassword([FromBody] UpdateUserPasswordHashRequestDto requestUserDto)
     {
-        var result = await _editUserAccountService.EditUserPasswordAsync(UserId, requestUserDto, Mediator);
+        var result = await _editUserAccountService.UpdateUserPasswordAsync(UserId, requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 }
