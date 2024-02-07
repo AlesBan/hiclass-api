@@ -39,7 +39,7 @@ public class CreateUserAccountCommandHandlerTests : TestCommonBase
             InstitutionId = institution!.InstitutionId,
             DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
             LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            PhotoUrl = photoUrl
+            ImageUrl = photoUrl
         };
 
         var mockTokenHelper = new Mock<ITokenHelper>();
@@ -60,7 +60,7 @@ public class CreateUserAccountCommandHandlerTests : TestCommonBase
             u.Institution!.InstitutionId == institution.InstitutionId &&
             u.UserDisciplines.Count() == disciplines.Count() &&
             u.UserLanguages.Count() == languages.Count() &&
-            u.PhotoUrl == photoUrl);
+            u.ImageUrl == photoUrl);
         // Assert
         Assert.NotNull(result);
     }

@@ -68,7 +68,7 @@ public class UserProfileDto : IMapWith<User>
             .ForMember(up => up.Description,
                 opt => opt.MapFrom(u => u.Description))
             .ForMember(up => up.PhotoUrl,
-                opt => opt.MapFrom(u => u.PhotoUrl))
+                opt => opt.MapFrom(u => u.ImageUrl))
             .ForMember(up => up.BannerPhotoUrl,
                 opt => opt.MapFrom(u => u.BannerPhotoUrl))
             .ForMember(up => up.IsATeacher,

@@ -1,5 +1,6 @@
 using HiClass.Application.Common.Exceptions.EmailManager;
 using HiClass.Application.Constants;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;

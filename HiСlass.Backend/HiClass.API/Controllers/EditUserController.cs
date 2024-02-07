@@ -1,7 +1,8 @@
 using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
-using HiClass.Application.Dtos.UserDtos.Update;
+using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.User.Update;
 using HiClass.Infrastructure.Services.EditUserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

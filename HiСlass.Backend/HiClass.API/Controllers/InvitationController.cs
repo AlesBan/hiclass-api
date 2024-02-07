@@ -1,5 +1,6 @@
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.Invitation;
 using HiClass.Infrastructure.Services.InvitationServices;

@@ -26,6 +26,6 @@ public class UpdateUserPhotoCommandHandlerTests : TestCommonBase
         // Assert
         Assert.NotNull(await Context.Users.SingleOrDefaultAsync(u =>
             u.UserId == userId &&
-            u.PhotoUrl == newPhotoUrl));
+            u.ImageUrl == newPhotoUrl));
     }
 }

@@ -9,6 +9,7 @@ using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Infrastructure.Services.AccountServices;
 using HiClass.Infrastructure.Services.ClassServices;
 using HiClass.Infrastructure.Services.DataBaseDataService;

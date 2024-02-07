@@ -5,7 +5,7 @@ using HiClass.Application.Dtos.UserDtos.ResetPassword;
 using HiClass.Application.Models.User.CreateAccount;
 using MediatR;
 
-namespace HiClass.Infrastructure.Services.AccountServices;
+namespace HiClass.Application.Interfaces.Services;
 
 public interface IUserAccountService
 {

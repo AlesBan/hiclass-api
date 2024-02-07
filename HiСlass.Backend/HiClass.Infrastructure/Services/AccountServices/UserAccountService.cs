@@ -14,6 +14,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserBy
 using HiClass.Application.Helpers;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Infrastructure.Services.EmailHandlerService;

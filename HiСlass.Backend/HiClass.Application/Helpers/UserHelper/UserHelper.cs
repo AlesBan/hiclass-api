@@ -9,11 +9,13 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserBy
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Helpers.DataHelper;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Domain.Entities.Main;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Application.Helpers.UserHelper;
 
@@ -21,11 +23,16 @@ public class UserHelper : IUserHelper
 {
     private readonly IMapper _mapper;
     private readonly IUserDataHelper _userDataHelper;
+    private readonly IUploadImageService _uploadImageService;
+    private readonly IConfiguration _configuration;
 
-    public UserHelper(IMapper mapper, IUserDataHelper userDataHelper)
+    public UserHelper(IMapper mapper, IUserDataHelper userDataHelper, IUploadImageService uploadImageService,
+        IConfiguration configuration)
     {
         _mapper = mapper;
         _userDataHelper = userDataHelper;
+        _uploadImageService = uploadImageService;
+        _configuration = configuration;
     }
 
     public async Task<User> GetUserById(Guid userId, IMediator mediator)
@@ -134,7 +141,11 @@ public class UserHelper : IUserHelper
         var disciplines = await _userDataHelper.GetDisciplinesByTitles(requestUserDto.Disciplines, mediator);
         var languages = await _userDataHelper.GetLanguagesByTitles(requestUserDto.Languages, mediator);
         var grades = await _userDataHelper.GetGradesByNumbers(requestUserDto.Grades, mediator);
-        
+
+        var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestUserDto.PhotoFormFile,
+            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId);
+        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
+
         var query = new CreateUserAccountCommand
         {
             UserId = userId,
@@ -147,7 +158,7 @@ public class UserHelper : IUserHelper
             InstitutionId = institution.InstitutionId,
             DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
             LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            PhotoUrl = requestUserDto.PhotoUrl,
+            ImageUrl = imageUrl,
             GradeIds = grades.Select(g => g.GradeId).ToList()
         };
 
@@ -165,7 +176,7 @@ public class UserHelper : IUserHelper
                 Grade = c.Grade.GradeNumber,
                 Languages = c.ClassLanguages.Select(cl => cl.Language.Title).ToList(),
                 Disciplines = c.ClassDisciplines.Select(cd => cd.Discipline.Title).ToList(),
-                PhotoUrl = c.PhotoUrl!
+                ImageUrl = c.ImageUrl!
             })
             .ToList());
     }

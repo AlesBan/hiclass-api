@@ -1,6 +1,5 @@
 using HiClass.Application.Common.Exceptions;
 using HiClass.Application.Dtos.UserDtos;
-using HiClass.Application.Dtos.UserDtos.Update;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdatePersonalInfo;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateProfessionalInfo;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserEmail;
@@ -9,6 +8,8 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserToken;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.User.Update;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

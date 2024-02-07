@@ -1,7 +1,4 @@
-using HiClass.Application.Models.EmailManager;
-using Microsoft.Extensions.Configuration;
-
-namespace HiClass.Infrastructure.Services.EmailHandlerService;
+namespace HiClass.Application.Interfaces.Services;
 
 public interface IEmailHandlerService
 {

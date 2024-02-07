@@ -60,10 +60,11 @@ public class CreateClassCommandHandler : IRequestHandler<CreateClassCommand, Cla
         var grade = await _mediator.Send(new GetGradeQuery(request.GradeNumber), cancellationToken);
         return new Class()
         {
+            ClassId = request.ClassId,
             UserId = request.UserId,
             Title = request.Title,
             GradeId = grade.GradeId,
-            PhotoUrl = request.PhotoUrl
+            ImageUrl = request.ImageUrl
         };
     }
 }

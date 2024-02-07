@@ -1,5 +1,6 @@
 using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Search;
 using HiClass.Application.Models.StaticData;
 using HiClass.Infrastructure.Services.DataBaseDataService;

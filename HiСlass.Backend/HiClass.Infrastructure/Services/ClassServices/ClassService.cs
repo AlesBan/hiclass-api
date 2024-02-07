@@ -6,18 +6,24 @@ using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.UpdateC
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.ClassServices;
 
 public class ClassService : IClassService
 {
     private readonly IMapper _mapper;
+    private readonly IUploadImageService _uploadImageService;
+    private readonly IConfiguration _configuration;
 
-    public ClassService(IMapper mapper)
+    public ClassService(IMapper mapper, IUploadImageService uploadImageService, IConfiguration configuration)
     {
         _mapper = mapper;
+        _uploadImageService = uploadImageService;
+        _configuration = configuration;
     }
 
     public async Task<ClassProfileDto> CreateClass(Guid userId, CreateClassRequestDto requestClassDto,
@@ -28,6 +34,12 @@ public class ClassService : IClassService
         var languages = await mediator.Send(new GetLanguagesByTitlesQuery(requestClassDto.LanguageTitles),
             CancellationToken.None);
 
+        var classId = Guid.NewGuid();
+        
+        var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestClassDto.FormFileImage,
+            _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"], classId);
+        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
+
         var command = new CreateClassCommand
         {
             UserId = userId,
@@ -35,7 +47,7 @@ public class ClassService : IClassService
             GradeNumber = requestClassDto.GradeNumber,
             DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
             LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            PhotoUrl = requestClassDto.PhotoUrl
+            ImageUrl = imageUrl
         };
 
         var @class = await mediator.Send(command, CancellationToken.None);
@@ -80,7 +92,7 @@ public class ClassService : IClassService
             GradeNumber = requestClassDto.GradeNumber,
             DisciplineTitles = requestClassDto.DisciplineTitles,
             LanguageTitles = requestClassDto.LanguageTitles,
-            PhotoUrl = requestClassDto.PhotoUrl
+            ImageUrl = requestClassDto.PhotoUrl
         };
 
         var @class = await mediator.Send(command, CancellationToken.None);

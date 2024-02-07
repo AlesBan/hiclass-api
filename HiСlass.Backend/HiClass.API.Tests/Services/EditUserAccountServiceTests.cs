@@ -1,7 +1,6 @@
 using AutoMapper;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Dtos.UserDtos;
-using HiClass.Application.Dtos.UserDtos.Update;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.CreateUserDisciplines;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.UpdateUserDisciplines;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserGradeHandlers.Commands.CreateUserGrade;
@@ -21,6 +20,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserBy
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Models.Institution;
+using HiClass.Application.Models.User.Update;
 using HiClass.Application.Tests.Common;
 using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;

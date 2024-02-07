@@ -1,7 +1,7 @@
 using HiClass.Application.Models.StaticData;
 using MediatR;
 
-namespace HiClass.Infrastructure.Services.DataBaseDataService;
+namespace HiClass.Application.Interfaces.Services;
 
 public interface IDataBaseDataService
 {

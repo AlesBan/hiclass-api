@@ -1,6 +1,5 @@
 using HiClass.API.Helpers;
-using HiClass.Application.Models.AwsS3;
-using HiClass.Infrastructure.Services.ImageServices;
+using HiClass.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Controllers
@@ -18,8 +17,8 @@ namespace HiClass.API.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("user/{id:int}")]
-        public async Task<IActionResult> UploadUserImage(IFormFile file, int id)
+        [HttpPost("user/{id:guid}")]
+        public async Task<IActionResult> UploadUserImage(IFormFile file, Guid id)
         {
             var folderTitle = _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"];
 
@@ -28,8 +27,8 @@ namespace HiClass.API.Controllers
             return ResponseHelper.GetOkResult(result);
         }
 
-        [HttpPost("class/{id:int}")]
-        public async Task<IActionResult> UploadClassImage(IFormFile file, int id)
+        [HttpPost("class/{id:guid}")]
+        public async Task<IActionResult> UploadClassImage(IFormFile file, Guid id)
         {
             var folderTitle = _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"];
 

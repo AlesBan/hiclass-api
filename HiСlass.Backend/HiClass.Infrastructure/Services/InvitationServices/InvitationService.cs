@@ -1,6 +1,7 @@
 using HiClass.Application.Constants;
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.Invitation;
 using HiClass.Domain.Enums;

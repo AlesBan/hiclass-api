@@ -5,6 +5,7 @@ using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLa
 using HiClass.Application.Models.Class;
 using HiClass.Application.Tests.Common;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
@@ -26,7 +27,7 @@ public class ClassServiceTests : TestCommonBase
             GradeNumber = 6,
             DisciplineTitles = new List<string> { "Chemistry" },
             LanguageTitles = new List<string> { "English" },
-            PhotoUrl = "PhotoUrl"
+            FormFileImage = new FormFile(null, 0, 0, "image", "image")
         };
 
         var getDisciplinesQueryHandler = new GetDisciplinesByTitlesQueryHandler(Context);
@@ -59,7 +60,7 @@ public class ClassServiceTests : TestCommonBase
             {
                 (await Context.Languages.SingleOrDefaultAsync(l => l.Title == "English"))!.LanguageId
             },
-            PhotoUrl = requestClassDto.PhotoUrl
+            ImageUrl = "imageUrl"
         };
 
         mediatorMock.Setup(m => m.Send(It.IsAny<CreateClassCommand>(),

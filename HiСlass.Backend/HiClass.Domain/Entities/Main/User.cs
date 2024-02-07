@@ -40,7 +40,7 @@ public class User
     public ICollection<Feedback> SentFeedbacks { get; set; } = new List<Feedback>();
     public double Rating { get; set; }
     public string? Description { get; set; } = string.Empty;
-    public string? PhotoUrl { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; } = string.Empty;
     public string? BannerPhotoUrl { get; set; } = string.Empty;
     public DateTime RegisteredAt { get; set; }
     public DateTime? CreatedAt { get; set; }

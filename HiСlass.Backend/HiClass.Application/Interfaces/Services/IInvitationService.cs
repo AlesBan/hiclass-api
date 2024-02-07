@@ -2,7 +2,7 @@ using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.Invitation;
 using MediatR;
 
-namespace HiClass.Infrastructure.Services.InvitationServices;
+namespace HiClass.Application.Interfaces.Services;
 
 public interface IInvitationService
 {

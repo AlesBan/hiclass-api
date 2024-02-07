@@ -1,8 +1,8 @@
 using HiClass.Application.Dtos.UserDtos;
-using HiClass.Application.Dtos.UserDtos.Update;
+using HiClass.Application.Models.User.Update;
 using MediatR;
 
-namespace HiClass.Infrastructure.Services.EditUserServices;
+namespace HiClass.Application.Interfaces.Services;
 
 public interface IEditUserAccountService
 {

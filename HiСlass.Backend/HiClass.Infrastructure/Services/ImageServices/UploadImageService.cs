@@ -1,5 +1,6 @@
 using Amazon.S3;
 using Amazon.S3.Transfer;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.AwsS3;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +16,8 @@ public class UploadImageService : IUploadImageService
         _configuration = configuration;
     }
 
-    public async Task<AwsS3UploadResponseDto> UploadImageAsync(IFormFile file, string folderTitle,
-        int id)
+    public async Task<AwsS3UploadImageResponseDto> UploadImageAsync(IFormFile file, string folderTitle,
+        Guid id)
     {
         var config = new AmazonS3Config()
         {
@@ -25,7 +26,7 @@ public class UploadImageService : IUploadImageService
         
         var s3Object = await CreateAwsS3ObjectAsync(file, folderTitle, id);
         
-        var response = new AwsS3UploadResponseDto();
+        var response = new AwsS3UploadImageResponseDto();
         try
         {
             var uploadRequest = new TransferUtilityUploadRequest()
@@ -58,9 +59,9 @@ public class UploadImageService : IUploadImageService
 
         return response;
     }
-    
-    public async Task<AwsS3Object> CreateAwsS3ObjectAsync(IFormFile file, string folderTitle,
-        int id)
+
+    private async Task<AwsS3Object> CreateAwsS3ObjectAsync(IFormFile file, string folderTitle,
+        Guid id)
     {
         await using var ms = new MemoryStream();
         await file.CopyToAsync(ms);

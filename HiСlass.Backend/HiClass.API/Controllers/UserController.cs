@@ -3,6 +3,7 @@ using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Infrastructure.Services.AccountServices;
 using Microsoft.AspNetCore.Authorization;
