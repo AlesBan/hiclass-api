@@ -23,8 +23,7 @@ namespace HiClass.API.Controllers
         {
             var folderTitle = _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"];
 
-            var s3Object = await CreateAwsS3ObjectAsync(file, folderTitle, id);
-            var result = await _imageService.UploadImageAsync(s3Object);
+            var result = await _imageService.UploadImageAsync(file, folderTitle, id);
 
             return ResponseHelper.GetOkResult(result);
         }
@@ -34,36 +33,9 @@ namespace HiClass.API.Controllers
         {
             var folderTitle = _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"];
 
-            var s3Object = await CreateAwsS3ObjectAsync(file, folderTitle, id);
-            var result = await _imageService.UploadImageAsync(s3Object);
+            var result = await _imageService.UploadImageAsync(file, folderTitle, id);
 
             return ResponseHelper.GetOkResult(result);
-        }
-
-        private async Task<AwsS3Object> CreateAwsS3ObjectAsync(IFormFile file, string folderTitle,
-            int id)
-        {
-            await using var ms = new MemoryStream();
-            await file.CopyToAsync(ms);
-
-            var fileExtension = Path.GetExtension(file.FileName);
-            var fileName = $"{id}.{fileExtension}";
-            
-            var bucketTitle = GetBucketTitleAsync();
-            
-            return new AwsS3Object()
-            {
-                InputStream = ms,
-                Title = fileName,
-                FolderTitle = folderTitle,
-                BucketTitle = bucketTitle
-            };
-        }
-
-        private string GetBucketTitleAsync()
-        {
-            var bucketTitle = _configuration["AWS_CONFIGURATION:BUCKETNAME"];
-            return bucketTitle;
         }
     }
 }

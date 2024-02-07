@@ -1,8 +1,6 @@
 using System.Reflection;
 using System.Text;
-using Amazon;
 using Amazon.Extensions.NETCore.Setup;
-using Amazon.Internal;
 using Amazon.Runtime;
 using Amazon.S3;
 using HiClass.Application;

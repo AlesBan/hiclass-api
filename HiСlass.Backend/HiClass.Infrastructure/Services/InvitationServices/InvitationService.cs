@@ -6,21 +6,17 @@ using HiClass.Application.Models.Invitation;
 using HiClass.Domain.Enums;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.InvitationServices;
 
 public class InvitationService : IInvitationService
 {
     private readonly IEmailHandlerService _emailHandlerService;
-    private readonly IConfiguration _configuration;
     private readonly IUserHelper _userHelper;
 
-    public InvitationService(IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserHelper userHelper)
+    public InvitationService(IEmailHandlerService emailHandlerService, IUserHelper userHelper)
     {
         _emailHandlerService = emailHandlerService;
-        _configuration = configuration;
         _userHelper = userHelper;
     }
 
@@ -41,18 +37,19 @@ public class InvitationService : IInvitationService
         };
         await mediator.Send(command);
 
-        await SendInvitationEmail(credentials, userSenderId, userReceiverId, dateOfInvitation, mediator);
+        await SendInvitationEmail(userSenderId, userReceiverId, dateOfInvitation, mediator);
     }
 
-    private async Task SendInvitationEmail(EmailManagerCredentials credentials, Guid userSenderId, Guid userReceiverId, DateTime dateOfInvitation,
+    private async Task SendInvitationEmail(Guid userSenderId, Guid userReceiverId,
+        DateTime dateOfInvitation,
         IMediator mediator)
     {
         var userSender = await _userHelper.GetUserById(userSenderId, mediator);
         var userReceiver = await _userHelper.GetUserById(userReceiverId, mediator);
 
-        await _emailHandlerService.SendAsync(credentials, userSender.Email, EmailConstants.EmailInvitationSubject,
-            EmailConstants.GetEmailSenderInvitationMessage(userReceiver.Email, dateOfInvitation));
-        await _emailHandlerService.SendAsync(credentials, userReceiver.Email, EmailConstants.EmailInvitationSubject,
-            EmailConstants.GetEmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
+        await _emailHandlerService.SendAsync(userSender.Email, EmailConstants.EmailInvitationSubject,
+            EmailConstants.EmailSenderInvitationMessage(userReceiver.Email, dateOfInvitation));
+        await _emailHandlerService.SendAsync(userReceiver.Email, EmailConstants.EmailInvitationSubject,
+            EmailConstants.EmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
     }
 }

@@ -1,15 +1,7 @@
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Dtos.UserDtos.CreateAccount;
 using HiClass.Application.Dtos.UserDtos.Login;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
-using HiClass.Application.Handlers.EntityHandlers.CityHandlers.Queries.GetCity;
-using HiClass.Application.Handlers.EntityHandlers.CountryHandlers.Queries.GetCountryByTitle;
-using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
-using HiClass.Application.Handlers.EntityHandlers.GradeHandlers.Queries.GetGrades;
-using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetInstitution;
-using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
@@ -23,10 +15,7 @@ using HiClass.Application.Helpers;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Models.EmailManager;
-using HiClass.Domain.Entities.Education;
-using HiClass.Domain.Entities.Job;
-using HiClass.Domain.Entities.Location;
-using HiClass.Domain.Entities.Main;
+using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -66,13 +55,7 @@ public class UserAccountService : IUserAccountService
                 requestUserDto.Email,
                 requestUserDto.Password));
 
-        var emailCredentials = new EmailManagerCredentials
-        {
-            Email = Configuration["EMAIL_MANAGER:EMAIL"],
-            Password = Configuration["EMAIL_MANAGER:PASSWORD"]
-        };
-
-        await _emailHandlerService.SendVerificationEmail(emailCredentials, registeredUser.Email,
+        await _emailHandlerService.SendVerificationEmail(registeredUser.Email,
             registeredUser.VerificationCode);
 
         var loginResponseDto = new LoginResponseDto
@@ -122,13 +105,8 @@ public class UserAccountService : IUserAccountService
 
         var updatedUser = await mediator.Send(new UpdateUserResetPasswordInfoCommand(user.UserId));
 
-        var emailCredentials = new EmailManagerCredentials
-        {
-            Email = Configuration["EMAIL_MANAGER:EMAIL"],
-            Password = Configuration["EMAIL_MANAGER:PASSWORD"]
-        };
 
-        await _emailHandlerService.SendResetPasswordEmail(emailCredentials, user.Email, updatedUser.PasswordResetCode);
+        await _emailHandlerService.SendResetPasswordEmail(user.Email, updatedUser.PasswordResetCode);
         return updatedUser.PasswordResetToken;
     }
 
@@ -170,7 +148,7 @@ public class UserAccountService : IUserAccountService
         var user = await _userHelper.GetUserById(userId, mediator);
 
         _userHelper.CheckUserVerification(user);
-        var userWithAccount = await GetUserWithAccount(userId, requestUserDto, mediator);
+        var userWithAccount = await _userHelper.CreateUserAccount(userId, requestUserDto, mediator);
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(userWithAccount);
 
@@ -192,97 +170,5 @@ public class UserAccountService : IUserAccountService
     public async Task DeleteAllUsers(IMediator mediator)
     {
         await mediator.Send(new DeleteAllUsersCommand());
-    }
-
-    private static async Task<User> GetUserWithAccount(Guid userId, CreateUserAccountRequestDto requestUserDto,
-        IMediator mediator)
-    {
-        var command = await GetCreateUserAccountCommand(userId, requestUserDto, mediator);
-        return await mediator.Send(command);
-    }
-
-    private static async Task<CreateUserAccountCommand> GetCreateUserAccountCommand(Guid userId,
-        CreateUserAccountRequestDto requestUserDto, IMediator mediator)
-    {
-        var country = await GetCountry(requestUserDto.CountryLocation, mediator);
-        var city = await GetCity(country, requestUserDto.CityLocation, mediator);
-        var institution = await GetInstitution(requestUserDto, mediator);
-        var disciplines = await GetDisciplines(requestUserDto.Disciplines, mediator);
-        var languages = await GetLanguages(requestUserDto.Languages, mediator);
-        var grades = await GetGrades(requestUserDto.Grades, mediator);
-
-        var query = new CreateUserAccountCommand
-        {
-            UserId = userId,
-            FirstName = requestUserDto.FirstName,
-            LastName = requestUserDto.LastName,
-            IsATeacher = requestUserDto.IsATeacher,
-            IsAnExpert = requestUserDto.IsAnExpert,
-            CountryId = country.CountryId,
-            CityId = city.CityId,
-            InstitutionId = institution.InstitutionId,
-            DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
-            LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            PhotoUrl = requestUserDto.PhotoUrl,
-            GradeIds = grades.Select(g => g.GradeId).ToList()
-        };
-
-        return query;
-    }
-
-    private static async Task<Country> GetCountry(string countryTitle, IMediator mediator)
-    {
-        var query = new GetCountryByTitleQuery(countryTitle);
-        return await mediator.Send(query);
-    }
-
-    private static async Task<City> GetCity(Country country, string cityTitle, IMediator mediator)
-    {
-        var query = new GetCityQuery()
-        {
-            CountryId = country.CountryId,
-            Title = cityTitle
-        };
-
-        var city = await mediator.Send(query);
-        return city;
-    }
-
-    private static async Task<Institution> GetInstitution(CreateUserAccountRequestDto requestUserDto,
-        IMediator mediator)
-    {
-        var address = requestUserDto.InstitutionDto.Address;
-        var institutionTitle = requestUserDto.InstitutionDto.Title;
-        var institutionTypesTitles = requestUserDto.InstitutionDto.Types;
-
-        var varGetQuery = new GetInstitutionQuery()
-        {
-            Address = address,
-            InstitutionTitle = institutionTitle,
-            Types = institutionTypesTitles
-        };
-
-        var institution = await mediator.Send(varGetQuery);
-
-        return institution;
-    }
-
-    private static async Task<IEnumerable<Language>> GetLanguages(IEnumerable<string> languages, IMediator mediator)
-    {
-        var query = new GetLanguagesByTitlesQuery(languages);
-        return await mediator.Send(query);
-    }
-
-    private static async Task<IEnumerable<Discipline>> GetDisciplines(IEnumerable<string> disciplines,
-        IMediator mediator)
-    {
-        var query = new GetDisciplinesByTitlesQuery(disciplines);
-        return await mediator.Send(query);
-    }
-
-    private static async Task<IEnumerable<Grade>> GetGrades(IEnumerable<int> grades, IMediator mediator)
-    {
-        var query = new GetGradesQuery(grades);
-        return await mediator.Send(query);
     }
 }

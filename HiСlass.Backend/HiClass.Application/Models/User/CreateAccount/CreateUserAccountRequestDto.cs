@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using HiClass.Application.Attributes;
 using HiClass.Application.Models.Institution;
 
-namespace HiClass.Application.Dtos.UserDtos.CreateAccount;
+namespace HiClass.Application.Models.User.CreateAccount;
 
 public class CreateUserAccountRequestDto
 {

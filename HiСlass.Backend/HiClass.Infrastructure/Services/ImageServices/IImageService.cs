@@ -1,9 +1,10 @@
 using Amazon.S3.Model;
 using HiClass.Application.Models.AwsS3;
+using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Infrastructure.Services.ImageServices;
 
 public interface IImageService
 {
-    Task<AwsS3UploadResponseDto> UploadImageAsync(AwsS3Object s3Object);
-}   
+    Task<AwsS3UploadResponseDto> UploadImageAsync(IFormFile file, string folderTitle, int id);
+}
