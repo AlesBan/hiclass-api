@@ -9,10 +9,10 @@ namespace HiClass.API.Controllers
     [Route("[controller]")]
     public class ImageController : ControllerBase
     {
-        private readonly IImageService _imageService;
+        private readonly IUploadImageService _imageService;
         private readonly IConfiguration _configuration;
 
-        public ImageController(IImageService imageService, IConfiguration configuration)
+        public ImageController(IUploadImageService imageService, IConfiguration configuration)
         {
             _imageService = imageService;
             _configuration = configuration;

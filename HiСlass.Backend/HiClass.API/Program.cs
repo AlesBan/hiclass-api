@@ -5,6 +5,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
+using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
@@ -125,10 +126,12 @@ builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<IDataBaseDataService, DataBaseDataService>();
 builder.Services.AddScoped<IStaticDataService, StaticDataService>();
-builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IUploadImageService, UploadImageService>();
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<IUserDataHelper, UserDataHelper>();
+
 
 builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 

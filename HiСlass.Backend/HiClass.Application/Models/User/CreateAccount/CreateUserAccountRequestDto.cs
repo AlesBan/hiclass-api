@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using HiClass.Application.Attributes;
 using HiClass.Application.Models.Institution;
+using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Application.Models.User.CreateAccount;
 
@@ -22,5 +23,5 @@ public class CreateUserAccountRequestDto
     [Required] public IEnumerable<string> Disciplines { get; set; } = new List<string>();
     [Required] public IEnumerable<string> Languages { get; set; } = new List<string>();
     [Required] public IEnumerable<int> Grades { get; set; } = new List<int>();
-    [Required] public string PhotoUrl { get; set; } = string.Empty;
+    [Required] public IFormFile PhotoFormFile{ get; set; }
 }

@@ -1,4 +1,3 @@
-using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;

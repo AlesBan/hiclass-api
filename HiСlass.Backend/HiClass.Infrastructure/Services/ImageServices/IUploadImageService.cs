@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Infrastructure.Services.ImageServices;
 
-public interface IImageService
+public interface IUploadImageService
 {
     Task<AwsS3UploadResponseDto> UploadImageAsync(IFormFile file, string folderTitle, int id);
 }

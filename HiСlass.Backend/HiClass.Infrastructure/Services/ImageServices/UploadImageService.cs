@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.ImageServices;
 
-public class ImageService : IImageService
+public class UploadImageService : IUploadImageService
 {
     private readonly IConfiguration _configuration;
 
-    public ImageService(IConfiguration configuration)
+    public UploadImageService(IConfiguration configuration)
     {
         _configuration = configuration;
     }
