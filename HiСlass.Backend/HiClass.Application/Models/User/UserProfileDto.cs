@@ -21,7 +21,7 @@ public class UserProfileDto : IMapWith<User>
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string PhotoUrl { get; set; } = string.Empty;
+    public string ImageUrl { get; set; } = string.Empty;
     public string BannerPhotoUrl { get; set; } = string.Empty;
     public bool IsATeacher { get; set; }
     public bool IsAnExpert { get; set; }
@@ -67,8 +67,8 @@ public class UserProfileDto : IMapWith<User>
                 opt => opt.MapFrom(u => u.LastName))
             .ForMember(up => up.Description,
                 opt => opt.MapFrom(u => u.Description))
-            .ForMember(up => up.PhotoUrl,
-                opt => opt.MapFrom(u => u.PhotoUrl))
+            .ForMember(up => up.ImageUrl,
+                opt => opt.MapFrom(u => u.ImageUrl))
             .ForMember(up => up.BannerPhotoUrl,
                 opt => opt.MapFrom(u => u.BannerPhotoUrl))
             .ForMember(up => up.IsATeacher,

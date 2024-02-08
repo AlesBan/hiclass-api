@@ -26,7 +26,7 @@ public class UpdateUserPhotoCommandHandler : IRequestHandler<UpdateUserPhotoComm
             throw new UserNotFoundException(request.UserId);
         }
 
-        user.PhotoUrl = request.NewPhotoUrl;
+        user.ImageUrl = request.NewPhotoUrl;
 
         _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken);

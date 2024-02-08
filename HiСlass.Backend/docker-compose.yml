@@ -22,8 +22,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "7280:80"
-    networks:
-      - default
     env_file:
       - .env
+    networks:
+      - default
 

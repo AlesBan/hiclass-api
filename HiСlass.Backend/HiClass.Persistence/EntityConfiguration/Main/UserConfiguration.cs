@@ -58,7 +58,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(t => t.Description)
             .HasMaxLength(300);
 
-        builder.Property(t => t.PhotoUrl)
+        builder.Property(t => t.ImageUrl)
             .HasMaxLength(255);
         builder.Property(t => t.BannerPhotoUrl)
             .HasMaxLength(255);

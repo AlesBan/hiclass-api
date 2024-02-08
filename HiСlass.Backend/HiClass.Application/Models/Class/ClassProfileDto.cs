@@ -14,7 +14,7 @@ public class ClassProfileDto : IMapWith<Domain.Entities.Main.Class>
     public int Grade { get; set; }
     public List<string> Languages { get; set; } = new();
     public List<string> Disciplines { get; set; } = new();
-    public string PhotoUrl { get; set; } = string.Empty;
+    public string ImageUrl { get; set; } = string.Empty;
 
     public void Mapping(Profile profile)
     {
@@ -35,8 +35,8 @@ public class ClassProfileDto : IMapWith<Domain.Entities.Main.Class>
                 opt => opt.MapFrom(u => u.User.ReceivedFeedbacks.Count))
             .ForMember(up => up.Grade,
                 opt => opt.MapFrom(u => u.Grade.GradeNumber))
-            .ForMember(up => up.PhotoUrl,
-                opt => opt.MapFrom(u => u.PhotoUrl))
+            .ForMember(up => up.ImageUrl,
+                opt => opt.MapFrom(u => u.ImageUrl))
             .ForMember(up => up.Languages,
                 opt => opt.MapFrom(u => u.ClassLanguages.Select(cl =>
                     cl.Language.Title)))

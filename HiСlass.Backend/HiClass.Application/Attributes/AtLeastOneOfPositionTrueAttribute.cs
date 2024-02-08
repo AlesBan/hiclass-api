@@ -12,7 +12,7 @@ public class AtLeastOneOfPositionTrueAttribute : ValidationAttribute
         _propertyNames = propertyNames;
     }
 
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object value, ValidationContext validationContext)
     {
         var type = validationContext.ObjectType;
         var properties = type.GetProperties();

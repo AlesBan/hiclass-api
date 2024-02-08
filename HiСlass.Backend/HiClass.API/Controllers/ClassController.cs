@@ -2,6 +2,7 @@ using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Dtos.ClassDtos;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Infrastructure.Services.ClassServices;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,7 @@ public class ClassController : BaseController
     }
 
     [HttpPost("create-class")]
-    public async Task<IActionResult> CreateClass([FromBody] CreateClassRequestDto requestClassDto)
+    public async Task<IActionResult> CreateClass([FromForm] CreateClassRequestDto requestClassDto)
     {
         var result = await _classService.CreateClass(UserId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);

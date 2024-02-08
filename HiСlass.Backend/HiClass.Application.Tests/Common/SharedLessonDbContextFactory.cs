@@ -113,7 +113,7 @@ public class SharedLessonDbContextFactory
                 Country = context.Countries.FirstOrDefault(c =>
                     c.CountryId == CountryAId),
                 Description = "DescriptionA",
-                PhotoUrl = "PhotoUrlA",
+                ImageUrl = "PhotoUrlA",
                 BannerPhotoUrl = "BannerPhotoUrlA",
                 RegisteredAt = DateTime.Today,
                 CreatedAt = DateTime.Today,
@@ -139,7 +139,7 @@ public class SharedLessonDbContextFactory
                 Country = context.Countries.FirstOrDefault(c =>
                     c.CountryId == CountryBId)!,
                 Description = "DescriptionB",
-                PhotoUrl = "PhotoUrlB",
+                ImageUrl = "PhotoUrlB",
                 BannerPhotoUrl = "BannerPhotoUrlB",
                 RegisteredAt = DateTime.Today,
                 CreatedAt = DateTime.Today,
@@ -169,7 +169,7 @@ public class SharedLessonDbContextFactory
                 Title = "ClassAId",
                 Grade = context.Grades.FirstOrDefault(g =>
                     g.GradeNumber == 10)!,
-                PhotoUrl = "PhotoUrl",
+                ImageUrl = "PhotoUrl",
                 CreatedAt = DateTime.Today
             },
             new Class()
@@ -178,7 +178,7 @@ public class SharedLessonDbContextFactory
                 ClassId = ClassForUpdateId,
                 Title = "ClassForUpdateId",
                 Grade = context.Grades.FirstOrDefault(g => g.GradeNumber == 5)!,
-                PhotoUrl = "PhotoUrl",
+                ImageUrl = "PhotoUrl",
                 CreatedAt = DateTime.Today
             },
             new Class()
@@ -187,7 +187,7 @@ public class SharedLessonDbContextFactory
                 ClassId = ClassForDeleteId,
                 Title = "ClassForDeleteId",
                 Grade = context.Grades.FirstOrDefault(g => g.GradeNumber == 5)!,
-                PhotoUrl = "PhotoUrl",
+                ImageUrl = "PhotoUrl",
                 CreatedAt = DateTime.Today
             },
             new Class()
@@ -196,7 +196,7 @@ public class SharedLessonDbContextFactory
                 ClassId = ClassBId,
                 Title = "titleB",
                 Grade = context.Grades.FirstOrDefault(g => g.GradeNumber == 6)!,
-                PhotoUrl = "PhotoUrl",
+                ImageUrl = "PhotoUrl",
                 CreatedAt = DateTime.Today
             }
         );

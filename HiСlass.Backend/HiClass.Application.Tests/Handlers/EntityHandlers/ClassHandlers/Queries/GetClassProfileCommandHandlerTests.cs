@@ -39,7 +39,7 @@ public class GetClassProfileCommandHandlerTests : TestCommonBase
         result.ShouldBeOfType<ClassProfileDto>();
         Assert.NotNull(result.UserFullName);
         result.UserFullName.ShouldBe(@class.User.FullName);
-        Assert.NotNull(result.PhotoUrl);
-        result.PhotoUrl.ShouldBe(@class.PhotoUrl);
+        Assert.NotNull(result.ImageUrl);
+        result.ImageUrl.ShouldBe(@class.ImageUrl);
     }
 }

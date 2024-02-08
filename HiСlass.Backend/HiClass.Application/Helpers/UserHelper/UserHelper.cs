@@ -3,7 +3,6 @@ using AutoMapper;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Common.Exceptions.User.Forbidden;
-using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByClass;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
@@ -61,6 +60,8 @@ public class UserHelper : IUserHelper
         }
     }
 
+
+
     public async Task<UserProfileDto> MapUserToUserProfileDto(User user)
     {
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
@@ -68,7 +69,7 @@ public class UserHelper : IUserHelper
         userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
         userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
         userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClasseDtos = await GetClassProfileDtos(user.Classes.ToList());
+        userProfileDto.ClasseDtos = await MapClassProfileDtos(user.Classes.ToList());
         return userProfileDto;
     }
 
@@ -114,7 +115,7 @@ public class UserHelper : IUserHelper
         }
     }
 
-    private static Task<List<ClassProfileDto>> GetClassProfileDtos(IEnumerable<Class> classes)
+    private static Task<List<ClassProfileDto>> MapClassProfileDtos(IEnumerable<Class> classes)
     {
         return Task.FromResult(classes.Select(c => new ClassProfileDto
             {
@@ -125,7 +126,7 @@ public class UserHelper : IUserHelper
                 Grade = c.Grade.GradeNumber,
                 Languages = c.ClassLanguages.Select(cl => cl.Language.Title).ToList(),
                 Disciplines = c.ClassDisciplines.Select(cd => cd.Discipline.Title).ToList(),
-                PhotoUrl = c.PhotoUrl!
+                ImageUrl = c.ImageUrl!
             })
             .ToList());
     }

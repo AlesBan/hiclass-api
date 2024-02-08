@@ -24,7 +24,7 @@ public class ClassConfiguration : IEntityTypeConfiguration<Class>
             .HasMaxLength(40)
             .IsRequired();
 
-        builder.Property(c => c.PhotoUrl)
+        builder.Property(c => c.ImageUrl)
             .HasMaxLength(200);
 
         builder.Property(c => c.CreatedAt)

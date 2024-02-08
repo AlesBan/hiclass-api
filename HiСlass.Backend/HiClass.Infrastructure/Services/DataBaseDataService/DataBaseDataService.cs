@@ -1,4 +1,5 @@
 using HiClass.Application.Handlers.EntityHandlers.CountryHandlers.Queries.GetAllCountryTitles;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.StaticData;
 using MediatR;
 

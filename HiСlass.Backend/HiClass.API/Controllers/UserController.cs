@@ -1,10 +1,10 @@
-using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Dtos.UserDtos.CreateAccount;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
+using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Infrastructure.Services.AccountServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +52,7 @@ public class UserController : BaseController
     [Authorize]
     [CheckUserCreateAccountAbility]
     [HttpPost("create-account")]
-    public async Task<IActionResult> CreateAccount([FromBody] CreateUserAccountRequestDto requestUserDto)
+    public async Task<IActionResult> CreateAccount([FromForm] CreateUserAccountRequestDto requestUserDto)
     {
         var result = await _userAccountService.CreateUserAccount(UserId, requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);

@@ -1,4 +1,4 @@
-namespace HiClass.Application.Dtos.UserDtos.Update;
+namespace HiClass.Application.Models.User.Update;
 
 public class UpdatePersonalInfoRequestDto
 {

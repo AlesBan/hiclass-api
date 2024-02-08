@@ -61,7 +61,7 @@ public class UpdateClassCommandHandler : IRequestHandler<UpdateClassCommand, Cla
             
         }, cancellationToken);
 
-        @class.PhotoUrl = request.PhotoUrl;
+        @class.ImageUrl = request.ImageUrl;
 
         await Delay(20, cancellationToken);
 

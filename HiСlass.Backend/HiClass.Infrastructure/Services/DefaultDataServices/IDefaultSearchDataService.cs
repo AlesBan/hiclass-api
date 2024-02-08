@@ -1,7 +1,7 @@
 using HiClass.Application.Models.Search;
 using MediatR;
 
-namespace HiClass.Infrastructure.Services.DefaultDataServices;
+namespace HiClass.Application.Interfaces.Services;
 
 public interface IDefaultSearchService
 {

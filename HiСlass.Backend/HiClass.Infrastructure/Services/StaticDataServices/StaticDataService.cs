@@ -2,6 +2,7 @@ using HiClass.Application.Handlers.EntityHandlers.CountryHandlers.Queries.GetAll
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetAllDisciplineTitles;
 using HiClass.Application.Handlers.EntityHandlers.InstitutionHandlers.Queries.GetAllInstitutionTypes;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetAllLanguageTitles;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.StaticData;
 using MediatR;
 

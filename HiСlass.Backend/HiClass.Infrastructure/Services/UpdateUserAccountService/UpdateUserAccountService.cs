@@ -1,6 +1,5 @@
 using HiClass.Application.Common.Exceptions;
 using HiClass.Application.Dtos.UserDtos;
-using HiClass.Application.Dtos.UserDtos.Update;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdatePersonalInfo;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateProfessionalInfo;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserEmail;
@@ -9,23 +8,26 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserToken;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.User.Update;
 using HiClass.Domain.Entities.Main;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
-namespace HiClass.Infrastructure.Services.EditUserServices;
+namespace HiClass.Infrastructure.Services.UpdateUserAccountService;
 
-public class EditUserAccountService : IEditUserAccountService
+public class UpdateUserAccountService : IUpdateUserAccountService
 {
     private readonly IUserHelper _userHelper;
     private readonly ITokenHelper _tokenHelper;
 
-    public EditUserAccountService(IUserHelper userHelper, ITokenHelper tokenHelper)
+    public UpdateUserAccountService(IUserHelper userHelper, ITokenHelper tokenHelper)
     {
         _userHelper = userHelper;
         _tokenHelper = tokenHelper;
     }
 
-    public async Task<UserProfileDto> EditUserPersonalInfoAsync(Guid userId,
+    public async Task<UserProfileDto> UpdateUserPersonalInfoAsync(Guid userId,
         UpdatePersonalInfoRequestDto requestUserDto,
         IMediator mediator)
     {
@@ -36,7 +38,12 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserInstitutionAsync(Guid userId, UpdateInstitutionRequestDto requestUserDto,
+    public Task<UserProfileDto> UpdateUserImageAsync(Guid userId, IFormFile imageFile, IMediator mediator)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<UserProfileDto> UpdateUserInstitutionAsync(Guid userId, UpdateInstitutionRequestDto requestUserDto,
         IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
@@ -46,7 +53,7 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserEmailAsync(Guid userId, UpdateUserEmailRequestDto requestUserDto,
+    public async Task<UserProfileDto> UpdateUserEmailAsync(Guid userId, UpdateUserEmailRequestDto requestUserDto,
         IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
@@ -60,7 +67,7 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserProfessionalInfoAsync(Guid userId,
+    public async Task<UserProfileDto> UpdateUserProfessionalInfoAsync(Guid userId,
         UpdateProfessionalInfoRequestDto requestUserDto, IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
@@ -70,7 +77,7 @@ public class EditUserAccountService : IEditUserAccountService
         return userProfileDto;
     }
 
-    public async Task<UserProfileDto> EditUserPasswordAsync(Guid userId,
+    public async Task<UserProfileDto> UpdateUserPasswordAsync(Guid userId,
         UpdateUserPasswordHashRequestDto requestUserDto,
         IMediator mediator)
     {

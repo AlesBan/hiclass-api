@@ -1,3 +1,4 @@
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.StaticData;
 using HiClass.Infrastructure.Services.StaticDataServices;
 using Microsoft.AspNetCore.Mvc;

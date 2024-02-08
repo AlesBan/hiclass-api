@@ -12,13 +12,13 @@ public static class EmailConstants
 
     public const string EmailInvitationSubject = "HiClass Invitation";
 
-    public static string GetEmailSenderInvitationMessage(string emailReceiver, DateTime invitationTime)
+    public static string EmailSenderInvitationMessage(string emailReceiver, DateTime invitationTime)
     {
         return $"You've sent a call invitation to a user with {emailReceiver} email.\n" +
                $"Time of invitation: {invitationTime.ToString(CultureInfo.InvariantCulture)}";
     }
     
-    public static string GetEmailReceiverInvitationMessage(string emailSender, DateTime invitationTime)
+    public static string EmailReceiverInvitationMessage(string emailSender, DateTime invitationTime)
     {
         return $"You've been sent a call invitation by a user with {emailSender} email.\n" +
                $"Time of invitation: {invitationTime.ToString(CultureInfo.InvariantCulture)}";

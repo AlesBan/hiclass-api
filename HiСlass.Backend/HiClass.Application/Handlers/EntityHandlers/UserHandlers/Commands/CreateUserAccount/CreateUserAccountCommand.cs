@@ -6,8 +6,8 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Crea
 public class CreateUserAccountCommand : IRequest<User>
 {
     public Guid UserId { get; set; }
-    public string FirstName { get; set;}
-    public string LastName { get; set; }= string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public bool IsATeacher { get; set; }
     public bool IsAnExpert { get; set; }
     public Guid CityId { get; set; }
@@ -16,5 +16,5 @@ public class CreateUserAccountCommand : IRequest<User>
     public IEnumerable<Guid> DisciplineIds { get; set; } = new List<Guid>();
     public IEnumerable<Guid> LanguageIds { get; set; } = new List<Guid>();
     public IEnumerable<Guid> GradeIds { get; set; } = new List<Guid>();
-    public string PhotoUrl { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
 }

@@ -87,9 +87,11 @@ namespace HiClass.API.Filters.Exceptions
                 string actionName, Exception exception)
             {
                 Log500Exception(controllerName, actionName, exception);
+                
+                var result = ResponseHelper.GetExceptionObjectResult(exception.Message);
 
                 context.HttpContext.Response.StatusCode = 500;
-                context.Result = new StatusCodeResult(500);
+                context.Result = result;
                 context.ExceptionHandled = true;
 
                 return Task.CompletedTask;

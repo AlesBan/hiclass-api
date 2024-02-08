@@ -2,6 +2,7 @@ using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserProfileListByDefaultSearchRequest;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Search;
 using HiClass.Domain.Entities.Main;
@@ -131,7 +132,7 @@ public class DefaultSearchService : IDefaultSearchService
                 Grade = c.Grade,
                 Languages = c.Languages,
                 Disciplines = c.Disciplines,
-                PhotoUrl = c.PhotoUrl!
+                ImageUrl = c.ImageUrl!
             });
     }
     
@@ -150,7 +151,7 @@ public class DefaultSearchService : IDefaultSearchService
                 Grade = c.Grade,
                 Languages = c.Languages,
                 Disciplines = c.Disciplines,
-                PhotoUrl = c.PhotoUrl!
+                ImageUrl = c.ImageUrl!
             })
             .Where(c=>
                 c.Disciplines.Any(disciplineIds.Contains));
