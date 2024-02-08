@@ -12,6 +12,7 @@ using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.Update;
 using HiClass.Domain.Entities.Main;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Infrastructure.Services.UpdateUserAccountService;
 
@@ -35,6 +36,11 @@ public class UpdateUserAccountService : IUpdateUserAccountService
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
 
         return userProfileDto;
+    }
+
+    public Task<UserProfileDto> UpdateUserImageAsync(Guid userId, IFormFile imageFile, IMediator mediator)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<UserProfileDto> UpdateUserInstitutionAsync(Guid userId, UpdateInstitutionRequestDto requestUserDto,

@@ -1,6 +1,6 @@
-namespace HiClass.Application.Models.AwsS3;
+namespace HiClass.Application.Models.Images;
 
-public class AwsS3UploadImageResponseDto
+public class UploadImageResponseDto
 {
     public int StatusCode { get; set; } = 200;
     public string Message { get; set; } = string.Empty;

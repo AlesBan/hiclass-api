@@ -21,7 +21,7 @@ public class ClassController : BaseController
     }
 
     [HttpPost("create-class")]
-    public async Task<IActionResult> CreateClass([FromBody] CreateClassRequestDto requestClassDto)
+    public async Task<IActionResult> CreateClass([FromForm] CreateClassRequestDto requestClassDto)
     {
         var result = await _classService.CreateClass(UserId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);

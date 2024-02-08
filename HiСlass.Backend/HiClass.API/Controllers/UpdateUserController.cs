@@ -2,6 +2,7 @@ using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.Update;
+using HiClass.Infrastructure.Services.UpdateUserAccountService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +39,11 @@ public class UpdateUserController : BaseController
         return ResponseHelper.GetOkResult(result);
     }
 
+    [HttpPut("image")]
+    public async Task<IActionResult> EditUserImage([FromForm] IFormFile imageFile)
+    {
+        
+    }
     /// <summary>
     /// Update user institution
     /// </summary>

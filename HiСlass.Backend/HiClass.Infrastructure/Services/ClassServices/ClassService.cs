@@ -9,6 +9,7 @@ using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLa
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Infrastructure.Services.ImageServices;
+using HiClass.Infrastructure.Services.ImageServices.Aws;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 
@@ -17,10 +18,10 @@ namespace HiClass.Infrastructure.Services.ClassServices;
 public class ClassService : IClassService
 {
     private readonly IMapper _mapper;
-    private readonly IUploadImageService _uploadImageService;
+    private readonly IImageHandlerService _uploadImageService;
     private readonly IConfiguration _configuration;
 
-    public ClassService(IMapper mapper, IUploadImageService uploadImageService, IConfiguration configuration)
+    public ClassService(IMapper mapper, IImageHandlerService uploadImageService, IConfiguration configuration)
     {
         _mapper = mapper;
         _uploadImageService = uploadImageService;
@@ -38,7 +39,7 @@ public class ClassService : IClassService
         var classId = Guid.NewGuid();
         
         var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestClassDto.FormFileImage,
-            _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"], classId);
+            _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"], classId.ToString());
         var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
 
         var command = new CreateClassCommand

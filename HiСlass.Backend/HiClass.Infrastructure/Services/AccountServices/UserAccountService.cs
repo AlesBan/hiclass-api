@@ -17,11 +17,10 @@ using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Domain.Entities.Main;
-using HiClass.Infrastructure.Services.EmailHandlerService;
 using HiClass.Infrastructure.Services.ImageServices;
+using HiClass.Infrastructure.Services.ImageServices.Aws;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 
@@ -34,11 +33,12 @@ public class UserAccountService : IUserAccountService
     private readonly IUserDataHelper _dataUserHelper;
     private readonly IEmailHandlerService _emailHandlerService;
     private readonly IConfiguration _configuration;
-    private readonly IUploadImageService _uploadImageService;
+    private readonly IImageHandlerService _uploadImageService;
     private IConfiguration Configuration { get; set; }
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
-        IEmailHandlerService emailHandlerService, IConfiguration configuration, IUserDataHelper dataUserHelper, IUploadImageService uploadImageService)
+        IEmailHandlerService emailHandlerService, IConfiguration configuration,
+        IUserDataHelper dataUserHelper, IImageHandlerService uploadImageService)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -159,7 +159,7 @@ public class UserAccountService : IUserAccountService
         var user = await _userHelper.GetUserById(userId, mediator);
 
         _userHelper.CheckUserVerification(user);
-        
+
         var userWithAccount = await GetCreatedUserAccount(userId, requestUserDto, mediator);
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(userWithAccount);
@@ -183,14 +183,14 @@ public class UserAccountService : IUserAccountService
     {
         await mediator.Send(new DeleteAllUsersCommand());
     }
-    
+
     public async Task<User> GetCreatedUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto,
         IMediator mediator)
     {
         var command = await GetCreateUserAccountCommand(userId, requestUserDto, mediator);
         return await mediator.Send(command);
     }
-    
+
     private async Task<CreateUserAccountCommand> GetCreateUserAccountCommand(Guid userId,
         CreateUserAccountRequestDto requestUserDto, IMediator mediator)
     {
@@ -202,7 +202,7 @@ public class UserAccountService : IUserAccountService
         var grades = await _dataUserHelper.GetGradesByNumbers(requestUserDto.Grades, mediator);
 
         var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestUserDto.ImageFormFile,
-            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId);
+            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
         var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
 
         var query = new CreateUserAccountCommand

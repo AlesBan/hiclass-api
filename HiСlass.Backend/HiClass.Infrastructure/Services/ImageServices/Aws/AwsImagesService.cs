@@ -2,24 +2,24 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.AwsS3;
+using HiClass.Application.Models.Images;
+using HiClass.Application.Models.Images.Aws;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace HiClass.Infrastructure.Services.ImageServices;
+namespace HiClass.Infrastructure.Services.ImageServices.Aws;
 
-public class UploadImageService : IUploadImageService
+public class AwsImagesService : IAwsImagesService
 {
     private readonly IConfiguration _configuration;
 
-    public UploadImageService(IConfiguration configuration)
+    public AwsImagesService(IConfiguration configuration)
     {
         _configuration = configuration;
     }
 
-    public async Task<AwsS3UploadImageResponseDto> UploadImageAsync(IFormFile file, string folderTitle,
-        Guid id)
+    public async Task<UploadImageResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile,
+        string fileTitle)
     {
         var config = new AmazonS3Config()
         {
@@ -28,15 +28,15 @@ public class UploadImageService : IUploadImageService
 
         using var ms = new MemoryStream();
         await file.CopyToAsync(ms);
-        var s3Object = await CreateAwsS3ObjectAsync(file, folderTitle, id);
+        var s3Object = await CreateAwsS3ObjectAsync(file, pathToStoreFile, fileTitle);
 
-        var response = new AwsS3UploadImageResponseDto();
+        var response = new UploadImageResponseDto();
         try
         {
             var uploadRequest = new TransferUtilityUploadRequest()
             {
                 InputStream = ms,
-                Key = s3Object.FolderTitle + "/" + s3Object.Title,
+                Key = s3Object.PathToStoreFile + "/" + s3Object.Title,
                 BucketName = s3Object.BucketTitle,
                 CannedACL = S3CannedACL.NoACL,
             };
@@ -51,15 +51,8 @@ public class UploadImageService : IUploadImageService
             var transferUtility = new TransferUtility(client);
 
             await transferUtility.UploadAsync(uploadRequest);
-            
-            var getObjectRequest = new GetObjectRequest()
-            {
-                BucketName = s3Object.BucketTitle,
-                Key = s3Object.FolderTitle + "/" + s3Object.Title
-            };
-                
-            var responseFromS3 = await client.GetObjectAsync(getObjectRequest);
 
+            response.ImageUrl = $"https://s3.eu-north-1.amazonaws.com/{s3Object.BucketTitle}/{s3Object.PathToStoreFile}/{s3Object.Title}"; 
             response.StatusCode = 200;
             response.Message = $"{s3Object.Title} was uploaded successfully";
         }
@@ -76,20 +69,20 @@ public class UploadImageService : IUploadImageService
 
         return response;
     }
-    
 
-    private async Task<AwsS3Object> CreateAwsS3ObjectAsync(IFormFile file, string folderTitle,
-        Guid id)
+
+    private async Task<AwsS3Object> CreateAwsS3ObjectAsync(IFormFile file, string pathToStoreFile,
+        string fileTitle)
     {
         var fileExtension = Path.GetExtension(file.FileName);
-        var fileName = $"{id}.{fileExtension}";
+        var fileTitleWithExtension = $"{fileTitle}{fileExtension}";
 
         var bucketTitle = GetBucketTitleAsync();
 
         return new AwsS3Object()
         {
-            Title = fileName,
-            FolderTitle = folderTitle,
+            Title = fileTitleWithExtension,
+            PathToStoreFile = pathToStoreFile,
             BucketTitle = bucketTitle
         };
     }

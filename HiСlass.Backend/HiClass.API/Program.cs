@@ -14,6 +14,7 @@ using HiClass.Infrastructure.Services.DataBaseDataService;
 using HiClass.Infrastructure.Services.DefaultDataServices;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using HiClass.Infrastructure.Services.ImageServices;
+using HiClass.Infrastructure.Services.ImageServices.Aws;
 using HiClass.Infrastructure.Services.InvitationServices;
 using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
@@ -113,7 +114,9 @@ builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<IDataBaseDataService, DataBaseDataService>();
 builder.Services.AddScoped<IStaticDataService, StaticDataService>();
-builder.Services.AddScoped<IUploadImageService, UploadImageService>();
+
+builder.Services.AddScoped<IImageHandlerService, ImageHandlerService>();
+builder.Services.AddScoped<IAwsImagesService, AwsImagesService>();
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
