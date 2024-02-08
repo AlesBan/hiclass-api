@@ -42,8 +42,9 @@ public class UpdateUserController : BaseController
     [HttpPut("image")]
     public async Task<IActionResult> EditUserImage([FromForm] IFormFile imageFile)
     {
-        
+        return ResponseHelper.GetOkResult();
     }
+
     /// <summary>
     /// Update user institution
     /// </summary>
