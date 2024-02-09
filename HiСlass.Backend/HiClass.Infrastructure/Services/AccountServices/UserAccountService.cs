@@ -33,20 +33,18 @@ public class UserAccountService : IUserAccountService
     private readonly IUserDataHelper _dataUserHelper;
     private readonly IEmailHandlerService _emailHandlerService;
     private readonly IConfiguration _configuration;
-    private readonly IImageHandlerService _uploadImageService;
-    private IConfiguration Configuration { get; set; }
+    private readonly IImageHandlerService _imageHandlerService;
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService uploadImageService)
+        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
         _emailHandlerService = emailHandlerService;
         _configuration = configuration;
-        Configuration = configuration;
         _dataUserHelper = dataUserHelper;
-        _uploadImageService = uploadImageService;
+        _imageHandlerService = imageHandlerService;
     }
 
     public async Task<IEnumerable<UserProfileDto>> GetAllUsers(IMediator mediator)
@@ -201,7 +199,7 @@ public class UserAccountService : IUserAccountService
         var languages = await _dataUserHelper.GetLanguagesByTitles(requestUserDto.LanguageTitles, mediator);
         var grades = await _dataUserHelper.GetGradesByNumbers(requestUserDto.GradesEnumerable, mediator);
 
-        var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestUserDto.ImageFormFile,
+        var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestUserDto.ImageFormFile,
             _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
         var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
 

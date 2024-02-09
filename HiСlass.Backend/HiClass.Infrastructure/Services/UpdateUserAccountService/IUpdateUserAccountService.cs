@@ -8,7 +8,7 @@ namespace HiClass.Infrastructure.Services.UpdateUserAccountService;
 public interface IUpdateUserAccountService
 {
     public Task<UserProfileDto> UpdateUserPersonalInfoAsync(Guid userId, UpdatePersonalInfoRequestDto requestUserDto, IMediator mediator);
-    public Task<UserProfileDto> UpdateUserImageAsync(Guid userId, IFormFile imageFile, IMediator mediator);
+    public Task<UserProfileDto> UpdateUserImageAsync(Guid userId, UpdateImageRequestDto requestUserDto, IMediator mediator);
     public Task<UserProfileDto> UpdateUserInstitutionAsync(Guid userId, UpdateInstitutionRequestDto requestUserDto, IMediator mediator);
 
     public Task<UserProfileDto> UpdateUserProfessionalInfoAsync(Guid userId, UpdateProfessionalInfoRequestDto requestUserDto, IMediator mediator);

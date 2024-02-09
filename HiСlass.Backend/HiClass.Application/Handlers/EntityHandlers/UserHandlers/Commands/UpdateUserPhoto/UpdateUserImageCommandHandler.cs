@@ -6,16 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
 
-public class UpdateUserPhotoCommandHandler : IRequestHandler<UpdateUserPhotoCommand, Unit>
+public class UpdateUserImageCommandHandler : IRequestHandler<UpdateUserImageCommand, Unit>
 {
     private readonly ISharedLessonDbContext _context;
 
-    public UpdateUserPhotoCommandHandler(ISharedLessonDbContext context)
+    public UpdateUserImageCommandHandler(ISharedLessonDbContext context)
     {
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateUserPhotoCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateUserImageCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(x =>
