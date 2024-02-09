@@ -1,3 +1,4 @@
+using System.Net;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -18,8 +19,8 @@ public class AwsImagesService : IAwsImagesService
         _configuration = configuration;
     }
 
-    public async Task<UploadImageResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile,
-        string fileTitle)
+    public async Task<ImageHandleResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile,
+        string fileTitleToSave)
     {
         var config = new AmazonS3Config()
         {
@@ -28,9 +29,9 @@ public class AwsImagesService : IAwsImagesService
 
         using var ms = new MemoryStream();
         await file.CopyToAsync(ms);
-        var s3Object = await CreateAwsS3ObjectAsync(file, pathToStoreFile, fileTitle);
+        var s3Object = await CreateAwsS3ObjectAsync(file, pathToStoreFile, fileTitleToSave);
 
-        var response = new UploadImageResponseDto();
+        var response = new ImageHandleResponseDto();
         try
         {
             var uploadRequest = new TransferUtilityUploadRequest()
@@ -70,6 +71,68 @@ public class AwsImagesService : IAwsImagesService
         return response;
     }
 
+    public async Task<ImageHandleResponseDto> UpdateImageAsync(IFormFile file, string filePath, 
+        string fileTitle)
+    {
+        var config = new AmazonS3Config()
+        {
+            RegionEndpoint = Amazon.RegionEndpoint.EUNorth1
+        };
+
+        //delete
+        var deleteRequest= new DeleteObjectRequest()
+        {
+            BucketName = _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"],
+            Key = filePath
+        };
+        
+        var credentials = new BasicAWSCredentials(
+            _configuration["AWS_CONFIGURATION:AWS_KEY"],
+            _configuration["AWS_CONFIGURATION:AWS_SECRETKEY"]
+        );
+        
+        using var client = new AmazonS3Client(credentials, config);
+        
+        await client.DeleteObjectAsync(deleteRequest);
+            
+        
+        //save new
+        using var ms = new MemoryStream();
+        await file.CopyToAsync(ms);
+        var s3Object = await CreateAwsS3ObjectAsync(file, filePath, fileTitle);
+
+        var response = new ImageHandleResponseDto();
+        try
+        {
+            var uploadRequest = new TransferUtilityUploadRequest()
+            {
+                InputStream = ms,
+                Key = s3Object.PathToStoreFile + "/" + s3Object.Title,
+                BucketName = s3Object.BucketTitle,
+                CannedACL = S3CannedACL.NoACL,
+            };
+
+            var transferUtility = new TransferUtility(client);
+
+            await transferUtility.UploadAsync(uploadRequest);
+
+            response.ImageUrl = $"https://s3.eu-north-1.amazonaws.com/{s3Object.BucketTitle}/{s3Object.PathToStoreFile}/{s3Object.Title}"; 
+            response.StatusCode = 200;
+            response.Message = $"{s3Object.Title} was uploaded successfully";
+        }
+        catch (AmazonS3Exception exception)
+        {
+            response.StatusCode = (int)exception.StatusCode;
+            response.Message = exception.Message;
+        }
+        catch (Exception exception)
+        {
+            response.StatusCode = 500;
+            response.Message = exception.Message;
+        }
+
+        return response;
+    }
 
     private async Task<AwsS3Object> CreateAwsS3ObjectAsync(IFormFile file, string pathToStoreFile,
         string fileTitle)

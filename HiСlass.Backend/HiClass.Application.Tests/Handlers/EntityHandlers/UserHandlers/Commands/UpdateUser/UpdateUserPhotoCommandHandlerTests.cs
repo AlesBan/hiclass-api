@@ -14,14 +14,10 @@ public class UpdateUserPhotoCommandHandlerTests : TestCommonBase
         var userId = SharedLessonDbContextFactory.UserAId;
         const string newPhotoUrl = "NewPhotoUrl";
 
-        var handler = new UpdateUserPhotoCommandHandler(Context);
+        var handler = new UpdateUserImageCommandHandler(Context);
 
         // Act
-        await handler.Handle(new UpdateUserPhotoCommand()
-        {
-            UserId = userId,
-            NewPhotoUrl = newPhotoUrl
-        }, CancellationToken.None);
+        await handler.Handle(new UpdateUserImageCommand(userId, newPhotoUrl), CancellationToken.None);
 
         // Assert
         Assert.NotNull(await Context.Users.SingleOrDefaultAsync(u =>

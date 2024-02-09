@@ -13,10 +13,15 @@ public class ImageHandlerService : IImageHandlerService
         _imageService = imageService;
     }
 
-    public Task<UploadImageResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile, string fileTitle)
+    public Task<ImageHandleResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile, string fileTitleToSave)
     {
-        var result = _imageService.UploadImageAsync(file, pathToStoreFile, fileTitle);
+        var result = _imageService.UploadImageAsync(file, pathToStoreFile, fileTitleToSave);
 
         return result;
+    }
+
+    public Task<ImageHandleResponseDto> UpdateImageAsync(IFormFile file, string filePath, string fileTitle)
+    {
+        return _imageService.UpdateImageAsync(file, filePath, fileTitle);
     }
 }

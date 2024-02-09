@@ -5,14 +5,18 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdatePr
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserEmail;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserInstitution;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserToken;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.Update;
 using HiClass.Domain.Entities.Main;
+using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.UpdateUserAccountService;
 
@@ -20,11 +24,16 @@ public class UpdateUserAccountService : IUpdateUserAccountService
 {
     private readonly IUserHelper _userHelper;
     private readonly ITokenHelper _tokenHelper;
+    private readonly IImageHandlerService _imageHandlerService;
+    private readonly IConfiguration _configuration;
 
-    public UpdateUserAccountService(IUserHelper userHelper, ITokenHelper tokenHelper)
+    public UpdateUserAccountService(IUserHelper userHelper, ITokenHelper tokenHelper,
+        IImageHandlerService imageHandlerService, IConfiguration configuration)
     {
         _userHelper = userHelper;
         _tokenHelper = tokenHelper;
+        _imageHandlerService = imageHandlerService;
+        _configuration = configuration;
     }
 
     public async Task<UserProfileDto> UpdateUserPersonalInfoAsync(Guid userId,
@@ -38,12 +47,25 @@ public class UpdateUserAccountService : IUpdateUserAccountService
         return userProfileDto;
     }
 
-    public Task<UserProfileDto> UpdateUserImageAsync(Guid userId, IFormFile imageFile, IMediator mediator)
+    public async Task<UserProfileDto> UpdateUserImageAsync(Guid userId, UpdateImageRequestDto requestUserDto,
+        IMediator mediator)
     {
-        throw new NotImplementedException();
+        var file = requestUserDto.ImageFormFile;
+        var awsS3UpdateImageResponseDto = await _imageHandlerService.UpdateImageAsync(file,
+            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
+
+        var command = new UpdateUserImageCommand(userId, awsS3UpdateImageResponseDto.ImageUrl);
+        await mediator.Send(command);
+
+        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+
+        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        
+        return userProfileDto;
     }
 
-    public async Task<UserProfileDto> UpdateUserInstitutionAsync(Guid userId, UpdateInstitutionRequestDto requestUserDto,
+    public async Task<UserProfileDto> UpdateUserInstitutionAsync(Guid userId,
+        UpdateInstitutionRequestDto requestUserDto,
         IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
@@ -87,17 +109,16 @@ public class UpdateUserAccountService : IUpdateUserAccountService
         return userProfileDto;
     }
 
-    private async Task<User> GetResultOfUpdatingUserAsync<TRequestDto>(Guid userId,
+    private static async Task<User> GetResultOfUpdatingUserAsync<TRequestDto>(Guid userId,
         TRequestDto requestUserDto,
         IMediator mediator)
     {
-        var user = await _userHelper.GetUserById(userId, mediator);
-        var updatedUser = await GetUpdatedUserAsync(user, requestUserDto, mediator);
+        var updatedUser = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
 
         return updatedUser;
     }
 
-    private static async Task<User> GetUpdatedUserAsync<TRequestDto>(User user, TRequestDto requestUserDto,
+    private static async Task<User> GetUpdatedUserAsync<TRequestDto>(Guid userId, TRequestDto requestUserDto,
         IMediator mediator)
     {
         return requestUserDto switch
@@ -105,7 +126,7 @@ public class UpdateUserAccountService : IUpdateUserAccountService
             UpdatePersonalInfoRequestDto personalInfoRequestDto =>
                 await mediator.Send(new UpdatePersonalInfoCommand
                 {
-                    UserId = user.UserId,
+                    UserId = userId,
                     IsATeacher = personalInfoRequestDto.IsATeacher,
                     IsAnExpert = personalInfoRequestDto.IsAnExpert,
                     FirstName = personalInfoRequestDto.FirstName,
@@ -114,11 +135,12 @@ public class UpdateUserAccountService : IUpdateUserAccountService
                     CountryTitle = personalInfoRequestDto.CountryTitle,
                     Description = personalInfoRequestDto.Description
                 }),
+
             UpdateProfessionalInfoRequestDto professionalInfoRequestDto =>
                 await mediator.Send(
                     new UpdateProfessionalInfoCommand
                     {
-                        UserId = user.UserId,
+                        UserId = userId,
                         LanguageTitles = professionalInfoRequestDto.Languages,
                         DisciplineTitles = professionalInfoRequestDto.Disciplines,
                         GradeNumbers = professionalInfoRequestDto.Grades
@@ -126,7 +148,7 @@ public class UpdateUserAccountService : IUpdateUserAccountService
             UpdateInstitutionRequestDto institutionRequestDto =>
                 await mediator.Send(new UpdateUserInstitutionCommand
                 {
-                    UserId = user.UserId,
+                    UserId =userId,
                     InstitutionTitle = institutionRequestDto.InstitutionTitle,
                     Address = institutionRequestDto.Address,
                     Types = institutionRequestDto.Types,
@@ -134,13 +156,13 @@ public class UpdateUserAccountService : IUpdateUserAccountService
             UpdateUserEmailRequestDto emailRequestDto =>
                 await mediator.Send(new UpdateUserEmailAndRemoveVerificationCommand
                 {
-                    UserId = user.UserId,
+                    UserId = userId,
                     Email = emailRequestDto.Email
                 }),
             UpdateUserPasswordHashRequestDto passwordRequestDto =>
                 await mediator.Send(new UpdateUserPasswordCommand
                 {
-                    UserId = user.UserId,
+                    UserId = userId,
                     Password = passwordRequestDto.Password
                 }),
             _ => throw new UnknownTypeException()

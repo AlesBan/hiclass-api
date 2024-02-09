@@ -5,6 +5,8 @@ namespace HiClass.Infrastructure.Services.ImageServices.Aws;
 
 public interface IAwsImagesService
 {
-    Task<UploadImageResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile,
+    Task<ImageHandleResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile,
+        string fileTitleToSave);
+    Task<ImageHandleResponseDto> UpdateImageAsync(IFormFile file, string filePath,
         string fileTitle);
 }

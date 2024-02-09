@@ -5,7 +5,9 @@ namespace HiClass.Infrastructure.Services.ImageServices;
 
 public interface IImageHandlerService
 {
-    Task<UploadImageResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile,
+    Task<ImageHandleResponseDto> UploadImageAsync(IFormFile file, string pathToStoreFile,
+        string fileTitleToSave);
+    Task<ImageHandleResponseDto> UpdateImageAsync(IFormFile file, string filePath,
         string fileTitle);
-
+    
 }
