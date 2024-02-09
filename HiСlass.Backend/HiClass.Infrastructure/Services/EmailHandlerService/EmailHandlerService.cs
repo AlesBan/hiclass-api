@@ -42,7 +42,7 @@ public class EmailHandlerService : IEmailHandlerService
         var email = new MimeMessage();
 
         var managerEmail = _emailCredentials.Email;
-        var managerPassword = _emailCredentials.Email;
+        var managerPassword = _emailCredentials.Password;
 
         email.From.Add(MailboxAddress.Parse(managerEmail));
         email.To.Add(MailboxAddress.Parse(emailReceiver));
@@ -51,7 +51,7 @@ public class EmailHandlerService : IEmailHandlerService
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message };
 
         using var client = new MailKit.Net.Smtp.SmtpClient();
-        await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+        await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTlsWhenAvailable);
 
         try
         {

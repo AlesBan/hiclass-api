@@ -1,4 +1,4 @@
-namespace HiClass.Application.Dtos.UserDtos.Login;
+namespace HiClass.Application.Models.User.Login;
 
 public class LoginResponseDto
 {

@@ -31,7 +31,7 @@
           "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
-      "AWSSDK.Core/3.7.302": {
+      "AWSSDK.Core/3.7.302.7": {
         "type": "package",
         "compile": {
           "lib/netcoreapp3.1/AWSSDK.Core.dll": {
@@ -44,10 +44,10 @@
           }
         }
       },
-      "AWSSDK.S3/3.7.305.17": {
+      "AWSSDK.S3/3.7.305.23": {
         "type": "package",
         "dependencies": {
-          "AWSSDK.Core": "[3.7.302, 4.0.0)"
+          "AWSSDK.Core": "[3.7.302.7, 4.0.0)"
         },
         "compile": {
           "lib/netcoreapp3.1/AWSSDK.S3.dll": {
@@ -1119,15 +1119,15 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/13.0.3": {
+      "Newtonsoft.Json/13.0.1": {
         "type": "package",
         "compile": {
-          "lib/net6.0/Newtonsoft.Json.dll": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Newtonsoft.Json.dll": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         }
@@ -2907,13 +2907,12 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "AWSSDK.S3": "3.7.305.17",
+          "AWSSDK.S3": "3.7.305.23",
           "AutoMapper": "12.0.1",
           "HiClass.Application": "1.0.0",
-          "HiClass.Persistence": "1.0.0",
+          "HiClass.Domain": "1.0.0",
           "MailKit": "4.3.0",
-          "Microsoft.AspNetCore.Http.Features": "6.0.0-preview.4.21253.5",
-          "Newtonsoft.Json": "13.0.3"
+          "Microsoft.AspNetCore.Http.Features": "6.0.0-preview.4.21253.5"
         },
         "compile": {
           "bin/placeholder/HiClass.Infrastructure.dll": {}
@@ -2927,6 +2926,7 @@
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "HiClass.Application": "1.0.0",
+          "HiClass.Infrastructure": "1.0.0",
           "Microsoft.EntityFrameworkCore": "6.0.26",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "6.0.22"
         },
@@ -2969,15 +2969,15 @@
         "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
       ]
     },
-    "AWSSDK.Core/3.7.302": {
-      "sha512": "rur2mSqNDqkoYhELheFVn+8xOICacBtOhLSbG9t17QLgb2yLksouENULQRlKvJ+vPch5HWHA7L/12mw9Urtj/w==",
+    "AWSSDK.Core/3.7.302.7": {
+      "sha512": "0iT0NehcE8zye3R5Ixr8x1BnGDiG8OArmF4RbpXyUn/9Bsj1i4vPkePl4Q4HEvkfXjoCa8c6M0qwD9m5CYKSyA==",
       "type": "package",
-      "path": "awssdk.core/3.7.302",
+      "path": "awssdk.core/3.7.302.7",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "awssdk.core.3.7.302.nupkg.sha512",
+        "awssdk.core.3.7.302.7.nupkg.sha512",
         "awssdk.core.nuspec",
         "images/AWSLogo.png",
         "lib/net35/AWSSDK.Core.dll",
@@ -2998,17 +2998,17 @@
         "tools/account-management.ps1"
       ]
     },
-    "AWSSDK.S3/3.7.305.17": {
-      "sha512": "LtxJPYnxvQnHOIiMYicglL14dYPoJW2eVE0AWT8+h2mktq6G3+4ehR0/06IGneENy/8eQWEJptqaN2QOzfgcZQ==",
+    "AWSSDK.S3/3.7.305.23": {
+      "sha512": "2jIPRfqr1k+WcGU3Y4wv1e9RLFXBHjjp6wF/nzIDyvAEuYC4lVFW4zkh7uySddrfUT21ROKt7RQbu8rfo/A0Dw==",
       "type": "package",
-      "path": "awssdk.s3/3.7.305.17",
+      "path": "awssdk.s3/3.7.305.23",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "analyzers/dotnet/cs/AWSSDK.S3.CodeAnalysis.dll",
         "analyzers/dotnet/cs/SharedAnalysisCode.dll",
-        "awssdk.s3.3.7.305.17.nupkg.sha512",
+        "awssdk.s3.3.7.305.23.nupkg.sha512",
         "awssdk.s3.nuspec",
         "images/AWSLogo.png",
         "lib/net35/AWSSDK.S3.dll",
@@ -4641,15 +4641,14 @@
         "netstandard.library.nuspec"
       ]
     },
-    "Newtonsoft.Json/13.0.3": {
-      "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+    "Newtonsoft.Json/13.0.1": {
+      "sha512": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
       "type": "package",
-      "path": "newtonsoft.json/13.0.3",
+      "path": "newtonsoft.json/13.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.md",
-        "README.md",
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
         "lib/net35/Newtonsoft.Json.dll",
@@ -4658,15 +4657,13 @@
         "lib/net40/Newtonsoft.Json.xml",
         "lib/net45/Newtonsoft.Json.dll",
         "lib/net45/Newtonsoft.Json.xml",
-        "lib/net6.0/Newtonsoft.Json.dll",
-        "lib/net6.0/Newtonsoft.Json.xml",
         "lib/netstandard1.0/Newtonsoft.Json.dll",
         "lib/netstandard1.0/Newtonsoft.Json.xml",
         "lib/netstandard1.3/Newtonsoft.Json.dll",
         "lib/netstandard1.3/Newtonsoft.Json.xml",
         "lib/netstandard2.0/Newtonsoft.Json.dll",
         "lib/netstandard2.0/Newtonsoft.Json.xml",
-        "newtonsoft.json.13.0.3.nupkg.sha512",
+        "newtonsoft.json.13.0.1.nupkg.sha512",
         "newtonsoft.json.nuspec",
         "packageIcon.png"
       ]

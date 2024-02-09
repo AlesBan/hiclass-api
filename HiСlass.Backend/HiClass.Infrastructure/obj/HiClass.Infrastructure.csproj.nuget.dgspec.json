@@ -173,8 +173,8 @@
               "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
                 "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
               },
-              "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj": {
-                "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj"
+              "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj": {
+                "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj"
               }
             }
           }
@@ -191,7 +191,7 @@
           "dependencies": {
             "AWSSDK.S3": {
               "target": "Package",
-              "version": "[3.7.305.17, )"
+              "version": "[3.7.305.23, )"
             },
             "AutoMapper": {
               "target": "Package",
@@ -204,89 +204,6 @@
             "Microsoft.AspNetCore.Http.Features": {
               "target": "Package",
               "version": "[6.0.0-preview.4.21253.5, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.3, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.418\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj",
-        "projectName": "HiClass.Persistence",
-        "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net6.0"
-        ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
-            "projectReferences": {
-              "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
-                "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[6.0.26, )"
-            },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[6.0.26, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[6.0.26, )"
-            },
-            "Npgsql.EntityFrameworkCore.PostgreSQL": {
-              "target": "Package",
-              "version": "[6.0.22, )"
             }
           },
           "imports": [

@@ -20,8 +20,8 @@ public class CreateUserAccountRequestDto
     [Required] public string CityLocation { get; set; } = string.Empty;
     [Required] public string CountryLocation { get; set; } = string.Empty;
     [Required] public InstitutionDto InstitutionDto { get; set; }
-    [Required] public IEnumerable<string> Disciplines { get; set; } = new List<string>();
-    [Required] public IEnumerable<string> Languages { get; set; } = new List<string>();
-    [Required] public IEnumerable<int> Grades { get; set; } = new List<int>();
+    [Required] public IEnumerable<string> DisciplineTitles { get; set; } = new List<string>();
+    [Required] public IEnumerable<string> LanguageTitles { get; set; } = new List<string>();
+    [Required] public IEnumerable<int> GradesEnumerable { get; set; } = new List<int>();
     [Required] public IFormFile ImageFormFile{ get; set; }
 }
