@@ -270,8 +270,8 @@
               "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
                 "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
               },
-              "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj": {
-                "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj"
+              "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj": {
+                "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj"
               }
             }
           }
@@ -288,7 +288,7 @@
           "dependencies": {
             "AWSSDK.S3": {
               "target": "Package",
-              "version": "[3.7.305.17, )"
+              "version": "[3.7.305.23, )"
             },
             "AutoMapper": {
               "target": "Package",
@@ -301,10 +301,6 @@
             "Microsoft.AspNetCore.Http.Features": {
               "target": "Package",
               "version": "[6.0.0-preview.4.21253.5, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.3, )"
             }
           },
           "imports": [
@@ -351,6 +347,9 @@
             "projectReferences": {
               "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
                 "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
+              },
+              "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\HiClass.Infrastructure.csproj": {
+                "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\HiClass.Infrastructure.csproj"
               }
             }
           }

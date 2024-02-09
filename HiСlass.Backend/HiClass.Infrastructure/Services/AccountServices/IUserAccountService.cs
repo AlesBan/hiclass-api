@@ -1,11 +1,11 @@
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Dtos.UserDtos.Login;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
 using HiClass.Application.Models.User.CreateAccount;
+using HiClass.Application.Models.User.Login;
 using MediatR;
 
-namespace HiClass.Application.Interfaces.Services;
+namespace HiClass.Infrastructure.Services.AccountServices;
 
 public interface IUserAccountService
 {

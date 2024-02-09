@@ -1,6 +1,5 @@
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Dtos.UserDtos.Login;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
@@ -18,6 +17,7 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.CreateAccount;
+using HiClass.Application.Models.User.Login;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.ImageServices;
 using HiClass.Infrastructure.Services.ImageServices.Aws;
@@ -197,9 +197,9 @@ public class UserAccountService : IUserAccountService
         var country = await _dataUserHelper.GetCountryByTitle(requestUserDto.CountryLocation, mediator);
         var city = await _dataUserHelper.GetCityByCountryId(country.CountryId, requestUserDto.CityLocation, mediator);
         var institution = await _dataUserHelper.GetInstitution(requestUserDto, mediator);
-        var disciplines = await _dataUserHelper.GetDisciplinesByTitles(requestUserDto.Disciplines, mediator);
-        var languages = await _dataUserHelper.GetLanguagesByTitles(requestUserDto.Languages, mediator);
-        var grades = await _dataUserHelper.GetGradesByNumbers(requestUserDto.Grades, mediator);
+        var disciplines = await _dataUserHelper.GetDisciplinesByTitles(requestUserDto.DisciplineTitles, mediator);
+        var languages = await _dataUserHelper.GetLanguagesByTitles(requestUserDto.LanguageTitles, mediator);
+        var grades = await _dataUserHelper.GetGradesByNumbers(requestUserDto.GradesEnumerable, mediator);
 
         var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestUserDto.ImageFormFile,
             _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
