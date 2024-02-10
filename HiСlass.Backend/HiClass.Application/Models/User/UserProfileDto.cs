@@ -1,6 +1,5 @@
 using AutoMapper;
 using HiClass.Application.Common.Mappings;
-using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
 using HiClass.Domain.Entities.Communication;

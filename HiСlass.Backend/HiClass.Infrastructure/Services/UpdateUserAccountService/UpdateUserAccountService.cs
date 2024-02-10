@@ -7,15 +7,12 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserToken;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.Update;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.UpdateUserAccountService;
@@ -50,17 +47,10 @@ public class UpdateUserAccountService : IUpdateUserAccountService
     public async Task<UserProfileDto> UpdateUserImageAsync(Guid userId, UpdateImageRequestDto requestUserDto,
         IMediator mediator)
     {
-        var file = requestUserDto.ImageFormFile;
-        var awsS3UpdateImageResponseDto = await _imageHandlerService.UpdateImageAsync(file,
-            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
-
-        var command = new UpdateUserImageCommand(userId, awsS3UpdateImageResponseDto.ImageUrl);
-        await mediator.Send(command);
-
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
-        
+
         return userProfileDto;
     }
 
@@ -109,7 +99,7 @@ public class UpdateUserAccountService : IUpdateUserAccountService
         return userProfileDto;
     }
 
-    private static async Task<User> GetResultOfUpdatingUserAsync<TRequestDto>(Guid userId,
+    private async Task<User> GetResultOfUpdatingUserAsync<TRequestDto>(Guid userId,
         TRequestDto requestUserDto,
         IMediator mediator)
     {
@@ -118,13 +108,13 @@ public class UpdateUserAccountService : IUpdateUserAccountService
         return updatedUser;
     }
 
-    private static async Task<User> GetUpdatedUserAsync<TRequestDto>(Guid userId, TRequestDto requestUserDto,
+    private async Task<User> GetUpdatedUserAsync<TRequestDto>(Guid userId, TRequestDto requestUserDto,
         IMediator mediator)
     {
-        return requestUserDto switch
+        switch (requestUserDto)
         {
-            UpdatePersonalInfoRequestDto personalInfoRequestDto =>
-                await mediator.Send(new UpdatePersonalInfoCommand
+            case UpdatePersonalInfoRequestDto personalInfoRequestDto:
+                return await mediator.Send(new UpdatePersonalInfoCommand
                 {
                     UserId = userId,
                     IsATeacher = personalInfoRequestDto.IsATeacher,
@@ -134,38 +124,44 @@ public class UpdateUserAccountService : IUpdateUserAccountService
                     CityTitle = personalInfoRequestDto.CityTitle,
                     CountryTitle = personalInfoRequestDto.CountryTitle,
                     Description = personalInfoRequestDto.Description
-                }),
+                });
+            case UpdateImageRequestDto imageRequestDto:
+            {
+                var file = imageRequestDto.ImageFormFile;
+                var awsS3UpdateImageResponseDto = await _imageHandlerService.UpdateImageAsync(file,
+                    _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
 
-            UpdateProfessionalInfoRequestDto professionalInfoRequestDto =>
-                await mediator.Send(
-                    new UpdateProfessionalInfoCommand
-                    {
-                        UserId = userId,
-                        LanguageTitles = professionalInfoRequestDto.Languages,
-                        DisciplineTitles = professionalInfoRequestDto.Disciplines,
-                        GradeNumbers = professionalInfoRequestDto.Grades
-                    }),
-            UpdateInstitutionRequestDto institutionRequestDto =>
-                await mediator.Send(new UpdateUserInstitutionCommand
+                var command = new UpdateUserImageCommand(userId, awsS3UpdateImageResponseDto.ImageUrl);
+                return await mediator.Send(command);
+            }
+            case UpdateProfessionalInfoRequestDto professionalInfoRequestDto:
+                return await mediator.Send(new UpdateProfessionalInfoCommand
                 {
-                    UserId =userId,
+                    UserId = userId,
+                    LanguageTitles = professionalInfoRequestDto.Languages,
+                    DisciplineTitles = professionalInfoRequestDto.Disciplines,
+                    GradeNumbers = professionalInfoRequestDto.Grades
+                });
+            case UpdateInstitutionRequestDto institutionRequestDto:
+                return await mediator.Send(new UpdateUserInstitutionCommand
+                {
+                    UserId = userId,
                     InstitutionTitle = institutionRequestDto.InstitutionTitle,
                     Address = institutionRequestDto.Address,
                     Types = institutionRequestDto.Types,
-                }),
-            UpdateUserEmailRequestDto emailRequestDto =>
-                await mediator.Send(new UpdateUserEmailAndRemoveVerificationCommand
+                });
+            case UpdateUserEmailRequestDto emailRequestDto:
+                return await mediator.Send(new UpdateUserEmailAndRemoveVerificationCommand
                 {
-                    UserId = userId,
-                    Email = emailRequestDto.Email
-                }),
-            UpdateUserPasswordHashRequestDto passwordRequestDto =>
-                await mediator.Send(new UpdateUserPasswordCommand
+                    UserId = userId, Email = emailRequestDto.Email
+                });
+            case UpdateUserPasswordHashRequestDto passwordRequestDto:
+                return await mediator.Send(new UpdateUserPasswordCommand
                 {
-                    UserId = userId,
-                    Password = passwordRequestDto.Password
-                }),
-            _ => throw new UnknownTypeException()
-        };
+                    UserId = userId, Password = passwordRequestDto.Password
+                });
+            default:
+                throw new UnknownTypeException();
+        }
     }
 }

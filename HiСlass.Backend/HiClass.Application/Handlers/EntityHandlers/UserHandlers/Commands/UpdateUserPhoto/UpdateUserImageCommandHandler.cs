@@ -1,12 +1,12 @@
-using System.Diagnostics;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Interfaces;
+using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
 
-public class UpdateUserImageCommandHandler : IRequestHandler<UpdateUserImageCommand, Unit>
+public class UpdateUserImageCommandHandler : IRequestHandler<UpdateUserImageCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
 
@@ -15,7 +15,7 @@ public class UpdateUserImageCommandHandler : IRequestHandler<UpdateUserImageComm
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateUserImageCommand request, CancellationToken cancellationToken)
+    public async Task<User> Handle(UpdateUserImageCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(x =>
@@ -26,11 +26,31 @@ public class UpdateUserImageCommandHandler : IRequestHandler<UpdateUserImageComm
             throw new UserNotFoundException(request.UserId);
         }
 
-        user.ImageUrl = request.NewPhotoUrl;
+        user.ImageUrl = request.ImageUrl;
 
         _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        user = _context.Users
+            .Include(u => u.City)
+            .Include(u => u.Country)
+            .Include(u => u.Institution)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassLanguages)
+            .ThenInclude(cl => cl.Language)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassDisciplines)
+            .ThenInclude(cd => cd.Discipline)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.Grade)
+            .Include(u => u.UserDisciplines)
+            .ThenInclude(ud => ud.Discipline)
+            .Include(u => u.UserLanguages)
+            .ThenInclude(ul => ul.Language)
+            .Include(u => u.UserGrades)
+            .ThenInclude(ug => ug.Grade)
+            .FirstOrDefault(u =>
+                u.UserId == request.UserId);
+        return user;
     }
 }
