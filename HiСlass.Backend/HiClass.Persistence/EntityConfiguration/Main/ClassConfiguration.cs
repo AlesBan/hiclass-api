@@ -11,9 +11,6 @@ public class ClassConfiguration : IEntityTypeConfiguration<Class>
         builder.HasKey(c => c.ClassId);
         builder.HasIndex(c => c.ClassId)
             .IsUnique();
-        builder.Property(c => c.ClassId)
-            .HasDefaultValueSql("gen_random_uuid()")
-            .ValueGeneratedOnAdd();
 
         builder.HasOne(c => c.Grade)
             .WithMany(g => g.Classes)

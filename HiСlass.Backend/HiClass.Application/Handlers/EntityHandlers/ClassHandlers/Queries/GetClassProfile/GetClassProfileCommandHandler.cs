@@ -1,5 +1,4 @@
 using AutoMapper;
-using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Models.Class;
 using MediatR;
 

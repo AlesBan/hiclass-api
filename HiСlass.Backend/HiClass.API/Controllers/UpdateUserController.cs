@@ -42,8 +42,8 @@ public class UpdateUserController : BaseController
     [HttpPut("image")]
     public async Task<IActionResult> EditUserImage([FromForm] UpdateImageRequestDto requestDto)
     {
-        await _editUserAccountService.UpdateUserImageAsync(UserId, requestDto, Mediator);
-        return ResponseHelper.GetOkResult();
+        var result = await _editUserAccountService.UpdateUserImageAsync(UserId, requestDto, Mediator);
+        return ResponseHelper.GetOkResult(result);
     }
 
     /// <summary>

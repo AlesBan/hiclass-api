@@ -78,11 +78,12 @@ public class AwsImagesService : IAwsImagesService
         {
             RegionEndpoint = Amazon.RegionEndpoint.EUNorth1
         };
+        var s3Object = await CreateAwsS3ObjectAsync(file, filePath, fileTitle);
 
         //delete
         var deleteRequest= new DeleteObjectRequest()
         {
-            BucketName = _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"],
+            BucketName = s3Object.BucketTitle,
             Key = filePath
         };
         
@@ -99,7 +100,6 @@ public class AwsImagesService : IAwsImagesService
         //save new
         using var ms = new MemoryStream();
         await file.CopyToAsync(ms);
-        var s3Object = await CreateAwsS3ObjectAsync(file, filePath, fileTitle);
 
         var response = new ImageHandleResponseDto();
         try

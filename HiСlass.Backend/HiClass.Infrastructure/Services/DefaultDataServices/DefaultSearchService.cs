@@ -1,4 +1,3 @@
-using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserProfileListByDefaultSearchRequest;
 using HiClass.Application.Helpers.UserHelper;

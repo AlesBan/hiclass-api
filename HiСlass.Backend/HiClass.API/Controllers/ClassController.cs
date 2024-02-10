@@ -1,7 +1,6 @@
 using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
-using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Infrastructure.Services.ClassServices;
@@ -35,7 +34,7 @@ public class ClassController : BaseController
     }
 
     [HttpPut("update-class/{classId:guid}")]
-    public async Task<IActionResult> UpdateClass([FromBody] UpdateClassRequestDto requestClassDto, Guid classId)
+    public async Task<IActionResult> UpdateClass([FromForm] UpdateClassRequestDto requestClassDto, Guid classId)
     {
         var result = await _classService.UpdateClass(classId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);

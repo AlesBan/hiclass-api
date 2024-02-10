@@ -1,5 +1,4 @@
 using AutoMapper;
-using HiClass.Application.Dtos.ClassDtos;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.CreateClass;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.DeleteClass;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.UpdateClass;
@@ -18,13 +17,13 @@ namespace HiClass.Infrastructure.Services.ClassServices;
 public class ClassService : IClassService
 {
     private readonly IMapper _mapper;
-    private readonly IImageHandlerService _uploadImageService;
+    private readonly IImageHandlerService _imageHandlerService;
     private readonly IConfiguration _configuration;
 
     public ClassService(IMapper mapper, IImageHandlerService uploadImageService, IConfiguration configuration)
     {
         _mapper = mapper;
-        _uploadImageService = uploadImageService;
+        _imageHandlerService = uploadImageService;
         _configuration = configuration;
     }
 
@@ -35,16 +34,18 @@ public class ClassService : IClassService
             CancellationToken.None);
         var languages = await mediator.Send(new GetLanguagesByTitlesQuery(requestClassDto.LanguageTitles),
             CancellationToken.None);
-
-        var classId = Guid.NewGuid();
         
-        var awsS3UploadImageResponseDto = await _uploadImageService.UploadImageAsync(requestClassDto.FormFileImage,
+        //Id initialization needs to be here (in config nope)
+        var classId = Guid.NewGuid();
+
+        var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestClassDto.FormFileImage,
             _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"], classId.ToString());
         var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
 
         var command = new CreateClassCommand
         {
             UserId = userId,
+            ClassId = classId,
             Title = requestClassDto.Title,
             GradeNumber = requestClassDto.GradeNumber,
             DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
@@ -87,6 +88,11 @@ public class ClassService : IClassService
     public async Task<ClassProfileDto> UpdateClass(Guid classId, UpdateClassRequestDto requestClassDto,
         IMediator mediator)
     {
+        var file = requestClassDto.ImageFormFile;
+        var awsS3UpdateImageResponseDto = await _imageHandlerService.UpdateImageAsync(file,
+            _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"], classId.ToString());
+        var imageUrl = awsS3UpdateImageResponseDto.ImageUrl;
+        
         var command = new UpdateClassCommand
         {
             ClassId = classId,
@@ -94,7 +100,7 @@ public class ClassService : IClassService
             GradeNumber = requestClassDto.GradeNumber,
             DisciplineTitles = requestClassDto.DisciplineTitles,
             LanguageTitles = requestClassDto.LanguageTitles,
-            ImageUrl = requestClassDto.PhotoUrl
+            ImageUrl = imageUrl
         };
 
         var @class = await mediator.Send(command, CancellationToken.None);

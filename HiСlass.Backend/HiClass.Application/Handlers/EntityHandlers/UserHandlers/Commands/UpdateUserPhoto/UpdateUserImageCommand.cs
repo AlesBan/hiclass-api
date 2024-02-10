@@ -1,15 +1,16 @@
+using HiClass.Domain.Entities.Main;
 using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
 
-public class UpdateUserImageCommand : IRequest<Unit>
+public class UpdateUserImageCommand : IRequest<User>
 {
     public Guid UserId { get; set; }
-    public string NewPhotoUrl { get; set; }
+    public string ImageUrl { get; set; }
 
-    public UpdateUserImageCommand(Guid userId, string newPhotoUrl)
+    public UpdateUserImageCommand(Guid userId, string imageUrl)
     {
         UserId = userId;
-        NewPhotoUrl = newPhotoUrl;
+        ImageUrl = imageUrl;
     }
 }
