@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using HiClass.Application.Common;
 using HiClass.Application.Constants;
+using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,12 +20,12 @@ public class TokenHelper : ITokenHelper
         _configuration = configuration;
     }
 
-    public string CreateToken(User user)
+    public string CreateToken(CreateAccessTokenUserDto userDto)
     {
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8
             .GetBytes(_configuration["JWT_SETTINGS:ISSUER_SIGNING_KEY"]));
 
-        var jwtClaims = GetClaims(user);
+        var jwtClaims = GetClaims(userDto);
         var expiresTime = AuthConstants.TokenLifeTime;
         var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
@@ -44,18 +45,18 @@ public class TokenHelper : ITokenHelper
         return signedToken;
     }
 
-    private static IEnumerable<Claim> GetClaims(User user)
+    private static IEnumerable<Claim> GetClaims(CreateAccessTokenUserDto userDto)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.NameIdentifier, userDto.UserId.ToString()),
+            new(ClaimTypes.Email, userDto.Email),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUniversalTime().ToString()),
-            new("isVerified", user.IsVerified.ToString()),
-            new("isCreatedAccount", user.IsCreatedAccount.ToString()),
-            new("isATeacher", user.IsATeacher.ToString() ?? ""),
-            new("isAExpert", user.IsAnExpert.ToString() ?? "")
+            new("isVerified", userDto.IsVerified.ToString()),
+            new("isCreatedAccount", userDto.IsCreatedAccount.ToString()),
+            new("isATeacher", userDto.IsATeacher.ToString() ?? ""),
+            new("isAExpert", userDto.IsAnExpert.ToString() ?? "")
         };
 
         // claims.SetRoleClaims(user);

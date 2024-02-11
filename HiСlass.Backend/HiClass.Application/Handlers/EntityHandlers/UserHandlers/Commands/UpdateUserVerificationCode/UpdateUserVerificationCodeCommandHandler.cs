@@ -1,25 +1,21 @@
 using HiClass.Application.Common.Exceptions.Database;
-using HiClass.Application.Helpers.TokenHelper;
-using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserResetToken;
+namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
 
-public class UpdateUserResetPasswordInfoCommandHandler : IRequestHandler<UpdateUserResetPasswordInfoCommand, User>
+public class UpdateUserVerificationCodeCommandHandler : IRequestHandler<UpdateUserVerificationCodeCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
-    private readonly IUserHelper _userHelper;
 
-    public UpdateUserResetPasswordInfoCommandHandler(ISharedLessonDbContext context, IUserHelper userHelper)
+    public UpdateUserVerificationCodeCommandHandler(ISharedLessonDbContext context)
     {
         _context = context;
-        _userHelper = userHelper;
     }
 
-    public async Task<User> Handle(UpdateUserResetPasswordInfoCommand request, CancellationToken cancellationToken)
+    public async Task<User> Handle(UpdateUserVerificationCodeCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken: cancellationToken);
@@ -27,15 +23,12 @@ public class UpdateUserResetPasswordInfoCommandHandler : IRequestHandler<UpdateU
         if (user == null)
             throw new UserNotFoundException(request.UserId);
 
-        user.PasswordResetToken = request.AccessToken;
-        user.ResetTokenExpires = DateTime.UtcNow.AddHours(4);
-        
-        user.PasswordResetCode = _userHelper.GeneratePasswordResetCode();
-        
+        user.VerificationCode = request.VerificationCode;
+
         _context.Users.Attach(user).State = EntityState.Modified;
 
         await _context.SaveChangesAsync(cancellationToken);
-        
+
         user = _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)

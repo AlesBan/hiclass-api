@@ -9,6 +9,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserBy
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
+using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

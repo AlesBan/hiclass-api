@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 
-public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVerificationCodeCommand, User>
+public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVerificationCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
     private readonly ITokenHelper _tokenHelper;
@@ -19,7 +19,7 @@ public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVe
         _tokenHelper = tokenHelper;
     }
 
-    public async Task<User> Handle(UpdateUserVerificationCodeCommand request, CancellationToken cancellationToken)
+    public async Task<User> Handle(UpdateUserVerificationCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(x =>
@@ -37,11 +37,31 @@ public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVe
 
         user.IsVerified = true;
         user.VerifiedAt = DateTime.UtcNow;
-        user.AccessToken = _tokenHelper.CreateToken(user);
-
+        user.AccessToken = request.AccessToken;
+        
         _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken);
 
+        user = _context.Users
+            .Include(u => u.City)
+            .Include(u => u.Country)
+            .Include(u => u.Institution)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassLanguages)
+            .ThenInclude(cl => cl.Language)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassDisciplines)
+            .ThenInclude(cd => cd.Discipline)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.Grade)
+            .Include(u => u.UserDisciplines)
+            .ThenInclude(ud => ud.Discipline)
+            .Include(u => u.UserLanguages)
+            .ThenInclude(ul => ul.Language)
+            .Include(u => u.UserGrades)
+            .ThenInclude(ug => ug.Grade)
+            .FirstOrDefault(u =>
+                u.UserId == request.UserId);
         return user;
     }
 }

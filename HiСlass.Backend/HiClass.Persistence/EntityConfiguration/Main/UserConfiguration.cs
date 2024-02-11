@@ -11,9 +11,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(t => t.UserId);
         builder.HasIndex(t => t.UserId)
             .IsUnique();
-        builder.Property(t => t.UserId)
-            .HasDefaultValueSql("gen_random_uuid()")
-            .ValueGeneratedOnAdd();
 
         builder.Property(u => u.IsCreatedAccount)
             .HasDefaultValue(false)

@@ -1,14 +1,15 @@
-using HiClass.Application.Dtos.UserDtos;
+using AutoMapper;
 using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserResetToken;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Helpers;
@@ -16,11 +17,11 @@ using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.Login;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.ImageServices;
-using HiClass.Infrastructure.Services.ImageServices.Aws;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 
@@ -34,10 +35,12 @@ public class UserAccountService : IUserAccountService
     private readonly IEmailHandlerService _emailHandlerService;
     private readonly IConfiguration _configuration;
     private readonly IImageHandlerService _imageHandlerService;
+    private readonly IMapper _mapper;
+
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService)
+        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, IMapper mapper)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -45,6 +48,7 @@ public class UserAccountService : IUserAccountService
         _configuration = configuration;
         _dataUserHelper = dataUserHelper;
         _imageHandlerService = imageHandlerService;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<UserProfileDto>> GetAllUsers(IMediator mediator)
@@ -59,19 +63,37 @@ public class UserAccountService : IUserAccountService
 
     public async Task<LoginResponseDto> RegisterUser(UserRegisterRequestDto requestUserDto, IMediator mediator)
     {
-        var registeredUser = await mediator.Send(
-            new RegisterUserCommand(
-                requestUserDto.Email,
-                requestUserDto.Password));
+        var verificationCode = _userHelper.GenerateVerificationCode();
 
+        var registeredUser = await mediator.Send(
+            new RegisterUserCommand()
+            {
+                Email = requestUserDto.Email,
+                Password = requestUserDto.Password,
+                VerificationCode = verificationCode,
+            });
+
+        var accessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(registeredUser);
+        var accessToken = _tokenHelper.CreateToken(accessTokenUserDto);
+
+        await Task.Delay(20);
+        var command = new UpdateUserAccessTokenCommand()
+        {
+            UserId = registeredUser.UserId,
+            AccessToken = accessToken
+        };
+
+        var userWithAccessToken = await mediator.Send(command);
+        
         await _emailHandlerService.SendVerificationEmail(registeredUser.Email,
             registeredUser.VerificationCode);
 
         var loginResponseDto = new LoginResponseDto
         {
-            AccessToken = registeredUser.AccessToken,
+            AccessToken = userWithAccessToken.AccessToken,
             IsCreatedAccount = false
         };
+        
         return loginResponseDto;
     }
 
@@ -84,11 +106,15 @@ public class UserAccountService : IUserAccountService
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
 
-        var newToken = _tokenHelper.CreateToken(user);
+        var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
 
-        userProfileDto.AccessToken = newToken;
+        var newToken = _tokenHelper.CreateToken(tokenUserDto);
 
-        await mediator.Send(new UpdateUserAccessTokenCommand(user.UserId, newToken));
+        await mediator.Send(new UpdateUserAccessTokenCommand()
+        {
+            UserId = user.UserId,
+            AccessToken = newToken
+        });
 
         var loginResponseDto = new LoginResponseDto
         {
@@ -98,21 +124,56 @@ public class UserAccountService : IUserAccountService
         return loginResponseDto;
     }
 
-    public async Task<string> ConfirmEmail(Guid userId, string code, IMediator mediator)
+    public async Task<string> VerifyEmail(Guid userId, string code, IMediator mediator)
     {
         var user = await _userHelper.GetUserById(userId, mediator);
 
-        var verifiedUser = await mediator.Send(
-            new UpdateUserVerificationCodeCommand(user.UserId, code));
+        var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
+        var newToken = _tokenHelper.CreateToken(tokenUserDto);
+
+        var command = new UpdateUserVerificationCommand()
+        {
+            UserId = user.UserId,
+            AccessToken = newToken,
+            VerificationCode = code
+        };
+
+        var verifiedUser = await mediator.Send(command);
 
         return verifiedUser.AccessToken;
+    }
+
+    public async Task CreateAndReSendVerificationCode(Guid userId, IMediator mediator)
+    {
+        var user = await _userHelper.GetUserById(userId, mediator);
+        var newVerificationCode = _userHelper.GenerateVerificationCode();
+
+        var command = new UpdateUserVerificationCodeCommand()
+        {
+            UserId = user.UserId,
+            VerificationCode = newVerificationCode
+        };
+
+        await mediator.Send(command);
+
+        await _emailHandlerService.SendVerificationEmail(user.Email,
+            newVerificationCode);
     }
 
     public async Task<string> ForgotPassword(string userEmail, IMediator mediator)
     {
         var user = await _userHelper.GetUserByEmail(userEmail, mediator);
 
-        var updatedUser = await mediator.Send(new UpdateUserResetPasswordInfoCommand(user.UserId));
+        var accessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
+        var newAccessToken = _tokenHelper.CreateToken(accessTokenUserDto);
+
+        var command = new UpdateUserResetPasswordInfoCommand()
+        {
+            UserId = user.UserId,
+            AccessToken = newAccessToken
+        };
+
+        var updatedUser = await mediator.Send(command);
 
 
         await _emailHandlerService.SendResetPasswordEmail(user.Email, updatedUser.PasswordResetCode);
@@ -137,10 +198,15 @@ public class UserAccountService : IUserAccountService
                 UserId = user.UserId,
                 Password = requestDto.Password
             });
-        var newToken = _tokenHelper.CreateToken(user);
 
-        user.AccessToken = newToken;
-        await mediator.Send(new UpdateUserAccessTokenCommand(user.UserId, newToken));
+        var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
+        var newToken = _tokenHelper.CreateToken(tokenUserDto);
+
+        await mediator.Send(new UpdateUserAccessTokenCommand
+        {
+            UserId = user.UserId,
+            AccessToken = newToken
+        });
 
         var loginResponseDtoDto = new LoginResponseDto
         {
@@ -158,7 +224,7 @@ public class UserAccountService : IUserAccountService
 
         _userHelper.CheckUserVerification(user);
 
-        var userWithAccount = await GetCreatedUserAccount(userId, requestUserDto, mediator);
+        var userWithAccount = await GetCreatedUserAccount(userId, user.Email, requestUserDto, mediator);
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(userWithAccount);
 
@@ -182,15 +248,15 @@ public class UserAccountService : IUserAccountService
         await mediator.Send(new DeleteAllUsersCommand());
     }
 
-    public async Task<User> GetCreatedUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto,
-        IMediator mediator)
+    private async Task<User> GetCreatedUserAccount(Guid userId, string userEmail,
+        CreateUserAccountRequestDto requestUserDto, IMediator mediator)
     {
-        var command = await GetCreateUserAccountCommand(userId, requestUserDto, mediator);
+        var command = await GetCreateUserAccountCommand(userId, userEmail, requestUserDto, mediator);
         return await mediator.Send(command);
     }
 
     private async Task<CreateUserAccountCommand> GetCreateUserAccountCommand(Guid userId,
-        CreateUserAccountRequestDto requestUserDto, IMediator mediator)
+        string userEmail, CreateUserAccountRequestDto requestUserDto, IMediator mediator)
     {
         var country = await _dataUserHelper.GetCountryByTitle(requestUserDto.CountryLocation, mediator);
         var city = await _dataUserHelper.GetCityByCountryId(country.CountryId, requestUserDto.CityLocation, mediator);
@@ -203,9 +269,21 @@ public class UserAccountService : IUserAccountService
             _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
         var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
 
+        CreateAccessTokenUserDto user = new()
+        {
+            UserId = userId,
+            Email = userEmail,
+            IsVerified = true,
+            IsCreatedAccount = false,
+            IsATeacher = requestUserDto.IsATeacher,
+            IsAnExpert = requestUserDto.IsAnExpert,
+        };
+        var newToken = _tokenHelper.CreateToken(user);
+
         var query = new CreateUserAccountCommand
         {
             UserId = userId,
+            AccessToken = newToken,
             FirstName = requestUserDto.FirstName,
             LastName = requestUserDto.LastName,
             IsATeacher = requestUserDto.IsATeacher,

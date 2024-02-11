@@ -3,13 +3,11 @@ using HiClass.Application.Common.Mappings;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
 using HiClass.Domain.Entities.Communication;
-using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
-using HiClass.Domain.Entities.Main;
 
-namespace HiClass.Application.Dtos.UserDtos;
+namespace HiClass.Application.Models.User;
 
-public class UserProfileDto : IMapWith<User>
+public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
 {
     public Guid UserId { get; set; }
     public string Email { get; set; } = string.Empty;
@@ -42,12 +40,12 @@ public class UserProfileDto : IMapWith<User>
         profile.CreateMap<Country, UserProfileDto>()
             .ForMember(up => up.CountryTitle,
                 opt => opt.MapFrom(c => c.Title));
-        profile.CreateMap<Institution, InstitutionDto>()
+        profile.CreateMap<Domain.Entities.Job.Institution, InstitutionDto>()
             .ForMember(dest => dest.Address,
                 opt => opt.MapFrom(src => src.Address))
             .ForMember(dest => dest.Title,
                 opt => opt.MapFrom(src => src.Title));
-        profile.CreateMap<User, UserProfileDto>()
+        profile.CreateMap<Domain.Entities.Main.User, UserProfileDto>()
             .ForMember(up => up.UserId,
                 opt => opt.MapFrom(u => u.UserId))
             .ForMember(up => up.Email,
