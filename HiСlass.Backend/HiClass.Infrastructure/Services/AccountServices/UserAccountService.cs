@@ -16,6 +16,7 @@ using HiClass.Application.Helpers;
 using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
+using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.CreateAccount;
@@ -36,11 +37,12 @@ public class UserAccountService : IUserAccountService
     private readonly IConfiguration _configuration;
     private readonly IImageHandlerService _imageHandlerService;
     private readonly IMapper _mapper;
+    private readonly ISharedLessonDbContext _context;
 
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, IMapper mapper)
+        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, IMapper mapper, ISharedLessonDbContext context)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -49,6 +51,7 @@ public class UserAccountService : IUserAccountService
         _dataUserHelper = dataUserHelper;
         _imageHandlerService = imageHandlerService;
         _mapper = mapper;
+        _context = context;
     }
 
     public async Task<IEnumerable<UserProfileDto>> GetAllUsers(IMediator mediator)
@@ -76,21 +79,16 @@ public class UserAccountService : IUserAccountService
         var accessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(registeredUser);
         var accessToken = _tokenHelper.CreateToken(accessTokenUserDto);
 
-        await Task.Delay(20);
-        var command = new UpdateUserAccessTokenCommand()
-        {
-            UserId = registeredUser.UserId,
-            AccessToken = accessToken
-        };
-
-        var userWithAccessToken = await mediator.Send(command);
+        registeredUser.AccessToken = accessToken;
+        
+        await _context.SaveChangesAsync(CancellationToken.None);
         
         await _emailHandlerService.SendVerificationEmail(registeredUser.Email,
             registeredUser.VerificationCode);
 
         var loginResponseDto = new LoginResponseDto
         {
-            AccessToken = userWithAccessToken.AccessToken,
+            AccessToken = registeredUser.AccessToken,
             IsCreatedAccount = false
         };
         
@@ -104,22 +102,17 @@ public class UserAccountService : IUserAccountService
         _userHelper.CheckUserVerification(user);
         PasswordHelper.VerifyPasswordHash(user, requestUserDto.Password);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
-
         var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
-
         var newToken = _tokenHelper.CreateToken(tokenUserDto);
-
-        await mediator.Send(new UpdateUserAccessTokenCommand()
-        {
-            UserId = user.UserId,
-            AccessToken = newToken
-        });
+        
+        user.AccessToken = newToken;
+        
+        await _context.SaveChangesAsync(CancellationToken.None);
 
         var loginResponseDto = new LoginResponseDto
         {
-            AccessToken = userProfileDto.AccessToken,
-            IsCreatedAccount = userProfileDto.IsCreateAccount
+            AccessToken = user.AccessToken,
+            IsCreatedAccount = user.IsCreatedAccount
         };
         return loginResponseDto;
     }
