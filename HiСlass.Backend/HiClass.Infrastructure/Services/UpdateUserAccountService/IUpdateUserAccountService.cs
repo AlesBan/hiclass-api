@@ -1,4 +1,5 @@
 using HiClass.Application.Dtos.UserDtos;
+using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Update;
 using MediatR;
 using Microsoft.AspNetCore.Http;

@@ -27,7 +27,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
         var userEmail = request.Email;
         var userPassword = request.Password;
 
-        var userExists = await _context.Users
+        var userExists = await _context.Users.AsNoTracking()
             .AnyAsync(x => x.Email == userEmail, cancellationToken);
 
         if (userExists)
@@ -42,8 +42,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
 
         PasswordHelper.SetUserPasswordHash(newUser, userPassword);
 
-        newUser.AccessToken = _tokenHelper.CreateToken(newUser);
-        newUser.VerificationCode = _userHelper.GenerateVerificationCode();
+        newUser.VerificationCode = request.VerificationCode;
 
         await AddUserToDataBase(newUser, cancellationToken);
 

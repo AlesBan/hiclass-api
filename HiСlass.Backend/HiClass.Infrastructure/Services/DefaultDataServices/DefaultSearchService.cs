@@ -4,6 +4,7 @@ using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Search;
+using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

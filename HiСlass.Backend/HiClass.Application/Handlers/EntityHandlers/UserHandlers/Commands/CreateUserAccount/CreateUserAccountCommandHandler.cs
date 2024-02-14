@@ -46,9 +46,7 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
         user.IsCreatedAccount = true;
         user.CreatedAt = DateTime.UtcNow;
         
-        var newToken = _tokenHelper.CreateToken(user);
-
-        user.AccessToken = newToken;
+        user.AccessToken = request.AccessToken;
 
         _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken);

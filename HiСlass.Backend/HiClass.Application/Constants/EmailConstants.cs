@@ -4,10 +4,10 @@ namespace HiClass.Application.Constants;
 
 public static class EmailConstants
 {
-    public const string EmailConfirmationSubject = "HiClass Confirmation";
+    public const string EmailVerificationSubject = "HiClass Verification";
 
-    public const string EmailConfirmationMessage = "Thank you for joining our class! We are glad to have you on board. " +
-                                                   "Enter this code on the website page to confirm your email address." +
+    public const string EmailVerificationMessage = "Thank you for joining our class! We are glad to have you on board. " +
+                                                   "Enter this code on the website page to verify your email address." +
                                                    "If you didn't sign up, please ignore this message.\n\n";
 
     public const string EmailInvitationSubject = "HiClass Invitation";

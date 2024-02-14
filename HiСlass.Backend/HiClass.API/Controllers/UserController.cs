@@ -3,7 +3,6 @@ using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Dtos.UserDtos.ResetPassword;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Infrastructure.Services.AccountServices;
 using Microsoft.AspNetCore.Authorization;
@@ -42,13 +41,20 @@ public class UserController : BaseController
         return ResponseHelper.GetOkResult(result);
     }
 
-    [HttpGet("confirm-email")]
-    public async Task<IActionResult> ConfirmEmail(string verificationCode)
+    [HttpPost("verify-email")]
+    public async Task<IActionResult> VerifyEmail(string verificationCode)
     {
-        var result = await _userAccountService.ConfirmEmail(UserId, verificationCode, Mediator);
+        var result = await _userAccountService.VerifyEmail(UserId, verificationCode, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
-
+    
+    [HttpPost("reverify-email")]
+    public async Task<IActionResult> ReVerifyEmail()
+    {
+        await _userAccountService.CreateAndReSendVerificationCode(UserId, Mediator);
+        return ResponseHelper.GetOkResult();
+    }
+    
     [Authorize]
     [CheckUserCreateAccountAbility]
     [HttpPost("create-account")]

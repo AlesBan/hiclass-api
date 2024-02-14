@@ -24,8 +24,8 @@ public class EmailHandlerService : IEmailHandlerService
     public async Task SendVerificationEmail(string userEmail,
         string verificationCode)
     {
-        var message = EmailConstants.EmailConfirmationMessage + verificationCode;
-        await SendAsync(userEmail, EmailConstants.EmailConfirmationSubject,
+        var message = EmailConstants.EmailVerificationMessage + verificationCode;
+        await SendAsync(userEmail, EmailConstants.EmailVerificationSubject,
             message);
     }
 

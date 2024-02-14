@@ -1,5 +1,6 @@
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Models.Class;
+using HiClass.Application.Models.User;
 
 namespace HiClass.Application.Models.Search;
 

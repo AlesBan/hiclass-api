@@ -4,7 +4,7 @@ using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserToken;
+namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 
 public class UpdateUserAccessTokenCommandHandler : IRequestHandler<UpdateUserAccessTokenCommand, User>
 {
@@ -17,15 +17,15 @@ public class UpdateUserAccessTokenCommandHandler : IRequestHandler<UpdateUserAcc
 
     public async Task<User> Handle(UpdateUserAccessTokenCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users
+        var user = await _context.Users.AsNoTracking()
             .FirstOrDefaultAsync(u => u.UserId == request.UserId, cancellationToken);
 
         if (user == null)
             throw new UserNotFoundException(request.UserId);
 
-        user.AccessToken = request.VerificationToken;
-
-        _context.Users.Attach(user).State = EntityState.Modified;
+        user.AccessToken = request.AccessToken;
+        
+        _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
 
         var verifiedUser = _context

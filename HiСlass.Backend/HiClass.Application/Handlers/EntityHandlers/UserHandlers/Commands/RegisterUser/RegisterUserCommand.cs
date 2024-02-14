@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
@@ -5,12 +6,7 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Regi
 
 public class RegisterUserCommand : IRequest<User>
 {
-    public string Email { get; set; } 
-    public string Password { get; set; }
-
-    public RegisterUserCommand(string email, string password)
-    {
-        Email = email;
-        Password = password;
-    }
+    [Required] public string Email { get; set; } = null!;
+    [Required] public string Password { get; set; } = null!;
+    [Required] public string VerificationCode { get; set; } = null!;
 }
