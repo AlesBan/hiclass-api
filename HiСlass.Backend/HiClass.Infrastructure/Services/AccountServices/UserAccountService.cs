@@ -5,9 +5,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserResetToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetAllUsers;
@@ -24,6 +22,7 @@ using HiClass.Application.Models.User.Login;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.Services.AccountServices;
@@ -107,6 +106,7 @@ public class UserAccountService : IUserAccountService
         
         user.AccessToken = newToken;
         
+        _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(CancellationToken.None);
 
         var loginResponseDto = new LoginResponseDto
@@ -160,17 +160,16 @@ public class UserAccountService : IUserAccountService
         var accessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
         var newAccessToken = _tokenHelper.CreateToken(accessTokenUserDto);
 
-        var command = new UpdateUserResetPasswordInfoCommand()
-        {
-            UserId = user.UserId,
-            AccessToken = newAccessToken
-        };
+        user.PasswordResetToken = newAccessToken;
+        user.ResetTokenExpires = DateTime.UtcNow.AddHours(4);
+        
+        user.PasswordResetCode = _userHelper.GeneratePasswordResetCode();
+        
+        _context.Users.Attach(user).State = EntityState.Modified;
+        await _context.SaveChangesAsync(CancellationToken.None);
 
-        var updatedUser = await mediator.Send(command);
-
-
-        await _emailHandlerService.SendResetPasswordEmail(user.Email, updatedUser.PasswordResetCode);
-        return updatedUser.PasswordResetToken;
+        await _emailHandlerService.SendResetPasswordEmail(user.Email, user.PasswordResetCode);
+        return user.PasswordResetToken;
     }
 
     public async Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator)
@@ -185,6 +184,7 @@ public class UserAccountService : IUserAccountService
     {
         var user = await _userHelper.GetUserById(userId, mediator);
         _userHelper.CheckResetTokenExpiration(user);
+        
         await mediator.Send(
             new UpdateUserPasswordCommand()
             {
@@ -195,11 +195,10 @@ public class UserAccountService : IUserAccountService
         var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
         var newToken = _tokenHelper.CreateToken(tokenUserDto);
 
-        await mediator.Send(new UpdateUserAccessTokenCommand
-        {
-            UserId = user.UserId,
-            AccessToken = newToken
-        });
+        
+        user.AccessToken = newToken;
+        await _context.SaveChangesAsync(CancellationToken.None);
+        
 
         var loginResponseDtoDto = new LoginResponseDto
         {
