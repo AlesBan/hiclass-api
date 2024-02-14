@@ -16,7 +16,7 @@ public interface IUserAccountService
     public Task<LoginResponseDto> LoginUser(UserLoginRequestDto requestUserDto, IMediator mediator);
     public Task<string> VerifyEmail(Guid userId, string token, IMediator mediator);
     public Task CreateAndReSendVerificationCode(Guid userId, IMediator mediator);
-    public Task<string> ForgotPassword(string userEmail, IMediator mediator);
+    public Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator);
     public Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator);
     public Task<LoginResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto, IMediator mediator);
     public Task<UserProfileDto> CreateUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto, IMediator mediator);

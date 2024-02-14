@@ -153,7 +153,7 @@ public class UserAccountService : IUserAccountService
             newVerificationCode);
     }
 
-    public async Task<string> ForgotPassword(string userEmail, IMediator mediator)
+    public async Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator)
     {
         var user = await _userHelper.GetUserByEmail(userEmail, mediator);
 
@@ -169,7 +169,12 @@ public class UserAccountService : IUserAccountService
         await _context.SaveChangesAsync(CancellationToken.None);
 
         await _emailHandlerService.SendResetPasswordEmail(user.Email, user.PasswordResetCode);
-        return user.PasswordResetToken;
+        
+        return new ForgotPasswordResponseDto()
+        {
+            PasswordResetCode = user.PasswordResetCode,
+            PasswordResetToken = newAccessToken
+        };
     }
 
     public async Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator)
