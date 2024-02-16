@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HiClass.Application.Dtos.UserDtos.ResetPassword;
+namespace HiClass.Application.Models.User.PasswordHandling;
 
 public class ResetPasswordRequestDto
 {

@@ -2,8 +2,9 @@ using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Dtos.UserDtos.ResetPassword;
+using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.CreateAccount;
+using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Infrastructure.Services.AccountServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,8 +43,9 @@ public class UserController : BaseController
     }
 
     [HttpPost("verify-email")]
-    public async Task<IActionResult> VerifyEmail([FromBody] string verificationCode)
+    public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationRequestDto requestDto)
     {
+        var verificationCode = requestDto.VerificationCode;
         var result = await _userAccountService.VerifyEmail(UserId, verificationCode, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
@@ -65,16 +67,18 @@ public class UserController : BaseController
     }
 
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromBody] string email)
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto requestDto)
     {
+        var email = requestDto.Email;
         var result = await _userAccountService.ForgotPassword(email, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
     [HttpPost("check-reset-password-code")]
-    public async Task<IActionResult> CheckResetPasswordCode([FromBody] string code)
+    public async Task<IActionResult> CheckResetPasswordCode([FromBody] CheckResetPasswordCodeDto resetPasswordCodeDto)
     {
-        await _userAccountService.CheckResetPasswordCode(UserId, code, Mediator);
+        var resetCode = resetPasswordCodeDto.ResetCode;
+        await _userAccountService.CheckResetPasswordCode(UserId, resetCode, Mediator);
         return ResponseHelper.GetOkResult();
     }
 
