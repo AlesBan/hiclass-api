@@ -1,6 +1,5 @@
 using AutoMapper;
 using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Dtos.UserDtos.ResetPassword;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
@@ -19,6 +18,7 @@ using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.Login;
+using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;

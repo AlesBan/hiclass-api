@@ -1,9 +1,9 @@
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Dtos.UserDtos.ResetPassword;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.Login;
+using HiClass.Application.Models.User.PasswordHandling;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.AccountServices;
