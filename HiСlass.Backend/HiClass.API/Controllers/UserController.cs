@@ -42,7 +42,7 @@ public class UserController : BaseController
     }
 
     [HttpPost("verify-email")]
-    public async Task<IActionResult> VerifyEmail(string verificationCode)
+    public async Task<IActionResult> VerifyEmail([FromBody] string verificationCode)
     {
         var result = await _userAccountService.VerifyEmail(UserId, verificationCode, Mediator);
         return ResponseHelper.GetOkResult(result);
@@ -65,14 +65,14 @@ public class UserController : BaseController
     }
 
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword(string email)
+    public async Task<IActionResult> ForgotPassword([FromBody] string email)
     {
         var result = await _userAccountService.ForgotPassword(email, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
     [HttpPost("check-reset-password-code")]
-    public async Task<IActionResult> CheckResetPasswordCode(string code)
+    public async Task<IActionResult> CheckResetPasswordCode([FromBody] string code)
     {
         await _userAccountService.CheckResetPasswordCode(UserId, code, Mediator);
         return ResponseHelper.GetOkResult();
