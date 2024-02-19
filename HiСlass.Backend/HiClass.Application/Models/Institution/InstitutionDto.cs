@@ -4,6 +4,7 @@ namespace HiClass.Application.Models.Institution;
 
 public class InstitutionDto
 {
+
     public List<string> Types { get; set; }
     public string Address { get; set; }
     public string Title { get; set; }

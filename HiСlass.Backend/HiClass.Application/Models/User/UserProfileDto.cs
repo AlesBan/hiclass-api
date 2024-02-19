@@ -80,9 +80,10 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(c => c.Country.Title))
             .ForMember(dest => dest.Institution,
                 opt => opt.MapFrom(src => new InstitutionDto
-                {
-                    Address = src.Institution.Address,
-                    Title = src.Institution.Title,
-                }));
+                    {
+                        Address = src.Institution.Address,
+                        Title = src.Institution.Title
+                    }
+                ));
     }
 }

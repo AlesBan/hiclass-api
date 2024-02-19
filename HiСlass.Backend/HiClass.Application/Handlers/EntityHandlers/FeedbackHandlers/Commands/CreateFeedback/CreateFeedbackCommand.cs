@@ -3,8 +3,12 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.CreateFeedback;
 
-public class CreateFeedbackCommand : IRequest<Guid>
+public class CreateFeedbackCommand : IRequest<Unit>
 {
+    public Guid UserSenderId { get; set; }
+    public Guid UserRecipientId { get; set; }
+    public Guid ClassSenderId { get; set; }
+    public Guid ClassReceiverId { get; set; }
     public Guid InvitationId { get; set; }
     public bool WasTheJointLesson { get; set; }
     public string? ReasonForNotConducting { get; set; }

@@ -5,10 +5,8 @@ using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.UpdateC
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Infrastructure.Services.ImageServices;
-using HiClass.Infrastructure.Services.ImageServices.Aws;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 
@@ -88,7 +86,7 @@ public class ClassService : IClassService
     public async Task<ClassProfileDto> UpdateClass(Guid classId, UpdateClassRequestDto requestClassDto,
         IMediator mediator)
     {
-        var file = requestClassDto.ImageFormFile;
+        var file = requestClassDto.FormFileImage;
         var awsS3UpdateImageResponseDto = await _imageHandlerService.UpdateImageAsync(file,
             _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"], classId.ToString());
         var imageUrl = awsS3UpdateImageResponseDto.ImageUrl;

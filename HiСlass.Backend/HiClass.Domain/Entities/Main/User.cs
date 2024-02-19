@@ -38,7 +38,7 @@ public class User
     public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();
     public ICollection<Feedback> ReceivedFeedbacks { get; set; } = new List<Feedback>();
     public ICollection<Feedback> SentFeedbacks { get; set; } = new List<Feedback>();
-    public double Rating { get; set; }
+    public double Rating { get; set; }  
     public string? Description { get; set; } = string.Empty;
     public string? ImageUrl { get; set; } = string.Empty;
     public string? BannerPhotoUrl { get; set; } = string.Empty;

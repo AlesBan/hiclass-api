@@ -14,11 +14,8 @@ public class EmailHandlerService : IEmailHandlerService
 
     public EmailHandlerService(IConfiguration configuration)
     {
-        _emailCredentials = new EmailManagerCredentials
-        {
-            Email = configuration["EMAIL_MANAGER:EMAIL"],
-            Password = configuration["EMAIL_MANAGER:PASSWORD"]
-        };
+        _emailCredentials = new EmailManagerCredentials(configuration["EMAIL_MANAGER:EMAIL"],
+            configuration["EMAIL_MANAGER:PASSWORD"]);
     }
 
     public async Task SendVerificationEmail(string userEmail,

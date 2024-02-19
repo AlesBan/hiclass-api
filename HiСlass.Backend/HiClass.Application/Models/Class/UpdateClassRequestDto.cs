@@ -1,12 +1,18 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Application.Models.Class;
 
 public class UpdateClassRequestDto
 {
-    public string Title { get; set; } = string.Empty;
-    public int GradeNumber { get; set; }
-    public IFormFile ImageFormFile  { get; set; } = null!;
-    public IEnumerable<string> LanguageTitles { get; set; } = new List<string>();
-    public IEnumerable<string> DisciplineTitles { get; set; } = new List<string>();
+    public UpdateClassRequestDto(int gradeNumber)
+    {
+        GradeNumber = gradeNumber;
+    }
+
+    [Required] public string Title { get; } = null!;
+    [Required] public int GradeNumber { get; }
+    [Required] public IFormFile FormFileImage { get; } = null!;
+    [Required] public IEnumerable<string> LanguageTitles { get; } = null!;
+    [Required] public IEnumerable<string> DisciplineTitles { get; } = null!;
 }

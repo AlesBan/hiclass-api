@@ -1,7 +1,5 @@
-using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Infrastructure.Services.ClassServices;
 using Microsoft.AspNetCore.Authorization;

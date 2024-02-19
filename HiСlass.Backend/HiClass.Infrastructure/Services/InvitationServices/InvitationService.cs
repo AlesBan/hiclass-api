@@ -1,9 +1,11 @@
 using HiClass.Application.Constants;
+using HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.CreateFeedback;
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.Invitation;
+using HiClass.Application.Models.Invitation.Feedback;
 using HiClass.Domain.Enums;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using MediatR;
@@ -26,6 +28,7 @@ public class InvitationService : IInvitationService
     {
         var userReceiverId = await _userHelper.GetUserIdByClassId(requestInvitationDto.ClassReceiverId, mediator);
         var dateOfInvitation = DateTime.Parse(requestInvitationDto.DateOfInvitation);
+
         var command = new CreateInvitationCommand
         {
             UserSenderId = userSenderId,
@@ -39,6 +42,25 @@ public class InvitationService : IInvitationService
         await mediator.Send(command);
 
         await SendInvitationEmail(userSenderId, userReceiverId, dateOfInvitation, mediator);
+    }
+
+    public async Task SendFeedback(Guid userSenderId, IMediator mediator,
+        CreateFeedbackRequestDto sendFeedbackRequestDto)
+    {
+        var command = new CreateFeedbackCommand
+        {
+            UserSenderId = userSenderId,
+            UserRecipientId = sendFeedbackRequestDto.UserReceiverId,
+            ClassSenderId = sendFeedbackRequestDto.ClassSenderId,
+            ClassReceiverId = sendFeedbackRequestDto.ClassReceiverId,
+            InvitationId = sendFeedbackRequestDto.InvitationId,
+            Rating = sendFeedbackRequestDto.Rating,
+            WasTheJointLesson = sendFeedbackRequestDto.WasTheJointLesson,
+            FeedbackText = sendFeedbackRequestDto.FeedbackText,
+            ReasonForNotConducting = sendFeedbackRequestDto.ReasonForNotConducting
+        };
+        
+        await mediator.Send(command);
     }
 
     private async Task SendInvitationEmail(Guid userSenderId, Guid userReceiverId,

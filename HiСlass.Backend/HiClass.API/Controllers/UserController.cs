@@ -59,7 +59,7 @@ public class UserController : BaseController
     
     [Authorize]
     [CheckUserCreateAccountAbility]
-    [HttpPost("create-account")]
+    [HttpPut("create-account")]
     public async Task<IActionResult> CreateAccount([FromForm] CreateUserAccountRequestDto requestUserDto)
     {
         var result = await _userAccountService.CreateUserAccount(UserId, requestUserDto, Mediator);
