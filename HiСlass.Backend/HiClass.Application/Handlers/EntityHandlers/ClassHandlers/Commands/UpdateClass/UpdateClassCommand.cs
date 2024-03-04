@@ -10,5 +10,4 @@ public class UpdateClassCommand : IRequest<Class>
     public int GradeNumber { get; set; }
     public IEnumerable<string> DisciplineTitles { get; set; } = new List<string>();
     public IEnumerable<string> LanguageTitles { get; set; } = new List<string>();
-    public string? ImageUrl { get; set; }
 }

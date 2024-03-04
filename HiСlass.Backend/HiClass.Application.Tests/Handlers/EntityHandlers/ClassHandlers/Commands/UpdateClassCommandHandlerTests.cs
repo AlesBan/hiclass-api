@@ -36,7 +36,6 @@ public class UpdateClassCommandHandlerTests : TestCommonBase
         {
             ClassId = @class.ClassId,
             Title = newTitle,
-            ImageUrl = newPhotoUrl,
             DisciplineTitles = newDisciplines,
             LanguageTitles = newLanguages,
             GradeNumber = newGrade.GradeNumber,
@@ -46,7 +45,6 @@ public class UpdateClassCommandHandlerTests : TestCommonBase
         var result = await Context.Classes.FirstOrDefaultAsync(c =>
             c.ClassId == @class.ClassId &&
             c.Title == newTitle &&
-            c.ImageUrl == newPhotoUrl &&
             c.Grade == newGrade &&
             c.ClassDisciplines.Count() == newDisciplines.Count() &&
             c.ClassLanguages.Count == newLanguages.Count);

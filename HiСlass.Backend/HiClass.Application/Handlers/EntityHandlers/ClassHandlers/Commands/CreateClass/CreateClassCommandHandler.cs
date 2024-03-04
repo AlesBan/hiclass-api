@@ -64,7 +64,6 @@ public class CreateClassCommandHandler : IRequestHandler<CreateClassCommand, Cla
             UserId = request.UserId,
             Title = request.Title,
             GradeId = grade.GradeId,
-            ImageUrl = request.ImageUrl
         };
     }
 }

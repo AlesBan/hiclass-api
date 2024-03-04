@@ -61,8 +61,6 @@ public class UpdateClassCommandHandler : IRequestHandler<UpdateClassCommand, Cla
             
         }, cancellationToken);
 
-        @class.ImageUrl = request.ImageUrl;
-
         await Delay(20, cancellationToken);
 
         _context.Classes.Attach(@class).State = EntityState.Modified;

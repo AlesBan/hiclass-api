@@ -1,6 +1,7 @@
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Class;
+using HiClass.Application.Models.Class.UpdateClassDtos;
 using HiClass.Infrastructure.Services.ClassServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ public class ClassController : BaseController
         var result = await _classService.UpdateClass(classId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
-
+    
     [HttpDelete("delete-class/{classId:guid}")]
     public async Task<IActionResult> DeleteClass(Guid classId)
     {
