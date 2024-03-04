@@ -22,7 +22,7 @@ public class CreateFeedbackCommandHandlerTests : TestCommonBase
         var handler = new CreateFeedbackCommandHandler(Context);
 
         // Act
-        var result = await handler.Handle(new CreateFeedbackCommand
+        await handler.Handle(new CreateFeedbackCommand
         {
             InvitationId = invitation.InvitationId,
             WasTheJointLesson = wasTheJointLesson,
@@ -33,6 +33,6 @@ public class CreateFeedbackCommandHandlerTests : TestCommonBase
 
         // Assert
         Assert.NotNull(await Context.Feedbacks.FirstOrDefaultAsync(f =>
-            f.FeedbackId == result));
+            f.InvitationId == invitation.InvitationId));
     }
 }

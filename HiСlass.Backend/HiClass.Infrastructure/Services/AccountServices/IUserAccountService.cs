@@ -20,6 +20,7 @@ public interface IUserAccountService
     public Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator);
     public Task<LoginResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto, IMediator mediator);
     public Task<UserProfileDto> CreateUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto, IMediator mediator);
+    public Task<SetUserImageResponseDto> SetUserImage(Guid userId, SetUserImageRequestDto requestDto, IMediator mediator);
     public Task DeleteUser(Guid userId, IMediator mediator);
     public Task DeleteAllUsers(IMediator mediator);
     

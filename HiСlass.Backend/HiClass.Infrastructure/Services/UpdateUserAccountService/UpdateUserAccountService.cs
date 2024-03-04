@@ -4,9 +4,9 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdatePe
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateProfessionalInfo;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserEmail;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserInstitution;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Models.User;

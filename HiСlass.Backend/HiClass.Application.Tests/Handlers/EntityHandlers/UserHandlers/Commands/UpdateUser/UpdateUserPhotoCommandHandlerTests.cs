@@ -1,4 +1,4 @@
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserImage;
 using HiClass.Application.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;

@@ -1,42 +1,60 @@
 using HiClass.API.Helpers;
-using HiClass.Application.Interfaces.Services;
-using HiClass.Infrastructure.Services.ImageServices;
-using HiClass.Infrastructure.Services.ImageServices.Aws;
+using HiClass.Application.Models.Class.SetImageDtos;
+using HiClass.Application.Models.Class.UpdateClassDtos.UpdateImageDtos;
+using HiClass.Application.Models.User.CreateAccount;
+using HiClass.Application.Models.User.Update;
+using HiClass.Infrastructure.Services.AccountServices;
+using HiClass.Infrastructure.Services.ClassServices;
+using HiClass.Infrastructure.Services.UpdateUserAccountService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ImageController : ControllerBase
+    public class ImageController : BaseController
     {
-        private readonly IImageHandlerService _imageService;
-        private readonly IConfiguration _configuration;
-        
+        private readonly IUserAccountService _userAccountService;
+        private readonly IClassService _classService;
+        private readonly IUpdateUserAccountService _editUserAccountService;
 
-        public ImageController(IImageHandlerService imageService, IConfiguration configuration)
+        public ImageController(IUserAccountService userAccountService, IClassService classService,
+            IUpdateUserAccountService editUserAccountService)
         {
-            _imageService = imageService;
-            _configuration = configuration;
+            _userAccountService = userAccountService;
+            _classService = classService;
+            _editUserAccountService = editUserAccountService;
         }
 
-        [HttpPost("user/{id:guid}")]
-        public async Task<IActionResult> UploadUserImage(IFormFile file, Guid id)
+        [Authorize]
+        [HttpPut("set-user-image")]
+        public async Task<IActionResult> SetUserImage([FromForm] SetUserImageRequestDto requestUserDto)
         {
-            var pathToStore = _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"];
-
-            var result = await _imageService.UploadImageAsync(file, pathToStore, id.ToString());
-
+            var result = await _userAccountService.SetUserImage(UserId, requestUserDto, Mediator);
             return ResponseHelper.GetOkResult(result);
         }
 
-        [HttpPost("class/{id:guid}")]
-        public async Task<IActionResult> UploadClassImage(IFormFile file, Guid id)
+        [Authorize]
+        [HttpPut("set-class-image/{classId:guid}")]
+        public async Task<IActionResult> UploadClassImage([FromForm] SetClassImageRequestDto requestUserDto,
+            Guid classId)
         {
-            var pathToStore = _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"];
+            var result = await _classService.SetClassImage(classId, requestUserDto, Mediator);
+            return ResponseHelper.GetOkResult(result);
+        }
 
-            var result = await _imageService.UploadImageAsync(file, pathToStore, id.ToString());
+        [HttpPut("update-user-image")]
+        public async Task<IActionResult> EditUserImage([FromForm] UpdateImageRequestDto requestDto)
+        {
+            var result = await _editUserAccountService.UpdateUserImageAsync(UserId, requestDto, Mediator);
+            return ResponseHelper.GetOkResult(result);
+        }
 
+        [HttpPut("update-class-image/{classId:guid}")]
+        public async Task<IActionResult> SetClassImage([FromForm] UpdateClassImageRequestDto requestClassDto, Guid classId)
+        {
+            var result = await _classService.UpdateClassImage(classId, requestClassDto, Mediator);
             return ResponseHelper.GetOkResult(result);
         }
     }

@@ -4,6 +4,8 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserImage;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
@@ -15,6 +17,7 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.Images;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.Login;
@@ -38,10 +41,10 @@ public class UserAccountService : IUserAccountService
     private readonly IMapper _mapper;
     private readonly ISharedLessonDbContext _context;
 
-
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, IMapper mapper, ISharedLessonDbContext context)
+        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, IMapper mapper,
+        ISharedLessonDbContext context)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -79,9 +82,9 @@ public class UserAccountService : IUserAccountService
         var accessToken = _tokenHelper.CreateToken(accessTokenUserDto);
 
         registeredUser.AccessToken = accessToken;
-        
+
         await _context.SaveChangesAsync(CancellationToken.None);
-        
+
         await _emailHandlerService.SendVerificationEmail(registeredUser.Email,
             registeredUser.VerificationCode);
 
@@ -90,7 +93,7 @@ public class UserAccountService : IUserAccountService
             AccessToken = registeredUser.AccessToken,
             IsCreatedAccount = false
         };
-        
+
         return loginResponseDto;
     }
 
@@ -103,9 +106,9 @@ public class UserAccountService : IUserAccountService
 
         var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
         var newToken = _tokenHelper.CreateToken(tokenUserDto);
-        
+
         user.AccessToken = newToken;
-        
+
         _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(CancellationToken.None);
 
@@ -114,6 +117,7 @@ public class UserAccountService : IUserAccountService
             AccessToken = user.AccessToken,
             IsCreatedAccount = user.IsCreatedAccount
         };
+
         return loginResponseDto;
     }
 
@@ -162,14 +166,14 @@ public class UserAccountService : IUserAccountService
 
         user.PasswordResetToken = newAccessToken;
         user.ResetTokenExpires = DateTime.UtcNow.AddHours(4);
-        
+
         user.PasswordResetCode = _userHelper.GeneratePasswordResetCode();
-        
+
         _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(CancellationToken.None);
 
         await _emailHandlerService.SendResetPasswordEmail(user.Email, user.PasswordResetCode);
-        
+
         return new ForgotPasswordResponseDto()
         {
             PasswordResetCode = user.PasswordResetCode,
@@ -189,7 +193,7 @@ public class UserAccountService : IUserAccountService
     {
         var user = await _userHelper.GetUserById(userId, mediator);
         _userHelper.CheckResetTokenExpiration(user);
-        
+
         await mediator.Send(
             new UpdateUserPasswordCommand()
             {
@@ -200,10 +204,10 @@ public class UserAccountService : IUserAccountService
         var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
         var newToken = _tokenHelper.CreateToken(tokenUserDto);
 
-        
+
         user.AccessToken = newToken;
         await _context.SaveChangesAsync(CancellationToken.None);
-        
+
 
         var loginResponseDtoDto = new LoginResponseDto
         {
@@ -214,18 +218,39 @@ public class UserAccountService : IUserAccountService
     }
 
     public async Task<UserProfileDto> CreateUserAccount(Guid userId,
-        CreateUserAccountRequestDto requestUserDto,
+        CreateUserAccountRequestDto requestDto,
         IMediator mediator)
     {
         var user = await _userHelper.GetUserById(userId, mediator);
 
         _userHelper.CheckUserVerification(user);
 
-        var userWithAccount = await GetCreatedUserAccount(userId, user.Email, requestUserDto, mediator);
+        var userWithAccount = await GetCreatedUserAccount(userId, user.Email, requestDto, mediator);
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(userWithAccount);
 
         return userProfileDto;
+    }
+
+    public async Task<SetUserImageResponseDto> SetUserImage(Guid userId,
+        SetUserImageRequestDto requestDto, IMediator mediator)
+    {
+        var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestDto.ImageFormFile,
+            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
+        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
+
+        var command = new SetUserImageCommand()
+        {
+            UserId = userId,
+            ImageUrl = imageUrl
+        };
+
+        var result = await mediator.Send(command);
+
+        return new SetUserImageResponseDto()
+        {
+            ImageUrl = result
+        };
     }
 
     public async Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator)
@@ -262,10 +287,6 @@ public class UserAccountService : IUserAccountService
         var languages = await _dataUserHelper.GetLanguagesByTitles(requestUserDto.LanguageTitles, mediator);
         var grades = await _dataUserHelper.GetGradesByNumbers(requestUserDto.GradesEnumerable, mediator);
 
-        var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestUserDto.ImageFormFile,
-            _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
-        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
-
         CreateAccessTokenUserDto user = new()
         {
             UserId = userId,
@@ -290,7 +311,6 @@ public class UserAccountService : IUserAccountService
             InstitutionId = institution.InstitutionId,
             DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
             LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            ImageUrl = imageUrl,
             GradeIds = grades.Select(g => g.GradeId).ToList()
         };
 

@@ -11,5 +11,4 @@ public class CreateClassCommand : IRequest<Class>
     public int GradeNumber { get; set; }
     public IEnumerable<Guid> DisciplineIds { get; set; } = new List<Guid>();
     public IEnumerable<Guid> LanguageIds { get; set; } = new List<Guid>();
-    public string? ImageUrl { get; set; }
 }

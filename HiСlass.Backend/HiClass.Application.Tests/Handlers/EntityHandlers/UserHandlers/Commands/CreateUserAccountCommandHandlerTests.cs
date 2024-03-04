@@ -26,7 +26,6 @@ public class CreateUserAccountCommandHandlerTests : TestCommonBase
             e.InstitutionId == SharedLessonDbContextFactory.EstablishmentAId);
         var disciplines = Extensions.PickRandom(Context.Disciplines.ToList(), 3).ToList();
         var languages = Extensions.PickRandom(Context.Languages.ToList(), 2).ToList();
-        const string photoUrl = "PhotoUrl";
 
         var createUserAccountCommand = new CreateUserAccountCommand()
         {
@@ -39,7 +38,6 @@ public class CreateUserAccountCommandHandlerTests : TestCommonBase
             InstitutionId = institution!.InstitutionId,
             DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
             LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            ImageUrl = photoUrl
         };
 
         var mockTokenHelper = new Mock<ITokenHelper>();
@@ -59,8 +57,7 @@ public class CreateUserAccountCommandHandlerTests : TestCommonBase
             u.City!.CityId == cityLocation.CityId &&
             u.Institution!.InstitutionId == institution.InstitutionId &&
             u.UserDisciplines.Count() == disciplines.Count() &&
-            u.UserLanguages.Count() == languages.Count() &&
-            u.ImageUrl == photoUrl);
+            u.UserLanguages.Count() == languages.Count());
         // Assert
         Assert.NotNull(result);
     }

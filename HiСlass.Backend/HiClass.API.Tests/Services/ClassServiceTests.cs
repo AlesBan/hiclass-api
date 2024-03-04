@@ -26,7 +26,6 @@ public class ClassServiceTests : TestCommonBase
             GradeNumber = 6,
             DisciplineTitles = new List<string> { "Chemistry" },
             LanguageTitles = new List<string> { "English" },
-            FormFileImage = new FormFile(null, 0, 0, "image", "image")
         };
 
         var getDisciplinesQueryHandler = new GetDisciplinesByTitlesQueryHandler(Context);
@@ -58,8 +57,7 @@ public class ClassServiceTests : TestCommonBase
             LanguageIds = new List<Guid>
             {
                 (await Context.Languages.SingleOrDefaultAsync(l => l.Title == "English"))!.LanguageId
-            },
-            ImageUrl = "imageUrl"
+            }
         };
 
         mediatorMock.Setup(m => m.Send(It.IsAny<CreateClassCommand>(),

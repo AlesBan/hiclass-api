@@ -4,7 +4,7 @@ using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPhoto;
+namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserImage;
 
 public class UpdateUserImageCommandHandler : IRequestHandler<UpdateUserImageCommand, User>
 {

@@ -1,13 +1,13 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Application.Models.Class
 {
     public class CreateClassRequestDto
     {
-        public string Title { get; set; } = string.Empty;
-        public int GradeNumber { get; set; }
-        public IFormFile FormFileImage { get; set; }
-        public IEnumerable<string> LanguageTitles { get; set; } = new List<string>();
-        public IEnumerable<string> DisciplineTitles { get; set; } = new List<string>();
+        [Required] public string Title { get; init; } = null!;
+        [Required] public int GradeNumber { get; init; }
+        [Required] public IEnumerable<string> LanguageTitles { get; init; } = null!;
+        [Required] public IEnumerable<string> DisciplineTitles { get; init; } = null!;
     }
 }

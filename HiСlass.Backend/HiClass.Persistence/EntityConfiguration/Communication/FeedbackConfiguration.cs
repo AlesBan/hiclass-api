@@ -24,12 +24,22 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
             .WithMany(u => u.SentFeedbacks)
             .HasForeignKey(f => f.UserSenderId)
             .IsRequired();
-        
+
+        builder.HasOne(f => f.ClassSender)
+            .WithMany(c => c.SentFeedBacks)
+            .HasForeignKey(f => f.ClassSenderId)
+            .IsRequired();
+
         builder.HasOne(f => f.UserRecipient)
             .WithMany(u => u.ReceivedFeedbacks)
             .HasForeignKey(f => f.UserRecipientId)
             .IsRequired();
         
+        builder.HasOne(f => f.ClassReceiver)
+            .WithMany(c => c.ReceivedFeedBacks)
+            .HasForeignKey(f => f.ClassReceiverId)
+            .IsRequired();
+
         builder.Property(f => f.WasTheJointLesson)
             .IsRequired();
 

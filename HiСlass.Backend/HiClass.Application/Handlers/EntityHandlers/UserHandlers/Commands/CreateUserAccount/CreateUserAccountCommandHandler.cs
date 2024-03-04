@@ -41,7 +41,6 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
         user.CityId = request.CityId;
         user.CountryId = request.CountryId;
         user.InstitutionId = request.InstitutionId;
-        user.ImageUrl = request.ImageUrl;
 
         user.IsCreatedAccount = true;
         user.CreatedAt = DateTime.UtcNow;
