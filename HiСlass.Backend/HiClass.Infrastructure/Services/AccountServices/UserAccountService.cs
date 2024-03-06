@@ -292,10 +292,11 @@ public class UserAccountService : IUserAccountService
             UserId = userId,
             Email = userEmail,
             IsVerified = true,
-            IsCreatedAccount = false,
+            IsCreatedAccount = true,
             IsATeacher = requestUserDto.IsATeacher,
             IsAnExpert = requestUserDto.IsAnExpert,
         };
+        
         var newToken = _tokenHelper.CreateToken(user);
 
         var query = new CreateUserAccountCommand

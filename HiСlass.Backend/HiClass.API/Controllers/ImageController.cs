@@ -43,14 +43,16 @@ namespace HiClass.API.Controllers
             var result = await _classService.SetClassImage(classId, requestUserDto, Mediator);
             return ResponseHelper.GetOkResult(result);
         }
-
+        
+        [Authorize]
         [HttpPut("update-user-image")]
         public async Task<IActionResult> EditUserImage([FromForm] UpdateImageRequestDto requestDto)
         {
             var result = await _editUserAccountService.UpdateUserImageAsync(UserId, requestDto, Mediator);
             return ResponseHelper.GetOkResult(result);
         }
-
+        
+        [Authorize]
         [HttpPut("update-class-image/{classId:guid}")]
         public async Task<IActionResult> SetClassImage([FromForm] UpdateClassImageRequestDto requestClassDto, Guid classId)
         {
