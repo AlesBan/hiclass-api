@@ -22,13 +22,15 @@ public class NotEqualAttribute : ValidationAttribute
 
         if (otherPropertyInfo == null)
             throw new EqualityInvitationPropertyException(_propertyName);
-        
+
         var otherPropertyValue = otherPropertyInfo.GetValue(validationContext
             .ObjectInstance);
-        
+
         if (otherPropertyValue == null)
             throw new EqualityInvitationPropertyException(_propertyName);
 
-        return (Equals(value, otherPropertyValue) ? throw new EqualityInvitationPropertyException(_propertyName): ValidationResult.Success) ?? throw new InvalidOperationException();
+        return Equals(value, otherPropertyValue)
+            ? throw new EqualityInvitationPropertyException(_propertyName)
+            : ValidationResult.Success;
     }
 }

@@ -26,11 +26,8 @@ public class InvitationController : BaseController
     [HttpPost("create-invitation")]
     public async Task<IActionResult> CreateInvitation([FromBody] CreateInvitationRequestDto createInvitationRequestDto)
     {
-        var emailCredentials = new EmailManagerCredentials(_configuration["EMAIL_MANAGER:EMAIL"],
-            _configuration["EMAIL_MANAGER:PASSWORD"]);
-
-        await _invitationService.CreateInvitation(emailCredentials, UserId, Mediator, createInvitationRequestDto);
-        return ResponseHelper.GetOkResult();
+        var result = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
+        return ResponseHelper.GetOkResult(result);
     }
 
     [HttpPost("send-feedback")]

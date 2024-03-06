@@ -6,6 +6,7 @@ using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
 using HiClass.Application.Models.Invitation;
 using HiClass.Application.Models.Invitation.Feedback;
+using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using MediatR;
@@ -23,7 +24,7 @@ public class InvitationService : IInvitationService
         _userHelper = userHelper;
     }
 
-    public async Task CreateInvitation(EmailManagerCredentials credentials, Guid userSenderId, IMediator mediator,
+    public async Task<Invitation> CreateInvitation(Guid userSenderId, IMediator mediator,
         CreateInvitationRequestDto requestInvitationDto)
     {
         var userReceiverId = await _userHelper.GetUserIdByClassId(requestInvitationDto.ClassReceiverId, mediator);
@@ -39,9 +40,11 @@ public class InvitationService : IInvitationService
             Status = InvitationStatuses.Pending.ToString(),
             InvitationText = requestInvitationDto.InvitationText
         };
-        await mediator.Send(command);
+        var invitation = await mediator.Send(command);
 
         await SendInvitationEmail(userSenderId, userReceiverId, dateOfInvitation, mediator);
+        
+        return invitation;
     }
 
     public async Task SendFeedback(Guid userSenderId, IMediator mediator,
