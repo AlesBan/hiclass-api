@@ -12,9 +12,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ISharedLessonDbContext, SharedLessonDbContext>();
 
-        
-        var connection =
-             "Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=postgres;Integrated Security=True;Pooling=True;";
+        var connection = configuration["CONNECTIONSTRINGS:DB_CONNECTION"];
         
         services.AddEntityFrameworkNpgsql()
             .AddDbContext<SharedLessonDbContext>(options =>
