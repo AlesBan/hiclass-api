@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
@@ -6,7 +7,10 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Regi
 
 public class RegisterUserCommand : IRequest<User>
 {
-    [Required] public string Email { get; set; } = null!;
-    [Required] public string Password { get; set; } = null!;
-    [Required] public string VerificationCode { get; set; } = null!;
+    public RegisterUserCommand(UserRegisterRequestDto userRegisterRequestDto)
+    {
+        UserRegisterRequestDto = userRegisterRequestDto;
+    }
+
+    public UserRegisterRequestDto UserRegisterRequestDto  { get; set; }
 }

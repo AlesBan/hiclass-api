@@ -1,17 +1,17 @@
 version: '3.9'
 services:
-  hiclass-db:
+  postgres:
     image: postgres:latest
-    container_name: hiclass-db
+    container_name: postgres
     ports:
       - "5432:5432"
-    env_file:
-      - .env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
+    env_file:
+      - .env
     networks:
       - default
   hiclass:
@@ -22,8 +22,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "7280:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
     networks:
       - default
-
+    

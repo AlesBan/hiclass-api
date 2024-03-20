@@ -1,6 +1,7 @@
 using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Models.User;
+using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;

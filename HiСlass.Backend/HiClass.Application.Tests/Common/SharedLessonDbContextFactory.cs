@@ -93,14 +93,12 @@ public class SharedLessonDbContextFactory
             {
                 UserId = UserRegisteredId,
                 Email = "emailR",
-                // Password = "passwordR",
                 IsCreatedAccount = false
             },
             new User
             {
                 UserId = UserAId,
                 Email = "emailA",
-                // Password = "passwordA",
                 IsCreatedAccount = true,
                 FirstName = "FirstNameA",
                 LastName = "LastNameA",

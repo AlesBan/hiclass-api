@@ -61,6 +61,13 @@ public class UserHelper : IUserHelper
         }
     }
 
+    public void CheckUserCreateAccountAbility(User user)
+    {
+        if (user.IsCreatedAccount)
+        {
+            throw new UserAlreadyHasAccountException(user.UserId);
+        }
+    }
 
 
     public async Task<UserProfileDto> MapUserToUserProfileDto(User user)

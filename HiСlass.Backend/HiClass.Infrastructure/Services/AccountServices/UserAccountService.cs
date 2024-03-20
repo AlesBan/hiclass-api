@@ -3,22 +3,21 @@ using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserImage;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
-using HiClass.Application.Helpers;
 using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.Images;
 using HiClass.Application.Models.User;
+using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
@@ -68,22 +67,8 @@ public class UserAccountService : IUserAccountService
 
     public async Task<LoginResponseDto> RegisterUser(UserRegisterRequestDto requestUserDto, IMediator mediator)
     {
-        var verificationCode = _userHelper.GenerateVerificationCode();
-
         var registeredUser = await mediator.Send(
-            new RegisterUserCommand()
-            {
-                Email = requestUserDto.Email,
-                Password = requestUserDto.Password,
-                VerificationCode = verificationCode,
-            });
-
-        var accessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(registeredUser);
-        var accessToken = _tokenHelper.CreateToken(accessTokenUserDto);
-
-        registeredUser.AccessToken = accessToken;
-
-        await _context.SaveChangesAsync(CancellationToken.None);
+            new RegisterUserCommand(requestUserDto));
 
         await _emailHandlerService.SendVerificationEmail(registeredUser.Email,
             registeredUser.VerificationCode);
@@ -99,24 +84,9 @@ public class UserAccountService : IUserAccountService
 
     public async Task<LoginResponseDto> LoginUser(UserLoginRequestDto requestUserDto, IMediator mediator)
     {
-        var user = await _userHelper.GetUserByEmail(requestUserDto.Email, mediator);
+        var command = new LoginUserCommand(requestUserDto);
 
-        _userHelper.CheckUserVerification(user);
-        PasswordHelper.VerifyPasswordHash(user, requestUserDto.Password);
-
-        var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
-        var newToken = _tokenHelper.CreateToken(tokenUserDto);
-
-        user.AccessToken = newToken;
-
-        _context.Users.Attach(user).State = EntityState.Modified;
-        await _context.SaveChangesAsync(CancellationToken.None);
-
-        var loginResponseDto = new LoginResponseDto
-        {
-            AccessToken = user.AccessToken,
-            IsCreatedAccount = user.IsCreatedAccount
-        };
+        var loginResponseDto = await mediator.Send(command);
 
         return loginResponseDto;
     }
@@ -225,6 +195,8 @@ public class UserAccountService : IUserAccountService
 
         _userHelper.CheckUserVerification(user);
 
+        _userHelper.CheckUserCreateAccountAbility(user);
+
         var userWithAccount = await GetCreatedUserAccount(userId, user.Email, requestDto, mediator);
 
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(userWithAccount);
@@ -296,7 +268,7 @@ public class UserAccountService : IUserAccountService
             IsATeacher = requestUserDto.IsATeacher,
             IsAnExpert = requestUserDto.IsAnExpert,
         };
-        
+
         var newToken = _tokenHelper.CreateToken(user);
 
         var query = new CreateUserAccountCommand
