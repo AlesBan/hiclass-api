@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HiClass.Application.Dtos.UserDtos.Authentication;
+namespace HiClass.Application.Models.User.Authentication;
 
 public class UserLoginRequestDto
 {

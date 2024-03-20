@@ -3,6 +3,7 @@ using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Models.User;
+using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Infrastructure.Services.AccountServices;

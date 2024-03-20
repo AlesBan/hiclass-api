@@ -1,8 +1,10 @@
+using AutoMapper;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Helpers;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
+using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,19 +15,21 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
 {
     private readonly ISharedLessonDbContext _context;
     private readonly ITokenHelper _tokenHelper;
+    private readonly IMapper _mapper;
     private readonly IUserHelper _userHelper;
 
-    public RegisterUserCommandHandler(ISharedLessonDbContext context, ITokenHelper tokenHelper, IUserHelper userHelper)
+    public RegisterUserCommandHandler(ISharedLessonDbContext context, ITokenHelper tokenHelper, IMapper mapper, IUserHelper userHelper)
     {
         _context = context;
         _tokenHelper = tokenHelper;
+        _mapper = mapper;
         _userHelper = userHelper;
     }
 
     public async Task<User> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var userEmail = request.Email;
-        var userPassword = request.Password;
+        var userEmail = request.UserRegisterRequestDto.Email;
+        var userPassword = request.UserRegisterRequestDto.Password;
 
         var userExists = await _context.Users.AsNoTracking()
             .AnyAsync(x => x.Email == userEmail, cancellationToken);
@@ -41,8 +45,16 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
         };
 
         PasswordHelper.SetUserPasswordHash(newUser, userPassword);
+        
+        var verificationCode = _userHelper.GenerateVerificationCode();
+        newUser.VerificationCode = verificationCode;
+        
+        var accessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(newUser);
+        var accessToken = _tokenHelper.CreateToken(accessTokenUserDto);
 
-        newUser.VerificationCode = request.VerificationCode;
+        newUser.AccessToken = accessToken;
+
+        await _context.SaveChangesAsync(CancellationToken.None);
 
         await AddUserToDataBase(newUser, cancellationToken);
 
