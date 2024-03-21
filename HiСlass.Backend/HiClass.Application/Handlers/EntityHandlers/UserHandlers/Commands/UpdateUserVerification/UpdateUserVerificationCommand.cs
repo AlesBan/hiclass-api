@@ -4,9 +4,8 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 
-public class UpdateUserVerificationCommand : IRequest<User>
+public class UpdateUserVerificationCommand : IRequest<string>
 {
     [Required] public Guid UserId { get; set; }
     [Required] public string VerificationCode { get; set; } = null!;
-    [Required] public string AccessToken { get; set; } = null!;
 }

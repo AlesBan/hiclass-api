@@ -16,9 +16,12 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.Class.SetImageDtos;
+using HiClass.Application.Models.Images;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
+using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Domain.Entities.Main;
@@ -42,8 +45,8 @@ public class UserAccountService : IUserAccountService
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, IMapper mapper,
-        ISharedLessonDbContext context)
+        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, 
+        IMapper mapper, ISharedLessonDbContext context)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -58,7 +61,7 @@ public class UserAccountService : IUserAccountService
     public async Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator)
     {
         var user = await mediator.Send(new GetUserByIdQuery(userId));
-        
+
         var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
         return userProfileDto;
     }
@@ -99,23 +102,22 @@ public class UserAccountService : IUserAccountService
         return loginResponseDto;
     }
 
-    public async Task<string> VerifyEmail(Guid userId, string code, IMediator mediator)
+    public async Task<EmailVerificationResponseDto> VerifyEmail(Guid userId, string code, IMediator mediator)
     {
-        var user = await _userHelper.GetUserById(userId, mediator);
-
-        var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
-        var newToken = _tokenHelper.CreateToken(tokenUserDto);
-
         var command = new UpdateUserVerificationCommand()
         {
-            UserId = user.UserId,
-            AccessToken = newToken,
+            UserId = userId,
             VerificationCode = code
         };
 
-        var verifiedUser = await mediator.Send(command);
+        var newAccessToken = await mediator.Send(command);
 
-        return verifiedUser.AccessToken;
+        var emailVerificationResponseDto = new EmailVerificationResponseDto()
+        {
+            AccessToken = newAccessToken
+        };
+
+        return emailVerificationResponseDto;
     }
 
     public async Task CreateAndReSendVerificationCode(Guid userId, IMediator mediator)
@@ -212,8 +214,8 @@ public class UserAccountService : IUserAccountService
         return userProfileDto;
     }
 
-    public async Task<SetUserImageResponseDto> SetUserImage(Guid userId,
-        SetUserImageRequestDto requestDto, IMediator mediator)
+    public async Task<SetImageResponseDto> SetUserImage(Guid userId,
+        SetImageRequestDto requestDto, IMediator mediator)
     {
         var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestDto.ImageFormFile,
             _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
@@ -227,7 +229,27 @@ public class UserAccountService : IUserAccountService
 
         var result = await mediator.Send(command);
 
-        return new SetUserImageResponseDto()
+        return new SetImageResponseDto()
+        {
+            ImageUrl = result
+        };
+    }
+
+    public async Task<SetImageResponseDto> SetUserBannerImage(Guid userId, SetImageRequestDto requestDto, IMediator mediator)
+    {
+        var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestDto.ImageFormFile,
+            _configuration["AWS_CONFIGURATION:USER_BANNER_IMAGES_FOLDER"], userId.ToString());
+        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
+
+        var command = new SetUserImageCommand()
+        {
+            UserId = userId,
+            ImageUrl = imageUrl
+        };
+
+        var result = await mediator.Send(command);
+
+        return new SetImageResponseDto()
         {
             ImageUrl = result
         };

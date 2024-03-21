@@ -29,16 +29,24 @@ namespace HiClass.API.Controllers
 
         [Authorize]
         [HttpPut("set-user-image")]
-        public async Task<IActionResult> SetUserImage([FromForm] SetUserImageRequestDto requestUserDto)
+        public async Task<IActionResult> SetUserImage([FromForm] SetImageRequestDto requestUserDto)
         {
             var result = await _userAccountService.SetUserImage(UserId, requestUserDto, Mediator);
+            return ResponseHelper.GetOkResult(result);
+        }
+        
+        [Authorize]
+        [HttpPut("set-user-banner-image")]
+        public async Task<IActionResult> SetUserBannerImage([FromForm] SetImageRequestDto requestUserDto)
+        {
+            var result = await _userAccountService.SetUserBannerImage(UserId, requestUserDto, Mediator);
             return ResponseHelper.GetOkResult(result);
         }
 
         [Authorize]
         [HttpPut("set-class-image/{classId:guid}")]
-        public async Task<IActionResult> UploadClassImage([FromForm] SetClassImageRequestDto requestUserDto,
-            Guid classId)
+        public async Task<IActionResult> UploadClassImage([FromRoute] Guid classId,
+            [FromForm] SetImageRequestDto requestUserDto)
         {
             var result = await _classService.SetClassImage(classId, requestUserDto, Mediator);
             return ResponseHelper.GetOkResult(result);
@@ -54,7 +62,8 @@ namespace HiClass.API.Controllers
         
         [Authorize]
         [HttpPut("update-class-image/{classId:guid}")]
-        public async Task<IActionResult> SetClassImage([FromForm] UpdateClassImageRequestDto requestClassDto, Guid classId)
+        public async Task<IActionResult> SetClassImage([FromRoute] Guid classId,
+            [FromForm] UpdateClassImageRequestDto requestClassDto)
         {
             var result = await _classService.UpdateClassImage(classId, requestClassDto, Mediator);
             return ResponseHelper.GetOkResult(result);

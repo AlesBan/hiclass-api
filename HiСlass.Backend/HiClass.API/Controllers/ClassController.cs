@@ -34,14 +34,15 @@ public class ClassController : BaseController
     }
 
     [HttpPut("update-class/{classId:guid}")]
-    public async Task<IActionResult> UpdateClass([FromForm] UpdateClassRequestDto requestClassDto, Guid classId)
+    public async Task<IActionResult> UpdateClass([FromRoute] Guid classId,
+        [FromForm] UpdateClassRequestDto requestClassDto)
     {
         var result = await _classService.UpdateClass(classId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
     [HttpDelete("delete-class/{classId:guid}")]
-    public async Task<IActionResult> DeleteClass(Guid classId)
+    public async Task<IActionResult> DeleteClass([FromRoute] Guid classId)
     {
         await _classService.DeleteClass(classId, Mediator);
         return ResponseHelper.GetOkResult();

@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <Folder Include="Interfaces\Services" />
+      <Folder Include="Models\Class\SetImageDtos" />
     </ItemGroup>
 
 </Project>

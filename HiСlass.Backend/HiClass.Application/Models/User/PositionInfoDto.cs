@@ -1,4 +1,4 @@
-namespace HiClass.Application.Dtos.UserDtos;
+namespace HiClass.Application.Models.User;
 
 public class PositionInfoDto
 {
