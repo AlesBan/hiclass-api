@@ -13,7 +13,9 @@ public interface IUserHelper
     public Task<Guid> GetUserIdByClassId(Guid classId, IMediator mediator);
     public void CheckUserVerification(User user);
     public void CheckUserCreateAccountAbility(User user);
+    public Task<FullUserProfileDto> MapUserToFullUserProfileDto(User user);
     public Task<UserProfileDto> MapUserToUserProfileDto(User user);
+    public Task<CreateAccountUserProfileDto> MapUserToCreateAccountUserProfileDto(User user);
     public string GenerateVerificationCode();
     public void CheckResetTokenExpiration(User user);
     public string GeneratePasswordResetCode();

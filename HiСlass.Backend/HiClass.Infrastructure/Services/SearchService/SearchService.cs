@@ -81,7 +81,7 @@ public class SearchService : ISearchService
         IEnumerable<string> disciplines)
     {
         return teacherProfiles
-            .SelectMany(tp => tp.ClasseDtos)
+            .SelectMany(tp => tp.ClassDtos)
             .Where(c => c.Disciplines.Intersect(disciplines,
                 StringComparer.OrdinalIgnoreCase).Any())
             .Select(c => new ClassProfileDto

@@ -69,7 +69,6 @@ public class UserHelper : IUserHelper
         }
     }
 
-
     public async Task<UserProfileDto> MapUserToUserProfileDto(User user)
     {
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
@@ -77,7 +76,30 @@ public class UserHelper : IUserHelper
         userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
         userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
         userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClasseDtos = await MapClassProfileDtos(user.Classes.ToList());
+        userProfileDto.ClassDtos = await MapClassProfileDtos(user.Classes.ToList());
+        return userProfileDto;
+    }
+
+    public async Task<CreateAccountUserProfileDto> MapUserToCreateAccountUserProfileDto(User user)
+    {
+        var userProfileDto = _mapper.Map<CreateAccountUserProfileDto>(user);
+        userProfileDto.LanguageTitles = user.UserLanguages.Select(ul => ul.Language.Title).ToList();
+        userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
+        userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
+        userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
+        userProfileDto.ClassDtos = await MapClassProfileDtos(user.Classes.ToList());
+        return userProfileDto;
+    }
+
+
+    public async Task<FullUserProfileDto> MapUserToFullUserProfileDto(User user)
+    {
+        var userProfileDto = _mapper.Map<FullUserProfileDto>(user);
+        userProfileDto.LanguageTitles = user.UserLanguages.Select(ul => ul.Language.Title).ToList();
+        userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
+        userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
+        userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
+        userProfileDto.ClassDtos = await MapClassProfileDtos(user.Classes.ToList());
         return userProfileDto;
     }
 

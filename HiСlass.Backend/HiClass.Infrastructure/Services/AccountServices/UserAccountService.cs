@@ -55,11 +55,19 @@ public class UserAccountService : IUserAccountService
         _context = context;
     }
 
-    public async Task<IEnumerable<UserProfileDto>> GetAllUsers(IMediator mediator)
+    public async Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator)
+    {
+        var user = await mediator.Send(new GetUserByIdQuery(userId));
+        
+        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        return userProfileDto;
+    }
+
+    public async Task<IEnumerable<FullUserProfileDto>> GetAllUsers(IMediator mediator)
     {
         var users = await mediator.Send(new GetAllUsersQuery());
         var userProfileDtosTasks = users.Select(async u =>
-            await _userHelper.MapUserToUserProfileDto(u));
+            await _userHelper.MapUserToFullUserProfileDto(u));
 
         var userProfileDtos = await Task.WhenAll(userProfileDtosTasks);
         return userProfileDtos;
@@ -187,7 +195,7 @@ public class UserAccountService : IUserAccountService
         return loginResponseDtoDto;
     }
 
-    public async Task<UserProfileDto> CreateUserAccount(Guid userId,
+    public async Task<CreateAccountUserProfileDto> CreateUserAccount(Guid userId,
         CreateUserAccountRequestDto requestDto,
         IMediator mediator)
     {
@@ -199,7 +207,7 @@ public class UserAccountService : IUserAccountService
 
         var userWithAccount = await GetCreatedUserAccount(userId, user.Email, requestDto, mediator);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(userWithAccount);
+        var userProfileDto = await _userHelper.MapUserToCreateAccountUserProfileDto(userWithAccount);
 
         return userProfileDto;
     }
@@ -223,13 +231,6 @@ public class UserAccountService : IUserAccountService
         {
             ImageUrl = result
         };
-    }
-
-    public async Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator)
-    {
-        var user = await mediator.Send(new GetUserByIdQuery(userId));
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
-        return userProfileDto;
     }
 
     public async Task DeleteUser(Guid userId, IMediator mediator)

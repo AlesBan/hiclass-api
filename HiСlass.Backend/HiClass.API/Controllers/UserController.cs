@@ -94,10 +94,19 @@ public class UserController : BaseController
 
     [Authorize]
     [CheckUserCreateAccount]
-    [HttpGet("get-userprofile")]
+    [HttpGet("userprofile")]
     public async Task<IActionResult> GetUser()
     {
         var userId = JwtHelper.GetUserIdFromClaims(HttpContext);
+        var result = await _userAccountService.GetUserProfile(userId, Mediator);
+        return ResponseHelper.GetOkResult(result);
+    }
+    
+    [Authorize]
+    [CheckUserCreateAccount]
+    [HttpGet("other-userprofile/{userId:guid}")]
+    public async Task<IActionResult> GetOtherUser([FromRoute] Guid userId)
+    {
         var result = await _userAccountService.GetUserProfile(userId, Mediator);
         return ResponseHelper.GetOkResult(result);
     }

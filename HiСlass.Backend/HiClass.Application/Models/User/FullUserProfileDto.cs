@@ -7,10 +7,14 @@ using HiClass.Domain.Entities.Location;
 
 namespace HiClass.Application.Models.User;
 
-public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
+public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
 {
     public Guid UserId { get; set; }
     public string Email { get; set; } = string.Empty;
+    public string AccessToken { get; set; } = string.Empty;
+    public bool IsVerified { get; set; }
+    public string VerificationCode { get; set; }
+    public bool IsCreateAccount { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -30,10 +34,10 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<City, UserProfileDto>()
+        profile.CreateMap<City, FullUserProfileDto>()
             .ForMember(up => up.CityTitle,
                 opt => opt.MapFrom(c => c.Title));
-        profile.CreateMap<Country, UserProfileDto>()
+        profile.CreateMap<Country, FullUserProfileDto>()
             .ForMember(up => up.CountryTitle,
                 opt => opt.MapFrom(c => c.Title));
         profile.CreateMap<Domain.Entities.Job.Institution, InstitutionDto>()
@@ -41,11 +45,19 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(src => src.Address))
             .ForMember(dest => dest.Title,
                 opt => opt.MapFrom(src => src.Title));
-        profile.CreateMap<Domain.Entities.Main.User, UserProfileDto>()
+        profile.CreateMap<Domain.Entities.Main.User, FullUserProfileDto>()
             .ForMember(up => up.UserId,
                 opt => opt.MapFrom(u => u.UserId))
             .ForMember(up => up.Email,
                 opt => opt.MapFrom(u => u.Email))
+            .ForMember(up => up.AccessToken,
+                opt => opt.MapFrom(u => u.AccessToken))
+            .ForMember(up => up.IsVerified,
+                opt => opt.MapFrom(u => u.IsVerified))
+            .ForMember(up => up.VerificationCode,
+                opt => opt.MapFrom(u => u.VerificationCode))
+            .ForMember(up => up.IsCreateAccount,
+                opt => opt.MapFrom(u => u.IsCreatedAccount))
             .ForMember(up => up.FirstName,
                 opt => opt.MapFrom(u => u.FirstName))
             .ForMember(up => up.LastName,
