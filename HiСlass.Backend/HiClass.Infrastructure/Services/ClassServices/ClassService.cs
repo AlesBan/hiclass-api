@@ -8,10 +8,10 @@ using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
 using HiClass.Application.Models.Class;
-using HiClass.Application.Models.Class.SetImage;
 using HiClass.Application.Models.Class.SetImageDtos;
 using HiClass.Application.Models.Class.UpdateClassDtos;
 using HiClass.Application.Models.Class.UpdateClassDtos.UpdateImageDtos;
+using HiClass.Application.Models.Images;
 using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -66,7 +66,7 @@ public class ClassService : IClassService
         return classProfile;
     }
 
-    public async Task<SetClassImageResponseDto> SetClassImage(Guid classId, SetClassImageRequestDto requestDto,
+    public async Task<SetImageResponseDto> SetClassImage(Guid classId, SetImageRequestDto requestDto,
         IMediator mediator)
     {
         var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestDto.ImageFormFile,
@@ -81,7 +81,7 @@ public class ClassService : IClassService
 
         var result = await mediator.Send(command);
 
-        return new SetClassImageResponseDto()
+        return new SetImageResponseDto()
         {
             ImageUrl = result
         };

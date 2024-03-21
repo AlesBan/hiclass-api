@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Application.Models.Class.SetImageDtos
 {
-    public class SetClassImageRequestDto
+    public class SetImageRequestDto
     {
         [Required]
         public IFormFile ImageFormFile { get; set; }

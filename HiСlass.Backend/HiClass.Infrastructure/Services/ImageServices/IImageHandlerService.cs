@@ -1,4 +1,5 @@
 using HiClass.Application.Models.Images;
+using HiClass.Application.Models.Images.Aws;
 using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Infrastructure.Services.ImageServices;

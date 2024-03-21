@@ -1,4 +1,4 @@
-namespace HiClass.Application.Models.Images;
+namespace HiClass.Application.Models.Images.Aws;
 
 public class ImageHandleResponseDto
 {

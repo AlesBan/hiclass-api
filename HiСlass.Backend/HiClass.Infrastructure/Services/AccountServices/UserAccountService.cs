@@ -16,6 +16,8 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.Class.SetImageDtos;
+using HiClass.Application.Models.Images;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
@@ -212,8 +214,8 @@ public class UserAccountService : IUserAccountService
         return userProfileDto;
     }
 
-    public async Task<SetUserImageResponseDto> SetUserImage(Guid userId,
-        SetUserImageRequestDto requestDto, IMediator mediator)
+    public async Task<SetImageResponseDto> SetUserImage(Guid userId,
+        SetImageRequestDto requestDto, IMediator mediator)
     {
         var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestDto.ImageFormFile,
             _configuration["AWS_CONFIGURATION:USER_IMAGES_FOLDER"], userId.ToString());
@@ -227,7 +229,27 @@ public class UserAccountService : IUserAccountService
 
         var result = await mediator.Send(command);
 
-        return new SetUserImageResponseDto()
+        return new SetImageResponseDto()
+        {
+            ImageUrl = result
+        };
+    }
+
+    public async Task<SetImageResponseDto> SetUserBannerImage(Guid userId, SetImageRequestDto requestDto, IMediator mediator)
+    {
+        var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestDto.ImageFormFile,
+            _configuration["AWS_CONFIGURATION:USER_BANNER_IMAGES_FOLDER"], userId.ToString());
+        var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
+
+        var command = new SetUserImageCommand()
+        {
+            UserId = userId,
+            ImageUrl = imageUrl
+        };
+
+        var result = await mediator.Send(command);
+
+        return new SetImageResponseDto()
         {
             ImageUrl = result
         };
