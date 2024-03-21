@@ -12,7 +12,7 @@ namespace HiClass.Infrastructure.Services.AccountServices;
 public interface IUserAccountService
 {
     public Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator);
-    public Task<IEnumerable<UserProfileDto>> GetAllUsers(IMediator mediator);
+    public Task<IEnumerable<FullUserProfileDto>> GetAllUsers(IMediator mediator);
     public Task<LoginResponseDto> RegisterUser(UserRegisterRequestDto requestUserDto, IMediator mediator);
     public Task<LoginResponseDto> LoginUser(UserLoginRequestDto requestUserDto, IMediator mediator);
     public Task<string> VerifyEmail(Guid userId, string token, IMediator mediator);
@@ -20,7 +20,7 @@ public interface IUserAccountService
     public Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator);
     public Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator);
     public Task<LoginResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto, IMediator mediator);
-    public Task<UserProfileDto> CreateUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto, IMediator mediator);
+    public Task<CreateAccountUserProfileDto> CreateUserAccount(Guid userId, CreateUserAccountRequestDto requestUserDto, IMediator mediator);
     public Task<SetUserImageResponseDto> SetUserImage(Guid userId, SetUserImageRequestDto requestDto, IMediator mediator);
     public Task DeleteUser(Guid userId, IMediator mediator);
     public Task DeleteAllUsers(IMediator mediator);

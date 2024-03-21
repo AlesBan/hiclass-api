@@ -121,7 +121,7 @@ public class DefaultSearchService : IDefaultSearchService
     private static IEnumerable<ClassProfileDto> GetClassProfiles(IEnumerable<UserProfileDto> userProfileList)
     {
         return userProfileList
-            .Select(c => c.ClasseDtos)
+            .Select(c => c.ClassDtos)
             .SelectMany(cl => cl)
             .Select(c => new ClassProfileDto
             {
@@ -140,7 +140,7 @@ public class DefaultSearchService : IDefaultSearchService
         IEnumerable<string> disciplineIds)
     {
         return userProfileList
-            .Select(c => c.ClasseDtos)
+            .Select(c => c.ClassDtos)
             .SelectMany(cl => cl)
             .Select(c => new ClassProfileDto
             {
