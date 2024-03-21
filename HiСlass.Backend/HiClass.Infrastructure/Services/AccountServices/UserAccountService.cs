@@ -43,8 +43,8 @@ public class UserAccountService : IUserAccountService
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, IMapper mapper,
-        ISharedLessonDbContext context)
+        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, 
+        IMapper mapper, ISharedLessonDbContext context)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
