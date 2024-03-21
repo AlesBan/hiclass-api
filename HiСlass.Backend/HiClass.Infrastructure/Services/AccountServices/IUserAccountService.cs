@@ -3,6 +3,7 @@ using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
+using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
 using MediatR;
@@ -15,7 +16,7 @@ public interface IUserAccountService
     public Task<IEnumerable<FullUserProfileDto>> GetAllUsers(IMediator mediator);
     public Task<LoginResponseDto> RegisterUser(UserRegisterRequestDto requestUserDto, IMediator mediator);
     public Task<LoginResponseDto> LoginUser(UserLoginRequestDto requestUserDto, IMediator mediator);
-    public Task<string> VerifyEmail(Guid userId, string token, IMediator mediator);
+    public Task<EmailVerificationResponseDto> VerifyEmail(Guid userId, string token, IMediator mediator);
     public Task CreateAndReSendVerificationCode(Guid userId, IMediator mediator);
     public Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator);
     public Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator);

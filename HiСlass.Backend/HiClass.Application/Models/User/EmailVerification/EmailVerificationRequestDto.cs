@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HiClass.Application.Models.User;
+namespace HiClass.Application.Models.User.EmailVerification;
 
 public class EmailVerificationRequestDto
 {
