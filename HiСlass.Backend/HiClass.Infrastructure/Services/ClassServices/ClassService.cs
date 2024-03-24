@@ -1,17 +1,18 @@
 using AutoMapper;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.CreateClass;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.DeleteClass;
+using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.EditClass;
+using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.EditClassImage;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.SetClassImage;
-using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.UpdateClass;
-using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.UpdateClassImage;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
 using HiClass.Application.Models.Class;
-using HiClass.Application.Models.Class.SetImageDtos;
-using HiClass.Application.Models.Class.UpdateClassDtos;
-using HiClass.Application.Models.Class.UpdateClassDtos.UpdateImageDtos;
+using HiClass.Application.Models.Class.EditClassDtos;
 using HiClass.Application.Models.Images;
+using HiClass.Application.Models.Images.Editing;
+using HiClass.Application.Models.Images.Editing.Image;
+using HiClass.Application.Models.Images.Setting;
 using HiClass.Infrastructure.Services.ImageServices;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -105,10 +106,10 @@ public class ClassService : IClassService
         return classProfile;
     }
 
-    public async Task<ClassProfileDto> UpdateClass(Guid classId, UpdateClassRequestDto requestDto,
+    public async Task<ClassProfileDto> UpdateClass(Guid classId, EditClassRequestDto requestDto,
         IMediator mediator)
     {
-        var command = new UpdateClassCommand
+        var command = new EditClassCommand
         {
             ClassId = classId,
             Title = requestDto.Title,
@@ -131,7 +132,7 @@ public class ClassService : IClassService
         return classProfile;
     }
 
-    public async Task<UpdateClassImageResponseDto> UpdateClassImage(Guid classId, UpdateClassImageRequestDto requestDto,
+    public async Task<EditImageResponseDto> UpdateClassImage(Guid classId, EditImageRequestDto requestDto,
         IMediator mediator)
     {
         var file = requestDto.ImageFormFile;
@@ -139,7 +140,7 @@ public class ClassService : IClassService
             _configuration["AWS_CONFIGURATION:CLASS_IMAGES_FOLDER"], classId.ToString());
         var imageUrl = awsS3UpdateImageResponseDto.ImageUrl;
 
-        var command = new UpdateClassImageCommand()
+        var command = new EditClassImageCommand()
         {
             ClassId = classId,
             ImageUrl = imageUrl
@@ -147,7 +148,7 @@ public class ClassService : IClassService
 
         await mediator.Send(command);
 
-        return new UpdateClassImageResponseDto()
+        return new EditImageResponseDto()
         {
             ImageUrl = imageUrl
         };

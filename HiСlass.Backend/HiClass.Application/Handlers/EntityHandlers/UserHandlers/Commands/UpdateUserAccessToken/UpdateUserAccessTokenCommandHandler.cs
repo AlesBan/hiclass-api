@@ -1,4 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserAccessToken;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 
-public class UpdateUserAccessTokenCommandHandler : IRequestHandler<UpdateUserAccessTokenCommand, User>
+public class UpdateUserAccessTokenCommandHandler : IRequestHandler<EditUserAccessTokenCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
 
@@ -15,7 +16,7 @@ public class UpdateUserAccessTokenCommandHandler : IRequestHandler<UpdateUserAcc
         _context = context;
     }
 
-    public async Task<User> Handle(UpdateUserAccessTokenCommand request, CancellationToken cancellationToken)
+    public async Task<User> Handle(EditUserAccessTokenCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users.AsNoTracking()
             .FirstOrDefaultAsync(u => u.UserId == request.UserId, cancellationToken);

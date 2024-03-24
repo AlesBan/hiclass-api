@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.CreateFeedback;
 
-public class CreateFeedbackCommand : IRequest<Unit>
+public class CreateFeedbackCommand : IRequest<Feedback>
 {
     public Guid UserSenderId { get; set; }
     public Guid UserRecipientId { get; set; }

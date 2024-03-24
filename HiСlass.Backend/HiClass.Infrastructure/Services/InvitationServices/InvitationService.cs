@@ -1,11 +1,11 @@
-using HiClass.Application.Common.Exceptions.Invitation;
+using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Constants;
 using HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.CreateFeedback;
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.Invitation;
-using HiClass.Application.Models.Invitation.Feedback;
+using HiClass.Application.Models.Invitations.CreateInvitation;
+using HiClass.Application.Models.Invitations.Feedback.CreateFeedback;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
 using MediatR;
@@ -58,7 +58,7 @@ namespace HiClass.Infrastructure.Services.InvitationServices
             return invitation;
         }
 
-        public async Task SendFeedback(Guid userSenderId, IMediator mediator,
+        public async Task<Feedback> CreateFeedback(Guid userSenderId, IMediator mediator,
             CreateFeedbackRequestDto sendFeedbackRequestDto)
         {
             var command = new CreateFeedbackCommand
@@ -74,7 +74,9 @@ namespace HiClass.Infrastructure.Services.InvitationServices
                 ReasonForNotConducting = sendFeedbackRequestDto.ReasonForNotConducting
             };
 
-            await mediator.Send(command);
+            var feedback = await mediator.Send(command);
+            
+            return feedback;
         }
     }
 }

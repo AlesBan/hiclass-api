@@ -64,7 +64,7 @@ public class CreateAccountUserProfileDto : IMapWith<Domain.Entities.Main.User>
             .ForMember(up => up.ImageUrl,
                 opt => opt.MapFrom(u => u.ImageUrl))
             .ForMember(up => up.BannerPhotoUrl,
-                opt => opt.MapFrom(u => u.BannerPhotoUrl))
+                opt => opt.MapFrom(u => u.BannerImageUrl))
             .ForMember(up => up.IsATeacher,
                 opt => opt.MapFrom(u => u.IsATeacher))
             .ForMember(up => up.IsAnExpert,

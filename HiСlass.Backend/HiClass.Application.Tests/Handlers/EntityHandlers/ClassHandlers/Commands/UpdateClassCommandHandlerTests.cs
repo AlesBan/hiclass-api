@@ -1,4 +1,4 @@
-using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.UpdateClass;
+using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.EditClass;
 using HiClass.Application.Tests.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -29,10 +29,10 @@ public class UpdateClassCommandHandlerTests : TestCommonBase
 
         var newGrade = await Context.Grades.FirstAsync(g => g.GradeNumber == 10);
 
-        var handler = new UpdateClassCommandHandler(Context, mediatorMock.Object);
+        var handler = new EditClassCommandHandler(Context, mediatorMock.Object);
 
         // Act
-        await handler.Handle(new UpdateClassCommand()
+        await handler.Handle(new EditClassCommand()
         {
             ClassId = @class.ClassId,
             Title = newTitle,

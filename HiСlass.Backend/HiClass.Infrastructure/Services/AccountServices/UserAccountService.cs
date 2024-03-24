@@ -3,10 +3,10 @@ using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserImage;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetAllUsers;
@@ -16,8 +16,10 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.Class.SetImageDtos;
 using HiClass.Application.Models.Images;
+using HiClass.Application.Models.Images.Editing;
+using HiClass.Application.Models.Images.Editing.Image;
+using HiClass.Application.Models.Images.Setting;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
@@ -175,7 +177,7 @@ public class UserAccountService : IUserAccountService
         _userHelper.CheckResetTokenExpiration(user);
 
         await mediator.Send(
-            new UpdateUserPasswordCommand()
+            new EditUserPasswordCommand()
             {
                 UserId = user.UserId,
                 Password = requestDto.Password
@@ -254,7 +256,7 @@ public class UserAccountService : IUserAccountService
             ImageUrl = result
         };
     }
-
+    
     public async Task DeleteUser(Guid userId, IMediator mediator)
     {
         await mediator.Send(new DeleteUserCommand(userId));

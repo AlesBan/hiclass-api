@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.CreateFeedback;
 
-public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackCommand, Unit>
+public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackCommand, Feedback>
 {
     private readonly ISharedLessonDbContext _context;
 
@@ -13,7 +13,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
         _context = context;
     }
 
-    public async Task<Unit> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
+    public async Task<Feedback> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
     {
         var feedback = new Feedback()
         {
@@ -25,12 +25,15 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             WasTheJointLesson = request.WasTheJointLesson,
             ReasonForNotConducting = request.ReasonForNotConducting,
             FeedbackText = request.FeedbackText,
-            Rating = request.Rating
+            Rating = request.Rating,
+            
+            //TODO Add CreatedAt
+            // CreatedAt = DateTime.UtcNow
         };
 
         _context.Feedbacks.Add(feedback);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return feedback;
     }
 }

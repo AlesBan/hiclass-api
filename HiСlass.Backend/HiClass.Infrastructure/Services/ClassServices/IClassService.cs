@@ -1,8 +1,9 @@
 using HiClass.Application.Models.Class;
-using HiClass.Application.Models.Class.SetImageDtos;
-using HiClass.Application.Models.Class.UpdateClassDtos;
-using HiClass.Application.Models.Class.UpdateClassDtos.UpdateImageDtos;
+using HiClass.Application.Models.Class.EditClassDtos;
 using HiClass.Application.Models.Images;
+using HiClass.Application.Models.Images.Editing;
+using HiClass.Application.Models.Images.Editing.Image;
+using HiClass.Application.Models.Images.Setting;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.ClassServices;
@@ -15,7 +16,7 @@ public interface IClassService
         IMediator mediator);
 
     public Task<ClassProfileDto> GetClassProfile(Guid classId, IMediator mediator);
-    public Task<ClassProfileDto> UpdateClass(Guid classId, UpdateClassRequestDto requestClassDto, IMediator mediator);
-    public Task<UpdateClassImageResponseDto> UpdateClassImage(Guid classId, UpdateClassImageRequestDto requestDto, IMediator mediator);
+    public Task<ClassProfileDto> UpdateClass(Guid classId, EditClassRequestDto requestClassDto, IMediator mediator);
+    public Task<EditImageResponseDto> UpdateClassImage(Guid classId, EditImageRequestDto requestDto, IMediator mediator);
     public Task DeleteClass(Guid classId, IMediator mediator);
 }

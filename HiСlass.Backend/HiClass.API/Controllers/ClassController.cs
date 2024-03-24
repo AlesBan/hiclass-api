@@ -1,7 +1,7 @@
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Class;
-using HiClass.Application.Models.Class.UpdateClassDtos;
+using HiClass.Application.Models.Class.EditClassDtos;
 using HiClass.Infrastructure.Services.ClassServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +33,9 @@ public class ClassController : BaseController
         return ResponseHelper.GetOkResult(result);
     }
 
-    [HttpPut("update-class/{classId:guid}")]
+    [HttpPut("edit-class/{classId:guid}")]
     public async Task<IActionResult> UpdateClass([FromRoute] Guid classId,
-        [FromForm] UpdateClassRequestDto requestClassDto)
+        [FromForm] EditClassRequestDto requestClassDto)
     {
         var result = await _classService.UpdateClass(classId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);
