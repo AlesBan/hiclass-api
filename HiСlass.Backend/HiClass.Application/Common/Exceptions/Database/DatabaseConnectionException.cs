@@ -4,7 +4,7 @@ namespace HiClass.Application.Common.Exceptions.Database;
 
 public class DatabaseConnectionException: Exception, IDbException
 {
-    public DatabaseConnectionException() : base()
+    public DatabaseConnectionException() : base("Database connection error.")
     {
         
     }

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using HiClass.Application.Common.Exceptions.Invitation;
+using HiClass.Application.Common.Exceptions.Invitations;
 
 namespace HiClass.Application.Attributes;
 

@@ -2,6 +2,7 @@ using AutoMapper;
 using HiClass.Application.Common.Mappings;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
+using HiClass.Application.Models.Invitations.Feedback;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Location;
 
@@ -26,7 +27,7 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
     public List<string> LanguageTitles { get; set; } = new();
     public List<string> DisciplineTitles { get; set; } = new();
     public List<int> GradeNumbers { get; set; } = new();
-    public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    public IEnumerable<FeedbackDto> FeedbackDtos { get; set; } = new List<FeedbackDto>();
 
     public void Mapping(Profile profile)
     {
@@ -55,7 +56,7 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
             .ForMember(up => up.ImageUrl,
                 opt => opt.MapFrom(u => u.ImageUrl))
             .ForMember(up => up.BannerPhotoUrl,
-                opt => opt.MapFrom(u => u.BannerPhotoUrl))
+                opt => opt.MapFrom(u => u.BannerImageUrl))
             .ForMember(up => up.IsATeacher,
                 opt => opt.MapFrom(u => u.IsATeacher))
             .ForMember(up => up.IsAnExpert,

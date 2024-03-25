@@ -1,4 +1,4 @@
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserImage;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserImage;
 using HiClass.Application.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -14,10 +14,10 @@ public class UpdateUserPhotoCommandHandlerTests : TestCommonBase
         var userId = SharedLessonDbContextFactory.UserAId;
         const string newPhotoUrl = "NewPhotoUrl";
 
-        var handler = new UpdateUserImageCommandHandler(Context);
+        var handler = new EditUserImageCommandHandler(Context);
 
         // Act
-        await handler.Handle(new UpdateUserImageCommand(userId, newPhotoUrl), CancellationToken.None);
+        await handler.Handle(new EditUserImageCommand(userId, newPhotoUrl), CancellationToken.None);
 
         // Assert
         Assert.NotNull(await Context.Users.SingleOrDefaultAsync(u =>

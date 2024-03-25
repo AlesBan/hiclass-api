@@ -22,13 +22,13 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
             .Include(u => u.City)
             .Include(u => u.Institution)
             .FirstOrDefaultAsync(u =>
-            u.UserId == request.UserId, cancellationToken: cancellationToken);
+                u.UserId == request.UserId, cancellationToken: cancellationToken);
 
         if (user == null)
         {
             throw new UserNotFoundException(request.UserId);
         }
-        
+
         user = _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
@@ -47,6 +47,12 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
             .ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades)
             .ThenInclude(ug => ug.Grade)
+            .Include(u => u.ReceivedFeedbacks)
+            .ThenInclude(rf => rf.UserSender)
+            .ThenInclude(rf => rf.Country)
+            .Include(u => u.ReceivedFeedbacks)
+            .ThenInclude(rf => rf.UserSender)
+            .ThenInclude(rf => rf.City)
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
 

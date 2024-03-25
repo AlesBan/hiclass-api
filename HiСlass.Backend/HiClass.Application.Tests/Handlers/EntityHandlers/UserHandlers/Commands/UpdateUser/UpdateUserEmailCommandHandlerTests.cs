@@ -1,4 +1,4 @@
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserEmail;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserEmail;
 using HiClass.Application.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -14,10 +14,10 @@ public class UpdateUserEmailCommandHandlerTests : TestCommonBase
         var userId = SharedLessonDbContextFactory.UserAId;
         const string newEmail = "NewEmail";
 
-        var handler = new UpdateUserEmailAndRemoveVerificationCommandHandler(Context);
+        var handler = new EditUserEmailAndRemoveVerificationCommandHandler(Context);
 
         // Act
-        await handler.Handle(new UpdateUserEmailAndRemoveVerificationCommand()
+        await handler.Handle(new EditUserEmailAndRemoveVerificationCommand()
         {
             UserId = userId,
             Email = newEmail

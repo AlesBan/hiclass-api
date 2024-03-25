@@ -1,9 +1,7 @@
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
-using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.EmailManager;
-using HiClass.Application.Models.Invitation;
-using HiClass.Application.Models.Invitation.Feedback;
+using HiClass.Application.Models.Invitations.CreateInvitation;
+using HiClass.Application.Models.Invitations.Feedback.CreateFeedback;
 using HiClass.Infrastructure.Services.InvitationServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,14 +24,16 @@ public class InvitationController : BaseController
     [HttpPost("create-invitation")]
     public async Task<IActionResult> CreateInvitation([FromBody] CreateInvitationRequestDto createInvitationRequestDto)
     {
-        var result = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
-        return ResponseHelper.GetOkResult(result);
+        var invitation = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
+        var invitationDto = new CreateInvitationResponseDto(invitation);
+        return ResponseHelper.GetOkResult(invitationDto);
     }
 
     [HttpPost("send-feedback")]
     public async Task<IActionResult> SendFeedback([FromBody] CreateFeedbackRequestDto sendFeedbackRequestDto)
     {
-        await _invitationService.SendFeedback(UserId, Mediator, sendFeedbackRequestDto);
-        return ResponseHelper.GetOkResult();
+        var feedback = await _invitationService.CreateFeedback(UserId, Mediator, sendFeedbackRequestDto);
+        var feedbackDto = new CreateFeedbackResponseDto(feedback);
+        return ResponseHelper.GetOkResult(feedbackDto);
     }
 }
