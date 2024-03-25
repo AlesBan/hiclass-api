@@ -46,6 +46,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AlloyAll", policy =>
     {
+
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
         policy.AllowAnyOrigin();

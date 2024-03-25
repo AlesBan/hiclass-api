@@ -26,9 +26,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             ReasonForNotConducting = request.ReasonForNotConducting,
             FeedbackText = request.FeedbackText,
             Rating = request.Rating,
-            
-            //TODO Add CreatedAt
-            // CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
 
         _context.Feedbacks.Add(feedback);

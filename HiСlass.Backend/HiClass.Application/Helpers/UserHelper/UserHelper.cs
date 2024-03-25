@@ -176,9 +176,7 @@ public class UserHelper : IUserHelper
                 WasTheJointLesson = feedback.WasTheJointLesson,
                 FeedbackText = feedback.FeedbackText,
                 Rating = feedback.Rating,
-                
-                //TODO Add CreatedAt
-                CreatedAt = DateTime.Now
+                CreatedAt = feedback.CreatedAt
             })
             .ToList();
 
