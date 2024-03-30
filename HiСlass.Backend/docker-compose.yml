@@ -1,8 +1,8 @@
 version: '3.9'
 services:
-  postgres:
+  hiclass-db:
     image: postgres:latest
-    container_name: postgres
+    container_name: hiclass-db
     ports:
       - "5432:5432"
     healthcheck:
@@ -23,10 +23,21 @@ services:
     ports:
       - "7280:80"
     depends_on:
-      postgres:
+      hiclass-db:
         condition: service_healthy
     env_file:
       - .env
     networks:
       - default
-    
+  hiclass-rabbitmq:
+    image: masstransit/rabbitmq
+    container_name: hiclass-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./data:/var/lib/rabbitmq
+    env_file:
+      - .env
+    networks:
+      - default
