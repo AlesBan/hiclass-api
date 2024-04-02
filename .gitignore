@@ -482,7 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-
 .yml
 
 # Diagrams
@@ -503,5 +502,19 @@ Migrations
 
 #Rider
 rider.project.restore.info
+
+#Folders
+DefaultData/
+General provisions/
+
+#RabbitMQ
+*.pid
+*.log
+*.pidfile
+*.state
+*.pid.lock
+HiСlass.Backend/data/
+
+
 
 
