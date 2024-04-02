@@ -24,7 +24,8 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
             ClassReceiverId = request.ClassReceiverId,
             DateOfInvitation = request.DateOfInvitation.ToUniversalTime(),
             InvitationText = request.InvitationText,
-            Status = request.Status
+            Status = request.Status,
+            CreatedAt = DateTime.UtcNow
         };
 
         ValidateClassReceiverId(request.UserSenderId, request.ClassReceiverId);

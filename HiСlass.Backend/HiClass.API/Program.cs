@@ -12,13 +12,14 @@ using HiClass.Infrastructure.Services.AccountServices;
 using HiClass.Infrastructure.Services.ClassServices;
 using HiClass.Infrastructure.Services.DataBaseDataService;
 using HiClass.Infrastructure.Services.DefaultDataServices;
+using HiClass.Infrastructure.Services.EditUserAccountService;
 using HiClass.Infrastructure.Services.EmailHandlerService;
 using HiClass.Infrastructure.Services.ImageServices;
 using HiClass.Infrastructure.Services.ImageServices.Aws;
 using HiClass.Infrastructure.Services.InvitationServices;
+using HiClass.Infrastructure.Services.NotificationHandlerService;
 using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
-using HiClass.Infrastructure.Services.UpdateUserAccountService;
 using HiClass.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -107,7 +108,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<ISharedLessonDbContext, SharedLessonDbContext>();
 builder.Services.AddScoped<IDefaultSearchService, DefaultSearchService>();
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
-builder.Services.AddScoped<IUpdateUserAccountService, UpdateUserAccountService>();
+builder.Services.AddScoped<IEditUserAccountService, EditUserAccountService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
@@ -117,6 +118,8 @@ builder.Services.AddScoped<IStaticDataService, StaticDataService>();
 
 builder.Services.AddScoped<IImageHandlerService, ImageHandlerService>();
 builder.Services.AddScoped<IAwsImagesService, AwsImagesService>();
+
+builder.Services.AddScoped<INotificationHandlerService, NotificationHandlerService>();
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
@@ -139,6 +142,8 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = servicesProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, ex.ToString());
+        logger.LogError(ex, ex.Message);
         logger.LogError(ex, "An error occurred while seeding the database.");
     }
 }

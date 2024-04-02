@@ -3,13 +3,14 @@ using AutoMapper;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Common.Exceptions.User.Forbidden;
-using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByClass;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
+using HiClass.Application.Models.Invitations.Feedback;
 using HiClass.Application.Models.User;
+using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
@@ -77,6 +78,7 @@ public class UserHelper : IUserHelper
         userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
         userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
         userProfileDto.ClassDtos = await MapClassProfileDtos(user.Classes.ToList());
+        userProfileDto.FeedbackDtos = await MapFeedbackDtos(user.ReceivedFeedbacks.ToList());
         return userProfileDto;
     }
 
@@ -159,5 +161,25 @@ public class UserHelper : IUserHelper
                 ImageUrl = c.ImageUrl!
             })
             .ToList());
+    }
+
+    private static Task<List<FeedbackDto>> MapFeedbackDtos(IEnumerable<Feedback> feedbacks)
+    {
+        var feedbackDtos = feedbacks.Select(feedback => new FeedbackDto
+            {
+                FeedbackId = feedback.FeedbackId,
+                InvitationId = feedback.InvitationId,
+                UserSenderId = feedback.UserSenderId,
+                UserSenderFullName = feedback.UserSender.FullName,
+                UserSenderImageUrl = feedback.UserSender.ImageUrl!,
+                UserSenderCityLocationTitle = feedback.UserSender.FullLocation,
+                WasTheJointLesson = feedback.WasTheJointLesson,
+                FeedbackText = feedback.FeedbackText,
+                Rating = feedback.Rating,
+                CreatedAt = feedback.CreatedAt
+            })
+            .ToList();
+
+        return Task.FromResult(feedbackDtos);
     }
 }
