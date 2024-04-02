@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HiClass.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73e3782bcde13d7a950113a5606a04f7a68f0366")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c1b4071ad30846ee2f64f6d09aa82a04e8b4ef3")]
 [assembly: System.Reflection.AssemblyProductAttribute("HiClass.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HiClass.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

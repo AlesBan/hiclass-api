@@ -49,7 +49,7 @@ public class UserAccountService : IUserAccountService
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService, 
+        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService,
         IMapper mapper, ISharedLessonDbContext context, INotificationHandlerService notificationHandlerService)
     {
         _tokenHelper = tokenHelper;
@@ -95,9 +95,15 @@ public class UserAccountService : IUserAccountService
             IsCreatedAccount = false
         };
         
-        _notificationHandlerService.SendMessage("test");
+        try
+        {
+            _notificationHandlerService.SendMessage("test");
 
-        _notificationHandlerService.ScheduleMessage(registeredUser.Email, DateTime.Now.AddSeconds(20));
+            _notificationHandlerService.ScheduleMessage(registeredUser.Email, DateTime.Now.AddSeconds(20));
+        }
+        finally
+        {
+        }
 
         return loginResponseDto;
     }
@@ -244,7 +250,8 @@ public class UserAccountService : IUserAccountService
         };
     }
 
-    public async Task<SetImageResponseDto> SetUserBannerImage(Guid userId, SetImageRequestDto requestDto, IMediator mediator)
+    public async Task<SetImageResponseDto> SetUserBannerImage(Guid userId, SetImageRequestDto requestDto,
+        IMediator mediator)
     {
         var awsS3UploadImageResponseDto = await _imageHandlerService.UploadImageAsync(requestDto.ImageFormFile,
             _configuration["AWS_CONFIGURATION:USER_BANNER_IMAGES_FOLDER"], userId.ToString());
@@ -263,7 +270,7 @@ public class UserAccountService : IUserAccountService
             ImageUrl = result
         };
     }
-    
+
     public async Task DeleteUser(Guid userId, IMediator mediator)
     {
         await mediator.Send(new DeleteUserCommand(userId));
