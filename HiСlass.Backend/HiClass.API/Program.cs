@@ -47,7 +47,6 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AlloyAll", policy =>
     {
-
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
         policy.AllowAnyOrigin();
@@ -143,6 +142,8 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = servicesProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, ex.ToString());
+        logger.LogError(ex, ex.Message);
         logger.LogError(ex, "An error occurred while seeding the database.");
     }
 }

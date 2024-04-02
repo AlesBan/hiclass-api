@@ -1,8 +1,8 @@
 version: '3.9'
 services:
-  hiclass-db:
+  postgres:
     image: postgres:latest
-    container_name: hiclass-db
+    container_name: local-postgres
     ports:
       - "5432:5432"
     healthcheck:
@@ -14,24 +14,9 @@ services:
       - .env
     networks:
       - default
-  hiclass:
-    image: alesban/hiclass-api
-    container_name: hiclass-api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "7280:80"
-    depends_on:
-      hiclass-db:
-        condition: service_healthy
-    env_file:
-      - .env
-    networks:
-      - default
   hiclass-rabbitmq:
     image: masstransit/rabbitmq
-    container_name: hiclass-rabbitmq
+    container_name: local-hiclass-rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -41,3 +26,4 @@ services:
       - .env
     networks:
       - default
+    
