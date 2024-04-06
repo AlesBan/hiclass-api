@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "T7a8whsTWTPBe67iscepJ3cE+KNBJHS3k3RmsI5ZM58OT91jQ0w4jvHw5cSyQ2utdU4WD6YAh0FAVgNoCPkBYg==",
+  "dgSpecHash": "AEODJd5qMKYwdYeZQsZFoe/yrn93hlrX1EjXnBN5sjhuOiEYZcuik9koIS+4xS31e3PJ5R+l/wXOPlUm+z5nLg==",
   "success": true,
-  "projectFilePath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj",
+  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
