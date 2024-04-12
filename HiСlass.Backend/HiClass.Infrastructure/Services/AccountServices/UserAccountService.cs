@@ -95,15 +95,15 @@ public class UserAccountService : IUserAccountService
             IsCreatedAccount = false
         };
         
-        try
-        {
-            _notificationHandlerService.SendMessage("test");
-
-            _notificationHandlerService.ScheduleMessage(registeredUser.Email, DateTime.Now.AddSeconds(20));
-        }
-        finally
-        {
-        }
+        // try
+        // {
+        //     _notificationHandlerService.SendMessage("test");
+        //
+        //     _notificationHandlerService.ScheduleMessage(registeredUser.Email, DateTime.Now.AddSeconds(20));
+        // }
+        // finally
+        // {
+        // }
 
         return loginResponseDto;
     }
