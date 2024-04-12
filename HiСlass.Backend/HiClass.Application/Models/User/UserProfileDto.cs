@@ -16,7 +16,7 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
     public string LastName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
-    public string BannerPhotoUrl { get; set; } = string.Empty;
+    public string BannerImageUrl { get; set; } = string.Empty;
     public bool IsATeacher { get; set; }
     public bool IsAnExpert { get; set; }
     public string CityTitle { get; set; } = string.Empty;
@@ -55,7 +55,7 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(u => u.Description))
             .ForMember(up => up.ImageUrl,
                 opt => opt.MapFrom(u => u.ImageUrl))
-            .ForMember(up => up.BannerPhotoUrl,
+            .ForMember(up => up.BannerImageUrl,
                 opt => opt.MapFrom(u => u.BannerImageUrl))
             .ForMember(up => up.IsATeacher,
                 opt => opt.MapFrom(u => u.IsATeacher))
