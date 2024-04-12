@@ -6,6 +6,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserBannerImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
@@ -257,7 +258,7 @@ public class UserAccountService : IUserAccountService
             _configuration["AWS_CONFIGURATION:USER_BANNER_IMAGES_FOLDER"], userId.ToString());
         var imageUrl = awsS3UploadImageResponseDto.ImageUrl;
 
-        var command = new SetUserImageCommand()
+        var command = new SetUserBannerImageCommand()
         {
             UserId = userId,
             ImageUrl = imageUrl

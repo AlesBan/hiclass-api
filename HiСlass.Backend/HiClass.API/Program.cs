@@ -22,6 +22,7 @@ using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
 using HiClass.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -137,6 +138,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = servicesProvider.GetRequiredService<SharedLessonDbContext>();
+        
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+        }
+
         DbInitializer.Initialize(context);
     }
     catch (Exception ex)
