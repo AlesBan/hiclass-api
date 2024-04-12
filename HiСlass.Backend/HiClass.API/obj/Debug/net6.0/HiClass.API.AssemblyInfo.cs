@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HiClass.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93d69e632b7ce0e8200c85518c983e99e27b9c59")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+64d2b4045d54e9223c242ed878059c4facd6d536")]
 [assembly: System.Reflection.AssemblyProductAttribute("HiClass.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HiClass.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
