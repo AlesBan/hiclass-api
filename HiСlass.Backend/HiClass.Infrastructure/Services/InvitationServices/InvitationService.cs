@@ -5,7 +5,7 @@ using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.Cr
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Invitations.CreateInvitation;
-using HiClass.Application.Models.Invitations.Feedback.CreateFeedback;
+using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
 using MediatR;

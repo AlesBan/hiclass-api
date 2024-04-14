@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using HiClass.Application.Attributes;
 
-namespace HiClass.Application.Models.Invitations.Feedback.CreateFeedback;
+namespace HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 
 public class CreateFeedbackRequestDto
 {

@@ -1,7 +1,7 @@
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Invitations.CreateInvitation;
-using HiClass.Application.Models.Invitations.Feedback.CreateFeedback;
+using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Infrastructure.Services.InvitationServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

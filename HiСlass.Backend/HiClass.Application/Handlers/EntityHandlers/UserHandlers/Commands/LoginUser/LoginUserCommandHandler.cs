@@ -52,7 +52,6 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginRe
         var loginResponseDto = new LoginResponseDto
         {
             AccessToken = user.AccessToken,
-            IsCreatedAccount = user.IsCreatedAccount
         };
 
         return loginResponseDto;

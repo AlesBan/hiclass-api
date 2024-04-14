@@ -1,6 +1,6 @@
 using HiClass.Application.Interfaces.Exceptions;
 
-namespace HiClass.Application.Common.Exceptions.User;
+namespace HiClass.Application.Common.Exceptions.User.ResettingPassword;
 
 public class InvalidResetPasswordCodeException : Exception, IUiException
 {
