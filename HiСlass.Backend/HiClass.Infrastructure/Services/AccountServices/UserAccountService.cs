@@ -22,6 +22,7 @@ using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
+using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Domain.Entities.Main;
@@ -135,9 +136,11 @@ public class UserAccountService : IUserAccountService
         return emailVerificationResponseDto;
     }
 
-    public async Task CreateAndReSendVerificationCode(Guid userId, IMediator mediator)
+    public async Task CreateAndReSendVerificationCode(EmailReVerificationRequestDto requestDto, IMediator mediator)
     {
-        var user = await _userHelper.GetUserById(userId, mediator);
+        var email = requestDto.Email;
+        
+        var user = await _userHelper.GetUserByEmail(email, mediator);
         var newVerificationCode = _userHelper.GenerateVerificationCode();
 
         var command = new UpdateUserVerificationCodeCommand()
@@ -145,7 +148,7 @@ public class UserAccountService : IUserAccountService
             UserId = user.UserId,
             VerificationCode = newVerificationCode
         };
-
+        
         await mediator.Send(command);
 
         await _emailHandlerService.SendVerificationEmail(user.Email,

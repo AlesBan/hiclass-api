@@ -1,6 +1,9 @@
+using System.Net;
+using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
 using Amazon.S3;
+using HiClass.API.Helpers.WebSocketNotificationsHelper;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
 using HiClass.Application.Helpers.DataHelper;
@@ -138,19 +141,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = servicesProvider.GetRequiredService<SharedLessonDbContext>();
-        
-        if (context.Database.GetPendingMigrations().Any())
-        {
-            context.Database.Migrate();
-        }
 
         DbInitializer.Initialize(context);
     }
     catch (Exception ex)
     {
         var logger = servicesProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, ex.ToString());
-        logger.LogError(ex, ex.Message);
         logger.LogError(ex, "An error occurred while seeding the database.");
     }
 }
@@ -158,6 +154,12 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
 }
+
+var wsOptions = new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromSeconds(120)
+};
+app.UseWebSockets(wsOptions);
 
 app.UseSwagger();
 app.UseSwaggerUI();

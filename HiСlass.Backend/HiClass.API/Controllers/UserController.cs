@@ -6,6 +6,7 @@ using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
+using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Infrastructure.Services.AccountServices;
 using Microsoft.AspNetCore.Authorization;
@@ -53,9 +54,9 @@ public class UserController : BaseController
     }
     
     [HttpPost("reverify-email")]
-    public async Task<IActionResult> ReVerifyEmail()
+    public async Task<IActionResult> ReVerifyEmail([FromBody] EmailReVerificationRequestDto requestDto)
     {
-        await _userAccountService.CreateAndReSendVerificationCode(UserId, Mediator);
+        await _userAccountService.CreateAndReSendVerificationCode(requestDto, Mediator);
         return ResponseHelper.GetOkResult();
     }
     

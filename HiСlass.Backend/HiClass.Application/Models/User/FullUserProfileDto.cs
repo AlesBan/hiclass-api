@@ -13,7 +13,8 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
     public string Email { get; set; } = string.Empty;
     public string AccessToken { get; set; } = string.Empty;
     public bool IsVerified { get; set; }
-    public string VerificationCode { get; set; }
+    public string VerificationCode { get; set; } = string.Empty;
+    public string PasswordResetCode { get; set; } = string.Empty;
     public bool IsCreateAccount { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -56,6 +57,8 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(u => u.IsVerified))
             .ForMember(up => up.VerificationCode,
                 opt => opt.MapFrom(u => u.VerificationCode))
+           .ForMember(up => up.PasswordResetCode,
+                opt => opt.MapFrom(u => u.PasswordResetCode))
             .ForMember(up => up.IsCreateAccount,
                 opt => opt.MapFrom(u => u.IsCreatedAccount))
             .ForMember(up => up.FirstName,

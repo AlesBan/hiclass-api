@@ -1,9 +1,11 @@
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.StaticData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Controllers;
 
+[Authorize]
 public class StaticDataSourcesController : BaseController
 {
     private readonly IStaticDataService _staticDataService;
