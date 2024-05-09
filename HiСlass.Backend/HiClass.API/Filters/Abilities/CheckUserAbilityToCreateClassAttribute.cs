@@ -1,6 +1,7 @@
 using System.Net;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Common.Exceptions.User;
+using HiClass.Application.Common.Exceptions.User.Forbidden;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

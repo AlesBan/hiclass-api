@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HiClass.Application.Models.Invitations.Feedback;
+namespace HiClass.Application.Models.Invitations.Feedbacks;
 
 public class FeedbackDto
 {

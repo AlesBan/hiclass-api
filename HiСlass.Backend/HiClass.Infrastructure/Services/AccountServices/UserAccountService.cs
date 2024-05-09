@@ -17,14 +17,12 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.Images;
-using HiClass.Application.Models.Images.Editing;
-using HiClass.Application.Models.Images.Editing.Image;
 using HiClass.Application.Models.Images.Setting;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
+using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Domain.Entities.Main;
@@ -93,13 +91,15 @@ public class UserAccountService : IUserAccountService
         var loginResponseDto = new LoginResponseDto
         {
             AccessToken = registeredUser.AccessToken,
-            IsCreatedAccount = false
         };
         
         // try
         // {
         //     _notificationHandlerService.SendMessage("test");
         //
+        
+        
+        
         //     _notificationHandlerService.ScheduleMessage(registeredUser.Email, DateTime.Now.AddSeconds(20));
         // }
         // finally
@@ -136,9 +136,11 @@ public class UserAccountService : IUserAccountService
         return emailVerificationResponseDto;
     }
 
-    public async Task CreateAndReSendVerificationCode(Guid userId, IMediator mediator)
+    public async Task CreateAndReSendVerificationCode(EmailReVerificationRequestDto requestDto, IMediator mediator)
     {
-        var user = await _userHelper.GetUserById(userId, mediator);
+        var email = requestDto.Email;
+        
+        var user = await _userHelper.GetUserByEmail(email, mediator);
         var newVerificationCode = _userHelper.GenerateVerificationCode();
 
         var command = new UpdateUserVerificationCodeCommand()
@@ -146,7 +148,7 @@ public class UserAccountService : IUserAccountService
             UserId = user.UserId,
             VerificationCode = newVerificationCode
         };
-
+        
         await mediator.Send(command);
 
         await _emailHandlerService.SendVerificationEmail(user.Email,
@@ -180,7 +182,7 @@ public class UserAccountService : IUserAccountService
     public async Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator)
     {
         var user = await _userHelper.GetUserById(userId, mediator);
-        _userHelper.CheckResetTokenExpiration(user);
+        _userHelper.CheckResetTokenValidation(user);
         _userHelper.CheckResetPasswordCode(user, code);
     }
 
@@ -188,7 +190,7 @@ public class UserAccountService : IUserAccountService
         IMediator mediator)
     {
         var user = await _userHelper.GetUserById(userId, mediator);
-        _userHelper.CheckResetTokenExpiration(user);
+        _userHelper.CheckResetTokenValidation(user);
 
         await mediator.Send(
             new EditUserPasswordCommand()
@@ -208,7 +210,6 @@ public class UserAccountService : IUserAccountService
         var loginResponseDtoDto = new LoginResponseDto
         {
             AccessToken = newToken,
-            IsCreatedAccount = user.IsCreatedAccount
         };
         return loginResponseDtoDto;
     }

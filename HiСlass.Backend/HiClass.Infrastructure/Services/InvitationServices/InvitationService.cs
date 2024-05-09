@@ -5,9 +5,10 @@ using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.Cr
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Invitations.CreateInvitation;
-using HiClass.Application.Models.Invitations.Feedback.CreateFeedback;
+using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
+using HiClass.Infrastructure.Services.NotificationHandlerService;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.InvitationServices
@@ -16,11 +17,13 @@ namespace HiClass.Infrastructure.Services.InvitationServices
     {
         private readonly IEmailHandlerService _emailHandlerService;
         private readonly IUserHelper _userHelper;
+        private readonly INotificationHandlerService _notificationHandlerService;
 
-        public InvitationService(IEmailHandlerService emailHandlerService, IUserHelper userHelper)
+        public InvitationService(IEmailHandlerService emailHandlerService, IUserHelper userHelper, INotificationHandlerService notificationHandlerService)
         {
             _emailHandlerService = emailHandlerService;
             _userHelper = userHelper;
+            _notificationHandlerService = notificationHandlerService;
         }
 
         public async Task<Invitation> CreateInvitation(Guid userSenderId, IMediator mediator,
@@ -54,6 +57,10 @@ namespace HiClass.Infrastructure.Services.InvitationServices
 
             await _emailHandlerService.SendAsync(userReceiver.Email, EmailConstants.EmailInvitationSubject,
                 EmailConstants.EmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
+            
+            _notificationHandlerService.SendMessage($"Invitation has been sent by {userSender.Email}");
+
+            _notificationHandlerService.ScheduleMessage($"Invitation has been sent by {userSender.Email}", DateTime.Now.AddSeconds(15));
 
             return invitation;
         }

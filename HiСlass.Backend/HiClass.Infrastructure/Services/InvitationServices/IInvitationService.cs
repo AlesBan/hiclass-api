@@ -1,5 +1,5 @@
 using HiClass.Application.Models.Invitations.CreateInvitation;
-using HiClass.Application.Models.Invitations.Feedback.CreateFeedback;
+using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Domain.Entities.Communication;
 using MediatR;
 

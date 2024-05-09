@@ -17,7 +17,7 @@ public interface IUserHelper
     public Task<UserProfileDto> MapUserToUserProfileDto(User user);
     public Task<CreateAccountUserProfileDto> MapUserToCreateAccountUserProfileDto(User user);
     public string GenerateVerificationCode();
-    public void CheckResetTokenExpiration(User user);
+    public void CheckResetTokenValidation(User user);
     public string GeneratePasswordResetCode();
     public void CheckResetPasswordCode(User user, string code);
 }

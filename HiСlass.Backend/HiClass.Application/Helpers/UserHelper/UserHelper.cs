@@ -3,12 +3,13 @@ using AutoMapper;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Common.Exceptions.User.Forbidden;
+using HiClass.Application.Common.Exceptions.User.ResettingPassword;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByClass;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
-using HiClass.Application.Models.Invitations.Feedback;
+using HiClass.Application.Models.Invitations.Feedbacks;
 using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Main;
@@ -118,8 +119,14 @@ public class UserHelper : IUserHelper
         return verificationCodeBuilder.ToString();
     }
 
-    public void CheckResetTokenExpiration(User user)
+    public void CheckResetTokenValidation(User user)
     {
+        
+        if (user.PasswordResetToken == null)
+        {
+            throw new InvalidResetTokenProvidedException();
+        }
+        
         if (user.ResetTokenExpires < DateTime.Now)
         {
             throw new ResetTokenHasExpiredException(user.UserId, user.PasswordResetToken ?? "");

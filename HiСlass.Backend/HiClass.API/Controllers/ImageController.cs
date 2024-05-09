@@ -11,7 +11,6 @@ using EditImageRequestDto = HiClass.Application.Models.Images.Editing.Image.Edit
 namespace HiClass.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class ImageController : BaseController
     {
         private readonly IUserAccountService _userAccountService;

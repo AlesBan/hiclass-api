@@ -2,7 +2,7 @@ using AutoMapper;
 using HiClass.Application.Common.Mappings;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
-using HiClass.Application.Models.Invitations.Feedback;
+using HiClass.Application.Models.Invitations.Feedbacks;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Location;
 

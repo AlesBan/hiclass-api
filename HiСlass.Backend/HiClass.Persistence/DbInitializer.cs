@@ -1,4 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Persistence;
 
@@ -8,7 +9,7 @@ public static class DbInitializer
     {
         try
         {
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
         }
         catch
         {
