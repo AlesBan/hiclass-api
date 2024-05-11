@@ -9,6 +9,8 @@ public static class DbInitializer
     {
         try
         {
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
             context.Database.Migrate();
         }
         catch
