@@ -18,6 +18,7 @@ public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, U
     public async Task<User> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                 x.Email == request.Email, cancellationToken);
 
@@ -46,7 +47,7 @@ public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, U
             .ThenInclude(ug => ug.Grade)
             .FirstOrDefaultAsync(u =>
                 u.UserId == user.UserId, cancellationToken: cancellationToken);
-        
+
         return user;
     }
 }

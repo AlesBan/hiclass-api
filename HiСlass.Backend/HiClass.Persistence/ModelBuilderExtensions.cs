@@ -19,7 +19,7 @@ namespace HiClass.Persistence;
 
 public static class ModelBuilderExtensions
 {
-    private static Dictionary<string, Guid> DictionaryDisplineIds { get; set; } = new();
+    private static Dictionary<string, Guid> DictionaryDisciplineIds { get; set; } = new();
     private static Dictionary<string, Guid> DictionaryLanguageIds { get; set; } = new();
     private static Dictionary<string, Guid> DictionaryGradeIds { get; set; } = new();
 
@@ -87,10 +87,10 @@ public static class ModelBuilderExtensions
             })
             .ToList();
         
-        DictionaryDisplineIds.Clear();
+        DictionaryDisciplineIds.Clear();
         foreach (var discipline in disciplineList)
         {
-            DictionaryDisplineIds.Add(discipline.Title, discipline.DisciplineId);
+            DictionaryDisciplineIds.Add(discipline.Title, discipline.DisciplineId);
         }
 
         modelBuilder.Entity<Discipline>().HasData(disciplineList);
@@ -180,7 +180,7 @@ public static class ModelBuilderExtensions
             });
 
         var disciplineIds = disciplineTitles
-            .Select(title => DictionaryDisplineIds.FirstOrDefault(x => 
+            .Select(title => DictionaryDisciplineIds.FirstOrDefault(x => 
                 x.Key == title).Value)
             .ToList();
 

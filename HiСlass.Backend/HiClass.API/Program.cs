@@ -3,7 +3,10 @@ using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
 using Amazon.S3;
+using HiClass.API.Configuration;
+using HiClass.API.Configuration.Swagger;
 using HiClass.API.Helpers.WebSocketNotificationsHelper;
+using HiClass.API.Swagger;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
 using HiClass.Application.Helpers.DataHelper;
@@ -47,67 +50,14 @@ builder.Services.AddAutoMapper(conf =>
 builder.Services.AddApplication();
 builder.Services.AddPersistence(configuration);
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AlloyAll", policy =>
-    {
-        policy.AllowAnyHeader();
-        policy.AllowAnyMethod();
-        policy.AllowAnyOrigin();
-    });
-});
+builder.Services.ConfigureCors();
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidIssuer = configuration["JWT_SETTINGS:VALID_ISSUER"],
-            ValidAudience = configuration["JWT_SETTINGS:VALID_AUDIENCE"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration["JWT_SETTINGS:ISSUER_SIGNING_KEY"])),
-            ValidateIssuer = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_ISSUER"]),
-            ValidateAudience = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_AUDIENCE"]),
-            ValidateLifetime = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_LIFETIME"]),
-            RequireExpirationTime = bool.Parse(configuration["JWT_SETTINGS:REQUIRE_EXPIRATION_TIME"]),
-            ValidateIssuerSigningKey = bool.Parse(configuration["JWT_SETTINGS:VALIDATE_ISSUER_SIGNING_KEY"]),
-        };
-    });
+builder.Services.ConfigureAuthentication(configuration);
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme."
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
+builder.Services.ConfigureSwagger();
 
 builder.Services.AddScoped<ISharedLessonDbContext, SharedLessonDbContext>();
 builder.Services.AddScoped<IDefaultSearchService, DefaultSearchService>();
@@ -141,7 +91,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = servicesProvider.GetRequiredService<SharedLessonDbContext>();
-
+        context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         DbInitializer.Initialize(context);
     }
     catch (Exception ex)

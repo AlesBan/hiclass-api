@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetAllUsers;
 
-public class GetAllUsersQueryHandler: IRequestHandler<GetAllUsersQuery, List<User>>
+public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<User>>
 {
     private readonly ISharedLessonDbContext _sharedLessonDbContext;
 
@@ -16,7 +16,7 @@ public class GetAllUsersQueryHandler: IRequestHandler<GetAllUsersQuery, List<Use
 
     public Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        return _sharedLessonDbContext.Users
+        var users = _sharedLessonDbContext.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -35,5 +35,6 @@ public class GetAllUsersQueryHandler: IRequestHandler<GetAllUsersQuery, List<Use
             .Include(u => u.UserGrades)
             .ThenInclude(ug => ug.Grade)
             .ToListAsync(cancellationToken);
+        return users;
     }
 }
