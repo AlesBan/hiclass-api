@@ -101,16 +101,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-if (app.Environment.IsDevelopment())
-{
-}
-
-var wsOptions = new WebSocketOptions
-{
-    KeepAliveInterval = TimeSpan.FromSeconds(120)
-};
-app.UseWebSockets(wsOptions);
-
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRouting();
