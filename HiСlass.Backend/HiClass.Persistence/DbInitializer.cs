@@ -9,13 +9,12 @@ public static class DbInitializer
     {
         try
         {
-            context.Database.EnsureDeleted();
-            // context.Database.EnsureCreated();
-            //
-            // if (!context.Database.GetPendingMigrations().Any())
-            // {
-            //     context.Database.Migrate();
-            // }
+            context.Database.EnsureCreated();
+            
+            if (!context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
         catch
         {
