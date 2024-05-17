@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.WebSockets;
 using System.Reflection;
@@ -6,6 +7,7 @@ using Amazon.S3;
 using HiClass.API.Configuration;
 using HiClass.API.Configuration.Swagger;
 using HiClass.API.Helpers.WebSocketNotificationsHelper;
+using HiClass.API.Middleware;
 using HiClass.API.Swagger;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
@@ -59,7 +61,6 @@ builder.Services.AddControllers();
 
 builder.Services.ConfigureSwagger();
 
-builder.Services.AddScoped<ISharedLessonDbContext, SharedLessonDbContext>();
 builder.Services.AddScoped<IDefaultSearchService, DefaultSearchService>();
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<IEditUserAccountService, EditUserAccountService>();
@@ -82,6 +83,8 @@ builder.Services.AddScoped<IUserDataHelper, UserDataHelper>();
 
 builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 
+builder.Services.AddTransient<DatabaseConnectionMiddleware>();
+
 
 var app = builder.Build();
 
@@ -101,15 +104,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-if (app.Environment.IsDevelopment())
-{
-}
-
-var wsOptions = new WebSocketOptions
-{
-    KeepAliveInterval = TimeSpan.FromSeconds(120)
-};
-app.UseWebSockets(wsOptions);
+app.UseMiddleware<DatabaseConnectionMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
