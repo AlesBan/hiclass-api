@@ -498,7 +498,7 @@ $RECYCLE.BIN/
 .cache
 
 #Migrations
-Migrations
+Migrations/
 
 #Rider
 rider.project.restore.info
