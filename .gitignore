@@ -504,7 +504,6 @@ Migrations/
 rider.project.restore.info
 
 #Folders
-DefaultData/
 GeneralProvisions/
 
 #RabbitMQ

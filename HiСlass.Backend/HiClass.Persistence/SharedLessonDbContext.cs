@@ -45,10 +45,6 @@ public class SharedLessonDbContext : DbContext, ISharedLessonDbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.AppendConfigurations();
-        
-        if (_configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
-        {
-            modelBuilder.SeedingDefaultData(_configuration);
-        }
+        modelBuilder.SeedingDefaultData(_configuration);
     }
 }
