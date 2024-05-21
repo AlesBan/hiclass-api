@@ -10,7 +10,6 @@ public class CreateFeedbackRequestDto
     [NotEqual(nameof(ClassSenderId), nameof(Domain.Entities.Main.Class))]
     [Required]
     public Guid ClassReceiverId { get; set; }
-
     [Required] public Guid ClassSenderId { get; set; }
     [Required] public Guid InvitationId { get; set; }
     [Required] public int Rating { get; set; }

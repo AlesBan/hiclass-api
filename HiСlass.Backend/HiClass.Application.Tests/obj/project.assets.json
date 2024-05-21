@@ -2562,11 +2562,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj",
+      "projectUniqueName": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj",
       "projectName": "HiClass.Application.Tests",
-      "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj",
+      "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\obj\\",
+      "outputPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -2581,14 +2581,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
-              "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
+            "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
+              "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
             },
-            "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj": {
-              "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj"
+            "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj": {
+              "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj"
             },
-            "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj": {
-              "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj"
+            "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj": {
+              "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj"
             }
           }
         }
@@ -2646,7 +2646,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.422\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

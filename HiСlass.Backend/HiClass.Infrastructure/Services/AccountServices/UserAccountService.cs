@@ -118,11 +118,29 @@ public class UserAccountService : IUserAccountService
         return loginResponseDto;
     }
 
-    public async Task<EmailVerificationResponseDto> VerifyEmail(Guid userId, string code, IMediator mediator)
+    public async Task<EmailVerificationResponseDto> VerifyEmailUsingId(Guid userId, string code, IMediator mediator)
     {
         var command = new UpdateUserVerificationCommand()
         {
             UserId = userId,
+            VerificationCode = code
+        };
+
+        var newAccessToken = await mediator.Send(command);
+
+        var emailVerificationResponseDto = new EmailVerificationResponseDto()
+        {
+            AccessToken = newAccessToken
+        };
+
+        return emailVerificationResponseDto;
+    }
+
+    public async Task<EmailVerificationResponseDto> VerifyEmailUsingEmail(string email, string code, IMediator mediator)
+    {
+        var command = new UpdateUserVerificationCommand()
+        {
+            Email = email,
             VerificationCode = code
         };
 

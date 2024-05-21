@@ -6,6 +6,7 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Upda
 
 public class UpdateUserVerificationCommand : IRequest<string>
 {
-    [Required] public Guid UserId { get; set; }
+    [Required] public Guid UserId { get; set; } = Guid.Empty;
+    [Required] public string Email { get; set; } = string.Empty;
     [Required] public string VerificationCode { get; set; } = null!;
 }

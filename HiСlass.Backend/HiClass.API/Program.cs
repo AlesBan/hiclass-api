@@ -94,7 +94,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = servicesProvider.GetRequiredService<SharedLessonDbContext>();
-        context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         DbInitializer.Initialize(context);
     }
     catch (Exception ex)

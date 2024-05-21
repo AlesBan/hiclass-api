@@ -58,10 +58,6 @@ namespace HiClass.Infrastructure.Services.InvitationServices
             await _emailHandlerService.SendAsync(userReceiver.Email, EmailConstants.EmailInvitationSubject,
                 EmailConstants.EmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
             
-            _notificationHandlerService.SendMessage($"Invitation has been sent by {userSender.Email}");
-
-            _notificationHandlerService.ScheduleMessage($"Invitation has been sent by {userSender.Email}", DateTime.Now.AddSeconds(15));
-
             return invitation;
         }
 

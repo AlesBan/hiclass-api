@@ -87,7 +87,7 @@ public class EditUserAccountService : IEditUserAccountService
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
-        var createAccessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(requestUserDto);
+        var createAccessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
         var newToken = _tokenHelper.CreateToken(createAccessTokenUserDto);
 
         var command = new EditUserAccessTokenCommand()

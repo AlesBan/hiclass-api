@@ -48,8 +48,9 @@ public class UserController : BaseController
     [HttpPost("verify-email")]
     public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationRequestDto requestDto)
     {
+        var email = requestDto.Email;
         var verificationCode = requestDto.VerificationCode;
-        var result = await _userAccountService.VerifyEmail(UserId, verificationCode, Mediator);
+        var result = await _userAccountService.VerifyEmailUsingEmail(email, verificationCode, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
     
