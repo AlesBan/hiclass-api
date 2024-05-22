@@ -1,5 +1,6 @@
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
+using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Infrastructure.Services.InvitationServices;
@@ -20,6 +21,7 @@ public class InvitationController : BaseController
         _invitationService = invitationService;
         _configuration = configuration;
     }
+    
 
     [HttpPost("create-invitation")]
     public async Task<IActionResult> CreateInvitation([FromBody] CreateInvitationRequestDto createInvitationRequestDto)
@@ -28,6 +30,15 @@ public class InvitationController : BaseController
         var invitationDto = new CreateInvitationResponseDto(invitation);
         return ResponseHelper.GetOkResult(invitationDto);
     }
+    
+    [HttpPost("change-invitation-status")]
+    public async Task<IActionResult> ChangeInvitationStatus([FromBody] ChangeInvitationStatusRequestDto changeInvitationStatusRequestDto)
+    {
+        var invitation = await _invitationService.CreateInvitation(UserId, Mediator, changeInvitationStatusRequestDto);
+        var invitationDto = new CreateInvitationResponseDto(invitation);
+        return ResponseHelper.GetOkResult(invitationDto);
+    }
+
 
     [HttpPost("send-feedback")]
     public async Task<IActionResult> SendFeedback([FromBody] CreateFeedbackRequestDto sendFeedbackRequestDto)

@@ -4,6 +4,7 @@ using HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.Crea
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Domain.Entities.Communication;
@@ -59,6 +60,11 @@ namespace HiClass.Infrastructure.Services.InvitationServices
                 EmailConstants.EmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
             
             return invitation;
+        }
+
+        public Task ChangeInvitationStatus(Guid invitationId, IMediator mediator, ChangeInvitationStatusRequestDto requestDto)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Feedback> CreateFeedback(Guid userSenderId, IMediator mediator,

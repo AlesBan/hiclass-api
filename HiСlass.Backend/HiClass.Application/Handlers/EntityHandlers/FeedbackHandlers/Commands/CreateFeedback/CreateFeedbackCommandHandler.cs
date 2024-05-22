@@ -42,7 +42,10 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
         _context.Feedbacks.Add(feedback);
 
         var averageRating = await CalculateAverageRating(request.UserRecipientId, cancellationToken);
-
+        
+        user.Rating = averageRating;
+        _context.Users.Update(user);
+            
         await _context.SaveChangesAsync(cancellationToken);
 
         return feedback;
