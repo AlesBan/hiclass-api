@@ -44,7 +44,7 @@ public class CreateUserAccountCommandHandlerTests : TestCommonBase
 
 
         // Act
-        var handler = new CreateUserAccountCommandHandler(Context, mockTokenHelper.Object);
+        var handler = new CreateUserAccountCommandHandler(Context);
         await handler.Handle(createUserAccountCommand,
             CancellationToken.None);
 

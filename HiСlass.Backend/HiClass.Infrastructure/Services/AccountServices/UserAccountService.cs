@@ -38,7 +38,7 @@ public class UserAccountService : IUserAccountService
 {
     private readonly ITokenHelper _tokenHelper;
     private readonly IUserHelper _userHelper;
-    private readonly IUserDataHelper _dataUserHelper;
+    private readonly IDataForUserHelper _dataUserHelper;
     private readonly IEmailHandlerService _emailHandlerService;
     private readonly IConfiguration _configuration;
     private readonly IImageHandlerService _imageHandlerService;
@@ -48,7 +48,7 @@ public class UserAccountService : IUserAccountService
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
-        IUserDataHelper dataUserHelper, IImageHandlerService imageHandlerService,
+        IDataForUserHelper dataUserHelper, IImageHandlerService imageHandlerService,
         IMapper mapper, ISharedLessonDbContext context, INotificationHandlerService notificationHandlerService)
     {
         _tokenHelper = tokenHelper;
@@ -244,7 +244,7 @@ public class UserAccountService : IUserAccountService
 
         var userWithAccount = await GetCreatedUserAccount(userId, user.Email, requestDto, mediator);
 
-        var userProfileDto = await _userHelper.MapUserToCreateAccountUserProfileDto(userWithAccount);
+        var userProfileDto = _userHelper.MapUserToCreateAccountUserProfileDto(userWithAccount);
 
         return userProfileDto;
     }

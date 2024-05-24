@@ -15,7 +15,7 @@ public interface IUserHelper
     public void CheckUserCreateAccountAbility(User user);
     public Task<FullUserProfileDto> MapUserToFullUserProfileDto(User user);
     public Task<UserProfileDto> MapUserToUserProfileDto(User user);
-    public Task<CreateAccountUserProfileDto> MapUserToCreateAccountUserProfileDto(User user);
+    public CreateAccountUserProfileDto MapUserToCreateAccountUserProfileDto(User user);
     public string GenerateVerificationCode();
     public void CheckResetTokenValidation(User user);
     public string GeneratePasswordResetCode();

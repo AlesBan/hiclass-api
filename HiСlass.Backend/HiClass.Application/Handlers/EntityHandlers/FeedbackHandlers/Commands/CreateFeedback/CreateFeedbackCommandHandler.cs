@@ -39,7 +39,8 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
             CreatedAt = DateTime.UtcNow
         };
 
-        _context.Feedbacks.Add(feedback);
+        await _context.Feedbacks.AddAsync(feedback, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         var averageRating = await CalculateAverageRating(request.UserRecipientId, cancellationToken);
         

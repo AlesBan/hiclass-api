@@ -53,6 +53,13 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
             .Include(u => u.ReceivedFeedbacks)
             .ThenInclude(rf => rf.UserSender)
             .ThenInclude(rf => rf.City)
+            .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
+            .Include(u => u.ReceivedInvitations)
+            .ThenInclude(ri => ri.Feedbacks)
+            .ThenInclude(f => f.UserSender)
+            .Include(u => u.SentInvitations)
+            .ThenInclude(ri => ri.Feedbacks)
+            .ThenInclude(f => f.UserSender)
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
 

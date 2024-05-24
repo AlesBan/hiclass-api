@@ -1,6 +1,7 @@
 using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Constants;
 using HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.CreateFeedback;
+using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.ChangeInvitationStatus;
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
@@ -44,7 +45,7 @@ namespace HiClass.Infrastructure.Services.InvitationServices
                 ClassSenderId = requestInvitationDto.ClassSenderId,
                 ClassReceiverId = requestInvitationDto.ClassReceiverId,
                 DateOfInvitation = dateOfInvitation,
-                Status = InvitationStatuses.Pending.ToString(),
+                Status = InvitationStatus.Pending.ToString(),
                 InvitationText = requestInvitationDto.InvitationText
             };
 
@@ -62,9 +63,16 @@ namespace HiClass.Infrastructure.Services.InvitationServices
             return invitation;
         }
 
-        public Task ChangeInvitationStatus(Guid invitationId, IMediator mediator, ChangeInvitationStatusRequestDto requestDto)
+        public Task ChangeInvitationStatus(Guid userReceiverId, IMediator mediator, ChangeInvitationStatusRequestDto requestDto)
         {
-            throw new NotImplementedException();
+            var command = new ChangeInvitationStatusCommand
+            {
+                InvitationId = requestDto.InvitationId,
+                UserReceiverId = userReceiverId,
+                IsAccepted = requestDto.IsAccepted
+            };
+
+            return mediator.Send(command);
         }
 
         public async Task<Feedback> CreateFeedback(Guid userSenderId, IMediator mediator,

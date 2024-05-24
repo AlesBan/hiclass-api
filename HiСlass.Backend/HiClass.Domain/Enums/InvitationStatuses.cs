@@ -1,6 +1,6 @@
 namespace HiClass.Domain.Enums;
 
-public enum InvitationStatuses
+public enum InvitationStatus
 {
     Pending, Declined, Accepted
 }

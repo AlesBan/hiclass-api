@@ -34,11 +34,9 @@ public class InvitationController : BaseController
     [HttpPost("change-invitation-status")]
     public async Task<IActionResult> ChangeInvitationStatus([FromBody] ChangeInvitationStatusRequestDto changeInvitationStatusRequestDto)
     {
-        var invitation = await _invitationService.CreateInvitation(UserId, Mediator, changeInvitationStatusRequestDto);
-        var invitationDto = new CreateInvitationResponseDto(invitation);
-        return ResponseHelper.GetOkResult(invitationDto);
+        await _invitationService.ChangeInvitationStatus(UserId, Mediator, changeInvitationStatusRequestDto);
+        return ResponseHelper.GetOkResult();
     }
-
 
     [HttpPost("send-feedback")]
     public async Task<IActionResult> SendFeedback([FromBody] CreateFeedbackRequestDto sendFeedbackRequestDto)

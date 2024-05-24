@@ -6,19 +6,15 @@ using MediatR;
 
 namespace HiClass.Application.Helpers.DataHelper;
 
-public interface IUserDataHelper
+public interface IDataForUserHelper
 {
     Task<Country> GetCountryByTitle(string countryTitle, IMediator mediator);
     Task<City> GetCityByCountryId(Guid countryId, string cityTitle, IMediator mediator);
-
     Task<Institution> GetInstitution(CreateUserAccountRequestDto requestUserDto,
         IMediator mediator);
-
     Task<IEnumerable<Language>> GetLanguagesByTitles(IEnumerable<string> languages, IMediator mediator);
-
     Task<IEnumerable<Discipline>> GetDisciplinesByTitles(IEnumerable<string> disciplines,
         IMediator mediator);
-
     Task<IEnumerable<Grade>> GetGradesByNumbers(IEnumerable<int> grades, IMediator mediator);
 
 }

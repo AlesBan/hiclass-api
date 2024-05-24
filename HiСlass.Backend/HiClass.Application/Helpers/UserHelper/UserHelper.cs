@@ -10,6 +10,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserBy
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
 using HiClass.Application.Models.Invitations.Feedbacks;
+using HiClass.Application.Models.Invitations.Invitations;
 using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Main;
@@ -71,26 +72,26 @@ public class UserHelper : IUserHelper
         }
     }
 
-    public async Task<UserProfileDto> MapUserToUserProfileDto(User user)
+    public Task<UserProfileDto> MapUserToUserProfileDto(User user)
     {
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
         userProfileDto.LanguageTitles = user.UserLanguages.Select(ul => ul.Language.Title).ToList();
         userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
         userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
         userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClassDtos = await MapClassProfileDtos(user.Classes.ToList());
-        userProfileDto.FeedbackDtos = await MapFeedbackDtos(user.ReceivedFeedbacks.ToList());
-        return userProfileDto;
+        userProfileDto.ClassDtos = MapClassProfileDtos(user.Classes.ToList());
+        userProfileDto.FeedbackDtos = MapFeedbackDtos(user.ReceivedFeedbacks.ToList());
+        return Task.FromResult(userProfileDto);
     }
 
-    public async Task<CreateAccountUserProfileDto> MapUserToCreateAccountUserProfileDto(User user)
+    public CreateAccountUserProfileDto MapUserToCreateAccountUserProfileDto(User user)
     {
         var userProfileDto = _mapper.Map<CreateAccountUserProfileDto>(user);
         userProfileDto.LanguageTitles = user.UserLanguages.Select(ul => ul.Language.Title).ToList();
         userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
         userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
         userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClassDtos = await MapClassProfileDtos(user.Classes.ToList());
+        userProfileDto.ClassDtos = MapClassProfileDtos(user.Classes.ToList());
         return userProfileDto;
     }
 
@@ -102,7 +103,10 @@ public class UserHelper : IUserHelper
         userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
         userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
         userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClassDtos = await MapClassProfileDtos(user.Classes.ToList());
+        userProfileDto.ClassDtos = MapClassProfileDtos(user.Classes.ToList());
+        userProfileDto.ReceivedInvitationDtos = MapInvitationDtos(user.ReceivedInvitations.ToList());
+        userProfileDto.ReceivedFeedbackDtos = MapFeedbackDtos(user.ReceivedFeedbacks.ToList());
+        return userProfileDto;
         return userProfileDto;
     }
 
@@ -121,12 +125,11 @@ public class UserHelper : IUserHelper
 
     public void CheckResetTokenValidation(User user)
     {
-        
         if (user.PasswordResetToken == null)
         {
             throw new InvalidResetTokenProvidedException();
         }
-        
+
         if (user.ResetTokenExpires < DateTime.Now)
         {
             throw new ResetTokenHasExpiredException(user.UserId, user.PasswordResetToken ?? "");
@@ -154,9 +157,9 @@ public class UserHelper : IUserHelper
         }
     }
 
-    private static Task<List<ClassProfileDto>> MapClassProfileDtos(IEnumerable<Class> classes)
+    private static List<ClassProfileDto> MapClassProfileDtos(IEnumerable<Class> classes)
     {
-        return Task.FromResult(classes.Select(c => new ClassProfileDto
+        return classes.Select(c => new ClassProfileDto
             {
                 ClassId = c.ClassId,
                 Title = c.Title,
@@ -167,10 +170,10 @@ public class UserHelper : IUserHelper
                 Disciplines = c.ClassDisciplines.Select(cd => cd.Discipline.Title).ToList(),
                 ImageUrl = c.ImageUrl!
             })
-            .ToList());
+            .ToList();
     }
 
-    private static Task<List<FeedbackDto>> MapFeedbackDtos(IEnumerable<Feedback> feedbacks)
+    private static List<FeedbackDto> MapFeedbackDtos(IEnumerable<Feedback> feedbacks)
     {
         var feedbackDtos = feedbacks.Select(feedback => new FeedbackDto
             {
@@ -179,7 +182,7 @@ public class UserHelper : IUserHelper
                 UserSenderId = feedback.UserSenderId,
                 UserSenderFullName = feedback.UserSender.FullName,
                 UserSenderImageUrl = feedback.UserSender.ImageUrl!,
-                UserSenderCityLocationTitle = feedback.UserSender.FullLocation,
+                UserSenderFullLocation = feedback.UserSender.FullLocation,
                 WasTheJointLesson = feedback.WasTheJointLesson,
                 FeedbackText = feedback.FeedbackText,
                 Rating = feedback.Rating,
@@ -187,6 +190,12 @@ public class UserHelper : IUserHelper
             })
             .ToList();
 
-        return Task.FromResult(feedbackDtos);
+        return feedbackDtos;
+    }
+    
+    private IEnumerable<InvitationDto> MapInvitationDtos(IEnumerable<Invitation> toList)
+    {
+        var invitations = toList.Select(invitation => _mapper.Map<InvitationDto>(invitation));
+        return invitations;
     }
 }

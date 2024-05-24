@@ -21,6 +21,6 @@ public class CreateInvitationCommand : IRequest<Invitation>
 
     [Required] public Guid ClassReceiverId { get; set; }
     [Required] public DateTime DateOfInvitation { get; set; }
-    [Required] public string Status { get; set; } = InvitationStatuses.Pending.ToString();
+    [Required] public string Status { get; set; } = InvitationStatus.Pending.ToString();
     [Required] public string? InvitationText { get; set; }
 }

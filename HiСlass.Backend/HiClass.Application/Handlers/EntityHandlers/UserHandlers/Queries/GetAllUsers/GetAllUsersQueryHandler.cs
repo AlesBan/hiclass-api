@@ -1,4 +1,5 @@
 using HiClass.Application.Interfaces;
+using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
         _sharedLessonDbContext = sharedLessonDbContext;
     }
 
-    public Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var users = _sharedLessonDbContext.Users
             .Include(u => u.City)
@@ -34,7 +35,18 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
             .ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades)
             .ThenInclude(ug => ug.Grade)
-            .ToListAsync(cancellationToken);
+            .Include(u => u.ReceivedInvitations)
+            .ThenInclude(ri => ri.Feedbacks)
+            .ThenInclude(rf => rf.UserSender)
+            .ThenInclude(us => us.City)
+            .ThenInclude(c => c.Country)
+            .Include(u => u.ReceivedFeedbacks)
+            .ThenInclude(rf => rf.UserSender)
+            .ThenInclude(us => us.City)
+            .ThenInclude(c => c.Country)
+            .ToListAsync(cancellationToken)
+            .Result;
+        
         return users;
     }
 }

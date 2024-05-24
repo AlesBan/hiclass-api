@@ -2,6 +2,8 @@ using AutoMapper;
 using HiClass.Application.Common.Mappings;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Institution;
+using HiClass.Application.Models.Invitations.Feedbacks;
+using HiClass.Application.Models.Invitations.Invitations;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Location;
 
@@ -31,7 +33,8 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
     public List<string> LanguageTitles { get; set; } = new();
     public List<string> DisciplineTitles { get; set; } = new();
     public List<int> GradeNumbers { get; set; } = new();
-    public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    public IEnumerable<FeedbackDto> ReceivedFeedbackDtos { get; set; } = new List<FeedbackDto>();
+    public IEnumerable<InvitationDto> ReceivedInvitationDtos { get; set; } = new List<InvitationDto>();
 
     public void Mapping(Profile profile)
     {
@@ -57,7 +60,7 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(u => u.IsVerified))
             .ForMember(up => up.VerificationCode,
                 opt => opt.MapFrom(u => u.VerificationCode))
-           .ForMember(up => up.PasswordResetCode,
+            .ForMember(up => up.PasswordResetCode,
                 opt => opt.MapFrom(u => u.PasswordResetCode))
             .ForMember(up => up.IsCreateAccount,
                 opt => opt.MapFrom(u => u.IsCreatedAccount))

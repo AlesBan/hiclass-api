@@ -35,6 +35,8 @@ public class GetUserListBySearchRequestCommandHandler : IRequestHandler<
             .Include(u => u.UserDisciplines).ThenInclude(ud => ud.Discipline)
             .Include(u => u.UserLanguages).ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
+            .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
+            .Include(u => u.ReceivedInvitations)
             .Where(u =>
                 u.UserId != userIdToExclude && (
                     u.Country != null && countryTitles.Contains(u.Country.Title) ||
