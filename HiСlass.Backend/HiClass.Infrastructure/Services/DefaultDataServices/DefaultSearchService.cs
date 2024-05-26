@@ -1,36 +1,35 @@
-using HiClass.Application.Dtos.UserDtos;
+using AutoMapper;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserProfileListByDefaultSearchRequest;
 using HiClass.Application.Helpers.UserHelper;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Search;
 using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace HiClass.Infrastructure.Services.DefaultDataServices;
 
 public class DefaultSearchService : IDefaultSearchService
 {
     private readonly IUserHelper _userHelper;
+    private readonly IMapper _mapper;
+    private readonly ILogger<DefaultSearchService> _logger;
 
-    public DefaultSearchService(IUserHelper userHelper)
+    public DefaultSearchService(IUserHelper userHelper, IMapper mapper, ILogger<DefaultSearchService> logger)
     {
         _userHelper = userHelper;
+        _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<DefaultSearchResponseDto> GetDefaultTeacherAndClassProfiles(Guid userId, IMediator mediator)
     {
-        var user = await GetUserById(userId, mediator);
+        var user = await _userHelper.GetUserById(userId, mediator);
         var searchRequest = await CreateDefaultSearchRequestDto(user);
         var userList = await GetUserListByDefaultSearchResponse(searchRequest, mediator);
-        var defaultSearchResponseDto = await GetDefaultSearchResponseDto(user, userList);
+        var defaultSearchResponseDto = GetDefaultSearchResponseDto(user, userList);
         return defaultSearchResponseDto;
-    }
-
-    private async Task<User> GetUserById(Guid userId, IMediator mediator)
-    {
-        return await _userHelper.GetUserById(userId, mediator);
     }
 
     private static Task<DefaultSearchCommandDto> CreateDefaultSearchRequestDto(User user)
@@ -60,26 +59,32 @@ public class DefaultSearchService : IDefaultSearchService
         return userList;
     }
 
-    private async Task<DefaultSearchResponseDto> GetDefaultSearchResponseDto(User user, IEnumerable<User> userList)
+    private DefaultSearchResponseDto GetDefaultSearchResponseDto(User user, IEnumerable<User> userList)
     {
-        var userProfileList = await GetUserProfileList(userList);
+        var userProfileList = GetUserProfileList(userList);
         var userDisciplineTitles = user.UserDisciplines
             .Select(ud => ud.Discipline.Title).ToList();
 
         var userProfileDtos = userProfileList.ToList();
-        
-        var teacherProfilesByCountry = GetProfilesByCountry(user.Country.Title, userProfileDtos, isTeacher: true);
-        var expertProfilesByCountry = GetProfilesByCountry(user.Country.Title, userProfileDtos, isTeacher: false);
+
+        var countryTitle = user.Country?.Title ?? string.Empty;
+        if (user.Country == null)
+        {
+            _logger.LogWarning("User country is null for user ID {UserId}", user.UserId);
+        }
+
+        var teacherProfilesByCountry = GetProfilesByCountry(countryTitle, userProfileDtos, isTeacher: true);
+        var expertProfilesByCountry = GetProfilesByCountry(countryTitle, userProfileDtos, isTeacher: false);
         var teacherProfilesByDisciplines =
             GetProfilesByDisciplines(user.UserDisciplines.Select(ud => ud.Discipline.Title), userProfileDtos,
                 isTeacher: true);
         var expertProfilesByDisciplines =
             GetProfilesByDisciplines(user.UserDisciplines.Select(ud => ud.Discipline.Title), userProfileDtos,
                 isTeacher: false);
-        
+
         var profilesByCountry = teacherProfilesByCountry.ToList();
         var classProfilesByCountry = GetClassProfiles(profilesByCountry).ToList();
-        
+
         var profilesByDisciplines = teacherProfilesByDisciplines.ToList();
         var classProfilesByDisciplines = GetClassProfiles(profilesByDisciplines, userDisciplineTitles).ToList();
 
@@ -94,11 +99,10 @@ public class DefaultSearchService : IDefaultSearchService
         };
     }
 
-    private async Task<IEnumerable<UserProfileDto>> GetUserProfileList(IEnumerable<User> userList)
+    private IEnumerable<UserProfileDto> GetUserProfileList(IEnumerable<User> userList)
     {
-        var userProfileDtos = await Task.WhenAll(userList
-            .Select(u =>
-                _userHelper.MapUserToUserProfileDto(u)));
+        var userProfileDtos = userList
+            .Select(user => _mapper.Map<UserProfileDto>(user));
         return userProfileDtos;
     }
 
@@ -132,11 +136,11 @@ public class DefaultSearchService : IDefaultSearchService
                 Grade = c.Grade,
                 Languages = c.Languages,
                 Disciplines = c.Disciplines,
-                ImageUrl = c.ImageUrl!
+                ImageUrl = c.ImageUrl
             });
     }
-    
-    private static IEnumerable<ClassProfileDto> GetClassProfiles(IEnumerable<UserProfileDto> userProfileList, 
+
+    private static IEnumerable<ClassProfileDto> GetClassProfiles(IEnumerable<UserProfileDto> userProfileList,
         IEnumerable<string> disciplineIds)
     {
         return userProfileList
@@ -151,9 +155,9 @@ public class DefaultSearchService : IDefaultSearchService
                 Grade = c.Grade,
                 Languages = c.Languages,
                 Disciplines = c.Disciplines,
-                ImageUrl = c.ImageUrl!
+                ImageUrl = c.ImageUrl
             })
-            .Where(c=>
+            .Where(c =>
                 c.Disciplines.Any(disciplineIds.Contains));
     }
 }

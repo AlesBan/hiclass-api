@@ -26,9 +26,16 @@ public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVe
 
     public async Task<string> Handle(UpdateUserVerificationCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users
-            .FirstOrDefaultAsync(x =>
-                x.UserId == request.UserId, cancellationToken);
+        User? user;
+
+        if (request.UserId != Guid.Empty)
+        {
+            user = await _context.Users.FindAsync(new object?[] { request.UserId, cancellationToken }, cancellationToken: cancellationToken);
+        }
+        else
+        {
+            user = await _context.Users.SingleOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+        }
 
         if (user == null)
         {
@@ -46,10 +53,11 @@ public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVe
         user.IsVerified = true;
         user.VerifiedAt = DateTime.UtcNow;
         user.AccessToken = newToken;
+        
+        _context.Users.Update(user);
 
-        _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken);
 
-        return user.AccessToken;
+        return newToken;
     }
 }

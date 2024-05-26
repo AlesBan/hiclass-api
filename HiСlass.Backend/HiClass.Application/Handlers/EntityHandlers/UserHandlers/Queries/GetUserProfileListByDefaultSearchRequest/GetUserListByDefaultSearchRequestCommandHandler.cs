@@ -36,6 +36,8 @@ public class GetUserListByDefaultSearchRequestCommandHandler : IRequestHandler<
             .Include(u => u.UserDisciplines).ThenInclude(ud => ud.Discipline)
             .Include(u => u.UserLanguages).ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
+            .Include(u => u.ReceivedInvitations)
+            .ThenInclude(ri => ri.Feedbacks)
             .Where(u =>
                 u.UserId != userIdToExclude && (
                     u.Country != null && u.CountryId == countryId ||

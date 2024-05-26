@@ -1,14 +1,15 @@
 using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Constants;
 using HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.CreateFeedback;
+using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.ChangeInvitationStatus;
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
+using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
-using HiClass.Infrastructure.Services.NotificationHandlerService;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.InvitationServices
@@ -17,13 +18,11 @@ namespace HiClass.Infrastructure.Services.InvitationServices
     {
         private readonly IEmailHandlerService _emailHandlerService;
         private readonly IUserHelper _userHelper;
-        private readonly INotificationHandlerService _notificationHandlerService;
 
-        public InvitationService(IEmailHandlerService emailHandlerService, IUserHelper userHelper, INotificationHandlerService notificationHandlerService)
+        public InvitationService(IEmailHandlerService emailHandlerService, IUserHelper userHelper)
         {
             _emailHandlerService = emailHandlerService;
             _userHelper = userHelper;
-            _notificationHandlerService = notificationHandlerService;
         }
 
         public async Task<Invitation> CreateInvitation(Guid userSenderId, IMediator mediator,
@@ -43,7 +42,7 @@ namespace HiClass.Infrastructure.Services.InvitationServices
                 ClassSenderId = requestInvitationDto.ClassSenderId,
                 ClassReceiverId = requestInvitationDto.ClassReceiverId,
                 DateOfInvitation = dateOfInvitation,
-                Status = InvitationStatuses.Pending.ToString(),
+                Status = InvitationStatus.Pending.ToString(),
                 InvitationText = requestInvitationDto.InvitationText
             };
 
@@ -58,11 +57,19 @@ namespace HiClass.Infrastructure.Services.InvitationServices
             await _emailHandlerService.SendAsync(userReceiver.Email, EmailConstants.EmailInvitationSubject,
                 EmailConstants.EmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
             
-            _notificationHandlerService.SendMessage($"Invitation has been sent by {userSender.Email}");
-
-            _notificationHandlerService.ScheduleMessage($"Invitation has been sent by {userSender.Email}", DateTime.Now.AddSeconds(15));
-
             return invitation;
+        }
+
+        public Task ChangeInvitationStatus(Guid userReceiverId, IMediator mediator, ChangeInvitationStatusRequestDto requestDto)
+        {
+            var command = new ChangeInvitationStatusCommand
+            {
+                InvitationId = requestDto.InvitationId,
+                UserReceiverId = userReceiverId,
+                IsAccepted = requestDto.IsAccepted
+            };
+
+            return mediator.Send(command);
         }
 
         public async Task<Feedback> CreateFeedback(Guid userSenderId, IMediator mediator,

@@ -9,8 +9,6 @@ using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.Get
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Class.EditClassDtos;
-using HiClass.Application.Models.Images;
-using HiClass.Application.Models.Images.Editing;
 using HiClass.Application.Models.Images.Editing.Image;
 using HiClass.Application.Models.Images.Setting;
 using HiClass.Infrastructure.Services.ImageServices;

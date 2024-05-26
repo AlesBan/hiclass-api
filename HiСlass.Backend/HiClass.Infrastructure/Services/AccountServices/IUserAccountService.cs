@@ -20,7 +20,8 @@ public interface IUserAccountService
     public Task<IEnumerable<FullUserProfileDto>> GetAllUsers(IMediator mediator);
     public Task<LoginResponseDto> RegisterUser(UserRegisterRequestDto requestUserDto, IMediator mediator);
     public Task<LoginResponseDto> LoginUser(UserLoginRequestDto requestUserDto, IMediator mediator);
-    public Task<EmailVerificationResponseDto> VerifyEmail(Guid userId, string token, IMediator mediator);
+    public Task<EmailVerificationResponseDto> VerifyEmailUsingId(Guid userId, string code, IMediator mediator);
+    public Task<EmailVerificationResponseDto> VerifyEmailUsingEmail(string email, string code, IMediator mediator);
     public Task CreateAndReSendVerificationCode(EmailReVerificationRequestDto requestDto, IMediator mediator);
     public Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator);
     public Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator);

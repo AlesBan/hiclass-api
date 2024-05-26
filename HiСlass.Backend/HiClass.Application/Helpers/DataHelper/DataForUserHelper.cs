@@ -12,7 +12,7 @@ using MediatR;
 
 namespace HiClass.Application.Helpers.DataHelper;
 
-public class UserDataHelper : IUserDataHelper
+public class DataForUserHelper : IDataForUserHelper
 {
     public async Task<Country> GetCountryByTitle(string countryTitle, IMediator mediator)
     {

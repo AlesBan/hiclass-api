@@ -45,6 +45,8 @@ public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, U
             .ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades)
             .ThenInclude(ug => ug.Grade)
+            .Include(u => u.ReceivedInvitations)
+            .ThenInclude(ri => ri.Feedbacks)
             .FirstOrDefaultAsync(u =>
                 u.UserId == user.UserId, cancellationToken: cancellationToken);
 

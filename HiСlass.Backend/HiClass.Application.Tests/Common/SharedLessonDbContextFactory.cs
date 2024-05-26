@@ -211,7 +211,7 @@ public class SharedLessonDbContextFactory
                 ClassSenderId = ClassBId,
                 ClassReceiverId = ClassAId,
                 DateOfInvitation = DateTime.Today,
-                Status = InvitationStatuses.Pending.ToString()
+                Status = InvitationStatus.Pending.ToString()
             },
             new Invitation()
             {
@@ -221,7 +221,7 @@ public class SharedLessonDbContextFactory
                 ClassSenderId = ClassBId,
                 ClassReceiverId = ClassAId!,
                 DateOfInvitation = DateTime.Today,
-                Status = InvitationStatuses.Pending.ToString()
+                Status = InvitationStatus.Pending.ToString()
             },
             new Invitation()
             {
@@ -235,7 +235,7 @@ public class SharedLessonDbContextFactory
                 ClassReceiver = context.Classes.FirstOrDefault(c =>
                     c.ClassId == ClassBId)!,
                 DateOfInvitation = DateTime.Today,
-                Status = InvitationStatuses.Pending.ToString()
+                Status = InvitationStatus.Pending.ToString()
             }
         );
     }

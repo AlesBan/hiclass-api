@@ -27,16 +27,16 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
 
     public async Task<Class> Handle(EditClassCommand request, CancellationToken cancellationToken)
     {
-        var @class = await _context.Classes
-            .FirstOrDefaultAsync(c => c.ClassId == request.ClassId, cancellationToken: cancellationToken);
+        var @class = await _context.Classes.FindAsync(new object?[] { request.ClassId, cancellationToken },
+            cancellationToken: cancellationToken);
 
         if (@class == null)
         {
             throw new NotFoundException(nameof(Class), request.ClassId);
         }
-        
+
         @class.Title = request.Title;
-        
+
         var grade = await GetGrade(request.GradeNumber, cancellationToken);
         @class.GradeId = grade.GradeId;
 
@@ -58,12 +58,11 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
             ClassId = @class.ClassId,
             NewLanguageIds = languages.Select(language =>
                 language.LanguageId).ToList()
-            
         }, cancellationToken);
 
         await Delay(20, cancellationToken);
 
-        _context.Classes.Attach(@class).State = EntityState.Modified;
+        _context.Classes.Update(@class);
         await _context.SaveChangesAsync(cancellationToken);
 
         return await _mediator.Send(new GetClassByIdQuery(@class.ClassId), cancellationToken);

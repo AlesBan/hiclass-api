@@ -31,9 +31,7 @@ public class User
     public City? City { get; set; }
     public Guid? CountryId { get; set; }
     public Country? Country { get; set; }
-
-    public string FullLocation => $"{City?.Title}, {Country?.Title}";
-
+    public string FullLocation => $"{City?.Title}, {(Country == null ? City?.Country?.Title : Country.Title)}";
     public ICollection<UserLanguage> UserLanguages { get; set; } = new List<UserLanguage>();
     public ICollection<UserDiscipline> UserDisciplines { get; set; } = new List<UserDiscipline>();
     public ICollection<UserGrade> UserGrades { get; set; } = new List<UserGrade>();

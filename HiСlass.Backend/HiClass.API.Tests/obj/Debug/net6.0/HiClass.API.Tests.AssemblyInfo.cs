@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HiClass.API.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+887c9bf92d43b8881fc4222731a79f14112408ba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+453de810299bdcaf3c17878cdc96d95ca202e281")]
 [assembly: System.Reflection.AssemblyProductAttribute("HiClass.API.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HiClass.API.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

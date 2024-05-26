@@ -1,16 +1,11 @@
-using System.Globalization;
-using System.Net;
-using System.Net.WebSockets;
 using System.Reflection;
-using System.Text;
 using Amazon.S3;
 using HiClass.API.Configuration;
 using HiClass.API.Configuration.Swagger;
-using HiClass.API.Helpers.WebSocketNotificationsHelper;
 using HiClass.API.Middleware;
-using HiClass.API.Swagger;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
+using HiClass.Application.Helpers.CommandHandlerHelper;
 using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
@@ -29,10 +24,6 @@ using HiClass.Infrastructure.Services.NotificationHandlerService;
 using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
 using HiClass.Persistence;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,8 +69,8 @@ builder.Services.AddScoped<INotificationHandlerService, NotificationHandlerServi
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
-builder.Services.AddScoped<IUserDataHelper, UserDataHelper>();
-
+builder.Services.AddScoped<IDataForUserHelper, DataForUserHelper>();
+builder.Services.AddScoped<ICommandHandlerHelper, CommandHandlerHelper>();
 
 builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 
@@ -94,7 +85,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = servicesProvider.GetRequiredService<SharedLessonDbContext>();
-        context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         DbInitializer.Initialize(context);
     }
     catch (Exception ex)

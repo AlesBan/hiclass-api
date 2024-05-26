@@ -2,7 +2,6 @@ using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.CreateUserDisciplines;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserGradeHandlers.Commands.CreateUserGrade;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandlers.Commands.CreateUserLanguages;
-using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
 using MediatR;
@@ -13,11 +12,10 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Crea
 public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccountCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
-    private readonly ITokenHelper _tokenHelper;
-    public CreateUserAccountCommandHandler(ISharedLessonDbContext serviceDbContext, ITokenHelper tokenHelper)
+
+    public CreateUserAccountCommandHandler(ISharedLessonDbContext serviceDbContext)
     {
         _context = serviceDbContext;
-        _tokenHelper = tokenHelper;
     }
 
     public async Task<User> Handle(CreateUserAccountCommand request, CancellationToken cancellationToken)
