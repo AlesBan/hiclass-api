@@ -10,7 +10,6 @@ using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
-using HiClass.Infrastructure.Services.NotificationHandlerService;
 using MediatR;
 
 namespace HiClass.Infrastructure.Services.InvitationServices
@@ -19,13 +18,11 @@ namespace HiClass.Infrastructure.Services.InvitationServices
     {
         private readonly IEmailHandlerService _emailHandlerService;
         private readonly IUserHelper _userHelper;
-        private readonly INotificationHandlerService _notificationHandlerService;
 
-        public InvitationService(IEmailHandlerService emailHandlerService, IUserHelper userHelper, INotificationHandlerService notificationHandlerService)
+        public InvitationService(IEmailHandlerService emailHandlerService, IUserHelper userHelper)
         {
             _emailHandlerService = emailHandlerService;
             _userHelper = userHelper;
-            _notificationHandlerService = notificationHandlerService;
         }
 
         public async Task<Invitation> CreateInvitation(Guid userSenderId, IMediator mediator,

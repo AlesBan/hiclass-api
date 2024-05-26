@@ -9,7 +9,6 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUser
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserInstitution;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
 using HiClass.Application.Helpers.TokenHelper;
-using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Models.Images.Editing.Banner;
 using HiClass.Application.Models.Images.Editing.Image;
 using HiClass.Application.Models.User;
@@ -24,16 +23,14 @@ namespace HiClass.Infrastructure.Services.EditUserAccountService;
 
 public class EditUserAccountService : IEditUserAccountService
 {
-    private readonly IUserHelper _userHelper;
     private readonly ITokenHelper _tokenHelper;
     private readonly IImageHandlerService _imageHandlerService;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
-    public EditUserAccountService(IUserHelper userHelper, ITokenHelper tokenHelper,
+    public EditUserAccountService(ITokenHelper tokenHelper,
         IImageHandlerService imageHandlerService, IConfiguration configuration, IMapper mapper)
     {
-        _userHelper = userHelper;
         _tokenHelper = tokenHelper;
         _imageHandlerService = imageHandlerService;
         _configuration = configuration;
@@ -46,7 +43,7 @@ public class EditUserAccountService : IEditUserAccountService
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
     }
@@ -56,7 +53,7 @@ public class EditUserAccountService : IEditUserAccountService
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
     }
@@ -66,7 +63,7 @@ public class EditUserAccountService : IEditUserAccountService
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
     }
@@ -77,7 +74,7 @@ public class EditUserAccountService : IEditUserAccountService
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
     }
@@ -95,9 +92,10 @@ public class EditUserAccountService : IEditUserAccountService
             UserId = user.UserId,
             AccessToken = newToken
         };
+        
         var updatedUser = await mediator.Send(command);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(updatedUser);
+        var userProfileDto = _mapper.Map<UserProfileDto>(updatedUser);
 
         return userProfileDto;
     }
@@ -107,7 +105,7 @@ public class EditUserAccountService : IEditUserAccountService
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
     }
@@ -117,7 +115,7 @@ public class EditUserAccountService : IEditUserAccountService
         IMediator mediator)
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
     }

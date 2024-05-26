@@ -27,7 +27,6 @@ using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.Services.ImageServices;
-using HiClass.Infrastructure.Services.NotificationHandlerService;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,12 +43,11 @@ public class UserAccountService : IUserAccountService
     private readonly IImageHandlerService _imageHandlerService;
     private readonly IMapper _mapper;
     private readonly ISharedLessonDbContext _context;
-    private readonly INotificationHandlerService _notificationHandlerService;
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
         IDataForUserHelper dataUserHelper, IImageHandlerService imageHandlerService,
-        IMapper mapper, ISharedLessonDbContext context, INotificationHandlerService notificationHandlerService)
+        IMapper mapper, ISharedLessonDbContext context)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -59,24 +57,21 @@ public class UserAccountService : IUserAccountService
         _imageHandlerService = imageHandlerService;
         _mapper = mapper;
         _context = context;
-        _notificationHandlerService = notificationHandlerService;
     }
 
     public async Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator)
     {
         var user = await mediator.Send(new GetUserByIdQuery(userId));
 
-        var userProfileDto = await _userHelper.MapUserToUserProfileDto(user);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
         return userProfileDto;
     }
 
     public async Task<IEnumerable<FullUserProfileDto>> GetAllUsers(IMediator mediator)
     {
         var users = await mediator.Send(new GetAllUsersQuery());
-        var userProfileDtosTasks = users.Select(async u =>
-            await _userHelper.MapUserToFullUserProfileDto(u));
+        var userProfileDtos = users.Select(user => _mapper.Map<FullUserProfileDto>(user));
 
-        var userProfileDtos = await Task.WhenAll(userProfileDtosTasks);
         return userProfileDtos;
     }
 
@@ -86,25 +81,12 @@ public class UserAccountService : IUserAccountService
             new RegisterUserCommand(requestUserDto));
 
         await _emailHandlerService.SendVerificationEmail(registeredUser.Email,
-            registeredUser.VerificationCode);
+            registeredUser.VerificationCode ?? string.Empty);
 
         var loginResponseDto = new LoginResponseDto
         {
-            AccessToken = registeredUser.AccessToken,
+            AccessToken = registeredUser.AccessToken ?? string.Empty,
         };
-        
-        // try
-        // {
-        //     _notificationHandlerService.SendMessage("test");
-        //
-        
-        
-        
-        //     _notificationHandlerService.ScheduleMessage(registeredUser.Email, DateTime.Now.AddSeconds(20));
-        // }
-        // finally
-        // {
-        // }
 
         return loginResponseDto;
     }
@@ -157,7 +139,7 @@ public class UserAccountService : IUserAccountService
     public async Task CreateAndReSendVerificationCode(EmailReVerificationRequestDto requestDto, IMediator mediator)
     {
         var email = requestDto.Email;
-        
+
         var user = await _userHelper.GetUserByEmail(email, mediator);
         var newVerificationCode = _userHelper.GenerateVerificationCode();
 
@@ -166,7 +148,7 @@ public class UserAccountService : IUserAccountService
             UserId = user.UserId,
             VerificationCode = newVerificationCode
         };
-        
+
         await mediator.Send(command);
 
         await _emailHandlerService.SendVerificationEmail(user.Email,
@@ -244,7 +226,7 @@ public class UserAccountService : IUserAccountService
 
         var userWithAccount = await GetCreatedUserAccount(userId, user.Email, requestDto, mediator);
 
-        var userProfileDto = _userHelper.MapUserToCreateAccountUserProfileDto(userWithAccount);
+        var userProfileDto = _mapper.Map<CreateAccountUserProfileDto>(userWithAccount);
 
         return userProfileDto;
     }

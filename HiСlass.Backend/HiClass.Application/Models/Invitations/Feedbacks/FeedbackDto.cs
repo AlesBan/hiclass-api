@@ -29,6 +29,8 @@ public class FeedbackDto : IMapWith<Feedback>
                 x.UserSender.FullName))
             .ForMember(x => x.UserSenderImageUrl, opt => opt.MapFrom(x =>
                 x.UserSender.ImageUrl))
+           .ForMember(x => x.UserSenderFullLocation, opt => opt.MapFrom(x =>
+                x.UserSender.FullLocation))
             .ForMember(x => x.WasTheJointLesson, opt => opt.MapFrom(x => x.WasTheJointLesson))
             .ForMember(x => x.FeedbackText, opt => opt.MapFrom(x => x.FeedbackText))
             .ForMember(x => x.Rating, opt => opt.MapFrom(x => x.Rating))

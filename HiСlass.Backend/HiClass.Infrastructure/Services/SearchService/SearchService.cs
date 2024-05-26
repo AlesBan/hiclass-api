@@ -1,7 +1,5 @@
-using HiClass.Application.Dtos.UserDtos;
+using AutoMapper;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserProfileListBySearchRequest;
-using HiClass.Application.Helpers.UserHelper;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Search;
 using HiClass.Application.Models.User;
@@ -12,11 +10,11 @@ namespace HiClass.Infrastructure.Services.SearchService;
 
 public class SearchService : ISearchService
 {
-    private readonly IUserHelper _userHelper;
+    private readonly IMapper _mapper;
 
-    public SearchService(IUserHelper userHelper)
+    public SearchService(IMapper mapper)
     {
-        _userHelper = userHelper;
+        _mapper = mapper;
     }
 
     public async Task<SearchResponseDto> GetTeacherAndClassProfiles(Guid userId, SearchRequestDto searchRequest,
@@ -65,9 +63,8 @@ public class SearchService : ISearchService
 
     private async Task<IEnumerable<UserProfileDto>> GetUserProfileList(IEnumerable<User> userList)
     {
-        var userProfileDtos = await Task.WhenAll(userList
-            .Select(u =>
-                _userHelper.MapUserToUserProfileDto(u)));
+        var userProfileDtos = userList
+            .Select(user => _mapper.Map<UserProfileDto>(user));
         return userProfileDtos;
     }
 

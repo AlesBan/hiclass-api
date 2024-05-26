@@ -1,7 +1,9 @@
 using System.Security.Cryptography;
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Communication;
+using HiClass.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,11 +20,28 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
 
     public async Task<Feedback> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.UserId == request.UserRecipientId, cancellationToken);
+        var userTask = _context.Users.SingleOrDefaultAsync(u => u.UserId == request.UserRecipientId, cancellationToken);
+        var invitationTask =
+            _context.Invitations.SingleOrDefaultAsync(i => i.InvitationId == request.InvitationId, cancellationToken);
 
+        var user = await userTask;
         if (user is null)
         {
             throw new UserNotFoundException(request.UserRecipientId);
+        }
+
+        var invitation = await invitationTask;
+        if (invitation is null)
+        {
+            throw new NotFoundException(nameof(Invitation), request.InvitationId);
+        }
+
+        switch (invitation.Status)
+        {
+            case var _ when invitation.Status == InvitationStatus.Declined.ToString():
+                throw new InvitationIsNotAcceptedException(InvitationStatus.Declined);
+            case var _ when invitation.Status == InvitationStatus.Pending.ToString():
+                throw new InvitationIsNotAcceptedException(InvitationStatus.Pending);
         }
 
         var feedback = new Feedback()
@@ -40,17 +59,17 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
         };
 
         await _context.Feedbacks.AddAsync(feedback, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
 
         var averageRating = await CalculateAverageRating(request.UserRecipientId, cancellationToken);
-        
+
         user.Rating = averageRating;
         _context.Users.Update(user);
-            
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return feedback;
     }
+
 
     private async Task<double> CalculateAverageRating(Guid userRecipientId, CancellationToken cancellationToken)
     {

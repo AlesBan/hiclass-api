@@ -72,44 +72,6 @@ public class UserHelper : IUserHelper
         }
     }
 
-    public Task<UserProfileDto> MapUserToUserProfileDto(User user)
-    {
-        var userProfileDto = _mapper.Map<UserProfileDto>(user);
-        userProfileDto.LanguageTitles = user.UserLanguages.Select(ul => ul.Language.Title).ToList();
-        userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
-        userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
-        userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClassDtos = MapClassProfileDtos(user.Classes.ToList());
-        userProfileDto.FeedbackDtos = MapFeedbackDtos(user.ReceivedFeedbacks.ToList());
-        return Task.FromResult(userProfileDto);
-    }
-
-    public CreateAccountUserProfileDto MapUserToCreateAccountUserProfileDto(User user)
-    {
-        var userProfileDto = _mapper.Map<CreateAccountUserProfileDto>(user);
-        userProfileDto.LanguageTitles = user.UserLanguages.Select(ul => ul.Language.Title).ToList();
-        userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
-        userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
-        userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClassDtos = MapClassProfileDtos(user.Classes.ToList());
-        return userProfileDto;
-    }
-
-
-    public async Task<FullUserProfileDto> MapUserToFullUserProfileDto(User user)
-    {
-        var userProfileDto = _mapper.Map<FullUserProfileDto>(user);
-        userProfileDto.LanguageTitles = user.UserLanguages.Select(ul => ul.Language.Title).ToList();
-        userProfileDto.DisciplineTitles = user.UserDisciplines.Select(ud => ud.Discipline.Title).ToList();
-        userProfileDto.Institution = _mapper.Map<InstitutionDto>(user.Institution);
-        userProfileDto.GradeNumbers = user.UserGrades.Select(ug => ug.Grade.GradeNumber).ToList();
-        userProfileDto.ClassDtos = MapClassProfileDtos(user.Classes.ToList());
-        userProfileDto.ReceivedInvitationDtos = MapInvitationDtos(user.ReceivedInvitations.ToList());
-        userProfileDto.ReceivedFeedbackDtos = MapFeedbackDtos(user.ReceivedFeedbacks.ToList());
-        return userProfileDto;
-        return userProfileDto;
-    }
-
     public string GenerateVerificationCode()
     {
         var random = new Random();
@@ -155,47 +117,5 @@ public class UserHelper : IUserHelper
         {
             throw new InvalidResetPasswordCodeException();
         }
-    }
-
-    private static List<ClassProfileDto> MapClassProfileDtos(IEnumerable<Class> classes)
-    {
-        return classes.Select(c => new ClassProfileDto
-            {
-                ClassId = c.ClassId,
-                Title = c.Title,
-                UserFullName = c.User.FullName,
-                UserRating = c.User.Rating,
-                Grade = c.Grade.GradeNumber,
-                Languages = c.ClassLanguages.Select(cl => cl.Language.Title).ToList(),
-                Disciplines = c.ClassDisciplines.Select(cd => cd.Discipline.Title).ToList(),
-                ImageUrl = c.ImageUrl!
-            })
-            .ToList();
-    }
-
-    private static List<FeedbackDto> MapFeedbackDtos(IEnumerable<Feedback> feedbacks)
-    {
-        var feedbackDtos = feedbacks.Select(feedback => new FeedbackDto
-            {
-                FeedbackId = feedback.FeedbackId,
-                InvitationId = feedback.InvitationId,
-                UserSenderId = feedback.UserSenderId,
-                UserSenderFullName = feedback.UserSender.FullName,
-                UserSenderImageUrl = feedback.UserSender.ImageUrl!,
-                UserSenderFullLocation = feedback.UserSender.FullLocation,
-                WasTheJointLesson = feedback.WasTheJointLesson,
-                FeedbackText = feedback.FeedbackText,
-                Rating = feedback.Rating,
-                CreatedAt = feedback.CreatedAt
-            })
-            .ToList();
-
-        return feedbackDtos;
-    }
-    
-    private IEnumerable<InvitationDto> MapInvitationDtos(IEnumerable<Invitation> toList)
-    {
-        var invitations = toList.Select(invitation => _mapper.Map<InvitationDto>(invitation));
-        return invitations;
     }
 }

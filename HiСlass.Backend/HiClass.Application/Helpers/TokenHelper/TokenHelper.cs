@@ -1,10 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using HiClass.Application.Common;
 using HiClass.Application.Constants;
 using HiClass.Application.Models.User;
-using HiClass.Domain.Entities.Main;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -55,8 +53,8 @@ public class TokenHelper : ITokenHelper
             new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUniversalTime().ToString()),
             new("isVerified", userDto.IsVerified.ToString()),
             new("isCreatedAccount", userDto.IsCreatedAccount.ToString()),
-            new("isATeacher", userDto.IsATeacher.ToString() ?? ""),
-            new("isAExpert", userDto.IsAnExpert.ToString() ?? "")
+            new("isATeacher", userDto.IsATeacher.ToString()),
+            new("isAExpert", userDto.IsAnExpert.ToString())
         };
 
         // claims.SetRoleClaims(user);

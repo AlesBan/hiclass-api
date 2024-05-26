@@ -36,6 +36,8 @@ public class ChangeInvitationStatusCommandHandler : IRequestHandler<ChangeInvita
         invitation.Status = isAccepted ? InvitationStatus.Accepted.ToString() : InvitationStatus.Declined.ToString();
 
         _context.Invitations.Update(invitation);
+        
+        _context.SaveChangesAsync(cancellationToken);
 
         return Task.FromResult(Unit.Value);
     }

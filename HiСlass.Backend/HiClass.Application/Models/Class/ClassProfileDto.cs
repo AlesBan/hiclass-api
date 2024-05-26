@@ -45,7 +45,3 @@ public class ClassProfileDto : IMapWith<Domain.Entities.Main.Class>
                     cd.Discipline.Title)));
     }
 }
-
-class ClassProfileDtoImpl : ClassProfileDto
-{
-}
