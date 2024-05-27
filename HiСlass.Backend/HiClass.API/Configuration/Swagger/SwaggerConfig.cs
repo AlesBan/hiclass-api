@@ -1,3 +1,4 @@
+using HiClass.API.Filters.Swagger;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 
@@ -40,6 +41,7 @@ public static class SwaggerConfig
                 Description = "ASP.NET Core Web API for HiClass",
             });
             options.EnableAnnotations();
+            options.OperationFilter<SwaggerExceptionFilter>();
         }).AddSwaggerGenNewtonsoftSupport();
     }
 
@@ -47,4 +49,5 @@ public static class SwaggerConfig
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-    }}
+    }
+}

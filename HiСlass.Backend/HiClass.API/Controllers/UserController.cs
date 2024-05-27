@@ -1,6 +1,9 @@
+using HiClass.API.Attributes;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
+using HiClass.Application.Common.Exceptions.Authentication;
+using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
@@ -24,34 +27,14 @@ public class UserController : BaseController
         _userAccountService = userAccountService;
     }
 
-    
-    /// <summary>
-    /// Get all users. Only for developers.
-    /// </summary>
-    /// <returns>List of users</returns>
-    /// <response code="200">Returns the list of users</response>
-    /// <response code="500">If there is an internal server error</response>
     [HttpGet("all-users")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllUsers()
     {
         var result = await _userAccountService.GetAllUsers(Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
-    /// <summary>
-    /// Register a new user.
-    /// </summary>
-    /// <param name="requestUserDto">Data for registering a user</param>
-    /// <returns>Registration result</returns>
-    /// <response code="200">If registration is successful</response>
-    /// <response code="400">If the data is invalid</response>
-    /// <response code="500">If there is an internal server error</response>
     [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Register([FromBody] UserRegisterRequestDto requestUserDto)
     {
         var result = await _userAccountService.RegisterUser(requestUserDto, Mediator);
@@ -60,7 +43,8 @@ public class UserController : BaseController
 
 
     [HttpPost("login")]
-    [SwaggerResponse(400, "If user is not found (UserNotFoundException)")]
+    [SwaggerException(typeof(UserNotFoundException), 400, "If user is not found")]
+    [SwaggerException(typeof(InvalidTokenProvidedException), 400, "If user is not found")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestUserDto)
     {
         var result = await _userAccountService.LoginUser(requestUserDto, Mediator);
@@ -76,14 +60,14 @@ public class UserController : BaseController
         var result = await _userAccountService.VerifyEmailUsingEmail(email, verificationCode, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
-    
+
     [HttpPost("reverify-email")]
     public async Task<IActionResult> ReVerifyEmail([FromBody] EmailReVerificationRequestDto requestDto)
     {
         await _userAccountService.CreateAndReSendVerificationCode(requestDto, Mediator);
         return ResponseHelper.GetOkResult();
     }
-    
+
     [Authorize]
     [CheckUserCreateAccountAbility]
     [HttpPut("create-account")]
@@ -127,7 +111,7 @@ public class UserController : BaseController
         var result = await _userAccountService.GetUserProfile(userId, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
-    
+
     [Authorize]
     [CheckUserCreateAccount]
     [HttpGet("other-userprofile/{userId:guid}")]
