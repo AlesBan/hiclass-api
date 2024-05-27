@@ -61,7 +61,7 @@ public class EmailHandlerService : IEmailHandlerService
         }
         catch (Exception e)
         {
-            throw new SendEmailException();
+            throw new EmailManagerException();
         }
 
         await client.DisconnectAsync(true);

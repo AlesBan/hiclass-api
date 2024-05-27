@@ -1,4 +1,3 @@
-using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Tests.Common;
 

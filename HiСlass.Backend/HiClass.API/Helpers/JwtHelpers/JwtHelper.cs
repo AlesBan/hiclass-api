@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using HiClass.Application.Common.Exceptions.Authentication;
-using HiClass.Application.Dtos.UserDtos;
 using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using static System.Boolean;

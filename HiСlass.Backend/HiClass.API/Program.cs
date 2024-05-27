@@ -96,8 +96,8 @@ using (var scope = app.Services.CreateScope())
 
 app.UseMiddleware<DatabaseConnectionMiddleware>();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.ConfigureSwagger();
+
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AlloyAll");
