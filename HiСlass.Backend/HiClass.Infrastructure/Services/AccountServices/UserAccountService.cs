@@ -1,5 +1,4 @@
 using AutoMapper;
-using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;

@@ -1,6 +1,3 @@
-using HiClass.Application.Dtos.UserDtos;
-using HiClass.Application.Models.User;
-using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

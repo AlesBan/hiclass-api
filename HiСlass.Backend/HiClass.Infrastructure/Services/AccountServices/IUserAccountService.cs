@@ -1,7 +1,3 @@
-using HiClass.Application.Dtos.UserDtos;
-using HiClass.Application.Dtos.UserDtos.Authentication;
-using HiClass.Application.Models.Images;
-using HiClass.Application.Models.Images.Editing;
 using HiClass.Application.Models.Images.Setting;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;

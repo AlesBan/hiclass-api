@@ -1,7 +1,6 @@
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
-using HiClass.Application.Dtos.UserDtos.Authentication;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
@@ -11,6 +10,7 @@ using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Infrastructure.Services.AccountServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HiClass.API.Controllers;
 
@@ -24,26 +24,49 @@ public class UserController : BaseController
         _userAccountService = userAccountService;
     }
 
+    
+    /// <summary>
+    /// Get all users. Only for developers.
+    /// </summary>
+    /// <returns>List of users</returns>
+    /// <response code="200">Returns the list of users</response>
+    /// <response code="500">If there is an internal server error</response>
     [HttpGet("all-users")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllUsers()
     {
         var result = await _userAccountService.GetAllUsers(Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
+    /// <summary>
+    /// Register a new user.
+    /// </summary>
+    /// <param name="requestUserDto">Data for registering a user</param>
+    /// <returns>Registration result</returns>
+    /// <response code="200">If registration is successful</response>
+    /// <response code="400">If the data is invalid</response>
+    /// <response code="500">If there is an internal server error</response>
     [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Register([FromBody] UserRegisterRequestDto requestUserDto)
     {
         var result = await _userAccountService.RegisterUser(requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
+
     [HttpPost("login")]
+    [SwaggerResponse(400, "If user is not found (UserNotFoundException)")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestUserDto)
     {
         var result = await _userAccountService.LoginUser(requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
+
 
     [HttpPost("verify-email")]
     public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationRequestDto requestDto)
