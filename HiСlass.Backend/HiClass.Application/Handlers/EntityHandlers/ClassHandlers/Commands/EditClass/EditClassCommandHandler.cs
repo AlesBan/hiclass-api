@@ -27,8 +27,7 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
 
     public async Task<Class> Handle(EditClassCommand request, CancellationToken cancellationToken)
     {
-        var @class = await _context.Classes.FindAsync(new object?[] { request.ClassId, cancellationToken },
-            cancellationToken: cancellationToken);
+        var @class = await _context.Classes.SingleOrDefaultAsync(c=>c.ClassId == request.ClassId, cancellationToken);
 
         if (@class == null)
         {

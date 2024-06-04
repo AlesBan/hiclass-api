@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MLExkwHzcB2cuP995BItDZx2iYDUnKXpPkOv9bsJg1Y97IOxytgS4asE944ygfdkhAL1Q+KEwiH22nW5JOCX7A==",
+  "dgSpecHash": "kARnrblw5vl2Cx91z/MxwGYQ671NxSR5Dh7yCep6Hahy7CuV3jJPO6lO3u3ujKUICTc/cRxY8neGv2bW1aVyUg==",
   "success": true,
-  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj",
+  "projectFilePath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Persistence\\HiClass.Persistence.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\awssdk.core\\3.7.302.7\\awssdk.core.3.7.302.7.nupkg.sha512",

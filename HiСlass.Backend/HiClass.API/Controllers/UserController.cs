@@ -44,7 +44,6 @@ public class UserController : BaseController
 
     [HttpPost("login")]
     [SwaggerException(typeof(UserNotFoundException), 400, "If user is not found")]
-    [SwaggerException(typeof(InvalidTokenProvidedException), 400, "If user is not found")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestUserDto)
     {
         var result = await _userAccountService.LoginUser(requestUserDto, Mediator);
