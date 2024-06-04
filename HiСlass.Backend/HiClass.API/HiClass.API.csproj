@@ -29,4 +29,8 @@
         <ProjectReference Include="..\HiClass.Persistence\HiClass.Persistence.csproj" />
     </ItemGroup>
 
+<!--    <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">-->
+<!--        <Exec Command="swagger tofile &#45;&#45;output openapi.yml &#45;&#45;yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />-->
+<!--    </Target>-->
+
 </Project>

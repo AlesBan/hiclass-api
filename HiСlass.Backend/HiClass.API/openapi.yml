@@ -1,0 +1,1282 @@
+openapi: 3.0.1
+info:
+  title: HiClass API
+  description: ASP.NET Core Web API for HiClass
+  version: v1
+paths:
+  /api/Class/create-class:
+    post:
+      tags:
+        - Class
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - DisciplineTitles
+                - GradeNumber
+                - LanguageTitles
+                - Title
+              type: object
+              properties:
+                Title:
+                  type: string
+                GradeNumber:
+                  type: integer
+                  format: int32
+                LanguageTitles:
+                  type: array
+                  items:
+                    type: string
+                DisciplineTitles:
+                  type: array
+                  items:
+                    type: string
+            encoding:
+              Title:
+                style: form
+              GradeNumber:
+                style: form
+              LanguageTitles:
+                style: form
+              DisciplineTitles:
+                style: form
+      responses:
+        '200':
+          description: OK
+  '/api/Class/class-profile/{classId}':
+    get:
+      tags:
+        - Class
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  '/api/Class/edit-class/{classId}':
+    put:
+      tags:
+        - Class
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - DisciplineTitles
+                - GradeNumber
+                - LanguageTitles
+                - Title
+              type: object
+              properties:
+                Title:
+                  type: string
+                GradeNumber:
+                  type: integer
+                  format: int32
+                LanguageTitles:
+                  type: array
+                  items:
+                    type: string
+                DisciplineTitles:
+                  type: array
+                  items:
+                    type: string
+            encoding:
+              Title:
+                style: form
+              GradeNumber:
+                style: form
+              LanguageTitles:
+                style: form
+              DisciplineTitles:
+                style: form
+      responses:
+        '200':
+          description: OK
+  '/api/Class/delete-class/{classId}':
+    delete:
+      tags:
+        - Class
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /api/EditUser/personal-info:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditPersonalInfoRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EditPersonalInfoRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EditPersonalInfoRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/EditUser/institution:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditInstitutionRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EditInstitutionRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EditInstitutionRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/EditUser/professional-info:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditProfessionalInfoRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EditProfessionalInfoRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EditProfessionalInfoRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/EditUser/email:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditUserEmailRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EditUserEmailRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EditUserEmailRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/EditUser/password:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditUserPasswordHashRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EditUserPasswordHashRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EditUserPasswordHashRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Image/set-user-image:
+    put:
+      tags:
+        - Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - ImageFormFile
+              type: object
+              properties:
+                ImageFormFile:
+                  type: string
+                  format: binary
+            encoding:
+              ImageFormFile:
+                style: form
+      responses:
+        '200':
+          description: OK
+  /api/Image/edit-user-image:
+    put:
+      tags:
+        - Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - ImageFormFile
+              type: object
+              properties:
+                ImageFormFile:
+                  type: string
+                  format: binary
+            encoding:
+              ImageFormFile:
+                style: form
+      responses:
+        '200':
+          description: OK
+  /api/Image/set-user-banner-image:
+    put:
+      tags:
+        - Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - ImageFormFile
+              type: object
+              properties:
+                ImageFormFile:
+                  type: string
+                  format: binary
+            encoding:
+              ImageFormFile:
+                style: form
+      responses:
+        '200':
+          description: OK
+  /api/Image/edit-user-banner-image:
+    put:
+      tags:
+        - Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - ImageFormFile
+              type: object
+              properties:
+                ImageFormFile:
+                  type: string
+                  format: binary
+            encoding:
+              ImageFormFile:
+                style: form
+      responses:
+        '200':
+          description: OK
+  '/api/Image/set-class-image/{classId}':
+    put:
+      tags:
+        - Image
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - ImageFormFile
+              type: object
+              properties:
+                ImageFormFile:
+                  type: string
+                  format: binary
+            encoding:
+              ImageFormFile:
+                style: form
+      responses:
+        '200':
+          description: OK
+  '/api/Image/edit-class-image/{classId}':
+    put:
+      tags:
+        - Image
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - ImageFormFile
+              type: object
+              properties:
+                ImageFormFile:
+                  type: string
+                  format: binary
+            encoding:
+              ImageFormFile:
+                style: form
+      responses:
+        '200':
+          description: OK
+  /api/Invitation/create-invitation:
+    post:
+      tags:
+        - Invitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInvitationRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateInvitationRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateInvitationRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Invitation/change-invitation-status:
+    post:
+      tags:
+        - Invitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeInvitationStatusRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ChangeInvitationStatusRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ChangeInvitationStatusRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Invitation/send-feedback:
+    post:
+      tags:
+        - Invitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedbackRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedbackRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedbackRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Notifications/ws:
+    get:
+      tags:
+        - Notifications
+      responses:
+        '200':
+          description: OK
+  /api/Search/search-request:
+    get:
+      tags:
+        - Search
+      parameters:
+        - name: Disciplines
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: Languages
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: Grades
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: Countries
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponseDto'
+  /api/Search/default-search-request:
+    get:
+      tags:
+        - Search
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultSearchResponseDto'
+  /api/StaticDataSources/get-available-disciplines:
+    get:
+      tags:
+        - StaticDataSources
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AvailableDisciplinesDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableDisciplinesDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AvailableDisciplinesDto'
+  /api/StaticDataSources/get-available-languages:
+    get:
+      tags:
+        - StaticDataSources
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AvailableLanguagesDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableLanguagesDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AvailableLanguagesDto'
+  /api/StaticDataSources/get-available-institution-types:
+    get:
+      tags:
+        - StaticDataSources
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AvailableInstitutionTypesDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableInstitutionTypesDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AvailableInstitutionTypesDto'
+  /api/StaticDataSources/get-available-country-locations:
+    get:
+      tags:
+        - StaticDataSources
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AvailableCountriesDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableCountriesDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AvailableCountriesDto'
+  /api/User/all-users:
+    get:
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+  /api/User/register:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/User/login:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequestDto'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: If user is not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotFoundException'
+  /api/User/verify-email:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailVerificationRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EmailVerificationRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EmailVerificationRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/User/reverify-email:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailReVerificationRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EmailReVerificationRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EmailReVerificationRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/User/create-account:
+    put:
+      tags:
+        - User
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - CityLocation
+                - CountryLocation
+                - DisciplineTitles
+                - FirstName
+                - GradesEnumerable
+                - IsAnExpert
+                - IsATeacher
+                - LanguageTitles
+                - LastName
+              type: object
+              properties:
+                FirstName:
+                  type: string
+                LastName:
+                  type: string
+                IsATeacher:
+                  type: boolean
+                IsAnExpert:
+                  type: boolean
+                CityLocation:
+                  type: string
+                CountryLocation:
+                  type: string
+                InstitutionDto.Types:
+                  type: array
+                  items:
+                    type: string
+                InstitutionDto.Address:
+                  type: string
+                InstitutionDto.Title:
+                  type: string
+                DisciplineTitles:
+                  type: array
+                  items:
+                    type: string
+                LanguageTitles:
+                  type: array
+                  items:
+                    type: string
+                GradesEnumerable:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+            encoding:
+              FirstName:
+                style: form
+              LastName:
+                style: form
+              IsATeacher:
+                style: form
+              IsAnExpert:
+                style: form
+              CityLocation:
+                style: form
+              CountryLocation:
+                style: form
+              InstitutionDto.Types:
+                style: form
+              InstitutionDto.Address:
+                style: form
+              InstitutionDto.Title:
+                style: form
+              DisciplineTitles:
+                style: form
+              LanguageTitles:
+                style: form
+              GradesEnumerable:
+                style: form
+      responses:
+        '200':
+          description: OK
+  /api/User/forgot-password:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/User/check-reset-password-code:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
+      responses:
+        '200':
+          description: OK
+  /api/User/reset-password:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/User/userprofile:
+    get:
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+  '/api/User/other-userprofile/{userId}':
+    get:
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /api/User/delete-user:
+    delete:
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+  /api/User/delete-all-users:
+    delete:
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    AvailableCountriesDto:
+      type: object
+      properties:
+        countryTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    AvailableDisciplinesDto:
+      type: object
+      properties:
+        availableDisciplines:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    AvailableInstitutionTypesDto:
+      type: object
+      properties:
+        availableInstitutionTypes:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    AvailableLanguagesDto:
+      type: object
+      properties:
+        availableLanguages:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    ChangeInvitationStatusRequestDto:
+      type: object
+      properties:
+        invitationId:
+          type: string
+          format: uuid
+        isAccepted:
+          type: boolean
+      additionalProperties: false
+    CheckResetPasswordCodeDto:
+      required:
+        - resetCode
+      type: object
+      properties:
+        resetCode:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    ClassProfileDto:
+      type: object
+      properties:
+        classId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          nullable: true
+        userFullName:
+          type: string
+          nullable: true
+        userRating:
+          type: number
+          format: double
+        userFeedbacksCount:
+          type: integer
+          format: int32
+        grade:
+          type: integer
+          format: int32
+        languages:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplines:
+          type: array
+          items:
+            type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreateFeedbackRequestDto:
+      required:
+        - classReceiverId
+        - classSenderId
+        - feedbackText
+        - invitationId
+        - rating
+        - userReceiverId
+        - wasTheJointLesson
+      type: object
+      properties:
+        userReceiverId:
+          type: string
+          format: uuid
+        classReceiverId:
+          type: string
+          format: uuid
+        classSenderId:
+          type: string
+          format: uuid
+        invitationId:
+          type: string
+          format: uuid
+        rating:
+          type: integer
+          format: int32
+        feedbackText:
+          minLength: 1
+          type: string
+        wasTheJointLesson:
+          type: boolean
+        reasonForNotConducting:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreateInvitationRequestDto:
+      required:
+        - classReceiverId
+        - classSenderId
+        - dateOfInvitation
+        - invitationText
+      type: object
+      properties:
+        classSenderId:
+          type: string
+          format: uuid
+        classReceiverId:
+          type: string
+          format: uuid
+        dateOfInvitation:
+          minLength: 1
+          type: string
+        invitationText:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    DefaultSearchResponseDto:
+      type: object
+      properties:
+        teacherProfilesByCountry:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileDto'
+          nullable: true
+        expertProfilesByCountry:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileDto'
+          nullable: true
+        teacherProfilesByDisciplines:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileDto'
+          nullable: true
+        expertProfilesByDisciplines:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileDto'
+          nullable: true
+        classProfilesByCountry:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassProfileDto'
+          nullable: true
+        classProfilesByDisciplines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassProfileDto'
+          nullable: true
+      additionalProperties: false
+    EditInstitutionRequestDto:
+      type: object
+      properties:
+        institutionTitle:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        types:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    EditPersonalInfoRequestDto:
+      type: object
+      properties:
+        isATeacher:
+          type: boolean
+        isAnExpert:
+          type: boolean
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        cityTitle:
+          type: string
+          nullable: true
+        countryTitle:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EditProfessionalInfoRequestDto:
+      type: object
+      properties:
+        languages:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplines:
+          type: array
+          items:
+            type: string
+          nullable: true
+        grades:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+      additionalProperties: false
+    EditUserEmailRequestDto:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EditUserPasswordHashRequestDto:
+      type: object
+      properties:
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EmailReVerificationRequestDto:
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    EmailVerificationRequestDto:
+      required:
+        - email
+        - verificationCode
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+        verificationCode:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    FeedbackDto:
+      required:
+        - createdAt
+        - feedbackId
+        - feedbackText
+        - invitationId
+        - rating
+        - userSenderFullLocation
+        - userSenderFullName
+        - userSenderId
+        - userSenderImageUrl
+        - wasTheJointLesson
+      type: object
+      properties:
+        feedbackId:
+          type: string
+          format: uuid
+        invitationId:
+          type: string
+          format: uuid
+        userSenderId:
+          type: string
+          format: uuid
+        userSenderFullName:
+          minLength: 1
+          type: string
+        userSenderImageUrl:
+          minLength: 1
+          type: string
+        userSenderFullLocation:
+          minLength: 1
+          type: string
+        wasTheJointLesson:
+          type: boolean
+        feedbackText:
+          minLength: 1
+          type: string
+        rating:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    ForgotPasswordRequestDto:
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    InstitutionDto:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ResetPasswordRequestDto:
+      required:
+        - password
+      type: object
+      properties:
+        password:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    SearchResponseDto:
+      type: object
+      properties:
+        teacherProfiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileDto'
+          nullable: true
+        expertProfiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileDto'
+          nullable: true
+        classProfiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassProfileDto'
+          nullable: true
+      additionalProperties: false
+    UserLoginRequestDto:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          format: email
+        password:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    UserNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        data:
+          type: object
+          additionalProperties: { }
+          nullable: true
+          readOnly: true
+        innerException:
+          nullable: true
+        helpLink:
+          type: string
+          nullable: true
+        source:
+          type: string
+          nullable: true
+        hResult:
+          type: integer
+          format: int32
+        stackTrace:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    UserProfileDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        bannerImageUrl:
+          type: string
+          nullable: true
+        isATeacher:
+          type: boolean
+        isAnExpert:
+          type: boolean
+        cityTitle:
+          type: string
+          nullable: true
+        countryTitle:
+          type: string
+          nullable: true
+        institution:
+          $ref: '#/components/schemas/InstitutionDto'
+        rating:
+          type: number
+          format: double
+        languageTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+        disciplineTitles:
+          type: array
+          items:
+            type: string
+          nullable: true
+        gradeNumbers:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+        classDtos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassProfileDto'
+          nullable: true
+        feedbackDtos:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedbackDto'
+          nullable: true
+      additionalProperties: false
+    UserRegisterRequestDto:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          format: email
+        password:
+          minLength: 1
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: JWT Authorization header using the Bearer scheme.
+      scheme: Bearer
+      bearerFormat: JWT
+security:
+  - Bearer: [ ]

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HiClass.Persistence.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cdf46403adf130427802bc40fd44072f928a295e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f27635d2d59048d30325703cb8c114431628e9a")]
 [assembly: System.Reflection.AssemblyProductAttribute("HiClass.Persistence.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HiClass.Persistence.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

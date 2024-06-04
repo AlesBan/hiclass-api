@@ -13,9 +13,9 @@ public class Class
     public Guid GradeId { get; set; }
     public Grade Grade { get; set; }
     public string? ImageUrl { get; set; } = string.Empty;
-    public ICollection<ClassLanguage> ClassLanguages { get; set; } = new List<ClassLanguage>();
     public DateTime CreatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
+    public ICollection<ClassLanguage> ClassLanguages { get; set; } = new List<ClassLanguage>();
     public ICollection<ClassDiscipline> ClassDisciplines { get; set; } = new List<ClassDiscipline>();
     public ICollection<Invitation> ReceivedInvitations { get; set; } = new List<Invitation>();
     public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();
