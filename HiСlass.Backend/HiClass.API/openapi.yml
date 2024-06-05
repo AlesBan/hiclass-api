@@ -568,12 +568,6 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          description: If user is not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserNotFoundException'
   /api/User/verify-email:
     post:
       tags:
@@ -1164,33 +1158,6 @@ components:
         password:
           minLength: 1
           type: string
-      additionalProperties: false
-    UserNotFoundException:
-      type: object
-      properties:
-        message:
-          type: string
-          nullable: true
-        data:
-          type: object
-          additionalProperties: { }
-          nullable: true
-          readOnly: true
-        innerException:
-          nullable: true
-        helpLink:
-          type: string
-          nullable: true
-        source:
-          type: string
-          nullable: true
-        hResult:
-          type: integer
-          format: int32
-        stackTrace:
-          type: string
-          nullable: true
-          readOnly: true
       additionalProperties: false
     UserProfileDto:
       type: object

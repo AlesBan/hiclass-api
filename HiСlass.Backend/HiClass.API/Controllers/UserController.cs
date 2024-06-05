@@ -43,13 +43,11 @@ public class UserController : BaseController
 
 
     [HttpPost("login")]
-    [SwaggerException(typeof(UserNotFoundException), 400, "If user is not found")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestUserDto)
     {
         var result = await _userAccountService.LoginUser(requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
-
 
     [HttpPost("verify-email")]
     public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationRequestDto requestDto)

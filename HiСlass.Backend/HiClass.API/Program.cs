@@ -95,8 +95,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
-
 app.ConfigureSwagger();
 
 app.UseRouting();

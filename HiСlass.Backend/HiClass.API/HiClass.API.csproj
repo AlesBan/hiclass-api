@@ -5,14 +5,13 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-<!--        <UserSecretsId>d7e00d47-2978-474d-a907-ded85ade9192</UserSecretsId>-->
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="DotNetEnv" Version="3.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.26" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.26">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.31">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -29,8 +28,8 @@
         <ProjectReference Include="..\HiClass.Persistence\HiClass.Persistence.csproj" />
     </ItemGroup>
 
-<!--    <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">-->
-<!--        <Exec Command="swagger tofile &#45;&#45;output openapi.yml &#45;&#45;yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />-->
-<!--    </Target>-->
+    <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+        <Exec Command="swagger tofile --output openapi.yml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+    </Target>
 
 </Project>
