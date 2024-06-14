@@ -1,4 +1,5 @@
 using HiClass.API.Filters.Abilities;
+using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
@@ -9,8 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Controllers;
 
-[Authorize]
-[CheckUserCreateAccount]
+[Authorize, CheckUserVerification, CheckUserCreateAccount]
 public class InvitationController : BaseController
 {
     private readonly IInvitationService _invitationService;

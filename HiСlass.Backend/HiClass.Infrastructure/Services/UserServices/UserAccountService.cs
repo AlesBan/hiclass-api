@@ -30,7 +30,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace HiClass.Infrastructure.Services.AccountServices;
+namespace HiClass.Infrastructure.Services.UserServices;
 
 public class UserAccountService : IUserAccountService
 {
@@ -195,7 +195,7 @@ public class UserAccountService : IUserAccountService
             new EditUserPasswordCommand()
             {
                 UserId = user.UserId,
-                Password = requestDto.Password
+                NewPassword = requestDto.Password
             });
 
         var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);

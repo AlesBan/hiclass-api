@@ -7,5 +7,6 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Edit
 public class EditUserPasswordCommand : IRequest<User>
 {
     [Required] public Guid UserId { get; set; }
-    [Required] public string Password { get; set; }
+    [Required] public string OldPassword { get; set; } = string.Empty;
+    [Required] public string NewPassword { get; set; } = string.Empty;
 }

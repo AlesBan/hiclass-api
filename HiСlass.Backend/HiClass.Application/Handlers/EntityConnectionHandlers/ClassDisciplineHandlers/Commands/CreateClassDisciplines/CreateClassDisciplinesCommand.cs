@@ -6,5 +6,5 @@ namespace HiClass.Application.Handlers.EntityConnectionHandlers.ClassDisciplineH
 public class CreateClassDisciplinesCommand : IRequest<Unit>
 {
     public Guid ClassId { get; set; }
-    public IEnumerable<Guid> DisciplineIds { get; set; }
+    public IEnumerable<Guid> DisciplineIds { get; set; } = null!;
 }

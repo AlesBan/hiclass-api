@@ -6,5 +6,5 @@ namespace HiClass.Application.Handlers.EntityConnectionHandlers.ClassDisciplineH
 public class EditClassDisciplinesCommand : IRequest<Unit>
 {
     public Guid ClassId { get; set; }
-    public IEnumerable<Guid> NewDisciplineIds { get; set; }
+    public IEnumerable<Guid> NewDisciplineIds { get; set; } = null!;
 }

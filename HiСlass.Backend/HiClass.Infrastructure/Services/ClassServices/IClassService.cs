@@ -16,5 +16,5 @@ public interface IClassService
     public Task<ClassProfileDto> GetClassProfile(Guid classId, IMediator mediator);
     public Task<ClassProfileDto> EditClass(Guid classId, EditClassRequestDto requestClassDto, IMediator mediator);
     public Task<EditImageResponseDto> EditClassImage(Guid classId, EditImageRequestDto requestDto, IMediator mediator);
-    public Task DeleteClass(Guid classId, IMediator mediator);
+    public Task DeleteClass(Guid UserId, Guid classId, IMediator mediator);
 }

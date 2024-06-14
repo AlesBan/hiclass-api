@@ -1,6 +1,6 @@
 namespace HiClass.API.Configuration;
 
-public static class CorsConfig
+public static class CorsConfigurator
 {
     public static void ConfigureCors(this IServiceCollection services)
     {

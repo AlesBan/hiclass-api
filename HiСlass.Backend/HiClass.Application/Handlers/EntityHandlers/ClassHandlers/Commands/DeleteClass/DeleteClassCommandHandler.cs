@@ -1,3 +1,4 @@
+using HiClass.Application.Common.Exceptions.Class;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
@@ -18,11 +19,16 @@ public class DeleteClassCommandHandler : IRequestHandler<DeleteClassCommand, Uni
     public async Task<Unit> Handle(DeleteClassCommand request, CancellationToken cancellationToken)
     {
         var @class = await _context.Classes
-            .SingleOrDefaultAsync(x => x.ClassId == request.ClassId, cancellationToken: cancellationToken);
+            .FindAsync(new object[] { request.ClassId }, cancellationToken: cancellationToken);
         
         if (@class == null)
         {
             throw new NotFoundException(nameof(Class), request.ClassId);
+        }
+
+        if (@class.UserId != request.UserOwnerId)
+        {
+            throw new NotClassOwnerException(request.UserOwnerId, request.ClassId);
         }
         
         _context.Classes.Remove(@class);

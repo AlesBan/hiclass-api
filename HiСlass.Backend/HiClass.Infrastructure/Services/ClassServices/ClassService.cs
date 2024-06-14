@@ -156,9 +156,13 @@ public class ClassService : IClassService
         };
     }
 
-    public async Task DeleteClass(Guid classId, IMediator mediator)
+    public async Task DeleteClass(Guid userId, Guid classId, IMediator mediator)
     {
-        var command = new DeleteClassCommand(classId);
+        var command = new DeleteClassCommand()
+        {
+            ClassId = classId,
+            UserOwnerId = userId
+        };
         await mediator.Send(command, CancellationToken.None);
     }
 }

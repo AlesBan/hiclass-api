@@ -1735,11 +1735,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\HiClass.Infrastructure.csproj",
+      "projectUniqueName": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\HiClass.Infrastructure.csproj",
       "projectName": "HiClass.Infrastructure",
-      "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\HiClass.Infrastructure.csproj",
+      "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\HiClass.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\obj\\",
+      "outputPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -1754,11 +1754,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
-              "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
+            "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj": {
+              "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj"
             },
-            "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj": {
-              "projectPath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj"
+            "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj": {
+              "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Domain\\HiClass.Domain.csproj"
             }
           }
         }
@@ -1818,7 +1818,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.423\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.420\\RuntimeIdentifierGraph.json"
       }
     }
   }

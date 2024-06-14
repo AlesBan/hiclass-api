@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CiTr1n9sXX/vVjGUFLt6X8SK4BAmjzB0vG/LdvQg5hsfX2qLCEYwrjfylqecCmzK6h105Uu9doar2xY3cXtVqQ==",
+  "dgSpecHash": "Frr4Vah8MTecF/8aeRpoKDnpkjmEhMC6xPT5vCXd2vevM5YQ1uLXzNEaU7D24Ngu9bd9vFSAqoox5zvZ+m6QoQ==",
   "success": true,
-  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj",
+  "projectFilePath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\mediatr\\6.0.0\\mediatr.6.0.0.nupkg.sha512",

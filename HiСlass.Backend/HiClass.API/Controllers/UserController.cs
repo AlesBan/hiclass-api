@@ -1,5 +1,6 @@
 using HiClass.API.Attributes;
 using HiClass.API.Filters.Abilities;
+using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
 using HiClass.Application.Common.Exceptions.Authentication;
@@ -10,7 +11,7 @@ using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.PasswordHandling;
-using HiClass.Infrastructure.Services.AccountServices;
+using HiClass.Infrastructure.Services.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -99,6 +100,7 @@ public class UserController : BaseController
     }
 
     [Authorize]
+    [CheckUserVerification]
     [CheckUserCreateAccount]
     [HttpGet("userprofile")]
     public async Task<IActionResult> GetUser()
@@ -109,6 +111,7 @@ public class UserController : BaseController
     }
 
     [Authorize]
+    [CheckUserVerification]
     [CheckUserCreateAccount]
     [HttpGet("other-userprofile/{userId:guid}")]
     public async Task<IActionResult> GetOtherUser([FromRoute] Guid userId)
@@ -118,6 +121,7 @@ public class UserController : BaseController
     }
 
     [Authorize]
+    [CheckUserVerification]
     [CheckUserCreateAccount]
     [HttpDelete("delete-user")]
     public async Task<IActionResult> DeleteUser()

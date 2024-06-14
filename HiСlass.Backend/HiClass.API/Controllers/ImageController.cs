@@ -1,9 +1,9 @@
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Images.Editing.Banner;
 using HiClass.Application.Models.Images.Setting;
-using HiClass.Infrastructure.Services.AccountServices;
 using HiClass.Infrastructure.Services.ClassServices;
 using HiClass.Infrastructure.Services.EditUserAccountService;
+using HiClass.Infrastructure.Services.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EditImageRequestDto = HiClass.Application.Models.Images.Editing.Image.EditImageRequestDto;

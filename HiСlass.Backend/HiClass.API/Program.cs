@@ -11,7 +11,6 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Infrastructure.Services.AccountServices;
 using HiClass.Infrastructure.Services.ClassServices;
 using HiClass.Infrastructure.Services.DataBaseDataService;
 using HiClass.Infrastructure.Services.DefaultDataServices;
@@ -23,6 +22,7 @@ using HiClass.Infrastructure.Services.InvitationServices;
 using HiClass.Infrastructure.Services.NotificationHandlerService;
 using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
+using HiClass.Infrastructure.Services.UserServices;
 using HiClass.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +46,8 @@ builder.Services.AddPersistence(configuration);
 builder.Services.ConfigureCors();
 
 builder.Services.ConfigureAuthentication(configuration);
+
+builder.Services.ConfigureLogger();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();

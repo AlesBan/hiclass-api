@@ -1,13 +1,14 @@
 using AutoMapper;
 using HiClass.Application.Common.Exceptions;
+using HiClass.Application.Common.Exceptions.Unknown;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditPersonalInfo;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditProfessionalInfo;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserAccessToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserBannerImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserEmail;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserInstitution;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Models.Images.Editing.Banner;
 using HiClass.Application.Models.Images.Editing.Image;
@@ -84,18 +85,7 @@ public class EditUserAccountService : IEditUserAccountService
     {
         var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
 
-        var createAccessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
-        var newToken = _tokenHelper.CreateToken(createAccessTokenUserDto);
-
-        var command = new EditUserAccessTokenCommand()
-        {
-            UserId = user.UserId,
-            AccessToken = newToken
-        };
-        
-        var updatedUser = await mediator.Send(command);
-
-        var userProfileDto = _mapper.Map<UserProfileDto>(updatedUser);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
     }
@@ -188,10 +178,12 @@ public class EditUserAccountService : IEditUserAccountService
             case EditUserPasswordHashRequestDto passwordRequestDto:
                 return await mediator.Send(new EditUserPasswordCommand
                 {
-                    UserId = userId, Password = passwordRequestDto.Password
+                    UserId = userId, 
+                    OldPassword = passwordRequestDto.OldPassword,
+                    NewPassword = passwordRequestDto.Password
                 });
             default:
-                throw new UnknownTypeException();
+                throw new UnknownTypeException(userId);
         }
     }
 }

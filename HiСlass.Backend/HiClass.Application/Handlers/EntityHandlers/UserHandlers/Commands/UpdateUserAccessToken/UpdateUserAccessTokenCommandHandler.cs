@@ -1,5 +1,4 @@
 using HiClass.Application.Common.Exceptions.Database;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserAccessToken;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
 using MediatR;
