@@ -5,7 +5,7 @@ namespace HiClass.Application.Common.Exceptions.Authentication;
 public class InvalidTokenProvidedException : Exception, IUiException
 {
     public InvalidTokenProvidedException() : 
-        base("$Invalid token ({token}) provided")
+        base("Invalid NameIdentifier claim")
     { 
         
     }  

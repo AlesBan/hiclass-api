@@ -98,13 +98,17 @@ public class ClassService : IClassService
 
         await Task.Delay(20);
 
-        classProfile.Languages = @class.ClassLanguages.Select(cl => cl.Language.Title).ToList();
-        classProfile.Disciplines = @class.ClassDisciplines.Select(cd => cd.Discipline.Title).ToList();
+        classProfile.Languages = @class.ClassLanguages
+            .Select(cl => cl.Language.Title)
+            .ToList();
+        classProfile.Disciplines = @class.ClassDisciplines
+            .Select(cd => cd.Discipline.Title)
+            .ToList();
 
         return classProfile;
     }
 
-    public async Task<ClassProfileDto> UpdateClass(Guid classId, EditClassRequestDto requestDto,
+    public async Task<ClassProfileDto> EditClass(Guid classId, EditClassRequestDto requestDto,
         IMediator mediator)
     {
         var command = new EditClassCommand
@@ -130,7 +134,7 @@ public class ClassService : IClassService
         return classProfile;
     }
 
-    public async Task<EditImageResponseDto> UpdateClassImage(Guid classId, EditImageRequestDto requestDto,
+    public async Task<EditImageResponseDto> EditClassImage(Guid classId, EditImageRequestDto requestDto,
         IMediator mediator)
     {
         var file = requestDto.ImageFormFile;

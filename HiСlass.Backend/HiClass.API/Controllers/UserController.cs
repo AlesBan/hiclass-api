@@ -41,7 +41,6 @@ public class UserController : BaseController
         return ResponseHelper.GetOkResult(result);
     }
 
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestUserDto)
     {

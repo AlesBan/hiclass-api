@@ -24,7 +24,6 @@ using HiClass.Infrastructure.Services.NotificationHandlerService;
 using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
 using HiClass.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +94,8 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseMiddleware<DatabaseConnectionMiddleware>();
+
 app.ConfigureSwagger();
 
 app.UseRouting();
@@ -103,7 +104,7 @@ app.UseCors("AlloyAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<DatabaseConnectionMiddleware>();
+
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 app.Run();

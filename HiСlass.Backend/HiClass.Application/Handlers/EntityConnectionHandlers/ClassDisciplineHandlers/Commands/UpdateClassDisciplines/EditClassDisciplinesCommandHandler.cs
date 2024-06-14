@@ -4,18 +4,18 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityConnectionHandlers.ClassDisciplineHandlers.Commands.UpdateClassDisciplines;
 
-public class UpdateClassDisciplinesCommandHandler: IRequestHandler<UpdateClassDisciplinesCommand, Unit>
+public class EditClassDisciplinesCommandHandler: IRequestHandler<EditClassDisciplinesCommand, Unit>
 {
     private readonly ISharedLessonDbContext _context;
     private readonly IMediator _mediator;
 
-    public UpdateClassDisciplinesCommandHandler(ISharedLessonDbContext context, IMediator mediator)
+    public EditClassDisciplinesCommandHandler(ISharedLessonDbContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;
     }
 
-    public async Task<Unit> Handle(UpdateClassDisciplinesCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(EditClassDisciplinesCommand request, CancellationToken cancellationToken)
     {
         var classDisciplines = _context.ClassDisciplines
             .Where(cl => 

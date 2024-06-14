@@ -44,6 +44,21 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: 
+            InvalidTokenProvidedException(), 
+            NotFoundException(nameof(Discipline), disciplineTitle),
+            NotFoundException(nameof(Language), languageTitle),
+            NotFoundException(nameof(Grade), request.GradeNumber),
+            NotFoundException(nameof(Class), request.ClassId)
+        '403':
+          description: 
+            UserHasNotAccountException(userId)
+        '500':
+          description: 
+            DatabaseConnectionException(),
+            MediatorNotFoundException(),
+          
   '/api/Class/class-profile/{classId}':
     get:
       tags:
@@ -58,6 +73,17 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description:
+            InvalidTokenProvidedException(),
+            NotFoundException(nameof(Class), request.ClassId)
+        '403':
+          description: 
+            UserHasNotAccountException(userId)
+        '500':
+          description: 
+            DatabaseConnectionException(),
+            MediatorNotFoundException(),
   '/api/Class/edit-class/{classId}':
     put:
       tags:
@@ -105,6 +131,20 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description:
+            InvalidTokenProvidedException(),
+            NotFoundException(nameof(Discipline), disciplineTitle),
+            NotFoundException(nameof(Language), languageTitle),
+            NotFoundException(nameof(Grade), request.GradeNumber),
+            NotFoundException(nameof(Class), request.ClassId)
+        '403':
+          description:
+            UserHasNotAccountException(userId)
+        '500':
+          description:
+            DatabaseConnectionException(),
+            MediatorNotFoundException(),
   '/api/Class/delete-class/{classId}':
     delete:
       tags:
