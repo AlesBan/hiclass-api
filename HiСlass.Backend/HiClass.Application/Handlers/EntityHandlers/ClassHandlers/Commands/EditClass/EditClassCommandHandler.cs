@@ -43,7 +43,7 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
         await Delay(20, cancellationToken);
 
         var disciplines = await GetDisciplines(request.DisciplineTitles, cancellationToken);
-        await _mediator.Send(new UpdateClassDisciplinesCommand()
+        await _mediator.Send(new EditClassDisciplinesCommand()
         {
             ClassId = @class.ClassId,
             NewDisciplineIds = disciplines.Select(discipline =>

@@ -16,7 +16,7 @@ public class CheckUserCreateAccountAbilityAttribute : TypeFilterAttribute
     {
         public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var isCreateAccount = JwtHelper.GetIsCreatedAccountFromClaims(context.HttpContext);
+            var (userId, isCreateAccount) = JwtHelper.GetUserIdAndIsCreatedAccountFromClaims(context.HttpContext);
 
             if (!isCreateAccount)
             {
@@ -25,7 +25,6 @@ public class CheckUserCreateAccountAbilityAttribute : TypeFilterAttribute
 
             context.Result = new StatusCodeResult((int)HttpStatusCode.MethodNotAllowed);
 
-            var userId = JwtHelper.GetUserIdFromClaims(context.HttpContext);
             throw new UserAlreadyHasAccountException(userId);
         }
     }

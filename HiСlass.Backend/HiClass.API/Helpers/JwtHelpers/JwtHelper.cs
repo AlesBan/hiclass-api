@@ -4,6 +4,7 @@ using HiClass.Application.Common.Exceptions.Authentication;
 using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using static System.Boolean;
+using static System.Guid;
 
 namespace HiClass.API.Helpers.JwtHelpers;
 
@@ -26,18 +27,25 @@ public static class JwtHelper
         return Guid.Parse(nameIdentifier);
     }
 
-    public static bool GetIsCreatedAccountFromClaims(HttpContext httpContext)
+    public static (Guid, bool) GetUserIdAndIsCreatedAccountFromClaims(HttpContext httpContext)
     {
         var decodedToken = GetTokenFromHeader(httpContext);
 
         try
         {
-            TryParse(decodedToken.Claims
+            Boolean.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isCreatedAccount")?
                 .Value, out var isCreatedAccount);
+            
+            var nameIdentifier = decodedToken.Claims
+                .FirstOrDefault(claim =>
+                    claim.Type == "nameid")?
+                .Value;
 
-            return isCreatedAccount;
+            Guid.TryParse(nameIdentifier, out var userId);
+            
+            return (userId, isCreatedAccount);
         }
         catch
         {
@@ -51,7 +59,7 @@ public static class JwtHelper
 
         try
         {
-            TryParse(decodedToken.Claims
+            Boolean.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isVerified")?
                 .Value, out var isVerified);
@@ -70,11 +78,11 @@ public static class JwtHelper
 
         try
         {
-            TryParse(decodedToken.Claims
+            Boolean.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isATeacher")?
                 .Value, out var isATeacher);
-            TryParse(decodedToken.Claims
+            Boolean.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isATeacher")?
                 .Value, out var isAnExpert);

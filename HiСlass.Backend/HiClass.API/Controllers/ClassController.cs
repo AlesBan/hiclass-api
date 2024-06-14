@@ -34,10 +34,10 @@ public class ClassController : BaseController
     }
 
     [HttpPut("edit-class/{classId:guid}")]
-    public async Task<IActionResult> UpdateClass([FromRoute] Guid classId,
+    public async Task<IActionResult> EditClass([FromRoute] Guid classId,
         [FromForm] EditClassRequestDto requestClassDto)
     {
-        var result = await _classService.UpdateClass(classId, requestClassDto, Mediator);
+        var result = await _classService.EditClass(classId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 

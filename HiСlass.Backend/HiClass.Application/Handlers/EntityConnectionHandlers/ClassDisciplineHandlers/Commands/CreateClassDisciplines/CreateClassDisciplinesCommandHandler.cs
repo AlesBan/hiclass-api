@@ -1,4 +1,7 @@
+using System.Runtime.ConstrainedExecution;
+using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Interfaces;
+using HiClass.Domain.Entities.Education;
 using HiClass.Domain.EntityConnections;
 using MediatR;
 
@@ -23,10 +26,17 @@ public class CreateClassDisciplinesCommandHandler : IRequestHandler<CreateClassD
                     ClassId = request.ClassId,
                     DisciplineId = discipline
                 });
+        try
+        {
+            await _context.ClassDisciplines
+                .AddRangeAsync(classDisciplines, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch
+        {
+            throw new NotFoundException(nameof(Discipline), request.DisciplineIds);
+        }
 
-        await _context.ClassDisciplines
-            .AddRangeAsync(classDisciplines, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }
 }

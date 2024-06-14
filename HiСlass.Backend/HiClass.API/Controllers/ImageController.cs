@@ -73,7 +73,7 @@ namespace HiClass.API.Controllers
         public async Task<IActionResult> SetClassImage([FromRoute] Guid classId,
             [FromForm] EditImageRequestDto requestClassDto)
         {
-            var result = await _classService.UpdateClassImage(classId, requestClassDto, Mediator);
+            var result = await _classService.EditClassImage(classId, requestClassDto, Mediator);
             return ResponseHelper.GetOkResult(result);
         }
     }
