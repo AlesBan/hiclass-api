@@ -1,17 +1,18 @@
 using HiClass.API.Models;
 using HiClass.API.Models.Authentication;
+using HiClass.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Helpers;
 
 public static class ResponseHelper
 {
-    public static IActionResult GetExceptionObjectResult(string message)
+    public static IActionResult GetExceptionObjectResult(ExceptionDto exceptionDto)
     {
         return new ObjectResult(new ResponseResult
         {
             Result = false,
-            Errors = new List<string> { message },
+            Errors = new List<ExceptionDto> { exceptionDto }
         });
     }
 

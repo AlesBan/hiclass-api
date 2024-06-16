@@ -14,10 +14,10 @@ public class UserNotFoundByIdException : Exception, IUiException
 
     private static string CreateSerializedExceptionDto(Guid userId)
     {
-        var exceptionDto = new ExceptionDto
+        var exceptionDto = new ExceptionResponseDto
         {
-            ExceptionMessageForUi = $"ExceptionMessageForUI: {ExceptionMessageForUi}",
-            ExceptionMessageForLogging = $"ExceptionMessageForLogging: {CreateMessageForLogging(userId)}"
+            ExceptionMessageForUi = ExceptionMessageForUi,
+            ExceptionMessageForLogging = CreateMessageForLogging(userId)
         };
 
         var serializedExceptionDto = SerializeObject(exceptionDto);

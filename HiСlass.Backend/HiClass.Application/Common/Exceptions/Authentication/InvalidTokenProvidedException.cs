@@ -15,7 +15,7 @@ public class InvalidTokenProvidedException : Exception, IUiException
 
     private static string CreateSerializedExceptionDto(string token)
     {
-        var exceptionDto = new ExceptionDto
+        var exceptionDto = new ExceptionResponseDto
         {
             ExceptionMessageForUi = $"ExceptionMessageForUI: {ExceptionMessageForUi}",
             ExceptionMessageForLogging = "ExceptionMessageForLogging: " +

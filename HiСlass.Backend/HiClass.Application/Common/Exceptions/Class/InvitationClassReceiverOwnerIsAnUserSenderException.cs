@@ -14,11 +14,10 @@ public class InvitationClassReceiverOwnerIsAnUserSenderException : Exception, IU
 
     private static string CreateSerializedExceptionDto(Guid userSenderId, Guid classReceiverId)
     {
-        var exceptionDto = new ExceptionDto
+        var exceptionDto = new ExceptionResponseDto
         {
-            ExceptionMessageForUi = $"ExceptionMessageForUI: {ExceptionMessageForUi}",
-            ExceptionMessageForLogging = "ExceptionMessageForLogging: " +
-                                         $"{CreateMessageForLogging(userSenderId, classReceiverId)}"
+            ExceptionMessageForUi = ExceptionMessageForUi,
+            ExceptionMessageForLogging = CreateMessageForLogging(userSenderId, classReceiverId)
         };
 
         var serializedExceptionDto = SerializeObject(exceptionDto);

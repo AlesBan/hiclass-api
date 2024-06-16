@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/aDs8nWZf3BJryIQYHsrcI6gGbStGUKogpH5R5M/YW+2QtVpWKXqB4II8C4D0a/bBogjBFqY5+1bK8BHPwqq8Q==",
+  "dgSpecHash": "T9ADF1i2/JFWuz5XbIbJiWIp/ramvBHOzwF9NJRg99xfdn0yDJkoUNGwLjiBdvXRgdnj6ShQg1Pk4VMDnHD6SA==",
   "success": true,
-  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj",
+  "projectFilePath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\awssdk.core\\3.7.302.7\\awssdk.core.3.7.302.7.nupkg.sha512",

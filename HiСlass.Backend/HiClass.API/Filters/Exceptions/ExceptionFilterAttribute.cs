@@ -3,7 +3,11 @@ using HiClass.Application.Common.Exceptions;
 using HiClass.Application.Interfaces.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using ExceptionContext = Microsoft.AspNetCore.Mvc.Filters.ExceptionContext;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using HiClass.Application.Common.Exceptions.Serialization;
 
 namespace HiClass.API.Filters.Exceptions
 {
@@ -27,25 +31,25 @@ namespace HiClass.API.Filters.Exceptions
             {
                 var controllerName = context.RouteData.Values["controller"]?.ToString() ?? string.Empty;
                 var actionName = context.RouteData.Values["action"]?.ToString() ?? string.Empty;
-                var contextType = context.Exception.InnerException?.GetType() ?? context.Exception.GetType();
                 var exception = context.Exception;
+                var exceptionType = exception.InnerException?.GetType() ?? exception.GetType();
 
                 try
                 {
-                    if (contextType.GetInterfaces().Any(type =>
-                            type == typeof(IUiException) || type == typeof(IDbException)))
+                    if (exceptionType.GetInterfaces()
+                        .Any(type => type == typeof(IUiException) || type == typeof(IDbException)))
                     {
-                        return Handle400Exception(context, controllerName, actionName, exception);
+                        return HandleException(context, controllerName, actionName, exception, 400);
                     }
 
-                    if (contextType.GetInterfaces().Any(type => type == typeof(IUiForbiddenException)))
+                    if (exceptionType.GetInterfaces().Any(type => type == typeof(IUiForbiddenException)))
                     {
-                        return Handle403Exception(context, controllerName, actionName, exception);
+                        return HandleException(context, controllerName, actionName, exception, 403);
                     }
 
-                    if (contextType.GetInterfaces().Any(type => type == typeof(IServerException)))
+                    if (exceptionType.GetInterfaces().Any(type => type == typeof(IServerException)))
                     {
-                        return Handle500Exception(context, controllerName, actionName, exception);
+                        return HandleException(context, controllerName, actionName, exception, 500);
                     }
 
                     return HandleUnknownException(context, controllerName, actionName, exception);
@@ -57,112 +61,77 @@ namespace HiClass.API.Filters.Exceptions
                 }
             }
 
-            private Task Handle400Exception(ExceptionContext context, string controllerName,
-                string actionName, Exception exception)
+            private Task HandleException(ExceptionContext context, string controllerName, string actionName,
+                Exception exception, int statusCode)
             {
-                GetDeserializedExceptionDto(exception.Message,
-                    out var exceptionMessageForUi, out var exceptionMessageForLogging);
+                var (exceptionMessageForUi, exceptionMessageForLogging) =
+                    GetDeserializedExceptionDto(exception.Message);
 
                 LogException(controllerName, actionName, exception, exceptionMessageForLogging);
 
-                var result = ResponseHelper.GetExceptionObjectResult(exceptionMessageForUi);
-
-                context.HttpContext.Response.StatusCode = 400;
+                var result =
+                    ResponseHelper.GetExceptionObjectResult(GetExceptionDto(exception.GetType().Name,
+                        exceptionMessageForUi));
+                context.HttpContext.Response.StatusCode = statusCode;
                 context.Result = result;
                 context.ExceptionHandled = true;
 
                 return Task.CompletedTask;
             }
 
-            private Task Handle403Exception(ExceptionContext context, string controllerName,
-                string actionName, Exception exception)
-            {
-                GetDeserializedExceptionDto(exception.Message,
-                    out var exceptionMessageForUi, out var exceptionMessageForLogging);
-
-                LogException(controllerName, actionName, exception, exceptionMessageForLogging);
-
-                var result = ResponseHelper.GetExceptionObjectResult(exceptionMessageForUi);
-
-                context.HttpContext.Response.StatusCode = 403;
-                context.Result = result;
-                context.ExceptionHandled = true;
-
-                return Task.CompletedTask;
-            }
-
-            private Task Handle500Exception(ExceptionContext context, string controllerName,
-                string actionName, Exception exception)
-            {
-                GetDeserializedExceptionDto(exception.Message,
-                    out var exceptionMessageForUi, out var exceptionMessageForLogging);
-
-                Log500Exception(controllerName, actionName, exception, exceptionMessageForLogging);
-
-                var result = ResponseHelper.GetExceptionObjectResult(exceptionMessageForUi);
-                
-                context.HttpContext.Response.StatusCode = 500;
-                context.Result = result;
-                context.ExceptionHandled = true;
-
-                return Task.CompletedTask;
-            }
-
-            private Task HandleUnknownException(ExceptionContext context, string controllerName,
-                string actionName, Exception exception)
+            private Task HandleUnknownException(ExceptionContext context, string controllerName, string actionName,
+                Exception exception)
             {
                 context.HttpContext.Response.StatusCode = 500;
                 context.Result = new StatusCodeResult(500);
 
-                _logger.LogError(exception, "\t\nUnhandled exception!\n");
-                Log500Exception(controllerName, actionName, exception, exception.Message);
-
+                LogException(controllerName, actionName, exception, exception.Message, true);
                 context.ExceptionHandled = true;
 
                 return Task.CompletedTask;
             }
 
-
-            private void LogException(string controllerName,
-                string actionName, Exception exception, string exceptionMessageForLogging)
-            {
-                var logMessage = $"\tController: {controllerName}\n" +
-                                 $"\tAction: {actionName}\n" +
-                                 $"\tExceptionName: {exception.GetType().Name}\n" +
-                                 $"\tMessage: {exceptionMessageForLogging}";
-
-                _logger.LogError("{Message}", logMessage);
-            }
-
-            private void Log500Exception(string controllerName, string actionName,
-                Exception exception, string exceptionMessageForLogging)
+            private void LogException(string controllerName, string actionName, Exception exception,
+                string exceptionMessageForLogging, bool isUnknownException = false)
             {
                 var logMessage = $"Source: {exception.Source}\n" +
-                                 $"\tController: {controllerName}\n" +
-                                 $"\tAction: {actionName}\n" +
-                                 $"\tExceptionName: {exception.GetType().Name}\n" +
-                                 $"\tMessage: {exceptionMessageForLogging}\n" +
-                                 $"\tStackTrace: {exception.StackTrace}";
+                                 $"Controller: {controllerName}\n" +
+                                 $"Action: {actionName}\n" +
+                                 $"ExceptionName: {exception.GetType().Name}\n" +
+                                 $"Message: {exceptionMessageForLogging}\n" +
+                                 (isUnknownException ? $"StackTrace: {exception.StackTrace}" : string.Empty);
 
                 _logger.LogError("{Message}", logMessage);
             }
 
-            private void GetDeserializedExceptionDto(string exceptionMessage,
-                out string exceptionMessageForUi, out string exceptionMessageForLogging)
+            private static (string exceptionMessageForUi, string exceptionMessageForLogging) GetDeserializedExceptionDto(
+                string exceptionMessage)
             {
                 try
                 {
-                    var exceptionDto = Newtonsoft.Json.JsonConvert
-                        .DeserializeObject<ExceptionDto>(exceptionMessage);
+                    var exceptionDto =
+                        Newtonsoft.Json.JsonConvert.DeserializeObject<ExceptionResponseDto>(exceptionMessage);
 
-                    exceptionMessageForUi = exceptionDto!.ExceptionMessageForUi;
-                    exceptionMessageForLogging = exceptionDto.ExceptionMessageForLogging;
+                    if (exceptionDto == null)
+                    {
+                        throw new DeserializationException("Error during deserialization of ExceptionResponseDto.");
+                    }
+
+                    return (exceptionDto.ExceptionMessageForUi, exceptionDto.ExceptionMessageForLogging);
                 }
                 catch
                 {
-                    exceptionMessageForUi = DefaultUiExceptionMessage;
-                    exceptionMessageForLogging = exceptionMessage;
+                    return (DefaultUiExceptionMessage, exceptionMessage);
                 }
+            }
+
+            private static ExceptionDto GetExceptionDto(string exceptionTitle, string exceptionMessage)
+            {
+                return new ExceptionDto
+                {
+                    ExceptionTitle = exceptionTitle,
+                    ExceptionMessage = exceptionMessage
+                };
             }
         }
     }

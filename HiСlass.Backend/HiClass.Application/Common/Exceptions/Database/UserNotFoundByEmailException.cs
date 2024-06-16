@@ -16,12 +16,10 @@ public class UserNotFoundByEmailException : Exception, IUiException
 
     private static string CreateSerializedExceptionDto(string userEmail)
     {
-        var exceptionDto = new ExceptionDto
+        var exceptionDto = new ExceptionResponseDto
         {
-            ExceptionMessageForUi = $"ExceptionMessageForUI: " +
-                                    $"{ExceptionMessageForUi(userEmail)}",
-            ExceptionMessageForLogging = $"ExceptionMessageForLogging: " +
-                                         $"{CreateMessageForLogging(userEmail)}"
+            ExceptionMessageForUi = ExceptionMessageForUi(userEmail),
+            ExceptionMessageForLogging = CreateMessageForLogging(userEmail)
         };
 
         var serializedExceptionDto = SerializeObject(exceptionDto);

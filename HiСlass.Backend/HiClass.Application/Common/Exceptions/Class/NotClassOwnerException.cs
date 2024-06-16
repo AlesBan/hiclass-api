@@ -5,7 +5,7 @@ namespace HiClass.Application.Common.Exceptions.Class;
 
 public class NotClassOwnerException : Exception, IUiException
 {
-    private const string ExceptionMessageForUi = "User is not the owner of class.";
+    private const string ExceptionMessageForUi = "User is not the owner of the class.";
 
     public NotClassOwnerException(Guid userId, Guid classId) : 
         base(CreateSerializedExceptionDto(userId, classId))
@@ -14,10 +14,10 @@ public class NotClassOwnerException : Exception, IUiException
 
     private static string CreateSerializedExceptionDto(Guid userId, Guid classId)
     {
-        var exceptionDto = new ExceptionDto
+        var exceptionDto = new ExceptionResponseDto
         {
-            ExceptionMessageForUi = $"ExceptionMessageForUI: {ExceptionMessageForUi}",
-            ExceptionMessageForLogging = $"ExceptionMessageForLogging: {CreateMessageForLogging(userId, classId)}"
+            ExceptionMessageForUi = ExceptionMessageForUi,
+            ExceptionMessageForLogging = CreateMessageForLogging(userId, classId)
         };
 
         var serializedExceptionDto = SerializeObject(exceptionDto);
