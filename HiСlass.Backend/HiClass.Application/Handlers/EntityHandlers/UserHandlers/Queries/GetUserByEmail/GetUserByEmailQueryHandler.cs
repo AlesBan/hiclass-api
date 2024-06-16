@@ -24,7 +24,7 @@ public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, U
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.Email);
+            throw new UserNotFoundByEmailException(request.Email);
         }
 
         user = await _context.Users

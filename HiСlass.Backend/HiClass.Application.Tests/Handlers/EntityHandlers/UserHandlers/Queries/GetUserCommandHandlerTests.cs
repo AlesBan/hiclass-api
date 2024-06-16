@@ -31,7 +31,7 @@ public class GetUserCommandHandlerTests : TestCommonBase
 
         // Act
         // Assert
-        await Assert.ThrowsAsync<UserNotFoundException>(() =>
+        await Assert.ThrowsAsync<UserNotFoundByIdException>(() =>
             handler.Handle(new GetUserByIdQuery(userId), CancellationToken.None));
     }
 }

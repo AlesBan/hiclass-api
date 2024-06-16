@@ -34,7 +34,7 @@ public class EditUserEmailAndRemoveVerificationCommandHandler :
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         user.Email = request.Email;

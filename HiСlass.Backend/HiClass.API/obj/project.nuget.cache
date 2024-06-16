@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KGiwr7bvV6ZxuSdJW2NdKRHV7EHQ3QGtmiwiG4gO+Jx2B9xaPzLH9eYzDxBWnNiVKYndW7HagMmAuqXRTg3Zgg==",
+  "dgSpecHash": "9aE2WLgNr5OCykvZALUmH9cXBkQTQK5ye/Q+zjk82RfpkFTk89huRyPbzZw+JG9kzQXFVx5crKQqxbsMRZ3kKA==",
   "success": true,
-  "projectFilePath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.API\\HiClass.API.csproj",
+  "projectFilePath": "D:\\Прога\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.API\\HiClass.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

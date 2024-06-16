@@ -2,11 +2,11 @@ using HiClass.Application.Interfaces.Exceptions;
 
 namespace HiClass.Application.Common.Exceptions.Unknown;
 
-public class UnknownTypeException : BaseException, IServerException
+public class UnknownTypeException : Exception, IServerException
 {
     private const string ExceptionMessage = "Unknown type";
 
-    public UnknownTypeException(Guid userId) : base(ExceptionMessage, CreateMessageForLogging(userId))
+    public UnknownTypeException(Guid userId) : base()
     {
     }
 

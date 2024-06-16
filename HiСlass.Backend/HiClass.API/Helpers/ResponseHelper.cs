@@ -6,15 +6,6 @@ namespace HiClass.API.Helpers;
 
 public static class ResponseHelper
 {
-    public static IActionResult GetBadRequest(string message)
-    {
-        return new BadRequestObjectResult(new ResponseResult
-        {
-            Result = false,
-            Errors = new List<string> { message },
-        });
-    }
-    
     public static IActionResult GetExceptionObjectResult(string message)
     {
         return new ObjectResult(new ResponseResult

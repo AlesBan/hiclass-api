@@ -27,7 +27,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
         var user = await userTask;
         if (user is null)
         {
-            throw new UserNotFoundException(request.UserRecipientId);
+            throw new UserNotFoundByIdException(request.UserRecipientId);
         }
 
         var invitation = await invitationTask;

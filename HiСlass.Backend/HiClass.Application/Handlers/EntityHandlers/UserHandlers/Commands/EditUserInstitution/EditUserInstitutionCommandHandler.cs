@@ -26,7 +26,7 @@ public class EditUserInstitutionCommandHandler : IRequestHandler<EditUserInstitu
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         var institution = await _mediator.Send(new GetInstitutionQuery()

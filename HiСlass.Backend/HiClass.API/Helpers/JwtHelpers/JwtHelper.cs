@@ -21,7 +21,7 @@ public static class JwtHelper
 
         if (nameIdentifier == null)
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
 
         return Guid.Parse(nameIdentifier);
@@ -33,7 +33,7 @@ public static class JwtHelper
 
         try
         {
-            Boolean.TryParse(decodedToken.Claims
+            bool.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isCreatedAccount")?
                 .Value, out var isCreatedAccount);
@@ -43,13 +43,13 @@ public static class JwtHelper
                     claim.Type == "nameid")?
                 .Value;
 
-            Guid.TryParse(nameIdentifier, out var userId);
+            var userId = Guid.Parse(nameIdentifier);
             
             return (userId, isCreatedAccount);
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
     }
     
@@ -68,7 +68,7 @@ public static class JwtHelper
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
     }
 
@@ -96,15 +96,17 @@ public static class JwtHelper
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
     }
 
     private static JwtSecurityToken GetTokenFromHeader(HttpContext httpContext)
     {
+        var jwtToken = string.Empty;
+        ;
         try
         {
-            var jwtToken = httpContext.Request
+            jwtToken = httpContext.Request
                 .Headers["Authorization"]
                 .ToString();
             var jwtHandler = new JwtSecurityTokenHandler();
@@ -114,7 +116,7 @@ public static class JwtHelper
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(jwtToken);
         }
     }
 

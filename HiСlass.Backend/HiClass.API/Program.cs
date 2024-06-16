@@ -47,8 +47,6 @@ builder.Services.ConfigureCors();
 
 builder.Services.ConfigureAuthentication(configuration);
 
-builder.Services.ConfigureLogger();
-
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 

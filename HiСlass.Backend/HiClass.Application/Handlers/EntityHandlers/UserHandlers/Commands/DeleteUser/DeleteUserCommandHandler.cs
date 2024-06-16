@@ -22,7 +22,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         _context.Users.Remove(user);

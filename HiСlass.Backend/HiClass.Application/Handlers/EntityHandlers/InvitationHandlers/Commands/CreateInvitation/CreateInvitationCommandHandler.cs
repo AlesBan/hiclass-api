@@ -36,14 +36,14 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         return invitation;
     }
 
-    private void ValidateClassReceiverId(Guid userId, Guid classReceiverId)
+    private void ValidateClassReceiverId(Guid userSenderId, Guid classReceiverId)
     {
-        var classReceiverIsUserClass = _context.Classes
-            .Any(c => c.UserId == userId);
+        var classReceiverIsUserSenderClass = _context.Classes
+            .Any(c => c.ClassId == classReceiverId && c.UserId == userSenderId);
 
-        if (!classReceiverIsUserClass)
+        if (classReceiverIsUserSenderClass)
         {
-            throw new InvalidClassReceiverException();
+            throw new InvitationClassReceiverOwnerIsAnUserSenderException(userSenderId, classReceiverId);
         }
     }
 }

@@ -24,7 +24,7 @@ public class EditUserPasswordCommandHandler : IRequestHandler<EditUserPasswordCo
 
         if (user == null)   
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
         PasswordHelper.VerifyPasswordHash(user, request.OldPassword);
         PasswordHelper.CreatePasswordHash(request.NewPassword, out var passwordHash, out var passwordSalt);

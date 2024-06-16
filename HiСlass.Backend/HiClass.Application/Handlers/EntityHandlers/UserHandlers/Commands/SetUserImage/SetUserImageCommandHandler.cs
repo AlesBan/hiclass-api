@@ -22,7 +22,7 @@ public class SetUserImageCommandHandler : IRequestHandler<SetUserImageCommand, s
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         user.ImageUrl = request.ImageUrl;

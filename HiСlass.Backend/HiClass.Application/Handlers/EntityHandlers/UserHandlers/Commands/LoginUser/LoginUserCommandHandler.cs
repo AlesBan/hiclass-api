@@ -35,7 +35,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginRe
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserLoginRequestDto.Email);
+            throw new UserNotFoundByEmailException(request.UserLoginRequestDto.Email);
         }
 
         _userHelper.CheckUserVerification(user);

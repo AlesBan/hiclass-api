@@ -41,7 +41,7 @@ public class UserHelper : IUserHelper
             var user = await mediator.Send(new GetUserByEmailQuery(email));
             return user;
         }
-        catch (UserNotFoundException)
+        catch (UserNotFoundByEmailException)
         {
             throw new InvalidInputCredentialsException("User with this email does not exist");
         }

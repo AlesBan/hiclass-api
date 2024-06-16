@@ -1,4 +1,5 @@
 using HiClass.API.Helpers;
+using HiClass.Application.Common.Exceptions;
 using HiClass.Application.Interfaces.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,6 +15,7 @@ namespace HiClass.API.Filters.Exceptions
 
         private class ExceptionFilterImplementation : IAsyncExceptionFilter
         {
+            private const string DefaultUiExceptionMessage = "Something went wrong.";
             private readonly ILogger<ExceptionFilterImplementation> _logger;
 
             public ExceptionFilterImplementation(ILogger<ExceptionFilterImplementation> logger)
@@ -58,9 +60,12 @@ namespace HiClass.API.Filters.Exceptions
             private Task Handle400Exception(ExceptionContext context, string controllerName,
                 string actionName, Exception exception)
             {
-                LogException(controllerName, actionName, exception);
+                GetDeserializedExceptionDto(exception.Message,
+                    out var exceptionMessageForUi, out var exceptionMessageForLogging);
 
-                var result = ResponseHelper.GetBadRequest(exception.Message);
+                LogException(controllerName, actionName, exception, exceptionMessageForLogging);
+
+                var result = ResponseHelper.GetExceptionObjectResult(exceptionMessageForUi);
 
                 context.HttpContext.Response.StatusCode = 400;
                 context.Result = result;
@@ -72,9 +77,12 @@ namespace HiClass.API.Filters.Exceptions
             private Task Handle403Exception(ExceptionContext context, string controllerName,
                 string actionName, Exception exception)
             {
-                LogException(controllerName, actionName, exception);
+                GetDeserializedExceptionDto(exception.Message,
+                    out var exceptionMessageForUi, out var exceptionMessageForLogging);
 
-                var result = ResponseHelper.GetExceptionObjectResult(exception.Message);
+                LogException(controllerName, actionName, exception, exceptionMessageForLogging);
+
+                var result = ResponseHelper.GetExceptionObjectResult(exceptionMessageForUi);
 
                 context.HttpContext.Response.StatusCode = 403;
                 context.Result = result;
@@ -86,10 +94,13 @@ namespace HiClass.API.Filters.Exceptions
             private Task Handle500Exception(ExceptionContext context, string controllerName,
                 string actionName, Exception exception)
             {
-                Log500Exception(controllerName, actionName, exception);
-                
-                var result = ResponseHelper.GetExceptionObjectResult(exception.Message);
+                GetDeserializedExceptionDto(exception.Message,
+                    out var exceptionMessageForUi, out var exceptionMessageForLogging);
 
+                Log500Exception(controllerName, actionName, exception, exceptionMessageForLogging);
+
+                var result = ResponseHelper.GetExceptionObjectResult(exceptionMessageForUi);
+                
                 context.HttpContext.Response.StatusCode = 500;
                 context.Result = result;
                 context.ExceptionHandled = true;
@@ -104,7 +115,7 @@ namespace HiClass.API.Filters.Exceptions
                 context.Result = new StatusCodeResult(500);
 
                 _logger.LogError(exception, "\t\nUnhandled exception!\n");
-                Log500Exception(controllerName, actionName, exception);
+                Log500Exception(controllerName, actionName, exception, exception.Message);
 
                 context.ExceptionHandled = true;
 
@@ -113,26 +124,45 @@ namespace HiClass.API.Filters.Exceptions
 
 
             private void LogException(string controllerName,
-                string actionName, Exception exception)
+                string actionName, Exception exception, string exceptionMessageForLogging)
             {
                 var logMessage = $"\tController: {controllerName}\n" +
                                  $"\tAction: {actionName}\n" +
                                  $"\tExceptionName: {exception.GetType().Name}\n" +
-                                 $"\tMessage: {exception.Message}";
+                                 $"\tMessage: {exceptionMessageForLogging}";
 
                 _logger.LogError("{Message}", logMessage);
             }
 
-            private void Log500Exception(string controllerName, string actionName, Exception exception)
+            private void Log500Exception(string controllerName, string actionName,
+                Exception exception, string exceptionMessageForLogging)
             {
                 var logMessage = $"Source: {exception.Source}\n" +
                                  $"\tController: {controllerName}\n" +
                                  $"\tAction: {actionName}\n" +
                                  $"\tExceptionName: {exception.GetType().Name}\n" +
-                                 $"\tMessage: {exception.Message}\n" +
+                                 $"\tMessage: {exceptionMessageForLogging}\n" +
                                  $"\tStackTrace: {exception.StackTrace}";
 
                 _logger.LogError("{Message}", logMessage);
+            }
+
+            private void GetDeserializedExceptionDto(string exceptionMessage,
+                out string exceptionMessageForUi, out string exceptionMessageForLogging)
+            {
+                try
+                {
+                    var exceptionDto = Newtonsoft.Json.JsonConvert
+                        .DeserializeObject<ExceptionDto>(exceptionMessage);
+
+                    exceptionMessageForUi = exceptionDto!.ExceptionMessageForUi;
+                    exceptionMessageForLogging = exceptionDto.ExceptionMessageForLogging;
+                }
+                catch
+                {
+                    exceptionMessageForUi = DefaultUiExceptionMessage;
+                    exceptionMessageForLogging = exceptionMessage;
+                }
             }
         }
     }
