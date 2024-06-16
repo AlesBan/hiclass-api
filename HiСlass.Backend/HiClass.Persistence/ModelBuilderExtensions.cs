@@ -57,7 +57,7 @@ public static class ModelBuilderExtensions
         modelBuilder.SeedingLanguages(configuration);
         modelBuilder.SeedingEstablishmentTypes(configuration);
 
-        // modelBuilder.SeedingUsers();
+        modelBuilder.SeedingUsers();
     }
 
     private static void SeedingGrades(this ModelBuilder modelBuilder)
