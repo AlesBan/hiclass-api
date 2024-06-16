@@ -29,7 +29,7 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         user.FirstName = request.FirstName;

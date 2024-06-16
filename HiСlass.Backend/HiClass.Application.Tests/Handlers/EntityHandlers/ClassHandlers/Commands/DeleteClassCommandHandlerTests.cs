@@ -11,11 +11,16 @@ public class DeleteClassCommandHandlerTests : TestCommonBase
     public async Task DeleteClassCommand_Handle_ShouldDeleteClass()
     {
         // Arrange
+        var userOwnerId = SharedLessonDbContextFactory.UserAId;
         var classForDeleteId = SharedLessonDbContextFactory.ClassForDeleteId;
         var handler = new DeleteClassCommandHandler(Context);
 
         // Act
-        await handler.Handle(new DeleteClassCommand(classForDeleteId)
+        await handler.Handle(new DeleteClassCommand()
+            {
+                ClassId = classForDeleteId,
+                UserOwnerId = userOwnerId
+            }
             , CancellationToken.None);
 
         // Assert

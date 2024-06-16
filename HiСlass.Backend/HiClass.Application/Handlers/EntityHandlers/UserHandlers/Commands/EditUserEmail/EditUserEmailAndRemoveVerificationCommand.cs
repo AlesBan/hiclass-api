@@ -7,5 +7,5 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Edit
 public class EditUserEmailAndRemoveVerificationCommand : IRequest<User>
 {
     [Required] public Guid UserId { get; set; }
-    [Required] public string Email { get; set; }
+    [Required] public string Email { get; set; } = string.Empty;
 }

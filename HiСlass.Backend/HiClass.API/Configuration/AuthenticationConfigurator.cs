@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace HiClass.API.Configuration;
 
-public static class AuthenticationConfig
+public static class AuthenticationConfigurator
 {
     public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
     {

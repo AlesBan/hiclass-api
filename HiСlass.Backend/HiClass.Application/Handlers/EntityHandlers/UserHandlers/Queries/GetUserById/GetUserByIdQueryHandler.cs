@@ -26,7 +26,7 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         user = _context.Users

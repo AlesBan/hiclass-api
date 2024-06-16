@@ -1,5 +1,4 @@
 using HiClass.Application.Common.Exceptions.Database;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserAccessToken;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
 using MediatR;
@@ -22,7 +21,7 @@ public class UpdateUserAccessTokenCommandHandler : IRequestHandler<EditUserAcces
             .FirstOrDefaultAsync(u => u.UserId == request.UserId, cancellationToken);
 
         if (user == null)
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
 
         user.AccessToken = request.AccessToken;
         

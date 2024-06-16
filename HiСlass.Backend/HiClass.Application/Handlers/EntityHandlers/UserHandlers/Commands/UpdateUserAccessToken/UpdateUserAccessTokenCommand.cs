@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
-namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserAccessToken;
+namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 
 public class EditUserAccessTokenCommand : IRequest<User>
 {

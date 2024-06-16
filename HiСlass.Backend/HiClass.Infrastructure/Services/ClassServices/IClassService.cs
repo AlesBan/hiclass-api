@@ -11,12 +11,10 @@ namespace HiClass.Infrastructure.Services.ClassServices;
 public interface IClassService
 {
     public Task<ClassProfileDto> CreateClass(Guid userId, CreateClassRequestDto requestClassDto, IMediator mediator);
-
     public Task<SetImageResponseDto> SetClassImage(Guid classId, SetImageRequestDto requestDto,
         IMediator mediator);
-
     public Task<ClassProfileDto> GetClassProfile(Guid classId, IMediator mediator);
-    public Task<ClassProfileDto> UpdateClass(Guid classId, EditClassRequestDto requestClassDto, IMediator mediator);
-    public Task<EditImageResponseDto> UpdateClassImage(Guid classId, EditImageRequestDto requestDto, IMediator mediator);
-    public Task DeleteClass(Guid classId, IMediator mediator);
+    public Task<ClassProfileDto> EditClass(Guid classId, EditClassRequestDto requestClassDto, IMediator mediator);
+    public Task<EditImageResponseDto> EditClassImage(Guid classId, EditImageRequestDto requestDto, IMediator mediator);
+    public Task DeleteClass(Guid UserId, Guid classId, IMediator mediator);
 }

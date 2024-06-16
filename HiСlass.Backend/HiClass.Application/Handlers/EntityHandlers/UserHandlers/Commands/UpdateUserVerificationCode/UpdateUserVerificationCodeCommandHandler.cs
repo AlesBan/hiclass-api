@@ -21,7 +21,7 @@ public class UpdateUserVerificationCodeCommandHandler : IRequestHandler<UpdateUs
             .FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken: cancellationToken);
 
         if (user == null)
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
 
         user.VerificationCode = request.VerificationCode;
 

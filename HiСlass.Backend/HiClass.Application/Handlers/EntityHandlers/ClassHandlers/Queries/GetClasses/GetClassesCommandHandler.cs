@@ -32,7 +32,7 @@ public class GetClassesCommandHandler : IRequestHandler<GetClassesCommand, IEnum
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         return user.Classes;

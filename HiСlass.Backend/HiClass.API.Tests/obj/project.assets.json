@@ -2995,6 +2995,7 @@
           "HiClass.Persistence": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.26",
           "Microsoft.Extensions.Configuration.UserSecrets": "6.0.1",
+          "Newtonsoft.Json": "13.0.3",
           "Swashbuckle.AspNetCore": "6.5.0",
           "Swashbuckle.AspNetCore.Annotations": "6.6.2",
           "Swashbuckle.AspNetCore.Newtonsoft": "6.6.2"
@@ -3021,6 +3022,7 @@
           "Microsoft.EntityFrameworkCore": "6.0.26",
           "Microsoft.Extensions.Configuration": "6.0.1",
           "Microsoft.IdentityModel.JsonWebTokens": "7.2.0",
+          "Newtonsoft.Json": "13.0.3",
           "System.IdentityModel.Tokens.Jwt": "7.2.0"
         },
         "compile": {
@@ -9039,7 +9041,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.420\\RuntimeIdentifierGraph.json"
       }
     }
   }

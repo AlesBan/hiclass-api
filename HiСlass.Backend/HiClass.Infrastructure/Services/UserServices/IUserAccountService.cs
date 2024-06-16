@@ -8,7 +8,7 @@ using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
 using MediatR;
 
-namespace HiClass.Infrastructure.Services.AccountServices;
+namespace HiClass.Infrastructure.Services.UserServices;
 
 public interface IUserAccountService
 {

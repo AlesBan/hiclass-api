@@ -16,6 +16,7 @@ public static class DependencyInjection
         services.AddDbContext<SharedLessonDbContext>(options =>
         {
             options.UseNpgsql(connection);
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
         return services;

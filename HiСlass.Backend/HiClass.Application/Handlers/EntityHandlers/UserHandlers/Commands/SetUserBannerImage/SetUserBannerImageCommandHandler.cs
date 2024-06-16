@@ -24,7 +24,7 @@ public class SetUserBannerImageCommandHandler: IRequestHandler<SetUserBannerImag
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         user.BannerImageUrl = request.ImageUrl;

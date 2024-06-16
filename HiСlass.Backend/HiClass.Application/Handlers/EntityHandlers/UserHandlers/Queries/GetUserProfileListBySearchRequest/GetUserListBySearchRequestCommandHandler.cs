@@ -15,17 +15,16 @@ public class GetUserListBySearchRequestCommandHandler : IRequestHandler<
         _context = context;
     }
 
-    public Task<IEnumerable<User>> Handle(GetUserListBySearchRequestCommand request,
-        CancellationToken cancellationToken)
+    public async Task<IEnumerable<User>> Handle(GetUserListBySearchRequestCommand request, CancellationToken cancellationToken)
     {
         var searchRequest = request.SearchRequest;
-        var countryTitles = searchRequest.Countries;
-        var gradeNumbers = searchRequest.Grades;
-        var disciplineTitles = searchRequest.Disciplines;
-        var languageTitles = searchRequest.Languages;
+        var countryTitles = searchRequest.Countries.ToList();
+        var gradeNumbers = searchRequest.Grades.ToList();
+        var disciplineTitles = searchRequest.Disciplines.ToList();
+        var languageTitles = searchRequest.Languages.ToList();
         var userIdToExclude = searchRequest.UserId;
 
-        var users = _context.Users
+        var query = _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -35,15 +34,35 @@ public class GetUserListBySearchRequestCommandHandler : IRequestHandler<
             .Include(u => u.UserDisciplines).ThenInclude(ud => ud.Discipline)
             .Include(u => u.UserLanguages).ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
-            .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
             .Include(u => u.ReceivedInvitations)
-            .Where(u =>
-                u.UserId != userIdToExclude && (
-                    u.Country != null && countryTitles.Contains(u.Country.Title) ||
-                    u.UserGrades.Any(ug => gradeNumbers.Contains(ug.Grade.GradeNumber.ToString())) ||
-                    u.UserDisciplines.Any(d => disciplineTitles.Contains(d.Discipline.Title)) ||
-                    u.UserLanguages.Any(l => languageTitles.Contains(l.Language.Title))));
+            .ThenInclude(ri => ri.Feedbacks)
+            .Include(u => u.SentInvitations)
+            .ThenInclude(ri => ri.Feedbacks)
+            .Where(u => u.UserId != userIdToExclude);
 
-        return Task.FromResult<IEnumerable<User>>(users);
+        if (countryTitles.Any())
+        {
+            query = query.Where(u => u.Country != null && countryTitles.Contains(u.Country.Title));
+        }
+
+        if (gradeNumbers.Any())
+        {
+            query = query.Where(u => u.UserGrades.Any(ug => gradeNumbers.Contains(ug.Grade.GradeNumber.ToString())));
+        }
+
+        if (disciplineTitles.Any())
+        {
+            query = query.Where(u => u.UserDisciplines.Any(d => disciplineTitles.Contains(d.Discipline.Title)));
+        }
+
+        if (languageTitles.Any())
+        {
+            query = query.Where(u => u.UserLanguages.Any(l => languageTitles.Contains(l.Language.Title)));
+        }
+
+        var users = await query.Take(100).ToListAsync(cancellationToken);
+
+        return users;
     }
+
 }

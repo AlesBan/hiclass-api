@@ -71,37 +71,15 @@ paths:
             format: uuid
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              required:
-                - DisciplineTitles
-                - GradeNumber
-                - LanguageTitles
-                - Title
-              type: object
-              properties:
-                Title:
-                  type: string
-                GradeNumber:
-                  type: integer
-                  format: int32
-                LanguageTitles:
-                  type: array
-                  items:
-                    type: string
-                DisciplineTitles:
-                  type: array
-                  items:
-                    type: string
-            encoding:
-              Title:
-                style: form
-              GradeNumber:
-                style: form
-              LanguageTitles:
-                style: form
-              DisciplineTitles:
-                style: form
+              $ref: '#/components/schemas/EditClassRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EditClassRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EditClassRequestDto'
       responses:
         '200':
           description: OK
@@ -568,12 +546,6 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          description: If user is not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserNotFoundException'
   /api/User/verify-email:
     post:
       tags:
@@ -961,6 +933,29 @@ components:
             $ref: '#/components/schemas/ClassProfileDto'
           nullable: true
       additionalProperties: false
+    EditClassRequestDto:
+      required:
+        - disciplineTitles
+        - gradeNumber
+        - languageTitles
+        - title
+      type: object
+      properties:
+        title:
+          minLength: 1
+          type: string
+        gradeNumber:
+          type: integer
+          format: int32
+        languageTitles:
+          type: array
+          items:
+            type: string
+        disciplineTitles:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
     EditInstitutionRequestDto:
       type: object
       properties:
@@ -1029,6 +1024,9 @@ components:
     EditUserPasswordHashRequestDto:
       type: object
       properties:
+        oldPassword:
+          type: string
+          nullable: true
         password:
           type: string
           nullable: true
@@ -1165,33 +1163,6 @@ components:
           minLength: 1
           type: string
       additionalProperties: false
-    UserNotFoundException:
-      type: object
-      properties:
-        message:
-          type: string
-          nullable: true
-        data:
-          type: object
-          additionalProperties: { }
-          nullable: true
-          readOnly: true
-        innerException:
-          nullable: true
-        helpLink:
-          type: string
-          nullable: true
-        source:
-          type: string
-          nullable: true
-        hResult:
-          type: integer
-          format: int32
-        stackTrace:
-          type: string
-          nullable: true
-          readOnly: true
-      additionalProperties: false
     UserProfileDto:
       type: object
       properties:
@@ -1201,6 +1172,13 @@ components:
         email:
           type: string
           nullable: true
+        accessToken:
+          type: string
+          nullable: true
+        isVerified:
+          type: boolean
+        isCreatedAccount:
+          type: boolean
         firstName:
           type: string
           nullable: true

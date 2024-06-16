@@ -1,4 +1,5 @@
 using HiClass.API.Filters.Abilities;
+using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Class.EditClassDtos;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HiClass.API.Controllers;
 
 [Authorize]
+[CheckUserVerification]
 [CheckUserCreateAccount]
 public class ClassController : BaseController
 {
@@ -34,17 +36,17 @@ public class ClassController : BaseController
     }
 
     [HttpPut("edit-class/{classId:guid}")]
-    public async Task<IActionResult> UpdateClass([FromRoute] Guid classId,
-        [FromForm] EditClassRequestDto requestClassDto)
+    public async Task<IActionResult> EditClass([FromRoute] Guid classId,
+        [FromBody] EditClassRequestDto requestClassDto)
     {
-        var result = await _classService.UpdateClass(classId, requestClassDto, Mediator);
+        var result = await _classService.EditClass(classId, requestClassDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
     [HttpDelete("delete-class/{classId:guid}")]
     public async Task<IActionResult> DeleteClass([FromRoute] Guid classId)
     {
-        await _classService.DeleteClass(classId, Mediator);
+        await _classService.DeleteClass(UserId, classId, Mediator);
         return ResponseHelper.GetOkResult();
     }
 }

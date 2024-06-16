@@ -1,5 +1,9 @@
+using AutoMapper;
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
+using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Interfaces;
+using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +14,15 @@ public class EditUserEmailAndRemoveVerificationCommandHandler :
     IRequestHandler<EditUserEmailAndRemoveVerificationCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly ITokenHelper _tokenHelper;
 
-    public EditUserEmailAndRemoveVerificationCommandHandler(ISharedLessonDbContext context)
+    public EditUserEmailAndRemoveVerificationCommandHandler(ISharedLessonDbContext context, 
+        ITokenHelper tokenHelper, IMapper mapper)
     {
         _context = context;
+        _tokenHelper = tokenHelper;
+        _mapper = mapper;
     }
 
     public async Task<User> Handle(EditUserEmailAndRemoveVerificationCommand request,
@@ -25,12 +34,17 @@ public class EditUserEmailAndRemoveVerificationCommandHandler :
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         user.Email = request.Email;
         user.IsVerified = false;
-        _context.Users.Attach(user).State = EntityState.Modified;
+        
+        var createAccessTokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
+        var newToken = _tokenHelper.CreateToken(createAccessTokenUserDto);
+        user.AccessToken = newToken;
+        
+        _context.Users.Update(user);
 
         await _context.SaveChangesAsync(cancellationToken);
 

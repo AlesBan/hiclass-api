@@ -11,7 +11,6 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Infrastructure.Services.AccountServices;
 using HiClass.Infrastructure.Services.ClassServices;
 using HiClass.Infrastructure.Services.DataBaseDataService;
 using HiClass.Infrastructure.Services.DefaultDataServices;
@@ -23,8 +22,8 @@ using HiClass.Infrastructure.Services.InvitationServices;
 using HiClass.Infrastructure.Services.NotificationHandlerService;
 using HiClass.Infrastructure.Services.SearchService;
 using HiClass.Infrastructure.Services.StaticDataServices;
+using HiClass.Infrastructure.Services.UserServices;
 using HiClass.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,7 +94,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
+app.UseMiddleware<DatabaseConnectionMiddleware>();
 
 app.ConfigureSwagger();
 
@@ -105,7 +104,7 @@ app.UseCors("AlloyAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<DatabaseConnectionMiddleware>();
+
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 app.Run();

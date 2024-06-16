@@ -23,10 +23,10 @@ public class GetUserListByDefaultSearchRequestCommandHandler : IRequestHandler<
     {
         var searchRequest = request.SearchRequest;
         var countryId = searchRequest.CountryId;
-        var disciplineIds = searchRequest.DisciplineIds;
+        var disciplineIds = searchRequest.DisciplineIds.ToList();
         var userIdToExclude = searchRequest.UserId;
 
-        var users = await _context.Users
+        var query = _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -38,12 +38,24 @@ public class GetUserListByDefaultSearchRequestCommandHandler : IRequestHandler<
             .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
             .Include(u => u.ReceivedInvitations)
             .ThenInclude(ri => ri.Feedbacks)
-            .Where(u =>
-                u.UserId != userIdToExclude && (
-                    u.Country != null && u.CountryId == countryId ||
-                    u.UserDisciplines.Any(ud =>
-                        disciplineIds.Contains(ud.Discipline.DisciplineId))))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Include(u => u.SentInvitations)
+            .ThenInclude(ri => ri.Feedbacks)
+            .Where(u => u.UserId != userIdToExclude);
+
+
+        if (!string.IsNullOrEmpty(countryId.ToString()))
+        {
+            query = query.Where(u => u.CountryId == countryId);
+        }
+
+        if (disciplineIds.Any())
+        {
+            query = query.Where(u =>
+                u.UserDisciplines.Any(ud =>
+                    disciplineIds.Contains(ud.Discipline.DisciplineId)));
+        }
+
+        var users = await query.Take(100).ToListAsync(cancellationToken);
 
         return users;
     }

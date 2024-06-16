@@ -1,5 +1,6 @@
 using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
+using HiClass.API.Filters.UserVerification;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Search;
 using HiClass.Application.Models.StaticData;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HiClass.API.Controllers;
 
 [Authorize]
+[CheckUserVerification]
 [CheckUserCreateAccount]
 [Produces("application/json")]
 public class SearchController : BaseController

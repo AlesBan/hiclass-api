@@ -4,6 +4,7 @@ using HiClass.Application.Common.Exceptions.Authentication;
 using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using static System.Boolean;
+using static System.Guid;
 
 namespace HiClass.API.Helpers.JwtHelpers;
 
@@ -20,28 +21,35 @@ public static class JwtHelper
 
         if (nameIdentifier == null)
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
 
         return Guid.Parse(nameIdentifier);
     }
 
-    public static bool GetIsCreatedAccountFromClaims(HttpContext httpContext)
+    public static (Guid, bool) GetUserIdAndIsCreatedAccountFromClaims(HttpContext httpContext)
     {
         var decodedToken = GetTokenFromHeader(httpContext);
 
         try
         {
-            TryParse(decodedToken.Claims
+            bool.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isCreatedAccount")?
                 .Value, out var isCreatedAccount);
+            
+            var nameIdentifier = decodedToken.Claims
+                .FirstOrDefault(claim =>
+                    claim.Type == "nameid")?
+                .Value;
 
-            return isCreatedAccount;
+            var userId = Guid.Parse(nameIdentifier);
+            
+            return (userId, isCreatedAccount);
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
     }
     
@@ -51,7 +59,7 @@ public static class JwtHelper
 
         try
         {
-            TryParse(decodedToken.Claims
+            Boolean.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isVerified")?
                 .Value, out var isVerified);
@@ -60,7 +68,7 @@ public static class JwtHelper
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
     }
 
@@ -70,11 +78,11 @@ public static class JwtHelper
 
         try
         {
-            TryParse(decodedToken.Claims
+            Boolean.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isATeacher")?
                 .Value, out var isATeacher);
-            TryParse(decodedToken.Claims
+            Boolean.TryParse(decodedToken.Claims
                 .FirstOrDefault(claim =>
                     claim.Type == "isATeacher")?
                 .Value, out var isAnExpert);
@@ -88,15 +96,17 @@ public static class JwtHelper
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(decodedToken.ToString());
         }
     }
 
     private static JwtSecurityToken GetTokenFromHeader(HttpContext httpContext)
     {
+        var jwtToken = string.Empty;
+        ;
         try
         {
-            var jwtToken = httpContext.Request
+            jwtToken = httpContext.Request
                 .Headers["Authorization"]
                 .ToString();
             var jwtHandler = new JwtSecurityTokenHandler();
@@ -106,7 +116,7 @@ public static class JwtHelper
         }
         catch
         {
-            throw new InvalidTokenProvidedException();
+            throw new InvalidTokenProvidedException(jwtToken);
         }
     }
 

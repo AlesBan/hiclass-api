@@ -4,24 +4,18 @@ namespace HiClass.Application.Common.Exceptions.Database;
 
 public class NotFoundException : Exception, IDbException
 {
-    /// <summary>
-    /// NotFoundException entity
-    /// </summary>
-    /// <param name="entityName"></param>
-    /// <param name="key"></param>
-    public NotFoundException(string entityName, object key) :
-        base($"Entity {entityName} ({key}) was not found.")
+    public NotFoundException(string entityTitle, object key) :
+        base($"Entity {entityTitle} ({key}) was not found.")
     {
     }
 
-    /// <summary>
-    /// NotFoundException connection
-    /// </summary>
-    /// <param name="entityName"></param>
-    /// <param name="connectionId1"></param>
-    /// <param name="connectionId2"></param>
-    public NotFoundException(string entityName, object connectionId1, object connectionId2) :
-        base($"EntityConnection {entityName} " +
+    public NotFoundException(string entityTitle, IEnumerable<Guid> keys) :
+        base($"Some of these {entityTitle} entities: {string.Join(", ", keys.ToString())}, were not found.")
+    {
+    }
+
+    public NotFoundException(string entityTitle, object connectionId1, object connectionId2) :
+        base($"EntityConnection {entityTitle} " +
              $"(First entityId: {connectionId1}, " +
              $"Second entityId: {connectionId2}) was not found.")
     {

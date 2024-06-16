@@ -23,7 +23,7 @@ public class EditUserImageCommandHandler : IRequestHandler<EditUserImageCommand,
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         user.ImageUrl = request.ImageUrl;

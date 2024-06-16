@@ -4,7 +4,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace HiClass.API.Configuration.Swagger;
 
-public static class SwaggerConfig
+public static class SwaggerConfigurator
 {
     public static void ConfigureSwagger(this IServiceCollection services)
     {

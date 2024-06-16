@@ -32,7 +32,7 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         var languages = await GetLanguages(request.LanguageTitles, cancellationToken);

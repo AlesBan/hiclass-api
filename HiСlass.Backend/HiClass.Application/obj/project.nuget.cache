@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "BN8qEtqFrRYMNvCnGCNDbmUVM0GCSE9Sa/xfNhdjchW18Lx3I94IcoLJdYhj2xXQyc5Lnr6ZxJBG7cBKZdXDUg==",
+  "dgSpecHash": "p4MEXxclZKbg2aeYYBmar8eRmbF4yAC2XWcduR6yJGTFYCkB6BXtnVqqIm1CX85MDY+EekNCfAejSGm00/pTmA==",
   "success": true,
   "projectFilePath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application\\HiClass.Application.csproj",
   "expectedPackageFiles": [
@@ -26,6 +26,7 @@
     "C:\\Users\\User\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.2.0\\microsoft.identitymodel.jsonwebtokens.7.2.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.identitymodel.logging\\7.2.0\\microsoft.identitymodel.logging.7.2.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.2.0\\microsoft.identitymodel.tokens.7.2.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.1\\system.diagnostics.diagnosticsource.6.0.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.2.0\\system.identitymodel.tokens.jwt.7.2.0.nupkg.sha512",

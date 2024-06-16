@@ -39,7 +39,7 @@ public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVe
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         if (user.VerificationCode != request.VerificationCode)

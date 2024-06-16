@@ -27,7 +27,7 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
 
     public async Task<Class> Handle(EditClassCommand request, CancellationToken cancellationToken)
     {
-        var @class = await _context.Classes.SingleOrDefaultAsync(c=>c.ClassId == request.ClassId, cancellationToken);
+        var @class = await _context.Classes.FindAsync(new object [] { request.ClassId }, cancellationToken: cancellationToken);
 
         if (@class == null)
         {
@@ -42,7 +42,7 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
         await Delay(20, cancellationToken);
 
         var disciplines = await GetDisciplines(request.DisciplineTitles, cancellationToken);
-        await _mediator.Send(new UpdateClassDisciplinesCommand()
+        await _mediator.Send(new EditClassDisciplinesCommand()
         {
             ClassId = @class.ClassId,
             NewDisciplineIds = disciplines.Select(discipline =>

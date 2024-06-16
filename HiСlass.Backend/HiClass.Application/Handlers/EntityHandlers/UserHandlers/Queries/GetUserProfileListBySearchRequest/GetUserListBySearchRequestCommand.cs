@@ -6,5 +6,5 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUs
 
 public class GetUserListBySearchRequestCommand : IRequest<IEnumerable<User>>
 {
-    public SearchCommandDto SearchRequest { get; set; }
+    public SearchCommandDto SearchRequest { get; set; } 
 }

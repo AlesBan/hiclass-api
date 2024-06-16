@@ -27,7 +27,7 @@ public class EditPersonalInfoCommandHandler : IRequestHandler<EditPersonalInfoCo
 
         if (user == null)
         {
-            throw new UserNotFoundException(request.UserId);
+            throw new UserNotFoundByIdException(request.UserId);
         }
 
         var country = await _mediator.Send(new GetCountryByTitleQuery(request.CountryTitle), cancellationToken);
