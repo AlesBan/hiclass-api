@@ -2,6 +2,7 @@ using HiClass.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace HiClass.Persistence;
 
@@ -17,6 +18,8 @@ public static class DependencyInjection
         {
             options.UseNpgsql(connection);
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            options.EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine, LogLevel.Information);
         });
 
         return services;
