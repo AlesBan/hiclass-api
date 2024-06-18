@@ -21,5 +21,7 @@ public class UserDisciplineConfiguration : IEntityTypeConfiguration<UserDiscipli
             .WithMany(d => d.UserDisciplines)
             .HasForeignKey(td => td.DisciplineId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        
     }
 }
