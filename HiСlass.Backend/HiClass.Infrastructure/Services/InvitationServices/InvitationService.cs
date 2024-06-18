@@ -32,7 +32,7 @@ namespace HiClass.Infrastructure.Services.InvitationServices
 
             if (!DateTime.TryParse(requestInvitationDto.DateOfInvitation, out var dateOfInvitation))
             {
-                throw new DateTimeInvalidFormatProvidedException();
+                throw new DateTimeInvalidFormatProvidedException(userSenderId);
             }
 
             var command = new CreateInvitationCommand
@@ -65,7 +65,7 @@ namespace HiClass.Infrastructure.Services.InvitationServices
             var command = new ChangeInvitationStatusCommand
             {
                 InvitationId = requestDto.InvitationId,
-                UserReceiverId = userReceiverId,
+                UserId = userReceiverId,
                 IsAccepted = requestDto.IsAccepted
             };
 

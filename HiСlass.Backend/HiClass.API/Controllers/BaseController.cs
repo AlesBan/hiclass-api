@@ -1,7 +1,7 @@
 using HiClass.API.Filters.Exceptions;
 using HiClass.API.Filters.Validation;
 using HiClass.API.Helpers.JwtHelpers;
-using HiClass.Application.Common.Exceptions.Common;
+using HiClass.Application.Common.Exceptions.Server;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 

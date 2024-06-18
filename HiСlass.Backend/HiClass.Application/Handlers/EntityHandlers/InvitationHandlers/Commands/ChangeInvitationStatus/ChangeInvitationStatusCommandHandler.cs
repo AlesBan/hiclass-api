@@ -28,9 +28,9 @@ public class ChangeInvitationStatusCommandHandler : IRequestHandler<ChangeInvita
             throw new NotFoundException(nameof(Invitation), invitationId);
         }
 
-        if (invitation.UserReceiverId != request.UserReceiverId)
+        if (invitation.UserReceiverId != request.UserId)
         {
-            throw new InvalidUserReceiverIdProvidedException(invitation.InvitationId, request.UserReceiverId);
+            throw new InvalidUserReceiverIdProvidedException(invitation.InvitationId, request.UserId, invitation.UserReceiverId);
         }
 
         invitation.Status = isAccepted ? InvitationStatus.Accepted.ToString() : InvitationStatus.Declined.ToString();

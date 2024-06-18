@@ -1,4 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Handlers.EntityHandlers.CityHandlers.Queries.GetCity;
 using HiClass.Application.Handlers.EntityHandlers.CountryHandlers.Queries.GetCountryByTitle;
 using HiClass.Application.Interfaces;

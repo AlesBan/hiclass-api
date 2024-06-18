@@ -1,4 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
 using HiClass.Application.Tests.Common;
 using Xunit;

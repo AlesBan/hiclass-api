@@ -1,4 +1,6 @@
 using HiClass.Application.Common.Exceptions.Class;
+using HiClass.Application.Common.Exceptions.Invitations;
+using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Communication;
 using MediatR;
@@ -16,11 +18,15 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
 
     public async Task<Invitation> Handle(CreateInvitationCommand request, CancellationToken cancellationToken)
     {
+        ValidateClassReceiverId(request.UserSenderId, request.ClassReceiverId);
+        ValidateClassSenderId(request.UserSenderId, request.UserSenderId);
+        ValidateUserReceiverId(request.UserSenderId, request.UserReceiverId);
+
         var invitation = new Invitation
         {
             UserSenderId = request.UserSenderId,
             UserReceiverId = request.UserReceiverId,
-            ClassSenderId = request.ClassSenderId,
+            ClassSenderId =request.UserSenderId,
             ClassReceiverId = request.ClassReceiverId,
             DateOfInvitation = request.DateOfInvitation.ToUniversalTime(),
             InvitationText = request.InvitationText,
@@ -28,12 +34,21 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
             CreatedAt = DateTime.UtcNow
         };
 
-        ValidateClassReceiverId(request.UserSenderId, request.ClassReceiverId);
-        
         await _context.Invitations.AddAsync(invitation, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return invitation;
+    }
+
+    private void ValidateClassSenderId(Guid userSenderId, Guid classSenderId)
+    {
+        var classReceiverIsUserSenderClass = _context.Classes
+            .Any(c => c.ClassId == classSenderId && c.UserId == userSenderId);
+
+        if (!classReceiverIsUserSenderClass)
+        {
+            throw new InvitationClassSenderOwnerIsNotUserSenderException(userSenderId, classSenderId);
+        }
     }
 
     private void ValidateClassReceiverId(Guid userSenderId, Guid classReceiverId)
@@ -44,6 +59,17 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         if (classReceiverIsUserSenderClass)
         {
             throw new InvitationClassReceiverOwnerIsAnUserSenderException(userSenderId, classReceiverId);
+        }
+    }
+
+    private async void ValidateUserReceiverId(Guid userSenderId, Guid userReceiverId)
+    {
+        var userReceiverIsExists = await _context.Users
+            .FindAsync(new[] { userReceiverId });
+
+        if (userReceiverIsExists == null)
+        {
+            throw new UserNotFoundByIdException(userSenderId, "UserSender was not found");
         }
     }
 }

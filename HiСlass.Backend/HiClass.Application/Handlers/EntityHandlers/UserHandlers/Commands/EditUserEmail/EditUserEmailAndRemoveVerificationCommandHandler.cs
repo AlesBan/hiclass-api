@@ -1,5 +1,6 @@
 using AutoMapper;
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserAccessToken;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Interfaces;
