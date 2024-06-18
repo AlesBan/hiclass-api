@@ -44,7 +44,7 @@ public class UpdateUserVerificationCommandHandler : IRequestHandler<UpdateUserVe
 
         if (user.VerificationCode != request.VerificationCode)
         {
-            throw new InvalidVerificationCodeProvidedException();
+            throw new InvalidVerificationCodeProvidedException(user.UserId, request.VerificationCode);
         }
 
         var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);

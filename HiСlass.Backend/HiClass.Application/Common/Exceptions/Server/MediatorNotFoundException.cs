@@ -1,6 +1,6 @@
 using HiClass.Application.Interfaces.Exceptions;
 
-namespace HiClass.Application.Common.Exceptions.Common;
+namespace HiClass.Application.Common.Exceptions.Server;
 
 public class MediatorNotFoundException : Exception, IServerException
 {

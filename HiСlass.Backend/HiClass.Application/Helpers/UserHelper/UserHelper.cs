@@ -115,7 +115,7 @@ public class UserHelper : IUserHelper
     {
         if (user.PasswordResetCode != code)
         {
-            throw new InvalidResetPasswordCodeException();
+            throw new InvalidResetPasswordCodeException(user.UserId, code);
         }
     }
 }

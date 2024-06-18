@@ -1,4 +1,4 @@
-using HiClass.Application.Common.Exceptions.EmailManager;
+using HiClass.Application.Common.Exceptions.Server.EmailManager;
 using HiClass.Application.Constants;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;

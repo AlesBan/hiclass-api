@@ -1,6 +1,6 @@
 using HiClass.Application.Interfaces.Exceptions;
 
-namespace HiClass.Application.Common.Exceptions.Database;
+namespace HiClass.Application.Common.Exceptions.User;
 
 using static Newtonsoft.Json.JsonConvert;
 

@@ -1,7 +1,7 @@
 using HiClass.Application.Interfaces.Exceptions;
 using static Newtonsoft.Json.JsonConvert;
 
-namespace HiClass.Application.Common.Exceptions.Class;
+namespace HiClass.Application.Common.Exceptions.Invitations;
 
 public class InvitationClassReceiverOwnerIsAnUserSenderException : Exception, IUiException
 {

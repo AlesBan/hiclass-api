@@ -1,36 +1,47 @@
 using System.ComponentModel.DataAnnotations;
 using HiClass.Application.Common.Exceptions.Invitations;
+using HiClass.Application.Common.Exceptions.Properties;
 
 namespace HiClass.Application.Attributes;
 
-[AttributeUsage(AttributeTargets.Property)]
 public class NotEqualAttribute : ValidationAttribute
 {
-    private readonly string _otherProperty;
     private readonly string _propertyName;
+    private readonly string _otherProperty;
 
     public NotEqualAttribute(string otherProperty, string propertyName)
     {
-        _otherProperty = otherProperty;
         _propertyName = propertyName;
+        _otherProperty = otherProperty;
     }
 
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        var otherPropertyInfo = validationContext.ObjectType
-            .GetProperty(_otherProperty);
+        var otherPropertyInfo = validationContext.ObjectType.GetProperty(_otherProperty);
 
         if (otherPropertyInfo == null)
-            throw new EqualityInvitationPropertyException(_propertyName);
+            throw new NullPropertyException(_otherProperty);
 
-        var otherPropertyValue = otherPropertyInfo.GetValue(validationContext
-            .ObjectInstance);
+        var otherPropertyValue = otherPropertyInfo.GetValue(validationContext.ObjectInstance);
 
         if (otherPropertyValue == null)
-            throw new EqualityInvitationPropertyException(_propertyName);
+            throw new NullPropertyException(_propertyName);
 
-        return Equals(value, otherPropertyValue)
-            ? throw new EqualityInvitationPropertyException(_propertyName)
-            : ValidationResult.Success;
+        if (!Equals(value, otherPropertyValue))
+        {
+            return ValidationResult.Success;
+        }
+
+        if (_propertyName.Contains("Class"))
+        {
+            throw new EqualityInvitationClassIdPropertiesException();
+        }
+
+        if (_propertyName.Contains("User"))
+        {
+            throw new EqualityInvitationUserIdPropertiesException();
+        }
+        
+        return ValidationResult.Success;
     }
 }

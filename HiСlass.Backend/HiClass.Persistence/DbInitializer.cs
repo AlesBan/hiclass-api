@@ -1,4 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.Server;
 using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Persistence;

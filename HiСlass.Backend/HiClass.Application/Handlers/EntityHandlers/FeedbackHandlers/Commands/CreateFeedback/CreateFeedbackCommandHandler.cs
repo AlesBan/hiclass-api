@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.Invitations;
+using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
@@ -39,9 +40,9 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
         switch (invitation.Status)
         {
             case var _ when invitation.Status == InvitationStatus.Declined.ToString():
-                throw new InvitationIsNotAcceptedException(InvitationStatus.Declined);
+                throw new InvitationIsNotAcceptedException(request.UserSenderId, InvitationStatus.Declined);
             case var _ when invitation.Status == InvitationStatus.Pending.ToString():
-                throw new InvitationIsNotAcceptedException(InvitationStatus.Pending);
+                throw new InvitationIsNotAcceptedException(request.UserSenderId, InvitationStatus.Pending);
         }
 
         var feedback = new Feedback()

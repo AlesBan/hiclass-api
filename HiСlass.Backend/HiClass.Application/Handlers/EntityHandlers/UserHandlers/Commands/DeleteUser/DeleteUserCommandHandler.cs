@@ -1,4 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

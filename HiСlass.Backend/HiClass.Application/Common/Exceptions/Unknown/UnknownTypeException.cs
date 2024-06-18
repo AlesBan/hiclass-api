@@ -6,7 +6,7 @@ public class UnknownTypeException : Exception, IServerException
 {
     private const string ExceptionMessage = "Unknown type";
 
-    public UnknownTypeException(Guid userId) : base()
+    public UnknownTypeException(Guid userId) : base(CreateMessageForLogging( userId))
     {
     }
 
