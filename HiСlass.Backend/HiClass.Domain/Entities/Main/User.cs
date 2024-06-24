@@ -1,6 +1,7 @@
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
+using HiClass.Domain.Entities.Notifications;
 using HiClass.Domain.EntityConnections;
 
 namespace HiClass.Domain.Entities.Main;
@@ -39,15 +40,16 @@ public class User
     public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();
     public ICollection<Feedback> ReceivedFeedbacks { get; set; } = new List<Feedback>();
     public ICollection<Feedback> SentFeedbacks { get; set; } = new List<Feedback>();
-    public double Rating { get; set; }  
+    public double Rating { get; set; }
     public string? Description { get; set; } = string.Empty;
     public string? ImageUrl { get; set; } = string.Empty;
     public string? BannerImageUrl { get; set; } = string.Empty;
+    public ICollection<Device> Devices { get; set; } = new List<Device>();
+    public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     public DateTime RegisteredAt { get; set; }
     public DateTime? CreatedAt { get; set; }
     public DateTime? VerifiedAt { get; set; }
     public DateTime LastOnlineAt { get; set; }
     public DateTime? DeletedAt { get; set; }
     public string FullName => $"{FirstName} {LastName}";
-    
 }

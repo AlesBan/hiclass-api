@@ -3,6 +3,7 @@ using HiClass.Domain.Entities.Education;
 using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
+using HiClass.Domain.Entities.Notifications;
 using HiClass.Domain.EntityConnections;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,8 @@ namespace HiClass.Application.Interfaces;
 public interface ISharedLessonDbContext
 {
     DbSet<User> Users { get; set; }
+    DbSet<Device> Devices { get; set; }
+    DbSet<Notification> Notifications { get; set; }
     DbSet<Role> Roles { get; set; }
     DbSet<Grade> Grades { get; set; }
     DbSet<Class> Classes { get; set; }

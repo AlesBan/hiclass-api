@@ -972,6 +972,13 @@ components:
           nullable: true
       additionalProperties: false
     EditPersonalInfoRequestDto:
+      required:
+        - cityTitle
+        - countryTitle
+        - firstName
+        - isAnExpert
+        - isATeacher
+        - lastName
       type: object
       properties:
         isATeacher:
@@ -979,17 +986,17 @@ components:
         isAnExpert:
           type: boolean
         firstName:
+          minLength: 1
           type: string
-          nullable: true
         lastName:
+          minLength: 1
           type: string
-          nullable: true
         cityTitle:
+          minLength: 1
           type: string
-          nullable: true
         countryTitle:
+          minLength: 1
           type: string
-          nullable: true
         description:
           type: string
           nullable: true

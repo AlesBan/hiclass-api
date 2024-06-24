@@ -5,7 +5,6 @@ using HiClass.API.Configuration.Swagger;
 using HiClass.API.Middleware;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
-using HiClass.Application.Helpers.CommandHandlerHelper;
 using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
@@ -61,16 +60,15 @@ builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<IDataBaseDataService, DataBaseDataService>();
 builder.Services.AddScoped<IStaticDataService, StaticDataService>();
+builder.Services.AddScoped<INotificationHandlerService, NotificationHandlerService>();
 
 builder.Services.AddScoped<IImageHandlerService, ImageHandlerService>();
 builder.Services.AddScoped<IAwsImagesService, AwsImagesService>();
 
-builder.Services.AddScoped<INotificationHandlerService, NotificationHandlerService>();
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IDataForUserHelper, DataForUserHelper>();
-builder.Services.AddScoped<ICommandHandlerHelper, CommandHandlerHelper>();
 
 builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 

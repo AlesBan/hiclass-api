@@ -378,6 +378,10 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.7.0, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.3.0, )"

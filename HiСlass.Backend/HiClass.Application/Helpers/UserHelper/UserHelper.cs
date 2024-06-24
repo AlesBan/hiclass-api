@@ -20,12 +20,6 @@ namespace HiClass.Application.Helpers.UserHelper;
 
 public class UserHelper : IUserHelper
 {
-    private readonly IMapper _mapper;
-
-    public UserHelper(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
 
     public async Task<User> GetUserById(Guid userId, IMediator mediator)
     {

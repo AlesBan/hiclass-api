@@ -1,9 +1,11 @@
-using RabbitMQ.Client;
+using HiClass.Application.Models.Notifications;
+using HiClass.Domain.Entities.Notifications;
+using MediatR;
 
 namespace HiClass.Infrastructure.Services.NotificationHandlerService;
 
 public interface INotificationHandlerService
 {
-    public void SendMessage<T>(T message);
-    public void ScheduleMessage<T>(T message, DateTime deliveryTime);
+    Task<List<Notification>> GetUserNotificationsByUserId(Guid userId, IMediator mediator);
+    Task<Notification> CreateNotification(NotificationDto notificationDto, IMediator mediator);
 }

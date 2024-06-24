@@ -1,4 +1,3 @@
-using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Handlers.EntityHandlers.CityHandlers.Queries.GetCity;
 using HiClass.Application.Handlers.EntityHandlers.CountryHandlers.Queries.GetCountryByTitle;
@@ -47,7 +46,7 @@ public class EditPersonalInfoCommandHandler : IRequestHandler<EditPersonalInfoCo
         user.City = city;
         user.Description = request.Description;
 
-        _context.Users.Attach(user).State = EntityState.Modified;
+        _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
 
         user = _context.Users
@@ -70,7 +69,7 @@ public class EditPersonalInfoCommandHandler : IRequestHandler<EditPersonalInfoCo
             .ThenInclude(ug => ug.Grade)
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
-        
+
         return user;
     }
 }
