@@ -1,14 +1,17 @@
+using AutoMapper;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
+using HiClass.Application.Models.Invitations.Invitations;
 using HiClass.Application.Models.Notifications;
 using HiClass.Domain.Entities.Notifications;
 using HiClass.Domain.Enums;
-using HiClass.Infrastructure.Services.InvitationServices;
-using HiClass.Infrastructure.Services.NotificationHandlerService;
+using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
+using HiClass.Infrastructure.InternalServices.InvitationServices;
+using HiClass.Infrastructure.InternalServices.NotificationHandlerService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +22,17 @@ public class InvitationController : BaseController
 {
     private readonly IInvitationService _invitationService;
     private readonly INotificationHandlerService _notificationHandlerService;
+    private readonly IDeviceHandlerService _deviceHandlerService;
+    private readonly IMapper _mapper;
 
     public InvitationController(IInvitationService invitationService,
-        INotificationHandlerService notificationHandlerService)
+        INotificationHandlerService notificationHandlerService, IDeviceHandlerService deviceHandlerService,
+        IMapper mapper)
     {
         _invitationService = invitationService;
         _notificationHandlerService = notificationHandlerService;
+        _deviceHandlerService = deviceHandlerService;
+        _mapper = mapper;
     }
 
     [HttpPost("create-invitation")]
@@ -44,22 +52,28 @@ public class InvitationController : BaseController
         };
 
         var notification = await _notificationHandlerService.CreateNotification(notificationDto, Mediator);
-        
+
+        var userDeviceTokens =
+            await _deviceHandlerService.GetUserDeviceTokensByUserId(invitation.UserReceiverId, Mediator);
+
         var notificationResponseDto = new NotificationResponseDto
         {
             NotificationType = notification.NotificationType.ToString(),
-            Message = notification.Message,
+            NotificationMessage = notificationDto.NotificationMessage,
             IsRead = false,
-            CreatedAt = default
+            CreatedAt = default,
+            DeviceTokens = userDeviceTokens
         };
-        
-        //TODO: Получение device token'ов
-        
-        //TODO: Отправка уведомления
 
-        
-        var invitationDto = new CreateInvitationResponseDto(invitation);
-        return ResponseHelper.GetOkResult(invitationDto);
+        userDeviceTokens = new List<string>()
+        {
+            "cLBnvpLbWmZiLl5hOUZrmd:APA91bHsBf-19cuBLtHMfES3FihKSkCqbgptttViefkVkyvsYR-75_jlen61M5qIvas4Uoq6Cd7TURu3Ft5jedh6yZ2YSKiIFP3sjAdCwQqvLmkt0HhAp_uk5yszF5t1liAuDLzHluRw"
+        };
+
+        await _notificationHandlerService.SendNotificationAsync(notificationResponseDto, userDeviceTokens);
+
+        var invitationResponseDto = _mapper.Map<InvitationResponseDto>(invitation);
+        return ResponseHelper.GetOkResult(invitationResponseDto);
     }
 
     [HttpPost("change-invitation-status")]

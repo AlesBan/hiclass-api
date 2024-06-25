@@ -1,7 +1,8 @@
 using System.Net.WebSockets;
 using System.Text;
 using HiClass.API.Helpers;
-using HiClass.Infrastructure.Services.NotificationHandlerService;
+using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
+using HiClass.Infrastructure.InternalServices.NotificationHandlerService;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace HiClass.API.Controllers;
 public class NotificationsController : BaseController
 {
     private readonly INotificationHandlerService _notificationHandlerService;
+    private readonly IDeviceHandlerService _deviceHandlerService;
 
-    public NotificationsController(INotificationHandlerService notificationHandlerService)
+    public NotificationsController(INotificationHandlerService notificationHandlerService, IDeviceHandlerService deviceHandlerService)
     {
         _notificationHandlerService = notificationHandlerService;
+        _deviceHandlerService = deviceHandlerService;
     }
 
     [HttpGet("all-notifications")]

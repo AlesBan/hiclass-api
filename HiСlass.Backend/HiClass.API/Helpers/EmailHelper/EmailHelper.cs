@@ -1,5 +1,4 @@
 using HiClass.Application.Interfaces.Services;
-using HiClass.Infrastructure.Services.EmailHandlerService;
 
 namespace HiClass.API.Helpers.EmailHelper;
 

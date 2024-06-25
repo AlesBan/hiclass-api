@@ -10,18 +10,20 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Infrastructure.Services.ClassServices;
-using HiClass.Infrastructure.Services.DataBaseDataService;
-using HiClass.Infrastructure.Services.DefaultDataServices;
-using HiClass.Infrastructure.Services.EditUserAccountService;
-using HiClass.Infrastructure.Services.EmailHandlerService;
-using HiClass.Infrastructure.Services.ImageServices;
-using HiClass.Infrastructure.Services.ImageServices.Aws;
-using HiClass.Infrastructure.Services.InvitationServices;
-using HiClass.Infrastructure.Services.NotificationHandlerService;
-using HiClass.Infrastructure.Services.SearchService;
-using HiClass.Infrastructure.Services.StaticDataServices;
-using HiClass.Infrastructure.Services.UserServices;
+using HiClass.Infrastructure.IntegrationServices.Aws;
+using HiClass.Infrastructure.IntegrationServices.Firebase.FirebaseConnector;
+using HiClass.Infrastructure.IntegrationServices.Firebase.FireBaseNotificationSender;
+using HiClass.Infrastructure.InternalServices.ClassServices;
+using HiClass.Infrastructure.InternalServices.DefaultDataServices;
+using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
+using HiClass.Infrastructure.InternalServices.EditUserAccountService;
+using HiClass.Infrastructure.InternalServices.EmailHandlerService;
+using HiClass.Infrastructure.InternalServices.ImageServices;
+using HiClass.Infrastructure.InternalServices.InvitationServices;
+using HiClass.Infrastructure.InternalServices.NotificationHandlerService;
+using HiClass.Infrastructure.InternalServices.SearchService;
+using HiClass.Infrastructure.InternalServices.StaticDataServices;
+using HiClass.Infrastructure.InternalServices.UserServices;
 using HiClass.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,19 +60,20 @@ builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
-builder.Services.AddScoped<IDataBaseDataService, DataBaseDataService>();
 builder.Services.AddScoped<IStaticDataService, StaticDataService>();
 builder.Services.AddScoped<INotificationHandlerService, NotificationHandlerService>();
+builder.Services.AddScoped<IDeviceHandlerService, DeviceHandlerService>();
 
 builder.Services.AddScoped<IImageHandlerService, ImageHandlerService>();
 builder.Services.AddScoped<IAwsImagesService, AwsImagesService>();
-
+builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IDataForUserHelper, DataForUserHelper>();
 
-builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
+builder.Services.AddScoped<IFirebaseConnector, FirebaseConnector>();
+builder.Services.AddScoped<IFireBaseNotificationSender, FireBaseNotificationSender>();
 
 builder.Services.AddTransient<DatabaseConnectionMiddleware>();
 

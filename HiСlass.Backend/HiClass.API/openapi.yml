@@ -381,7 +381,7 @@ paths:
       responses:
         '200':
           description: OK
-  /api/Notifications/ws:
+  /api/Notifications/all-notifications:
     get:
       tags:
         - Notifications

@@ -4,9 +4,8 @@ using HiClass.API.Filters.UserVerification;
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Search;
 using HiClass.Application.Models.StaticData;
-using HiClass.Infrastructure.Services.DataBaseDataService;
-using HiClass.Infrastructure.Services.DefaultDataServices;
-using HiClass.Infrastructure.Services.SearchService;
+using HiClass.Infrastructure.InternalServices.DefaultDataServices;
+using HiClass.Infrastructure.InternalServices.SearchService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

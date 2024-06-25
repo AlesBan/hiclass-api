@@ -6,4 +6,6 @@ namespace HiClass.Application.Handlers.EntityHandlers.DeviceHandlers.Commands.Cr
 public class CreateDeviceCommand : IRequest<Device>
 {
     public string DeviceToken { get; set; } = string.Empty;
+
+    public Guid UserId { get; set; }
 }

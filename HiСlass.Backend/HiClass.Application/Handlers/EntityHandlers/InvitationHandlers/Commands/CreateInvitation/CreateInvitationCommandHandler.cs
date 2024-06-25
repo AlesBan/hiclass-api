@@ -4,6 +4,7 @@ using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Communication;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 
@@ -26,7 +27,7 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         {
             UserSenderId = request.UserSenderId,
             UserReceiverId = request.UserReceiverId,
-            ClassSenderId =request.ClassSenderId,
+            ClassSenderId = request.ClassSenderId,
             ClassReceiverId = request.ClassReceiverId,
             DateOfInvitation = request.DateOfInvitation.ToUniversalTime(),
             InvitationText = request.InvitationText,
@@ -37,7 +38,16 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         await _context.Invitations.AddAsync(invitation, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return invitation;
+        await Task.Delay(20, cancellationToken);
+        
+        var savedInvitation = await _context.Invitations
+            .Include(x => x.UserReceiver)
+            .Include(x => x.UserSender)
+            .Include(x => x.ClassReceiver)
+            .Include(x => x.ClassSender)
+            .FirstOrDefaultAsync(x => x.InvitationId == invitation.InvitationId, cancellationToken);
+
+        return savedInvitation;
     }
 
     private void ValidateClassSenderId(Guid userSenderId, Guid classSenderId)
