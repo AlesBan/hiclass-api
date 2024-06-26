@@ -4,10 +4,11 @@ using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Notifications;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.DeviceHandlers.Commands.CreateDevice;
 
-public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, Device>
+public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, Unit>
 {
     private readonly ISharedLessonDbContext _context;
 
@@ -16,25 +17,18 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, D
         _context = context;
     }
 
-    public async Task<Device> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
     {
         if (request == null)
         {
             throw new MediatorCommandIsNullException();
         }
 
-        var existingDevice = await _context.Devices.FindAsync(new object[] { request.DeviceToken }, cancellationToken);
-        if (existingDevice != null)
-        {
-            throw new DeviceAlreadyExistsException();
-        }
-
-        var user = await _context.Users.FindAsync(new object[] { request.UserId }, cancellationToken);
-        if (user == null)
-        {
-            throw new UserNotFoundByIdException(userId: request.UserId);
-        }
-
+        var existingDevice =
+            await _context.Devices.FirstOrDefaultAsync(x => x.DeviceToken == request.DeviceToken,
+                cancellationToken);
+        if (existingDevice != null && existingDevice.UserId == request.UserId) return Unit.Value;
+        
         var newDevice = new Device
         {
             DeviceToken = request.DeviceToken,
@@ -44,6 +38,6 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, D
         _context.Devices.Add(newDevice);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return newDevice;
+        return Unit.Value;
     }
 }

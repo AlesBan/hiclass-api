@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.DeviceHandlers.Commands.CreateDevice;
 
-public class CreateDeviceCommand : IRequest<Device>
+public class CreateDeviceCommand : IRequest<Unit>
 {
     public string DeviceToken { get; set; } = string.Empty;
 

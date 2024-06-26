@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 
-public class LoginUserCommand : IRequest<LoginResponseDto>
+public class LoginUserCommand : IRequest<LoginUserCommandResponse>
 {
     public UserLoginRequestDto UserLoginRequestDto { get; set; }
 

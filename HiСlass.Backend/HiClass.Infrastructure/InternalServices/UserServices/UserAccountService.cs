@@ -1,4 +1,5 @@
 using AutoMapper;
+using HiClass.Application.Handlers.EntityHandlers.DeviceHandlers.Commands.CreateDevice;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
@@ -24,7 +25,9 @@ using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
+using HiClass.Application.Models.User.Registration;
 using HiClass.Domain.Entities.Main;
+using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
 using HiClass.Infrastructure.InternalServices.ImageServices;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -42,11 +45,12 @@ public class UserAccountService : IUserAccountService
     private readonly IImageHandlerService _imageHandlerService;
     private readonly IMapper _mapper;
     private readonly ISharedLessonDbContext _context;
+    private readonly IDeviceHandlerService _deviceHandlerService;
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
         IDataForUserHelper dataUserHelper, IImageHandlerService imageHandlerService,
-        IMapper mapper, ISharedLessonDbContext context)
+        IMapper mapper, ISharedLessonDbContext context, IDeviceHandlerService deviceHandlerService)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -56,6 +60,7 @@ public class UserAccountService : IUserAccountService
         _imageHandlerService = imageHandlerService;
         _mapper = mapper;
         _context = context;
+        _deviceHandlerService = deviceHandlerService;
     }
 
     public async Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator)
@@ -76,15 +81,18 @@ public class UserAccountService : IUserAccountService
 
     public async Task<LoginResponseDto> RegisterUser(UserRegisterRequestDto requestUserDto, IMediator mediator)
     {
-        var registeredUser = await mediator.Send(
+        var registeredUserCommandResponse = await mediator.Send(
             new RegisterUserCommand(requestUserDto));
 
-        await _emailHandlerService.SendVerificationEmail(registeredUser.Email,
-            registeredUser.VerificationCode ?? string.Empty);
+        await _deviceHandlerService.CreateDeviceByToken(registeredUserCommandResponse.UserId,
+            requestUserDto.DeviceToken, mediator);
+        
+        await _emailHandlerService.SendVerificationEmail(requestUserDto.Email,
+            registeredUserCommandResponse.VerificationCode);
 
         var loginResponseDto = new LoginResponseDto
         {
-            AccessToken = registeredUser.AccessToken ?? string.Empty,
+            AccessToken = registeredUserCommandResponse.AccessToken
         };
 
         return loginResponseDto;
@@ -94,7 +102,15 @@ public class UserAccountService : IUserAccountService
     {
         var command = new LoginUserCommand(requestUserDto);
 
-        var loginResponseDto = await mediator.Send(command);
+        var loggedInUserCommandResponse = await mediator.Send(command);
+
+        await _deviceHandlerService.CreateDeviceByToken(loggedInUserCommandResponse.UserId,
+            requestUserDto.DeviceToken, mediator);
+
+        var loginResponseDto = new LoginResponseDto
+        {
+            AccessToken = loggedInUserCommandResponse.AccessToken,
+        };
 
         return loginResponseDto;
     }

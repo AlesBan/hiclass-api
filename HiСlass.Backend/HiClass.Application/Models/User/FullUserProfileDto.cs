@@ -1,6 +1,7 @@
 using AutoMapper;
 using HiClass.Application.Common.Mappings;
 using HiClass.Application.Models.Class;
+using HiClass.Application.Models.Device;
 using HiClass.Application.Models.Institution;
 using HiClass.Application.Models.Invitations.Feedbacks;
 using HiClass.Application.Models.Invitations.Invitations;
@@ -36,9 +37,14 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
     public List<int> GradeNumbers { get; set; } = new();
     public IEnumerable<FeedbackDto> FeedbackDtos { get; set; } = new List<FeedbackDto>();
     public IEnumerable<InvitationDto> AllInvitationDtos { get; set; } = new List<InvitationDto>();
+    public IEnumerable<DeviceDto> DeviceTokens { get; set; } = new List<DeviceDto>();
 
     public void Mapping(Profile profile)
     {
+        profile.CreateMap<Domain.Entities.Notifications.Device, DeviceDto>()
+            .ForMember(x => x.DeviceToken, opt => opt.MapFrom(x => x.DeviceToken))
+            .ForMember(x => x.DeviceId, opt => opt.MapFrom(x => x.DeviceId));
+
         profile.CreateMap<Feedback, FeedbackDto>()
             .ForMember(x => x.FeedbackId, opt => opt.MapFrom(x => x.FeedbackId))
             .ForMember(x => x.InvitationId, opt => opt.MapFrom(x => x.InvitationId))
@@ -47,7 +53,7 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
                 x.UserSender.FullName))
             .ForMember(x => x.UserSenderImageUrl, opt => opt.MapFrom(x =>
                 x.UserSender.ImageUrl))
-            .ForMember(x=>x.UserSenderFullLocation, opt => opt.MapFrom(x =>
+            .ForMember(x => x.UserSenderFullLocation, opt => opt.MapFrom(x =>
                 x.UserSender.FullLocation))
             .ForMember(x => x.WasTheJointLesson, opt => opt.MapFrom(x => x.WasTheJointLesson))
             .ForMember(x => x.FeedbackText, opt => opt.MapFrom(x => x.FeedbackText))
@@ -152,9 +158,12 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
                     cd.Grade.GradeNumber)))
             .ForMember(dest => dest.ClassDtos,
                 opt => opt.MapFrom(src => src.Classes))
-           .ForMember(dest => dest.AllInvitationDtos,
+            .ForMember(dest => dest.AllInvitationDtos,
                 opt => opt.MapFrom(src => src.ReceivedInvitations.Concat(src.SentInvitations)))
             .ForMember(dest => dest.FeedbackDtos,
-                opt => opt.MapFrom(src => src.ReceivedFeedbacks));;
+                opt => opt.MapFrom(src => src.ReceivedFeedbacks))
+            .ForMember(dest => dest.DeviceTokens,
+                opt => opt.MapFrom(src => src.Devices));
+        ;
     }
 }

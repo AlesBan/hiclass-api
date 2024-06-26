@@ -5,13 +5,14 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Models.User;
+using HiClass.Application.Models.User.Registration;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, User>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserCommandResponse>
 {
     private readonly ISharedLessonDbContext _context;
     private readonly ITokenHelper _tokenHelper;
@@ -26,7 +27,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
         _userHelper = userHelper;
     }
 
-    public async Task<User> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterUserCommandResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var userEmail = request.UserRegisterRequestDto.Email;
         var userPassword = request.UserRegisterRequestDto.Password;
@@ -41,6 +42,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
 
         var newUser = new User
         {
+            UserId = Guid.NewGuid(),
             Email = userEmail,
         };
 
@@ -58,7 +60,11 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
 
         await AddUserToDataBase(newUser, cancellationToken);
 
-        return await Task.FromResult(newUser);
+        return new RegisterUserCommandResponse
+        {
+            AccessToken = accessToken,
+            UserId = newUser.UserId
+        };
     }
 
     private async Task AddUserToDataBase(User user, CancellationToken cancellationToken)

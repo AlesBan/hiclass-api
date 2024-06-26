@@ -2,6 +2,7 @@ using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Notifications;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.DeviceHandlers.Commands.DeleteDeviceByToken;
 
@@ -16,15 +17,15 @@ public class DeleteDeviceByTokenCommandHandler : IRequestHandler<DeleteDeviceByT
 
     public async Task<Unit> Handle(DeleteDeviceByTokenCommand request, CancellationToken cancellationToken)
     {
-        var device = _context.Devices
-            .FindAsync(new object?[] { request.DeviceToken }, cancellationToken: cancellationToken);
+        var device = await _context.Devices.FirstOrDefaultAsync(x => x.DeviceToken == request.DeviceToken,
+            cancellationToken: cancellationToken);
 
-        if (device.Result == null)
+        if (device == null)
         {
             throw new NotFoundException(nameof(Device), request.DeviceToken);
         }
 
-        _context.Devices.Remove(device.Result);
+        _context.Devices.Remove(device);
         await _context.SaveChangesAsync(CancellationToken.None);
 
         return Unit.Value;
