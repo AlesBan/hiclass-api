@@ -11,7 +11,7 @@ using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.PasswordHandling;
-using HiClass.Infrastructure.Services.UserServices;
+using HiClass.Infrastructure.InternalServices.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

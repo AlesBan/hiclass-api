@@ -4,6 +4,7 @@ using HiClass.Domain.Entities.Education;
 using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
+using HiClass.Domain.Entities.Notifications;
 using HiClass.Domain.EntityConnections;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ public class SharedLessonDbContext : DbContext, ISharedLessonDbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Device> Devices { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Class> Classes { get; set; }
     public DbSet<Grade> Grades { get; set; }

@@ -2,7 +2,7 @@ using HiClass.API.Filters.Abilities;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.User.Editing;
 using HiClass.Application.Models.User.Editing.Requests;
-using HiClass.Infrastructure.Services.EditUserAccountService;
+using HiClass.Infrastructure.InternalServices.EditUserAccountService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -501,6 +501,18 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.68.0, )"
+            },
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.7.0, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.3.0, )"

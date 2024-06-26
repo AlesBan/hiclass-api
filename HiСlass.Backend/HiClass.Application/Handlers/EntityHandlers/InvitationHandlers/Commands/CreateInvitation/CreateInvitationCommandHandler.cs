@@ -4,6 +4,7 @@ using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Communication;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 
@@ -19,14 +20,14 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
     public async Task<Invitation> Handle(CreateInvitationCommand request, CancellationToken cancellationToken)
     {
         ValidateClassReceiverId(request.UserSenderId, request.ClassReceiverId);
-        ValidateClassSenderId(request.UserSenderId, request.UserSenderId);
+        ValidateClassSenderId(request.UserSenderId, request.ClassSenderId);
         ValidateUserReceiverId(request.UserSenderId, request.UserReceiverId);
 
         var invitation = new Invitation
         {
             UserSenderId = request.UserSenderId,
             UserReceiverId = request.UserReceiverId,
-            ClassSenderId =request.UserSenderId,
+            ClassSenderId = request.ClassSenderId,
             ClassReceiverId = request.ClassReceiverId,
             DateOfInvitation = request.DateOfInvitation.ToUniversalTime(),
             InvitationText = request.InvitationText,
@@ -37,15 +38,24 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         await _context.Invitations.AddAsync(invitation, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return invitation;
+        await Task.Delay(20, cancellationToken);
+        
+        var savedInvitation = await _context.Invitations
+            .Include(x => x.UserReceiver)
+            .Include(x => x.UserSender)
+            .Include(x => x.ClassReceiver)
+            .Include(x => x.ClassSender)
+            .FirstOrDefaultAsync(x => x.InvitationId == invitation.InvitationId, cancellationToken);
+
+        return savedInvitation;
     }
 
     private void ValidateClassSenderId(Guid userSenderId, Guid classSenderId)
     {
-        var classReceiverIsUserSenderClass = _context.Classes
+        var classSenderIsUserSenderClass = _context.Classes
             .Any(c => c.ClassId == classSenderId && c.UserId == userSenderId);
 
-        if (!classReceiverIsUserSenderClass)
+        if (!classSenderIsUserSenderClass)
         {
             throw new InvitationClassSenderOwnerIsNotUserSenderException(userSenderId, classSenderId);
         }
@@ -65,7 +75,7 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
     private async void ValidateUserReceiverId(Guid userSenderId, Guid userReceiverId)
     {
         var userReceiverIsExists = await _context.Users
-            .FindAsync(new[] { userReceiverId });
+            .FindAsync(userReceiverId);
 
         if (userReceiverIsExists == null)
         {

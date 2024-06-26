@@ -1,10 +1,17 @@
+using AutoMapper;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
-using HiClass.Infrastructure.Services.InvitationServices;
+using HiClass.Application.Models.Invitations.Invitations;
+using HiClass.Application.Models.Notifications;
+using HiClass.Domain.Entities.Notifications;
+using HiClass.Domain.Enums;
+using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
+using HiClass.Infrastructure.InternalServices.InvitationServices;
+using HiClass.Infrastructure.InternalServices.NotificationHandlerService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,25 +21,64 @@ namespace HiClass.API.Controllers;
 public class InvitationController : BaseController
 {
     private readonly IInvitationService _invitationService;
-    private readonly IConfiguration _configuration;
+    private readonly INotificationHandlerService _notificationHandlerService;
+    private readonly IDeviceHandlerService _deviceHandlerService;
+    private readonly IMapper _mapper;
 
-    public InvitationController(IInvitationService invitationService, IConfiguration configuration)
+    public InvitationController(IInvitationService invitationService,
+        INotificationHandlerService notificationHandlerService, IDeviceHandlerService deviceHandlerService,
+        IMapper mapper)
     {
         _invitationService = invitationService;
-        _configuration = configuration;
+        _notificationHandlerService = notificationHandlerService;
+        _deviceHandlerService = deviceHandlerService;
+        _mapper = mapper;
     }
-    
 
     [HttpPost("create-invitation")]
     public async Task<IActionResult> CreateInvitation([FromBody] CreateInvitationRequestDto createInvitationRequestDto)
     {
         var invitation = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
-        var invitationDto = new CreateInvitationResponseDto(invitation);
-        return ResponseHelper.GetOkResult(invitationDto);
+
+        // var notificationDto = new NotificationDto
+        // {
+        //     UserReceiverId = invitation.UserReceiverId,
+        //     NotificationType = NotificationType.Invitation,
+        //     NotificationMessage = new NotificationMessage
+        //     {
+        //         Sender = invitation.UserSender.Email,
+        //         Message = $"{invitation.UserSender.Email} sent you an invitation to join his/her class"
+        //     }
+        // };
+        //
+        // var notification = await _notificationHandlerService.CreateNotification(notificationDto, Mediator);
+        //
+        // var userDeviceTokens =
+        //     await _deviceHandlerService.GetUserDeviceTokensByUserId(invitation.UserReceiverId, Mediator);
+        //
+        // var notificationResponseDto = new NotificationResponseDto
+        // {
+        //     NotificationType = notification.NotificationType.ToString(),
+        //     NotificationMessage = notificationDto.NotificationMessage,
+        //     IsRead = false,
+        //     CreatedAt = default,
+        //     DeviceTokens = userDeviceTokens
+        // };
+        //
+        // userDeviceTokens = new List<string>()
+        // {
+        //     "cLBnvpLbWmZiLl5hOUZrmd:APA91bHsBf-19cuBLtHMfES3FihKSkCqbgptttViefkVkyvsYR-75_jlen61M5qIvas4Uoq6Cd7TURu3Ft5jedh6yZ2YSKiIFP3sjAdCwQqvLmkt0HhAp_uk5yszF5t1liAuDLzHluRw"
+        // };
+
+        // await _notificationHandlerService.SendNotificationAsync(notificationResponseDto, userDeviceTokens);
+
+        var invitationResponseDto = _mapper.Map<InvitationResponseDto>(invitation);
+        return ResponseHelper.GetOkResult(invitationResponseDto);
     }
-    
+
     [HttpPost("change-invitation-status")]
-    public async Task<IActionResult> ChangeInvitationStatus([FromBody] ChangeInvitationStatusRequestDto changeInvitationStatusRequestDto)
+    public async Task<IActionResult> ChangeInvitationStatus(
+        [FromBody] ChangeInvitationStatusRequestDto changeInvitationStatusRequestDto)
     {
         await _invitationService.ChangeInvitationStatus(UserId, Mediator, changeInvitationStatusRequestDto);
         return ResponseHelper.GetOkResult();

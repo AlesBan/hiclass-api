@@ -1,5 +1,6 @@
 using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.StaticData;
+using HiClass.Infrastructure.InternalServices.StaticDataServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

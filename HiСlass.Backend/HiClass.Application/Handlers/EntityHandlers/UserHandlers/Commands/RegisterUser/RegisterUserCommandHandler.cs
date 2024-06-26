@@ -41,7 +41,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
 
         var newUser = new User
         {
-            Email = userEmail
+            Email = userEmail,
         };
 
         PasswordHelper.SetUserPasswordHash(newUser, userPassword);

@@ -505,6 +505,7 @@ rider.project.restore.info
 
 #Folders
 GeneralProvisions/
+Configurations/
 
 #RabbitMQ
 *.pid

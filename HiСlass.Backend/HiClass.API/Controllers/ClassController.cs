@@ -3,7 +3,7 @@ using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
 using HiClass.Application.Models.Class;
 using HiClass.Application.Models.Class.EditClassDtos;
-using HiClass.Infrastructure.Services.ClassServices;
+using HiClass.Infrastructure.InternalServices.ClassServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
