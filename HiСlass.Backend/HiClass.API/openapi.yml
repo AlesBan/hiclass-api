@@ -1158,6 +1158,7 @@ components:
       additionalProperties: false
     UserLoginRequestDto:
       required:
+        - deviceToken
         - email
         - password
       type: object
@@ -1167,6 +1168,9 @@ components:
           type: string
           format: email
         password:
+          minLength: 1
+          type: string
+        deviceToken:
           minLength: 1
           type: string
       additionalProperties: false
@@ -1245,6 +1249,7 @@ components:
       additionalProperties: false
     UserRegisterRequestDto:
       required:
+        - deviceToken
         - email
         - password
       type: object
@@ -1254,6 +1259,9 @@ components:
           type: string
           format: email
         password:
+          minLength: 1
+          type: string
+        deviceToken:
           minLength: 1
           type: string
       additionalProperties: false

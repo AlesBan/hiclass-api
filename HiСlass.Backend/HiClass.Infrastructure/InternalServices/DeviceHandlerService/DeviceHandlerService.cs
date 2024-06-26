@@ -18,14 +18,13 @@ public class DeviceHandlerService : IDeviceHandlerService
         return deviceTokens;
     }
 
-    public Task CreateDeviceByToken(Guid userId, string deviceToken, IMediator mediator)
+    public async Task CreateDeviceByToken(Guid userId, string deviceToken, IMediator mediator)
     {
         var command = new CreateDeviceCommand
         {
             UserId = userId,
             DeviceToken = deviceToken
         };
-        mediator.Send(command);
-        return Task.CompletedTask;
+        await mediator.Send(command);
     }
 }

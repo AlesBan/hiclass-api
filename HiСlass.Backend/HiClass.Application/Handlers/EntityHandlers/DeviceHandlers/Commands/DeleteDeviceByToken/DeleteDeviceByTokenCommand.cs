@@ -4,5 +4,5 @@ namespace HiClass.Application.Handlers.EntityHandlers.DeviceHandlers.Commands.De
 
 public class DeleteDeviceByTokenCommand : IRequest<Unit>
 {
-    public string DeviceToken { get; set; }
+    public string DeviceToken { get; set; } = string.Empty;
 }

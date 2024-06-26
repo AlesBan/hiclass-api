@@ -44,6 +44,7 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
             .ThenInclude(rf => rf.UserSender)
             .ThenInclude(us => us.City)
             .ThenInclude(c => c.Country)
+            .Include(u => u.Devices)
             .ToListAsync(cancellationToken)
             .Result;
         

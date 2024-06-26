@@ -40,37 +40,32 @@ public class InvitationController : BaseController
     {
         var invitation = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
 
-        // var notificationDto = new NotificationDto
-        // {
-        //     UserReceiverId = invitation.UserReceiverId,
-        //     NotificationType = NotificationType.Invitation,
-        //     NotificationMessage = new NotificationMessage
-        //     {
-        //         Sender = invitation.UserSender.Email,
-        //         Message = $"{invitation.UserSender.Email} sent you an invitation to join his/her class"
-        //     }
-        // };
-        //
-        // var notification = await _notificationHandlerService.CreateNotification(notificationDto, Mediator);
-        //
-        // var userDeviceTokens =
-        //     await _deviceHandlerService.GetUserDeviceTokensByUserId(invitation.UserReceiverId, Mediator);
-        //
-        // var notificationResponseDto = new NotificationResponseDto
-        // {
-        //     NotificationType = notification.NotificationType.ToString(),
-        //     NotificationMessage = notificationDto.NotificationMessage,
-        //     IsRead = false,
-        //     CreatedAt = default,
-        //     DeviceTokens = userDeviceTokens
-        // };
-        //
-        // userDeviceTokens = new List<string>()
-        // {
-        //     "cLBnvpLbWmZiLl5hOUZrmd:APA91bHsBf-19cuBLtHMfES3FihKSkCqbgptttViefkVkyvsYR-75_jlen61M5qIvas4Uoq6Cd7TURu3Ft5jedh6yZ2YSKiIFP3sjAdCwQqvLmkt0HhAp_uk5yszF5t1liAuDLzHluRw"
-        // };
-
-        // await _notificationHandlerService.SendNotificationAsync(notificationResponseDto, userDeviceTokens);
+        var notificationDto = new NotificationDto
+        {
+            UserReceiverId = invitation.UserReceiverId,
+            NotificationType = NotificationType.Invitation,
+            NotificationMessage = new NotificationMessage
+            {
+                Sender = invitation.UserSender.Email,
+                Message = $"{invitation.UserSender.Email} sent you an invitation to join his/her class"
+            }
+        };
+        
+        var notification = await _notificationHandlerService.CreateNotification(notificationDto, Mediator);
+        
+        var userDeviceTokens =
+            await _deviceHandlerService.GetUserDeviceTokensByUserId(invitation.UserReceiverId, Mediator);
+        
+        var notificationResponseDto = new NotificationResponseDto
+        {
+            NotificationType = notification.NotificationType.ToString(),
+            NotificationMessage = notificationDto.NotificationMessage,
+            IsRead = false,
+            CreatedAt = default,
+            DeviceTokens = userDeviceTokens
+        };
+        
+        await _notificationHandlerService.SendNotificationAsync(notificationResponseDto, userDeviceTokens);
 
         var invitationResponseDto = _mapper.Map<InvitationResponseDto>(invitation);
         return ResponseHelper.GetOkResult(invitationResponseDto);

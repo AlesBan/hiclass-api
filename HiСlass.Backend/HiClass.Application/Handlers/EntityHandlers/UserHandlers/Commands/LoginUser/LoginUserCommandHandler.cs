@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginResponseDto>
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserCommandResponse>
 {
     private readonly ISharedLessonDbContext _context;
     private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginRe
         _userHelper = userHelper;
     }
 
-    public async Task<LoginResponseDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<LoginUserCommandResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(x =>
@@ -50,11 +50,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginRe
         _context.Users.Attach(user).State = EntityState.Modified;
         await _context.SaveChangesAsync(CancellationToken.None);
 
-        var loginResponseDto = new LoginResponseDto
+        return new LoginUserCommandResponse()
         {
-            AccessToken = user.AccessToken,
+            AccessToken = newToken,
+            UserId = user.UserId
         };
-
-        return loginResponseDto;
     }
 }
