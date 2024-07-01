@@ -63,7 +63,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         return new RegisterUserCommandResponse
         {
             AccessToken = accessToken,
-            UserId = newUser.UserId
+            UserId = newUser.UserId,
+            VerificationCode = verificationCode
         };
     }
 

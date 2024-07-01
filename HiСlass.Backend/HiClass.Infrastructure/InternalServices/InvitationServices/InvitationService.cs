@@ -45,7 +45,7 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
                 Status = InvitationStatus.Pending.ToString(),
                 InvitationText = requestInvitationDto.InvitationText
             };
-
+            await Task.Delay(30);
             var invitation = await mediator.Send(command);
 
             var userSender = invitation.UserSender;
@@ -56,11 +56,12 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
 
             await _emailHandlerService.SendAsync(userReceiver.Email, EmailConstants.EmailInvitationSubject,
                 EmailConstants.EmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
-            
+
             return invitation;
         }
 
-        public Task ChangeInvitationStatus(Guid userReceiverId, IMediator mediator, ChangeInvitationStatusRequestDto requestDto)
+        public Task ChangeInvitationStatus(Guid userReceiverId, IMediator mediator,
+            ChangeInvitationStatusRequestDto requestDto)
         {
             var command = new ChangeInvitationStatusCommand
             {
@@ -89,7 +90,7 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
             };
 
             var feedback = await mediator.Send(command);
-            
+
             return feedback;
         }
     }

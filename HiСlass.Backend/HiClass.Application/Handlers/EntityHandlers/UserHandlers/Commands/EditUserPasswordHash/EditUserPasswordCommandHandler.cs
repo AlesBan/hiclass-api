@@ -23,10 +23,11 @@ public class EditUserPasswordCommandHandler : IRequestHandler<EditUserPasswordCo
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
 
-        if (user == null)   
+        if (user == null)
         {
             throw new UserNotFoundByIdException(request.UserId);
         }
+
         PasswordHelper.VerifyPasswordHash(user, request.OldPassword);
         PasswordHelper.CreatePasswordHash(request.NewPassword, out var passwordHash, out var passwordSalt);
         user.PasswordHash = passwordHash;

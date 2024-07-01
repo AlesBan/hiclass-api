@@ -1130,10 +1130,14 @@ components:
       additionalProperties: false
     ResetPasswordRequestDto:
       required:
-        - password
+        - newPassword
+        - oldPassword
       type: object
       properties:
-        password:
+        oldPassword:
+          minLength: 1
+          type: string
+        newPassword:
           minLength: 1
           type: string
       additionalProperties: false

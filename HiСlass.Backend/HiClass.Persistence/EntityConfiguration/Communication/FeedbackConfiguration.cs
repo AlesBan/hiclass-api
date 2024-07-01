@@ -22,22 +22,26 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
 
         builder.HasOne(f => f.UserSender)
             .WithMany(u => u.SentFeedbacks)
-            .HasForeignKey(f => f.UserSenderId)
+            .HasForeignKey(f => f.UserSenderId)            
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasOne(f => f.ClassSender)
             .WithMany(c => c.SentFeedBacks)
             .HasForeignKey(f => f.ClassSenderId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasOne(f => f.UserRecipient)
             .WithMany(u => u.ReceivedFeedbacks)
             .HasForeignKey(f => f.UserRecipientId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
         
         builder.HasOne(f => f.ClassReceiver)
             .WithMany(c => c.ReceivedFeedBacks)
             .HasForeignKey(f => f.ClassReceiverId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.Property(f => f.WasTheJointLesson)
