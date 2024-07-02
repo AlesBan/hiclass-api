@@ -1,5 +1,4 @@
 using AutoMapper;
-using HiClass.Application.Handlers.EntityHandlers.DeviceHandlers.Commands.CreateDevice;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
@@ -25,12 +24,10 @@ using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
-using HiClass.Application.Models.User.Registration;
 using HiClass.Domain.Entities.Main;
 using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
 using HiClass.Infrastructure.InternalServices.ImageServices;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Infrastructure.InternalServices.UserServices;
@@ -86,7 +83,7 @@ public class UserAccountService : IUserAccountService
 
         await _deviceHandlerService.CreateDeviceByToken(registeredUserCommandResponse.UserId,
             requestUserDto.DeviceToken, mediator);
-        
+
         await _emailHandlerService.SendVerificationEmail(requestUserDto.Email,
             registeredUserCommandResponse.VerificationCode);
 
@@ -166,8 +163,7 @@ public class UserAccountService : IUserAccountService
 
         await mediator.Send(command);
 
-        await _emailHandlerService.SendVerificationEmail(user.Email,
-            newVerificationCode);
+        await _emailHandlerService.SendVerificationEmail(email, newVerificationCode);
     }
 
     public async Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator)
@@ -182,14 +178,13 @@ public class UserAccountService : IUserAccountService
 
         user.PasswordResetCode = _userHelper.GeneratePasswordResetCode();
 
-        _context.Users.Attach(user).State = EntityState.Modified;
+        _context.Users.Update(user);
         await _context.SaveChangesAsync(CancellationToken.None);
 
         await _emailHandlerService.SendResetPasswordEmail(user.Email, user.PasswordResetCode);
 
         return new ForgotPasswordResponseDto()
         {
-            PasswordResetCode = user.PasswordResetCode,
             PasswordResetToken = newAccessToken
         };
     }
@@ -211,12 +206,12 @@ public class UserAccountService : IUserAccountService
             new EditUserPasswordCommand()
             {
                 UserId = user.UserId,
-                NewPassword = requestDto.Password
+                OldPassword = requestDto.OldPassword,
+                NewPassword = requestDto.NewPassword
             });
 
         var tokenUserDto = _mapper.Map<CreateAccessTokenUserDto>(user);
         var newToken = _tokenHelper.CreateToken(tokenUserDto);
-
 
         user.AccessToken = newToken;
         await _context.SaveChangesAsync(CancellationToken.None);

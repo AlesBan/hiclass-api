@@ -18,25 +18,25 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
         builder.HasOne(i => i.UserSender)
             .WithMany(ti => ti.SentInvitations)
             .HasForeignKey(ti => ti.UserSenderId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasOne(i => i.UserReceiver)
             .WithMany(ur => ur.ReceivedInvitations)
             .HasForeignKey(i => i.UserReceiverId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasOne(i => i.ClassSender)
             .WithMany(cl => cl.SentInvitations)
             .HasForeignKey(i => i.ClassSenderId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasOne(i => i.ClassReceiver)
             .WithMany(cl => cl.ReceivedInvitations)
             .HasForeignKey(i => i.ClassReceiverId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
         
         builder.Property(i => i.CreatedAt)
