@@ -46,6 +46,7 @@ public class FireBaseNotificationSender : IFireBaseNotificationSender
 
         try
         {
+            await Task.Delay(30);
             var response = await FirebaseMessaging.DefaultInstance.SendEachForMulticastAsync(message);
         }
         catch
