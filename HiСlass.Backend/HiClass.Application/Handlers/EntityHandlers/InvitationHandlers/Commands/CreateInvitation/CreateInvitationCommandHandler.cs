@@ -34,6 +34,8 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
             Status = request.Status,
             CreatedAt = DateTime.UtcNow
         };
+        
+        await Task.Delay(30, cancellationToken);
 
         await _context.Invitations.AddAsync(invitation, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
