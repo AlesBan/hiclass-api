@@ -18,7 +18,7 @@ public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificati
         var notification = new Notification
         {
             UserReceiverId = request.UserReceiverId,
-            NotificationType = request.NotificationType,
+            Type = request.NotificationType,
             Message = request.Message
         };
 

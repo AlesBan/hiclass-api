@@ -1,4 +1,5 @@
 using HiClass.Domain.Entities.Communication;
+using HiClass.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -38,7 +39,7 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
             .HasForeignKey(i => i.ClassReceiverId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
-        
+
         builder.Property(i => i.CreatedAt)
             .HasDefaultValueSql("now()")
             .ValueGeneratedOnAdd()
@@ -51,7 +52,8 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
             .HasMaxLength(255);
 
         builder.Property(i => i.Status)
-            .HasDefaultValue("Pending")
-            .ValueGeneratedOnAdd();
+            .HasConversion(x => x.ToString(),
+                x => (InvitationStatus)Enum.Parse(typeof(InvitationStatus), x))
+            .IsRequired();
     }
 }

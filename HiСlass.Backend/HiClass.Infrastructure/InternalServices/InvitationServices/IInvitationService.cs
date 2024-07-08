@@ -1,6 +1,6 @@
-using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
+using HiClass.Application.Models.Invitations.UpdateInvitationStatus;
 using HiClass.Domain.Entities.Communication;
 using MediatR;
 
@@ -11,8 +11,8 @@ public interface IInvitationService
     Task<Invitation> CreateInvitation(Guid userSenderId, IMediator mediator,
         CreateInvitationRequestDto requestInvitationDto);
 
-    Task ChangeInvitationStatus(Guid userReceiverId, IMediator mediator,
-        ChangeInvitationStatusRequestDto requestDto);
+    Task UpdateInvitationStatus(Guid userReceiverId, IMediator mediator,
+        UpdateInvitationStatusRequestDto requestDto);
 
     Task<Feedback> CreateFeedback(Guid userSenderId, IMediator mediator,
         CreateFeedbackRequestDto sendFeedbackRequestDto);

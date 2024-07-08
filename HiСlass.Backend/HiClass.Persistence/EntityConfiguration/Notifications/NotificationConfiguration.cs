@@ -1,4 +1,5 @@
 using HiClass.Domain.Entities.Notifications;
+using HiClass.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,12 +27,14 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
             .ValueGeneratedOnAdd()
             .IsRequired();
 
-        builder.Property(c => c.IsRead)
-            .HasDefaultValue(false)
+        builder.Property(c => c.Status)
+            .HasConversion(x => x.ToString(),
+                x => (NotificationStatus)Enum.Parse(typeof(NotificationStatus), x))
             .IsRequired();
 
-        builder.Property(c => c.NotificationType)
-            .HasMaxLength(40)
+        builder.Property(c => c.Type)
+            .HasConversion(x => x.ToString(),
+                x => (NotificationType)Enum.Parse(typeof(NotificationType), x))
             .IsRequired();
     }
 }

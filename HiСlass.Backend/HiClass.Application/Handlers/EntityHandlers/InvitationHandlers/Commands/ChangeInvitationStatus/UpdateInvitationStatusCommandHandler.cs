@@ -7,19 +7,18 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.ChangeInvitationStatus;
 
-public class ChangeInvitationStatusCommandHandler : IRequestHandler<ChangeInvitationStatusCommand>
+public class UpdateInvitationStatusCommandHandler : IRequestHandler<UpdateInvitationStatusCommand>
 {
     private readonly ISharedLessonDbContext _context;
 
-    public ChangeInvitationStatusCommandHandler(ISharedLessonDbContext context)
+    public UpdateInvitationStatusCommandHandler(ISharedLessonDbContext context)
     {
         _context = context;
     }
 
-    public Task<Unit> Handle(ChangeInvitationStatusCommand request, CancellationToken cancellationToken)
+    public Task<Unit> Handle(UpdateInvitationStatusCommand request, CancellationToken cancellationToken)
     {
         var invitationId = request.InvitationId;
-        var isAccepted = request.IsAccepted;
 
         var invitation = _context.Invitations.SingleOrDefault(i => i.InvitationId == invitationId);
 
@@ -33,7 +32,7 @@ public class ChangeInvitationStatusCommandHandler : IRequestHandler<ChangeInvita
             throw new InvalidUserReceiverIdProvidedException(invitation.InvitationId, request.UserId, invitation.UserReceiverId);
         }
 
-        invitation.Status = isAccepted ? InvitationStatus.Accepted.ToString() : InvitationStatus.Declined.ToString();
+        invitation.Status = request.Status;
 
         _context.Invitations.Update(invitation);
         

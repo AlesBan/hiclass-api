@@ -1,4 +1,5 @@
 using HiClass.Domain.Entities.Main;
+using HiClass.Domain.Enums;
 
 namespace HiClass.Domain.Entities.Communication;
 
@@ -15,7 +16,7 @@ public class Invitation
     public Class ClassReceiver { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime DateOfInvitation { get; set; }
-    public string Status { get; set; } = string.Empty;
+    public InvitationStatus Status { get; set; } 
     public string? InvitationText { get; set; } = string.Empty;
     public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
 }

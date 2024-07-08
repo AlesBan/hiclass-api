@@ -2,10 +2,10 @@ using AutoMapper;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
-using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Application.Models.Invitations.Invitations;
+using HiClass.Application.Models.Invitations.UpdateInvitationStatus;
 using HiClass.Application.Models.Notifications;
 using HiClass.Domain.Entities.Notifications;
 using HiClass.Domain.Enums;
@@ -58,7 +58,7 @@ public class InvitationController : BaseController
         
         var notificationResponseDto = new NotificationResponseDto
         {
-            NotificationType = notification.NotificationType.ToString(),
+            NotificationType = notification.Type.ToString(),
             NotificationMessage = notificationDto.NotificationMessage,
             IsRead = false,
             CreatedAt = default,
@@ -71,11 +71,11 @@ public class InvitationController : BaseController
         return ResponseHelper.GetOkResult(invitationResponseDto);
     }
 
-    [HttpPost("change-invitation-status")]
-    public async Task<IActionResult> ChangeInvitationStatus(
-        [FromBody] ChangeInvitationStatusRequestDto changeInvitationStatusRequestDto)
+    [HttpPost("update-invitation-status")]
+    public async Task<IActionResult> UpdateInvitationStatus(
+        [FromBody] UpdateInvitationStatusRequestDto updateInvitationStatusRequestDto)
     {
-        await _invitationService.ChangeInvitationStatus(UserId, Mediator, changeInvitationStatusRequestDto);
+        await _invitationService.UpdateInvitationStatus(UserId, Mediator, updateInvitationStatusRequestDto);
         return ResponseHelper.GetOkResult();
     }
 
