@@ -6,7 +6,7 @@ namespace HiClass.Application.Handlers.EntityHandlers.NotificationHandlers.Comma
 
 public class CreateNotificationCommand : IRequest<Notification>
 {
-    public string NotificationType { get; set; } = string.Empty;
+    public NotificationType NotificationType { get; set; } 
     public string Message { get; set; } = string.Empty;
     public Guid UserReceiverId { get; set; }
 }

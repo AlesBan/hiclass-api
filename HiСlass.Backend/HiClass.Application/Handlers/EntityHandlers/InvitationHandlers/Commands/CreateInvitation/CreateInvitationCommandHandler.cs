@@ -1,4 +1,3 @@
-using HiClass.Application.Common.Exceptions.Class;
 using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
@@ -49,7 +48,7 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
             .Include(x => x.ClassSender)
             .FirstOrDefaultAsync(x => x.InvitationId == invitation.InvitationId, cancellationToken);
 
-        return savedInvitation;
+        return savedInvitation!;
     }
 
     private void ValidateClassSenderId(Guid userSenderId, Guid classSenderId)

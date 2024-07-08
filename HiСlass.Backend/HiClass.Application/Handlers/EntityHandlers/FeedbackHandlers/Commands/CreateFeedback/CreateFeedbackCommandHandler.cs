@@ -39,9 +39,9 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
 
         switch (invitation.Status)
         {
-            case var _ when invitation.Status == InvitationStatus.Declined.ToString():
+            case var _ when invitation.Status == InvitationStatus.Declined:
                 throw new InvitationIsNotAcceptedException(request.UserSenderId, InvitationStatus.Declined);
-            case var _ when invitation.Status == InvitationStatus.Pending.ToString():
+            case var _ when invitation.Status == InvitationStatus.Pending:
                 throw new InvitationIsNotAcceptedException(request.UserSenderId, InvitationStatus.Pending);
         }
 

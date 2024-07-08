@@ -1,6 +1,7 @@
 using System.Net.WebSockets;
 using System.Text;
 using HiClass.API.Helpers;
+using HiClass.Application.Models.Notifications;
 using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
 using HiClass.Infrastructure.InternalServices.NotificationHandlerService;
 using MediatR;
@@ -25,5 +26,12 @@ public class NotificationsController : BaseController
     {
         var notifications = await _notificationHandlerService.GetUserNotificationsByUserId(UserId, Mediator);
         return ResponseHelper.GetOkResult(notifications);
+    }
+
+    [HttpPost("update-notification-status")]
+    public async Task<IActionResult> UpdateNotificationStatus([FromBody] UpdateNotificationStatusRequestDto updateNotificationStatusRequestDto)
+    {
+       await _notificationHandlerService.UpdateNotificationStatus(updateNotificationStatusRequestDto, Mediator);
+       return ResponseHelper.GetOkResult();
     }
 }

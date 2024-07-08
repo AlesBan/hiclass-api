@@ -32,7 +32,7 @@ public class CreateInvitationCommandHandlerTests : TestCommonBase
             ClassReceiverId = classReceiverId,
             InvitationText = invitationText,
             DateOfInvitation = invitationDate,
-            Status = InvitationStatus.Pending.ToString()
+            Status = InvitationStatus.Pending
         }, CancellationToken.None);
         
         // Assert
@@ -42,7 +42,7 @@ public class CreateInvitationCommandHandlerTests : TestCommonBase
             i.ClassSenderId == classSenderId &&
             i.ClassReceiverId == classReceiverId &&
             i.DateOfInvitation.ToString(CultureInfo.InvariantCulture) == invitationDate.ToString(CultureInfo.InvariantCulture) &&
-            i.Status == InvitationStatus.Pending.ToString() &&
+            i.Status == InvitationStatus.Pending &&
             i.InvitationText == invitationText));
     }
 }

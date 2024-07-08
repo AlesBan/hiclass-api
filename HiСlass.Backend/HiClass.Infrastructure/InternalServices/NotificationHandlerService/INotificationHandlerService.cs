@@ -10,5 +10,5 @@ public interface INotificationHandlerService
     Task<List<Notification>> GetUserNotificationsByUserId(Guid userId, IMediator mediator);
     Task<Notification> CreateNotification(NotificationDto notificationDto, IMediator mediator);
     Task SendNotificationAsync(NotificationResponseDto notificationDto, List<string> deviceTokens);
-
+    Task UpdateNotificationStatus(UpdateNotificationStatusRequestDto updateNotificationStatus, IMediator mediator);
 }

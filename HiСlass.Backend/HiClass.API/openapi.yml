@@ -345,7 +345,7 @@ paths:
       responses:
         '200':
           description: OK
-  /api/Invitation/change-invitation-status:
+  /api/Invitation/update-invitation-status:
     post:
       tags:
         - Invitation
@@ -353,13 +353,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChangeInvitationStatusRequestDto'
+              $ref: '#/components/schemas/UpdateInvitationStatusRequestDto'
           text/json:
             schema:
-              $ref: '#/components/schemas/ChangeInvitationStatusRequestDto'
+              $ref: '#/components/schemas/UpdateInvitationStatusRequestDto'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/ChangeInvitationStatusRequestDto'
+              $ref: '#/components/schemas/UpdateInvitationStatusRequestDto'
       responses:
         '200':
           description: OK
@@ -385,6 +385,24 @@ paths:
     get:
       tags:
         - Notifications
+      responses:
+        '200':
+          description: OK
+  /api/Notifications/update-notification-status:
+    post:
+      tags:
+        - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationStatusRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationStatusRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationStatusRequestDto'
       responses:
         '200':
           description: OK
@@ -790,15 +808,6 @@ components:
             type: string
           nullable: true
       additionalProperties: false
-    ChangeInvitationStatusRequestDto:
-      type: object
-      properties:
-        invitationId:
-          type: string
-          format: uuid
-        isAccepted:
-          type: boolean
-      additionalProperties: false
     CheckResetPasswordCodeDto:
       required:
         - resetCode
@@ -1128,6 +1137,20 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    InvitationStatus:
+      enum:
+        - 0
+        - 1
+        - 2
+      type: integer
+      format: int32
+    NotificationStatus:
+      enum:
+        - 0
+        - 1
+        - 2
+      type: integer
+      format: int32
     ResetPasswordRequestDto:
       required:
         - newPassword
@@ -1159,6 +1182,24 @@ components:
           items:
             $ref: '#/components/schemas/ClassProfileDto'
           nullable: true
+      additionalProperties: false
+    UpdateInvitationStatusRequestDto:
+      type: object
+      properties:
+        invitationId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/InvitationStatus'
+      additionalProperties: false
+    UpdateNotificationStatusRequestDto:
+      type: object
+      properties:
+        notificationId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
       additionalProperties: false
     UserLoginRequestDto:
       required:

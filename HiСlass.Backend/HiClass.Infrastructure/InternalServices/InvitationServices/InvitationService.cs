@@ -5,9 +5,9 @@ using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.Ch
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces.Services;
-using HiClass.Application.Models.Invitations.ChangeInvitationStatus;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
+using HiClass.Application.Models.Invitations.UpdateInvitationStatus;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
 using MediatR;
@@ -42,7 +42,7 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
                 ClassSenderId = requestInvitationDto.ClassSenderId,
                 ClassReceiverId = requestInvitationDto.ClassReceiverId,
                 DateOfInvitation = dateOfInvitation,
-                Status = InvitationStatus.Pending.ToString(),
+                Status = InvitationStatus.Pending,
                 InvitationText = requestInvitationDto.InvitationText
             };
             await Task.Delay(30);
@@ -60,14 +60,14 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
             return invitation;
         }
 
-        public Task ChangeInvitationStatus(Guid userReceiverId, IMediator mediator,
-            ChangeInvitationStatusRequestDto requestDto)
+        public Task UpdateInvitationStatus(Guid userReceiverId, IMediator mediator,
+            UpdateInvitationStatusRequestDto requestDto)
         {
-            var command = new ChangeInvitationStatusCommand
+            var command = new UpdateInvitationStatusCommand
             {
                 InvitationId = requestDto.InvitationId,
                 UserId = userReceiverId,
-                IsAccepted = requestDto.IsAccepted
+                Status = requestDto.Status
             };
 
             return mediator.Send(command);
