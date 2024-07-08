@@ -6,6 +6,5 @@ namespace HiClass.Application.Handlers.EntityHandlers.NotificationHandlers.Comma
 public class UpdateNotificationStatusCommand : IRequest
 {
     public Guid NotificationId { get; set; }
-
     public NotificationStatus Status { get; set; }
 }

@@ -1,36 +1,54 @@
-using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Application.Common.Exceptions.Notifications;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Notifications;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using HiClass.Application.Common.Exceptions.Database;
+using HiClass.Domain.Enums;
 
-namespace HiClass.Application.Handlers.EntityHandlers.NotificationHandlers.Commands.UpdateNotificationStatus;
-
-public class UpdateNotificationStatusCommandHandler : IRequestHandler<UpdateNotificationStatusCommand>
+namespace HiClass.Application.Handlers.EntityHandlers.NotificationHandlers.Commands.UpdateNotificationStatus
 {
-    private readonly ISharedLessonDbContext _context;
-
-    public UpdateNotificationStatusCommandHandler(ISharedLessonDbContext context)
+    public class UpdateNotificationStatusCommandHandler : IRequestHandler<UpdateNotificationStatusCommand>
     {
-        _context = context;
-    }
+        private readonly ISharedLessonDbContext _context;
 
-    public async Task<Unit> Handle(UpdateNotificationStatusCommand request, CancellationToken cancellationToken)
-    {
-        var notification = await _context.Notifications
-            .FirstOrDefaultAsync(n => n.NotificationId == request.NotificationId && !n.IsDeleted,
-                cancellationToken: cancellationToken);
-
-        if (notification == null)
+        public UpdateNotificationStatusCommandHandler(ISharedLessonDbContext context)
         {
-            throw new NotFoundException(nameof(Notification), request.NotificationId);
+            _context = context;
         }
 
-        notification.Status = request.Status;
+        public async Task<Unit> Handle(UpdateNotificationStatusCommand request, CancellationToken cancellationToken)
+        {
+            var notification = await _context.Notifications
+                .FirstOrDefaultAsync(n => n.NotificationId == request.NotificationId && !n.IsDeleted,
+                    cancellationToken: cancellationToken);
 
-        _context.Notifications.Update(notification);
-        await _context.SaveChangesAsync(cancellationToken);
+            if (notification == null)
+            {
+                throw new NotFoundException(nameof(Notification), request.NotificationId);
+            }
 
-        return Unit.Value;
+            if (notification.Status == request.Status)
+            {
+                throw new SameStatusUpdateException(notification.NotificationId, notification.Status);
+            }
+
+            if (request.Status == NotificationStatus.Unread)
+            {
+                throw new CannotSetUnreadStatusException(notification.NotificationId, notification.Status);
+            }
+
+            if (notification.Status == NotificationStatus.Deleted)
+            {
+                throw new CannotModifyDeletedNotificationException(notification.NotificationId);
+            }
+
+            notification.Status = request.Status;
+
+            _context.Notifications.Update(notification);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
+        }
     }
 }
