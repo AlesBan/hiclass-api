@@ -15,7 +15,7 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
         _sharedLessonDbContext = sharedLessonDbContext;
     }
 
-    public async Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var users = _sharedLessonDbContext.Users
             .Include(u => u.City)
@@ -39,15 +39,16 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
             .ThenInclude(ri => ri.Feedbacks)
             .ThenInclude(rf => rf.UserSender)
             .ThenInclude(us => us.City)
-            .ThenInclude(c => c.Country)
+            .ThenInclude(c => c!.Country)
             .Include(u => u.ReceivedFeedbacks)
             .ThenInclude(rf => rf.UserSender)
             .ThenInclude(us => us.City)
-            .ThenInclude(c => c.Country)
-            .Include(u => u.Devices)
+            .ThenInclude(c => c!.Country)
+            .Include(u => u.UserDevices)
+            .ThenInclude(ud => ud.Device)
             .ToListAsync(cancellationToken)
             .Result;
-        
-        return users;
+
+        return Task.FromResult(users);
     }
 }

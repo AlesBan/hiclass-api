@@ -1,6 +1,6 @@
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetBlankUserById;
 using HiClass.Application.Tests.Common;
 using Xunit;
 
@@ -13,10 +13,10 @@ public class GetUserCommandHandlerTests : TestCommonBase
     {
         // Arrange
         var userId = SharedLessonDbContextFactory.UserAId;
-        var handler = new GetUserByIdQueryHandler(Context);
+        var handler = new GetBlankUserByIdQueryHandler(Context);
 
         // Act
-        var result = handler.Handle(new GetUserByIdQuery(userId), CancellationToken.None);
+        var result = handler.Handle(new GetBlankUserByIdQuery(userId), CancellationToken.None);
 
         // Assert
         Assert.NotNull(result);
@@ -28,11 +28,11 @@ public class GetUserCommandHandlerTests : TestCommonBase
         // Arrange
         var userId = Guid.NewGuid();
 
-        var handler = new GetUserByIdQueryHandler(Context);
+        var handler = new GetBlankUserByIdQueryHandler(Context);
 
         // Act
         // Assert
         await Assert.ThrowsAsync<UserNotFoundByIdException>(() =>
-            handler.Handle(new GetUserByIdQuery(userId), CancellationToken.None));
+            handler.Handle(new GetBlankUserByIdQuery(userId), CancellationToken.None));
     }
 }

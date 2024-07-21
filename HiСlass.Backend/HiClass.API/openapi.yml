@@ -4,6 +4,78 @@ info:
   description: ASP.NET Core Web API for HiClass
   version: v1
 paths:
+  /api/Authentication/register:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Authentication/login:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Authentication/log-out:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogOutRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/LogOutRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/LogOutRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Authentication/refresh-token:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequestDto'
+      responses:
+        '200':
+          description: OK
   /api/Class/create-class:
     post:
       tags:
@@ -461,13 +533,7 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AvailableDisciplinesDto'
             application/json:
-              schema:
-                $ref: '#/components/schemas/AvailableDisciplinesDto'
-            text/json:
               schema:
                 $ref: '#/components/schemas/AvailableDisciplinesDto'
   /api/StaticDataSources/get-available-languages:
@@ -478,13 +544,7 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AvailableLanguagesDto'
             application/json:
-              schema:
-                $ref: '#/components/schemas/AvailableLanguagesDto'
-            text/json:
               schema:
                 $ref: '#/components/schemas/AvailableLanguagesDto'
   /api/StaticDataSources/get-available-institution-types:
@@ -495,13 +555,7 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AvailableInstitutionTypesDto'
             application/json:
-              schema:
-                $ref: '#/components/schemas/AvailableInstitutionTypesDto'
-            text/json:
               schema:
                 $ref: '#/components/schemas/AvailableInstitutionTypesDto'
   /api/StaticDataSources/get-available-country-locations:
@@ -512,55 +566,13 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AvailableCountriesDto'
             application/json:
-              schema:
-                $ref: '#/components/schemas/AvailableCountriesDto'
-            text/json:
               schema:
                 $ref: '#/components/schemas/AvailableCountriesDto'
   /api/User/all-users:
     get:
       tags:
         - User
-      responses:
-        '200':
-          description: OK
-  /api/User/register:
-    post:
-      tags:
-        - User
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRegisterRequestDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/UserRegisterRequestDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/UserRegisterRequestDto'
-      responses:
-        '200':
-          description: OK
-  /api/User/login:
-    post:
-      tags:
-        - User
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserLoginRequestDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/UserLoginRequestDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/UserLoginRequestDto'
       responses:
         '200':
           description: OK
@@ -611,6 +623,7 @@ paths:
               required:
                 - CityLocation
                 - CountryLocation
+                - DeviceToken
                 - DisciplineTitles
                 - FirstName
                 - GradesEnumerable
@@ -620,6 +633,8 @@ paths:
                 - LastName
               type: object
               properties:
+                DeviceToken:
+                  type: string
                 FirstName:
                   type: string
                 LastName:
@@ -654,6 +669,8 @@ paths:
                     type: integer
                     format: int32
             encoding:
+              DeviceToken:
+                style: form
               FirstName:
                 style: form
               LastName:
@@ -1058,10 +1075,14 @@ components:
       additionalProperties: false
     EmailVerificationRequestDto:
       required:
+        - deviceToken
         - email
         - verificationCode
       type: object
       properties:
+        deviceToken:
+          minLength: 1
+          type: string
         email:
           minLength: 1
           type: string
@@ -1144,6 +1165,33 @@ components:
         - 2
       type: integer
       format: int32
+    LogOutRequestDto:
+      required:
+        - deviceToken
+      type: object
+      properties:
+        deviceToken:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    LoginRequestDto:
+      required:
+        - deviceToken
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          format: email
+        password:
+          minLength: 1
+          type: string
+        deviceToken:
+          minLength: 1
+          type: string
+      additionalProperties: false
     NotificationStatus:
       enum:
         - 0
@@ -1151,6 +1199,37 @@ components:
         - 2
       type: integer
       format: int32
+    RefreshTokenRequestDto:
+      required:
+        - deviceToken
+        - refreshToken
+      type: object
+      properties:
+        refreshToken:
+          minLength: 1
+          type: string
+        deviceToken:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    RegisterRequestDto:
+      required:
+        - deviceToken
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          format: email
+        password:
+          minLength: 1
+          type: string
+        deviceToken:
+          minLength: 1
+          type: string
+      additionalProperties: false
     ResetPasswordRequestDto:
       required:
         - newPassword
@@ -1201,24 +1280,6 @@ components:
         status:
           $ref: '#/components/schemas/NotificationStatus'
       additionalProperties: false
-    UserLoginRequestDto:
-      required:
-        - deviceToken
-        - email
-        - password
-      type: object
-      properties:
-        email:
-          minLength: 1
-          type: string
-          format: email
-        password:
-          minLength: 1
-          type: string
-        deviceToken:
-          minLength: 1
-          type: string
-      additionalProperties: false
     UserProfileDto:
       type: object
       properties:
@@ -1226,9 +1287,6 @@ components:
           type: string
           format: uuid
         email:
-          type: string
-          nullable: true
-        accessToken:
           type: string
           nullable: true
         isVerified:
@@ -1291,24 +1349,6 @@ components:
           items:
             $ref: '#/components/schemas/FeedbackDto'
           nullable: true
-      additionalProperties: false
-    UserRegisterRequestDto:
-      required:
-        - deviceToken
-        - email
-        - password
-      type: object
-      properties:
-        email:
-          minLength: 1
-          type: string
-          format: email
-        password:
-          minLength: 1
-          type: string
-        deviceToken:
-          minLength: 1
-          type: string
       additionalProperties: false
   securitySchemes:
     Bearer:

@@ -2,9 +2,9 @@ using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Notifications;
 using MediatR;
 
-namespace HiClass.Application.Handlers.EntityHandlers.NotificationHandlers.Commands;
+namespace HiClass.Application.Handlers.EntityHandlers.NotificationHandlers.Commands.CreateNotification;
 
-public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand, Notification>
+public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand, Unit>
 {
     private readonly ISharedLessonDbContext _context;
 
@@ -13,7 +13,7 @@ public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificati
         _context = context;
     }
 
-    public async Task<Notification> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
     {
         var notification = new Notification
         {
@@ -25,6 +25,6 @@ public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificati
         _context.Notifications.Add(notification);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return notification;
+        return Unit.Value;
     }
 }

@@ -1,19 +1,17 @@
 using System.ComponentModel.DataAnnotations;
 using HiClass.Application.Attributes;
 using HiClass.Application.Models.Institution;
-using Microsoft.AspNetCore.Http;
 
 namespace HiClass.Application.Models.User.CreateAccount;
 
 public class CreateUserAccountRequestDto
 {
+    [Required] public string DeviceToken { get; set; } = string.Empty;
     [Required] public string FirstName { get; set; } = string.Empty;
     [Required] public string LastName { get; set; } = string.Empty;
-
     [Required]
     [AtLeastOneOfPositionTrue("IsATeacher", "IsAnExpert")]
     public bool IsATeacher { get; set; }
-
     [Required]
     [AtLeastOneOfPositionTrue("IsATeacher", "IsAnExpert")]
     public bool IsAnExpert { get; set; }

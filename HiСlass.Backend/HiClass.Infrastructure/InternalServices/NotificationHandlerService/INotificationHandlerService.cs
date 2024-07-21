@@ -8,7 +8,6 @@ namespace HiClass.Infrastructure.InternalServices.NotificationHandlerService;
 public interface INotificationHandlerService
 {
     Task<List<Notification>> GetUserNotificationsByUserId(Guid userId, IMediator mediator);
-    Task<Notification> CreateNotification(NotificationDto notificationDto, IMediator mediator);
-    Task SendNotificationAsync(NotificationResponseDto notificationDto, List<string> deviceTokens);
+    Task ProcessNotification(NotificationDto notificationDto, IMediator mediator);
     Task UpdateNotificationStatus(UpdateNotificationStatusRequestDto updateNotificationStatus, IMediator mediator);
 }

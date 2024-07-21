@@ -5,5 +5,5 @@ namespace HiClass.Infrastructure.IntegrationServices.Firebase.FireBaseNotificati
 
 public interface IFireBaseNotificationSender
 {
-    Task SendNotificationAsync(NotificationResponseDto notificationDto, List<string> deviceTokens);
+    Task SendNotificationAsync(NotificationDto notificationDto, List<string> deviceTokens);
 }

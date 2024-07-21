@@ -1,31 +1,44 @@
-using HiClass.Application.Common.Exceptions.Database;
+using AutoMapper;
 using HiClass.Application.Common.Exceptions.User;
+using HiClass.Application.Handlers.EntityConnectionHandlers.UserDeviceHandlers.Commands.CreateUserDevice;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.CreateUserDisciplines;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserGradeHandlers.Commands.CreateUserGrade;
+using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguageHandlers.Commands.CreateUserLanguages;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandlers.Commands.CreateUserLanguages;
+using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Interfaces;
-using HiClass.Domain.Entities.Main;
+using HiClass.Application.Models.User.Authentication;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 
-public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccountCommand, User>
+public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccountCommand, TokenModelResponseDto>
 {
     private readonly ISharedLessonDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly ITokenHelper _tokenHelper;
+    private readonly IMediator _mediator;
 
-    public CreateUserAccountCommandHandler(ISharedLessonDbContext serviceDbContext)
+    public CreateUserAccountCommandHandler(ISharedLessonDbContext serviceDbContext,
+        ITokenHelper tokenHelper, IMapper mapper, IMediator mediator)
     {
         _context = serviceDbContext;
+        _tokenHelper = tokenHelper;
+        _mapper = mapper;
+        _mediator = mediator;
     }
 
-    public async Task<User> Handle(CreateUserAccountCommand request, CancellationToken cancellationToken)
+    public async Task<TokenModelResponseDto> Handle(CreateUserAccountCommand request,
+        CancellationToken cancellationToken)
     {
         var user = _context
             .Users
             .Include(u => u.Country)
             .Include(u => u.City)
             .Include(u => u.Institution)
+            .Include(u => u.UserDevices)
+            .ThenInclude(ud => ud.Device)
             .FirstOrDefault(u => u.UserId == request.UserId);
 
         if (user == null)
@@ -43,11 +56,33 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
 
         user.IsCreatedAccount = true;
         user.CreatedAt = DateTime.UtcNow;
-        
-        user.AccessToken = request.AccessToken;
 
-        _context.Users.Attach(user).State = EntityState.Modified;
+        _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
+
+        var tokenUserDto = _mapper.Map<CreateTokenDto>(user);
+        var newAccessToken = _tokenHelper.CreateAccessToken(tokenUserDto);
+        var newRefreshToken = _tokenHelper.CreateRefreshToken(tokenUserDto);
+
+        var userDevice = user.UserDevices
+            .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
+
+        if (userDevice != null)
+        {
+            userDevice.IsActive = true;
+            userDevice.LastActive = DateTime.UtcNow;
+            userDevice.RefreshToken = newRefreshToken;
+        }
+        else
+        {
+            var command = new CreateUserDeviceCommand
+            {
+                DeviceToken = request.DeviceToken,
+                UserId = user.UserId,
+                RefreshToken = newRefreshToken,
+            };
+            await _mediator.Send(command, cancellationToken);
+        }
 
         await SeedUserLanguages(user.UserId, request, cancellationToken);
         await SeedUserDisciplines(user.UserId, request, cancellationToken);
@@ -55,20 +90,11 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        var userWithAccount = _context
-            .Users
-            .Include(u => u.Country)
-            .Include(u => u.City)
-            .Include(u => u.Institution)
-            .Include(u => u.UserDisciplines)
-            .ThenInclude(ud => ud.Discipline)
-            .Include(u => u.UserLanguages)
-            .ThenInclude(ul => ul.Language)
-            .Include(u => u.UserGrades)
-            .ThenInclude(ug => ug.Grade)
-            .FirstOrDefault(u => u.UserId == request.UserId);
-
-        return userWithAccount;
+        return new TokenModelResponseDto()
+        {
+            AccessToken = newAccessToken,
+            RefreshToken = newRefreshToken
+        };
     }
 
     private async Task SeedUserLanguages(Guid userId, CreateUserAccountCommand request,

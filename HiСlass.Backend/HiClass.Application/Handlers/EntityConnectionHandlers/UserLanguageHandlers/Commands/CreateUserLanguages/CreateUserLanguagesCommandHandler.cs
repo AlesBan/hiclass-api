@@ -1,8 +1,9 @@
+using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandlers.Commands.CreateUserLanguages;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.EntityConnections;
 using MediatR;
 
-namespace HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandlers.Commands.CreateUserLanguages;
+namespace HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguageHandlers.Commands.CreateUserLanguages;
 
 public class CreateUserLanguagesCommandHandler : IRequestHandler<CreateUserLanguagesCommand, Unit>
 {

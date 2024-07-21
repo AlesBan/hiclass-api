@@ -42,4 +42,9 @@ public static class ResponseHelper
             Token = token
         });
     }
+    
+    public static NoContentResult GetNoContentResult()
+    {
+        return new NoContentResult();
+    }
 }

@@ -8,10 +8,10 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Regi
 
 public class RegisterUserCommand : IRequest<RegisterUserCommandResponse>
 {
-    public RegisterUserCommand(UserRegisterRequestDto userRegisterRequestDto)
+    public RegisterUserCommand(RegisterRequestDto userRegisterRequestDto)
     {
         UserRegisterRequestDto = userRegisterRequestDto;
     }
 
-    public UserRegisterRequestDto UserRegisterRequestDto  { get; set; }
+    public RegisterRequestDto UserRegisterRequestDto  { get; set; }
 }

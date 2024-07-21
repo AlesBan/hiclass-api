@@ -1,5 +1,6 @@
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Handlers.EntityConnectionHandlers.ClassDisciplineHandlers.Commands.UpdateClassDisciplines;
+using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguageHandlers.Commands.UpdateClassLanguages;
 using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguagesHandlers.Commands.UpdateClassLanguages;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;

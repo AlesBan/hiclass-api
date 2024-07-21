@@ -1,10 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using MediatR;
 
-namespace HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguagesHandlers.Commands.
+namespace HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguageHandlers.Commands.
     UpdateClassLanguages;
 
 public class UpdateClassLanguagesCommand : IRequest<Unit>
 {
-    public Guid ClassId { get; set; }
-    public IEnumerable<Guid> NewLanguageIds { get; set; }
+    [Required] public Guid ClassId { get; set; }
+    [Required] public IEnumerable<Guid> NewLanguageIds { get; set; } = null!;
 }

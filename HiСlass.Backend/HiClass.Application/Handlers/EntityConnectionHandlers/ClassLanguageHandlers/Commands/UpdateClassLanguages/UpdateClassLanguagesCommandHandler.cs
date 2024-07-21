@@ -1,3 +1,5 @@
+using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguageHandlers.Commands.CreateClassLanguages;
+using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguageHandlers.Commands.UpdateClassLanguages;
 using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguagesHandlers.Commands.CreateClassLanguages;
 using HiClass.Application.Interfaces;
 using MediatR;

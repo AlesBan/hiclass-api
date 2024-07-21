@@ -7,6 +7,7 @@ using MediatR;
 
 namespace HiClass.API.Controllers;
 
+[Produces("application/json")]
 [Route("api/[controller]")]
 [ValidateModelStateFilter]
 [ExceptionFilter]

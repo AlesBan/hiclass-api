@@ -26,6 +26,7 @@ public interface ISharedLessonDbContext
     DbSet<Feedback> Feedbacks { get; set; }
     DbSet<Invitation> Invitations { get; set; }
     DbSet<UserRole> UserRoles { get; set; }
+    DbSet<UserDevice> UserDevices { get; set; }
     DbSet<UserDiscipline> UserDisciplines { get; set; }
     DbSet<UserGrade> UserGrades { get; set; }
     DbSet<UserLanguage> UserLanguages { get; set; }

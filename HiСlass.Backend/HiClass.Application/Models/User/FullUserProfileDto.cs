@@ -15,7 +15,7 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
 {
     public Guid UserId { get; set; }
     public string Email { get; set; } = string.Empty;
-    public string AccessToken { get; set; } = string.Empty;
+    public string RefreshToken { get; set; } = string.Empty;
     public bool IsVerified { get; set; }
     public string VerificationCode { get; set; } = string.Empty;
     public string PasswordResetCode { get; set; } = string.Empty;
@@ -110,8 +110,6 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(u => u.UserId))
             .ForMember(up => up.Email,
                 opt => opt.MapFrom(u => u.Email))
-            .ForMember(up => up.AccessToken,
-                opt => opt.MapFrom(u => u.AccessToken))
             .ForMember(up => up.IsVerified,
                 opt => opt.MapFrom(u => u.IsVerified))
             .ForMember(up => up.VerificationCode,
@@ -161,9 +159,7 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
             .ForMember(dest => dest.AllInvitationDtos,
                 opt => opt.MapFrom(src => src.ReceivedInvitations.Concat(src.SentInvitations)))
             .ForMember(dest => dest.FeedbackDtos,
-                opt => opt.MapFrom(src => src.ReceivedFeedbacks))
-            .ForMember(dest => dest.DeviceTokens,
-                opt => opt.MapFrom(src => src.Devices));
-        ;
+                opt => opt.MapFrom(src => src.ReceivedFeedbacks));
+        
     }
 }

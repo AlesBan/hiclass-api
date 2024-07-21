@@ -7,7 +7,5 @@ public class Device
 {
     public Guid DeviceId { get; set; }
     public string DeviceToken { get; set; } = string.Empty;
-    public Guid UserId { get; set; }
-    public User User { get; set; }
-    
+    public ICollection<UserDevice> UserDevices { get; set; } = new List<UserDevice>();
 }

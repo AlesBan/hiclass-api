@@ -12,11 +12,10 @@ public class User
     public string Email { get; set; } = string.Empty;
     public byte[] PasswordHash { get; set; } = new byte[64];
     public byte[] PasswordSalt { get; set; } = new byte[64];
-    public string? AccessToken { get; set; } = string.Empty;
-    public string? PasswordResetToken { get; set; } = string.Empty;
-    public DateTime? ResetTokenExpires { get; set; }
     public string? PasswordResetCode { get; set; } = string.Empty;
     public string? VerificationCode { get; set; } = string.Empty;
+    public string? PasswordResetToken { get; set; } = string.Empty;
+    public DateTime? ResetTokenExpires { get; set; }
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     public bool IsCreatedAccount { get; set; }
     public bool IsVerified { get; set; }
@@ -44,7 +43,7 @@ public class User
     public string? Description { get; set; } = string.Empty;
     public string? ImageUrl { get; set; } = string.Empty;
     public string? BannerImageUrl { get; set; } = string.Empty;
-    public ICollection<Device> Devices { get; set; } = new List<Device>();
+    public ICollection<UserDevice> UserDevices { get; set; } = new List<UserDevice>();
     public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     public DateTime RegisteredAt { get; set; }
     public DateTime? CreatedAt { get; set; }

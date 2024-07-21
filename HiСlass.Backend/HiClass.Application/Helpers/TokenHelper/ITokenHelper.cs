@@ -1,9 +1,10 @@
-using HiClass.Application.Models.User;
-using HiClass.Domain.Entities.Main;
+using HiClass.Application.Models.User.Authentication;
 
 namespace HiClass.Application.Helpers.TokenHelper;
 
 public interface ITokenHelper
 {
-    public string CreateToken(CreateAccessTokenUserDto userDto);
+    public string CreateAccessToken(CreateTokenDto userDto);
+    public string CreateRefreshToken(CreateTokenDto userDto);
+    public bool ValidateToken(string token);
 }

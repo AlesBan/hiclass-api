@@ -1,8 +1,9 @@
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.CreateUserDisciplines;
+using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.UpdateUserDisciplines;
 using HiClass.Application.Interfaces;
 using MediatR;
 
-namespace HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.
+namespace HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplineHandlers.Commands.
     UpdateUserDisciplines;
 
 public class UpdateUserDisciplinesCommandHandler : IRequestHandler<UpdateUserDisciplinesCommand, Unit>

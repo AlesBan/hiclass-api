@@ -14,15 +14,7 @@ public class DeviceConfiguration : IEntityTypeConfiguration<Device>
             .HasDefaultValueSql("gen_random_uuid()")
             .ValueGeneratedOnAdd();
 
-        builder.HasKey(x => x.DeviceToken);
         builder.HasIndex(x => x.DeviceToken).IsUnique();
         builder.Property(x => x.DeviceToken).IsRequired();
-
-
-        builder
-            .HasOne(x => x.User)
-            .WithMany(x => x.Devices)
-            .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -6,7 +6,7 @@ namespace HiClass.Application.Common.Exceptions.Authentication;
 
 public class InvalidTokenProvidedException : Exception, IUiException
 {
-    private const string ExceptionMessageForUi = "Invalid access token provided.";
+    private const string ExceptionMessageForUi = "Invalid access or refresh token provided.";
 
     public InvalidTokenProvidedException(string token) :
         base(CreateSerializedExceptionDto(token))
@@ -28,6 +28,6 @@ public class InvalidTokenProvidedException : Exception, IUiException
 
     private static string CreateMessageForLogging(string token)
     {
-        return $"Invalid access token provided: {token}";
+        return $"Invalid access or refresh token provided: {token}";
     }
 }
