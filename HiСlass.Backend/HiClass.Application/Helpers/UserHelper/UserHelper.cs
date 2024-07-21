@@ -1,18 +1,13 @@
 using System.Text;
-using AutoMapper;
-using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Common.Exceptions.User.Forbidden;
 using HiClass.Application.Common.Exceptions.User.ResettingPassword;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetBlankUserById;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetBlankUserWithDevicesById;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetFullUserById;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByClass;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserById;
-using HiClass.Application.Models.Class;
-using HiClass.Application.Models.Institution;
-using HiClass.Application.Models.Invitations.Feedbacks;
-using HiClass.Application.Models.Invitations.Invitations;
-using HiClass.Application.Models.User;
-using HiClass.Domain.Entities.Communication;
+using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
@@ -20,10 +15,38 @@ namespace HiClass.Application.Helpers.UserHelper;
 
 public class UserHelper : IUserHelper
 {
+    private readonly ISharedLessonDbContext _context;
 
-    public async Task<User> GetUserById(Guid userId, IMediator mediator)
+    public UserHelper(ISharedLessonDbContext context)
     {
-        var user = await mediator.Send(new GetUserByIdQuery(userId));
+        _context = context;
+    }
+
+    public async Task UpdateAsync(User user)
+    {
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync(CancellationToken.None);
+    }
+
+    public async Task<User> GetBlankUserById(Guid userId, IMediator mediator)
+    {
+        var user = await mediator.Send(new GetBlankUserByIdQuery(userId));
+
+        return user;
+    }
+
+    public async Task<User> GetBlankUserWithDevicesById(Guid userId, IMediator mediator)
+    {
+        var command = new GetBlankUserWithDevicesByIdQuery(userId);
+
+        var user = await mediator.Send(command);
+
+        return user;
+    }
+
+    public async Task<User> GetFullUserById(Guid userId, IMediator mediator)
+    {
+        var user = await mediator.Send(new GetFullUserByIdQuery(userId));
 
         return user;
     }

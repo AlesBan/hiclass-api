@@ -25,7 +25,7 @@ public class DefaultSearchService : IDefaultSearchService
 
     public async Task<DefaultSearchResponseDto> GetDefaultTeacherAndClassProfiles(Guid userId, IMediator mediator)
     {
-        var user = await _userHelper.GetUserById(userId, mediator);
+        var user = await _userHelper.GetFullUserById(userId, mediator);
         var searchRequest = await CreateDefaultSearchRequestDto(user);
         var userList = await GetUserListByDefaultSearchResponse(searchRequest, mediator);
         var defaultSearchResponseDto = GetDefaultSearchResponseDto(user, userList);

@@ -1,3 +1,4 @@
+using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguageHandlers.Commands.CreateUserLanguages;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandlers.Commands.CreateUserLanguages;
 using HiClass.Application.Tests.Common;
 using Xunit;

@@ -3,6 +3,7 @@ using HiClass.Domain.Entities.Education;
 using HiClass.Domain.Entities.Job;
 using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
+using HiClass.Domain.Entities.Notifications;
 using HiClass.Domain.EntityConnections;
 using HiClass.Domain.Enums.EntityTypes;
 using HiClass.Persistence.EntityConfiguration.Communication;
@@ -10,6 +11,7 @@ using HiClass.Persistence.EntityConfiguration.Education;
 using HiClass.Persistence.EntityConfiguration.Job;
 using HiClass.Persistence.EntityConfiguration.Location;
 using HiClass.Persistence.EntityConfiguration.Main;
+using HiClass.Persistence.EntityConfiguration.Notifications;
 using HiClass.Persistence.EntityConnectionsConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,7 @@ public static class ModelBuilderExtensions
     public static void AppendConfigurations(this ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new DeviceConfiguration());
         modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
         modelBuilder.ApplyConfiguration(new ClassConfiguration());
@@ -41,6 +44,7 @@ public static class ModelBuilderExtensions
         modelBuilder.ApplyConfiguration(new InvitationConfiguration());
 
         modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+        modelBuilder.ApplyConfiguration(new UserDeviceConfiguration());
         modelBuilder.ApplyConfiguration(new UserGradeConfiguration());
         modelBuilder.ApplyConfiguration(new UserDisciplineConfiguration());
         modelBuilder.ApplyConfiguration(new UserLanguageConfiguration());

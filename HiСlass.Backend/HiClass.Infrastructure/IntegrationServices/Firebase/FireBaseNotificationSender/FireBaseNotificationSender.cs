@@ -15,7 +15,7 @@ public class FireBaseNotificationSender : IFireBaseNotificationSender
     {
         _configuration = configuration;
     }
-    public async Task SendNotificationAsync(NotificationResponseDto notificationDto, List<string> deviceTokens)
+    public async Task SendNotificationAsync(NotificationDto notificationDto, List<string> deviceTokens)
     {
         var jsonPath = _configuration["FIREBASE_CONFIGURATION:CONFIGURATION_FILEPATH"];
 

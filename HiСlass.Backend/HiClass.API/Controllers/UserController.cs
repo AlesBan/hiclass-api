@@ -1,12 +1,7 @@
-using HiClass.API.Attributes;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
 using HiClass.API.Helpers.JwtHelpers;
-using HiClass.Application.Common.Exceptions.Authentication;
-using HiClass.Application.Common.Exceptions.Database;
-using HiClass.Application.Models.User;
-using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.EmailVerification.ReVerification;
@@ -14,11 +9,9 @@ using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Infrastructure.InternalServices.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace HiClass.API.Controllers;
 
-[Produces("application/json")]
 public class UserController : BaseController
 {
     private readonly IUserAccountService _userAccountService;
@@ -35,26 +28,10 @@ public class UserController : BaseController
         return ResponseHelper.GetOkResult(result);
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterRequestDto requestUserDto)
-    {
-        var result = await _userAccountService.RegisterUser(requestUserDto, Mediator);
-        return ResponseHelper.GetOkResult(result);
-    }
-
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestUserDto)
-    {
-        var result = await _userAccountService.LoginUser(requestUserDto, Mediator);
-        return ResponseHelper.GetOkResult(result);
-    }
-
     [HttpPost("verify-email")]
     public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationRequestDto requestDto)
     {
-        var email = requestDto.Email;
-        var verificationCode = requestDto.VerificationCode;
-        var result = await _userAccountService.VerifyEmailUsingEmail(email, verificationCode, Mediator);
+        var result = await _userAccountService.VerifyEmailUsingEmail(requestDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 

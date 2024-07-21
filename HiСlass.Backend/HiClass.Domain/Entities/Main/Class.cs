@@ -8,10 +8,10 @@ public class Class
 {
     public Guid ClassId { get; set; }
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public User? User { get; set; }
     public string Title { get; set; } = string.Empty;
     public Guid GradeId { get; set; }
-    public Grade Grade { get; set; }
+    public Grade? Grade { get; set; }
     public string? ImageUrl { get; set; } = string.Empty;
     public ICollection<ClassLanguage> ClassLanguages { get; set; } = new List<ClassLanguage>();
     public DateTime CreatedAt { get; set; }

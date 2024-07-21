@@ -8,7 +8,7 @@ public class UserAccountServiceTests : TestCommonBase
     public async Task LoginUser_ShouldLogIn()
     {
         //Arrange
-        var requestUserDto = new UserLoginRequestDto
+        var requestUserDto = new LoginRequestDto
         {
             Email = "null",
             Password = null

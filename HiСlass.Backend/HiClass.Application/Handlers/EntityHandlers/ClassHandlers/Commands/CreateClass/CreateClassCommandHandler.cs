@@ -1,4 +1,5 @@
 using HiClass.Application.Handlers.EntityConnectionHandlers.ClassDisciplineHandlers.Commands.CreateClassDisciplines;
+using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguageHandlers.Commands.CreateClassLanguages;
 using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguagesHandlers.Commands.CreateClassLanguages;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
 using HiClass.Application.Handlers.EntityHandlers.GradeHandlers.Queries.GetGrade;

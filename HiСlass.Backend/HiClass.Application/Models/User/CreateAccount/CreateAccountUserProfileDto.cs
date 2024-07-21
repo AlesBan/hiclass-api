@@ -6,13 +6,12 @@ using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Education;
 using HiClass.Domain.Entities.Location;
 
-namespace HiClass.Application.Models.User;
+namespace HiClass.Application.Models.User.CreateAccount;
 
 public class CreateAccountUserProfileDto : IMapWith<Domain.Entities.Main.User>
 {
      public Guid UserId { get; set; }
     public string Email { get; set; } = string.Empty;
-    public string AccessToken { get; set; } = string.Empty;
     public bool IsVerified { get; set; }
     public bool IsCreateAccount { get; set; }
     public string FirstName { get; set; } = string.Empty;
@@ -75,8 +74,6 @@ public class CreateAccountUserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(u => u.UserId))
             .ForMember(up => up.Email,
                 opt => opt.MapFrom(u => u.Email))
-            .ForMember(up => up.AccessToken,
-                opt => opt.MapFrom(u => u.AccessToken))
             .ForMember(up => up.IsVerified,
                 opt => opt.MapFrom(u => u.IsVerified))
             .ForMember(up => up.IsCreateAccount,

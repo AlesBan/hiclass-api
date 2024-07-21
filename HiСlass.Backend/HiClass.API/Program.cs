@@ -2,6 +2,7 @@ using System.Reflection;
 using Amazon.S3;
 using HiClass.API.Configuration;
 using HiClass.API.Configuration.Swagger;
+using HiClass.API.Helpers.NotificationDtoCreatorHelper;
 using HiClass.API.Middleware;
 using HiClass.Application;
 using HiClass.Application.Common.Mappings;
@@ -71,6 +72,8 @@ builder.Services.AddSingleton<IAmazonS3, AmazonS3Client>();
 builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IDataForUserHelper, DataForUserHelper>();
+builder.Services.AddScoped<INotificationDtoCreatorHelper, NotificationDtoCreatorHelper>();
+
 
 builder.Services.AddScoped<IFirebaseConnector, FirebaseConnector>();
 builder.Services.AddScoped<IFireBaseNotificationSender, FireBaseNotificationSender>();

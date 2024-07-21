@@ -2,14 +2,12 @@ using AutoMapper;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Filters.UserVerification;
 using HiClass.API.Helpers;
+using HiClass.API.Helpers.NotificationDtoCreatorHelper;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Application.Models.Invitations.Invitations;
 using HiClass.Application.Models.Invitations.UpdateInvitationStatus;
-using HiClass.Application.Models.Notifications;
-using HiClass.Domain.Entities.Notifications;
 using HiClass.Domain.Enums;
-using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
 using HiClass.Infrastructure.InternalServices.InvitationServices;
 using HiClass.Infrastructure.InternalServices.NotificationHandlerService;
 using Microsoft.AspNetCore.Authorization;
@@ -22,17 +20,17 @@ public class InvitationController : BaseController
 {
     private readonly IInvitationService _invitationService;
     private readonly INotificationHandlerService _notificationHandlerService;
-    private readonly IDeviceHandlerService _deviceHandlerService;
     private readonly IMapper _mapper;
+    private readonly INotificationDtoCreatorHelper _notificationDtoCreatorHelper;
 
     public InvitationController(IInvitationService invitationService,
-        INotificationHandlerService notificationHandlerService, IDeviceHandlerService deviceHandlerService,
-        IMapper mapper)
+        INotificationHandlerService notificationHandlerService,
+        IMapper mapper, INotificationDtoCreatorHelper notificationDtoCreatorHelper)
     {
         _invitationService = invitationService;
         _notificationHandlerService = notificationHandlerService;
-        _deviceHandlerService = deviceHandlerService;
         _mapper = mapper;
+        _notificationDtoCreatorHelper = notificationDtoCreatorHelper;
     }
 
     [HttpPost("create-invitation")]
@@ -40,36 +38,15 @@ public class InvitationController : BaseController
     {
         var invitation = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
 
-        var notificationDto = new NotificationDto
-        {
-            UserReceiverId = invitation.UserReceiverId,
-            NotificationType = NotificationType.Invitation,
-            NotificationMessage = new NotificationMessage
-            {
-                Sender = invitation.UserSender.Email,
-                Message = $"{invitation.UserSender.Email} sent you an invitation to join his/her class"
-            }
-        };
-        
-        var notification = await _notificationHandlerService.CreateNotification(notificationDto, Mediator);
-        
-        var userDeviceTokens =
-            await _deviceHandlerService.GetUserDeviceTokensByUserId(invitation.UserReceiverId, Mediator);
-        
-        var notificationResponseDto = new NotificationResponseDto
-        {
-            NotificationType = notification.Type.ToString(),
-            NotificationMessage = notificationDto.NotificationMessage,
-            IsRead = false,
-            CreatedAt = default,
-            DeviceTokens = userDeviceTokens
-        };
-        
-        await _notificationHandlerService.SendNotificationAsync(notificationResponseDto, userDeviceTokens);
+        var notificationDto = _notificationDtoCreatorHelper
+            .CreateNotificationDto(invitation.UserReceiverId, NotificationType.Invitation, invitation.UserReceiver.Email);
+
+        await _notificationHandlerService.ProcessNotification(notificationDto, Mediator);
 
         var invitationResponseDto = _mapper.Map<InvitationResponseDto>(invitation);
         return ResponseHelper.GetOkResult(invitationResponseDto);
     }
+
 
     [HttpPost("update-invitation-status")]
     public async Task<IActionResult> UpdateInvitationStatus(

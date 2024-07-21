@@ -4,6 +4,5 @@ namespace HiClass.Infrastructure.InternalServices.DeviceHandlerService;
 
 public interface IDeviceHandlerService
 {
-    Task<List<string>> GetUserDeviceTokensByUserId(Guid userId, IMediator mediator);
-    Task CreateDeviceByToken(Guid userId, string deviceToken, IMediator mediator);
+    Task<List<string>> GetActiveUserDeviceTokensByUserId(Guid userId, IMediator mediator);
 }

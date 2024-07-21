@@ -1,4 +1,3 @@
-using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Helpers;
 using HiClass.Application.Interfaces;
@@ -55,6 +54,6 @@ public class EditUserPasswordCommandHandler : IRequestHandler<EditUserPasswordCo
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
 
-        return user;
+        return user!;
     }
 }

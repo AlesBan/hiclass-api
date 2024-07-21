@@ -36,6 +36,7 @@ public class SharedLessonDbContext : DbContext, ISharedLessonDbContext
     public DbSet<Feedback> Feedbacks { get; set; }
     public DbSet<Invitation> Invitations { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<UserDevice> UserDevices { get; set; }
     public DbSet<UserDiscipline> UserDisciplines { get; set; }
     public DbSet<UserGrade> UserGrades { get; set; }
     public DbSet<UserLanguage> UserLanguages { get; set; }

@@ -4,9 +4,9 @@ namespace HiClass.Application.Models.Institution;
 
 public class InstitutionDto
 {
-    public List<string> Types { get; set; }
-    public string Address { get; set; }
-    public string Title { get; set; }
+    public List<string> Types { get; set; } = new List<string>();
+    public string Address { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
 
     public void Mapping(Profile profile)
     {
