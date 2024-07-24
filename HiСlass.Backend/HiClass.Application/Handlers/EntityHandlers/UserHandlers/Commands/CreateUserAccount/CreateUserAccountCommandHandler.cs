@@ -72,6 +72,8 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
             userDevice.IsActive = true;
             userDevice.LastActive = DateTime.UtcNow;
             userDevice.RefreshToken = newRefreshToken;
+            _context.UserDevices.Update(userDevice);
+            await _context.SaveChangesAsync(CancellationToken.None);
         }
         else
         {

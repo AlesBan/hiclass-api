@@ -1,4 +1,3 @@
-using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
@@ -7,16 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
 
-public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, User>
+public class GetBlankUserByEmailQueryHandler : IRequestHandler<GetBlankUserByEmailQuery, User>
 {
     private readonly ISharedLessonDbContext _context;
 
-    public GetUserByEmailQueryHandler(ISharedLessonDbContext context)
+    public GetBlankUserByEmailQueryHandler(ISharedLessonDbContext context)
     {
         _context = context;
     }
 
-    public async Task<User> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
+    public async Task<User> Handle(GetBlankUserByEmailQuery request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .AsNoTracking()

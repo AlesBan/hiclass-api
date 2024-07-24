@@ -76,6 +76,60 @@ paths:
       responses:
         '200':
           description: OK
+  /api/Authentication/forgot-password:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Authentication/check-reset-password-code:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
+      responses:
+        '200':
+          description: OK
+  /api/Authentication/reset-password:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequestDto'
+      responses:
+        '200':
+          description: OK
   /api/Class/create-class:
     post:
       tags:
@@ -698,60 +752,6 @@ paths:
       responses:
         '200':
           description: OK
-  /api/User/forgot-password:
-    post:
-      tags:
-        - User
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ForgotPasswordRequestDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ForgotPasswordRequestDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ForgotPasswordRequestDto'
-      responses:
-        '200':
-          description: OK
-  /api/User/check-reset-password-code:
-    post:
-      tags:
-        - User
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/CheckResetPasswordCodeDto'
-      responses:
-        '200':
-          description: OK
-  /api/User/reset-password:
-    post:
-      tags:
-        - User
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ResetPasswordRequestDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ResetPasswordRequestDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ResetPasswordRequestDto'
-      responses:
-        '200':
-          description: OK
   /api/User/userprofile:
     get:
       tags:
@@ -827,9 +827,13 @@ components:
       additionalProperties: false
     CheckResetPasswordCodeDto:
       required:
+        - email
         - resetCode
       type: object
       properties:
+        email:
+          minLength: 1
+          type: string
         resetCode:
           minLength: 1
           type: string
@@ -1232,11 +1236,11 @@ components:
       additionalProperties: false
     ResetPasswordRequestDto:
       required:
+        - deviceToken
         - newPassword
-        - oldPassword
       type: object
       properties:
-        oldPassword:
+        deviceToken:
           minLength: 1
           type: string
         newPassword:

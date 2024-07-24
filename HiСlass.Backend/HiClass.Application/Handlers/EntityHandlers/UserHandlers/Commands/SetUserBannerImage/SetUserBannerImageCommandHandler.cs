@@ -30,7 +30,7 @@ public class SetUserBannerImageCommandHandler: IRequestHandler<SetUserBannerImag
 
         user.BannerImageUrl = request.ImageUrl;
 
-        _context.Users.Attach(user).State = EntityState.Modified;
+        _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
         
         return user.BannerImageUrl;

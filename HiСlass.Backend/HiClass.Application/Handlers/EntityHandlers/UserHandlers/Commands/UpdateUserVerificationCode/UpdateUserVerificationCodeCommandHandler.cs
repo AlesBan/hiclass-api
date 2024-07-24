@@ -1,4 +1,3 @@
-using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Main;
@@ -19,18 +18,6 @@ public class UpdateUserVerificationCodeCommandHandler : IRequestHandler<UpdateUs
     public async Task<User> Handle(UpdateUserVerificationCodeCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
-            .FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken: cancellationToken);
-
-        if (user == null)
-            throw new UserNotFoundByIdException(request.UserId);
-
-        user.VerificationCode = request.VerificationCode;
-
-        _context.Users.Attach(user).State = EntityState.Modified;
-
-        await _context.SaveChangesAsync(cancellationToken);
-
-        user = _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -48,8 +35,17 @@ public class UpdateUserVerificationCodeCommandHandler : IRequestHandler<UpdateUs
             .ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades)
             .ThenInclude(ug => ug.Grade)
-            .FirstOrDefault(u =>
-                u.UserId == request.UserId);
+            .FirstOrDefaultAsync(u =>
+                u.UserId == request.UserId, cancellationToken: cancellationToken);
+
+        if (user == null)
+            throw new UserNotFoundByIdException(request.UserId);
+
+        user.VerificationCode = request.VerificationCode;
+
+        _context.Users.Attach(user).State = EntityState.Modified;
+
+        await _context.SaveChangesAsync(cancellationToken);
         return user;
     }
 }

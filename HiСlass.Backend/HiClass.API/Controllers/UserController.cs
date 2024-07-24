@@ -51,30 +51,6 @@ public class UserController : BaseController
         return ResponseHelper.GetOkResult(result);
     }
 
-    [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto requestDto)
-    {
-        var email = requestDto.Email;
-        var result = await _userAccountService.ForgotPassword(email, Mediator);
-        return ResponseHelper.GetOkResult(result);
-    }
-
-    [HttpPost("check-reset-password-code")]
-    public async Task<IActionResult> CheckResetPasswordCode([FromBody] CheckResetPasswordCodeDto resetPasswordCodeDto)
-    {
-        var resetCode = resetPasswordCodeDto.ResetCode;
-        await _userAccountService.CheckResetPasswordCode(UserId, resetCode, Mediator);
-        return ResponseHelper.GetOkResult();
-    }
-
-    [Authorize]
-    [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto requestDto)
-    {
-        var result = await _userAccountService
-            .ResetPassword(UserId, requestDto, Mediator);
-        return ResponseHelper.GetOkResult(result);
-    }
 
     [Authorize]
     [CheckUserVerification]

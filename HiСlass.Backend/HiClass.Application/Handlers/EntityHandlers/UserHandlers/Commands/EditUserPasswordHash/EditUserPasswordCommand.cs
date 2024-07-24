@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using HiClass.Application.Models.User.Authentication;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 

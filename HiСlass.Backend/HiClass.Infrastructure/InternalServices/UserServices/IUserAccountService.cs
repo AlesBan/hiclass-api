@@ -23,13 +23,11 @@ public interface IUserAccountService
         VerifyEmailUsingEmail(EmailVerificationRequestDto requestDto, IMediator mediator);
 
     public Task CreateAndReSendVerificationCode(EmailReVerificationRequestDto requestDto, IMediator mediator);
-    public Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator);
-    public Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator);
-    public Task<LoginResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto, IMediator mediator);
-
+    public Task ForgotPassword(string userEmail, IMediator mediator);
+    public Task<AccessTokenDto> CheckResetPasswordCode(string userEmail, string code, IMediator mediator);
+    public Task<TokenModelResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto, IMediator mediator);
     public Task<TokenModelResponseDto> CreateUserAccount(Guid userId,
         CreateUserAccountRequestDto requestDto, IMediator mediator);
-
     public Task<SetImageResponseDto> SetUserImage(Guid userId, SetImageRequestDto requestDto, IMediator mediator);
     public Task<SetImageResponseDto> SetUserBannerImage(Guid userId, SetImageRequestDto requestDto, IMediator mediator);
     public Task DeleteUser(Guid userId, IMediator mediator);
