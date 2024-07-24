@@ -51,11 +51,11 @@ public class UserHelper : IUserHelper
         return user;
     }
 
-    public async Task<User> GetUserByEmail(string email, IMediator mediator)
+    public async Task<User> GetBlankUserByEmail(string email, IMediator mediator)
     {
         try
         {
-            var user = await mediator.Send(new GetUserByEmailQuery(email));
+            var user = await mediator.Send(new GetBlankUserByEmailQuery(email));
             return user;
         }
         catch (UserNotFoundByEmailException)

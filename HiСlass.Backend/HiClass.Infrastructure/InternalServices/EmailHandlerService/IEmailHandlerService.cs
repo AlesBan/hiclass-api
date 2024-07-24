@@ -1,4 +1,4 @@
-namespace HiClass.Application.Interfaces.Services;
+namespace HiClass.Infrastructure.IntegrationServices.EmailHandlerService;
 
 public interface IEmailHandlerService
 {

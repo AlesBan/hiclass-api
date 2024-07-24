@@ -3,11 +3,11 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUserByEmail;
 
-public class GetUserByEmailQuery : IRequest<User>
+public class GetBlankUserByEmailQuery : IRequest<User>
 {
     public string Email { get; set; }
 
-    public GetUserByEmailQuery(string email)
+    public GetBlankUserByEmailQuery(string email)
     {
         Email = email;
     }

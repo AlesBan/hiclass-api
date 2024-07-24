@@ -22,26 +22,6 @@ public class EditUserInstitutionCommandHandler : IRequestHandler<EditUserInstitu
     public async Task<User> Handle(EditUserInstitutionCommand request, CancellationToken cancellationToken)
     {
         var user = _context.Users
-            .FirstOrDefault(u =>
-                u.UserId == request.UserId);
-
-        if (user == null)
-        {
-            throw new UserNotFoundByIdException(request.UserId);
-        }
-
-        var institution = await _mediator.Send(new GetInstitutionQuery()
-        {
-            InstitutionTitle = request.InstitutionTitle,
-            Address = request.Address,
-            Types = request.Types
-        }, cancellationToken);
-
-        user.InstitutionId = institution.InstitutionId;
-        _context.Users.Attach(user).State = EntityState.Modified;
-        await _context.SaveChangesAsync(cancellationToken);
-
-        user = _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -61,6 +41,24 @@ public class EditUserInstitutionCommandHandler : IRequestHandler<EditUserInstitu
             .ThenInclude(ug => ug.Grade)
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
+
+        if (user == null)
+        {
+            throw new UserNotFoundByIdException(request.UserId);
+        }
+
+        var institution = await _mediator.Send(new GetInstitutionQuery()
+        {
+            InstitutionTitle = request.InstitutionTitle,
+            Address = request.Address,
+            Types = request.Types
+        }, cancellationToken);
+
+        user.InstitutionId = institution.InstitutionId;
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync(cancellationToken);
+
         return user;
     }
 }

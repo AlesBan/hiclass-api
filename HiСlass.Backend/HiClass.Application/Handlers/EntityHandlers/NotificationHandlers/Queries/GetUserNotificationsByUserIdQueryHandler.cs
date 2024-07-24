@@ -1,6 +1,7 @@
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Notifications;
+using HiClass.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,7 @@ public class GetUserNotificationsByUserIdQueryHandler :
             throw new UserNotFoundByIdException(userId);
 
         var notifications = await _context.Notifications
-            .Where(x => x.UserReceiverId == userId)
+            .Where(x => x.UserReceiverId == userId && x.Status == NotificationStatus.Unread)
             .ToListAsync(cancellationToken);
         return notifications;
     }

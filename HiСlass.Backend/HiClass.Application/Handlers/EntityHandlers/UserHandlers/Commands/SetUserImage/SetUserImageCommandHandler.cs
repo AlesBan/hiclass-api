@@ -28,7 +28,7 @@ public class SetUserImageCommandHandler : IRequestHandler<SetUserImageCommand, s
 
         user.ImageUrl = request.ImageUrl;
 
-        _context.Users.Attach(user).State = EntityState.Modified;
+        _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
         
         return user.ImageUrl;

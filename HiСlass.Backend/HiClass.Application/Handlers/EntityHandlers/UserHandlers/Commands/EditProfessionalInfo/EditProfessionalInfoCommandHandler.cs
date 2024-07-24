@@ -1,4 +1,3 @@
-using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.UpdateUserDisciplines;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserGradeHandlers.Commands.UpdateUserGrades;
@@ -27,9 +26,26 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
 
     public async Task<User> Handle(EditProfessionalInfoCommand request, CancellationToken cancellationToken)
     {
-        var user = _context.Users
-            .FirstOrDefault(u =>
-                u.UserId == request.UserId);
+        var user = await _context.Users
+            .Include(u => u.City)
+            .Include(u => u.Country)
+            .Include(u => u.Institution)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassLanguages)
+            .ThenInclude(cl => cl.Language)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassDisciplines)
+            .ThenInclude(cd => cd.Discipline)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.Grade)
+            .Include(u => u.UserDisciplines)
+            .ThenInclude(ud => ud.Discipline)
+            .Include(u => u.UserLanguages)
+            .ThenInclude(ul => ul.Language)
+            .Include(u => u.UserGrades)
+            .ThenInclude(ug => ug.Grade)
+            .FirstOrDefaultAsync(u =>
+                u.UserId == request.UserId, cancellationToken: cancellationToken);
 
         if (user == null)
         {
@@ -64,29 +80,9 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
         await _mediator.Send(updateUserDisciplinesQuery, cancellationToken);
         await _mediator.Send(updateUserGradesQuery, cancellationToken);
 
-        _context.Users.Attach(user).State = EntityState.Modified;
+        _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
 
-        user = _context.Users
-            .Include(u => u.City)
-            .Include(u => u.Country)
-            .Include(u => u.Institution)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassLanguages)
-            .ThenInclude(cl => cl.Language)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
-            .ThenInclude(cd => cd.Discipline)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.Grade)
-            .Include(u => u.UserDisciplines)
-            .ThenInclude(ud => ud.Discipline)
-            .Include(u => u.UserLanguages)
-            .ThenInclude(ul => ul.Language)
-            .Include(u => u.UserGrades)
-            .ThenInclude(ug => ug.Grade)
-            .FirstOrDefault(u =>
-                u.UserId == request.UserId);
         return user;
     }
 

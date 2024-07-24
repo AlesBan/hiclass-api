@@ -1,6 +1,8 @@
 using HiClass.API.Helpers;
 using HiClass.Application.Models.User.Authentication;
+using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Infrastructure.InternalServices.UserServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Controllers;
@@ -27,7 +29,8 @@ public class AuthenticationController : BaseController
         var result = await _userAccountService.Login(requestDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
-
+    
+    [Authorize]
     [HttpPost("log-out")]
     public async Task<IActionResult> LogOut([FromBody] LogOutRequestDto requestDto)
     {
@@ -41,6 +44,32 @@ public class AuthenticationController : BaseController
     {
         var result = await _userAccountService.RefreshToken(UserId, refreshTokenRequestDto, Mediator);
 
+        return ResponseHelper.GetOkResult(result);
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto requestDto)
+    {
+        var email = requestDto.Email;
+        await _userAccountService.ForgotPassword(email, Mediator);
+        return ResponseHelper.GetOkResult();
+    }
+
+    [HttpPost("check-reset-password-code")]
+    public async Task<IActionResult> CheckResetPasswordCode([FromBody] CheckResetPasswordCodeDto requestDto)
+    {
+        var userEmail = requestDto.Email;
+        var resetCode = requestDto.ResetCode;
+        var result = await _userAccountService.CheckResetPasswordCode(userEmail, resetCode, Mediator);
+        return ResponseHelper.GetOkResult(result);
+    }
+
+    [Authorize]
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto requestDto)
+    {
+        var result = await _userAccountService
+            .ResetPassword(UserId, requestDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 

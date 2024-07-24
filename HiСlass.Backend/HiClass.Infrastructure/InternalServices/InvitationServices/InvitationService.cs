@@ -4,12 +4,12 @@ using HiClass.Application.Handlers.EntityHandlers.FeedbackHandlers.Commands.Crea
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.ChangeInvitationStatus;
 using HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Commands.CreateInvitation;
 using HiClass.Application.Helpers.UserHelper;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Invitations.CreateInvitation;
 using HiClass.Application.Models.Invitations.Feedbacks.CreateFeedback;
 using HiClass.Application.Models.Invitations.UpdateInvitationStatus;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Enums;
+using HiClass.Infrastructure.IntegrationServices.EmailHandlerService;
 using MediatR;
 
 namespace HiClass.Infrastructure.InternalServices.InvitationServices

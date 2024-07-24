@@ -1,7 +1,7 @@
 using HiClass.Application.Common.Exceptions.Server.EmailManager;
 using HiClass.Application.Constants;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.EmailManager;
+using HiClass.Infrastructure.IntegrationServices.EmailHandlerService;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -55,11 +55,11 @@ public class EmailHandlerService : IEmailHandlerService
             await client.AuthenticateAsync(managerEmail, managerPassword);
             await client.SendAsync(email);
         }
-        catch (AuthenticationException e)
+        catch (AuthenticationException)
         {
             throw new EmailManagerAuthenticationException();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             throw new EmailManagerException();
         }

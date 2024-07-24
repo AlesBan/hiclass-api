@@ -3,12 +3,12 @@ using HiClass.Application.Common.Exceptions.Authentication;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
-using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LogOutUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserBannerImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserImage;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPassword;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerificationCode;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetAllUsers;
@@ -17,15 +17,14 @@ using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
-using HiClass.Application.Interfaces.Services;
 using HiClass.Application.Models.Images.Setting;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.EmailVerification.ReVerification;
-using HiClass.Application.Models.User.Login;
 using HiClass.Application.Models.User.PasswordHandling;
+using HiClass.Infrastructure.IntegrationServices.EmailHandlerService;
 using HiClass.Infrastructure.InternalServices.ImageServices;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -163,7 +162,7 @@ public class UserAccountService : IUserAccountService
     {
         var email = requestDto.Email;
 
-        var user = await _userHelper.GetUserByEmail(email, mediator);
+        var user = await _userHelper.GetBlankUserByEmail(email, mediator);
         var newVerificationCode = _userHelper.GenerateVerificationCode();
 
         var command = new UpdateUserVerificationCodeCommand()
@@ -177,9 +176,9 @@ public class UserAccountService : IUserAccountService
         await _emailHandlerService.SendVerificationEmail(email, newVerificationCode);
     }
 
-    public async Task<ForgotPasswordResponseDto> ForgotPassword(string userEmail, IMediator mediator)
+    public async Task ForgotPassword(string userEmail, IMediator mediator)
     {
-        var user = await _userHelper.GetUserByEmail(userEmail, mediator);
+        var user = await _userHelper.GetBlankUserByEmail(userEmail, mediator);
 
         var accessTokenUserDto = _mapper.Map<CreateTokenDto>(user);
         var newAccessToken = _tokenHelper.CreateAccessToken(accessTokenUserDto);
@@ -193,50 +192,35 @@ public class UserAccountService : IUserAccountService
         await _context.SaveChangesAsync(CancellationToken.None);
 
         await _emailHandlerService.SendResetPasswordEmail(user.Email, user.PasswordResetCode);
-
-        return new ForgotPasswordResponseDto()
-        {
-            PasswordResetToken = newAccessToken
-        };
     }
 
-    public async Task CheckResetPasswordCode(Guid userId, string code, IMediator mediator)
+    public async Task<AccessTokenDto> CheckResetPasswordCode(string userEmail, string code, IMediator mediator)
     {
-        var user = await _userHelper.GetBlankUserById(userId, mediator);
+        var user = await _userHelper.GetBlankUserByEmail(userEmail, mediator);
         _userHelper.CheckResetTokenValidation(user);
         _userHelper.CheckResetPasswordCode(user, code);
+
+        var tokenUserDto = _mapper.Map<CreateTokenDto>(user);
+        var newAccessToken = _tokenHelper.CreateAccessToken(tokenUserDto);
+
+        return new AccessTokenDto(newAccessToken);
     }
 
-    public async Task<LoginResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto,
+    public async Task<TokenModelResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto,
         IMediator mediator)
     {
         var user = await _userHelper.GetBlankUserById(userId, mediator);
         _userHelper.CheckResetTokenValidation(user);
 
-        await mediator.Send(
-            new EditUserPasswordCommand()
+        var tokenModelResponseDto = await mediator.Send(
+            new UpdateUserPasswordCommand()
             {
                 UserId = user.UserId,
-                OldPassword = requestDto.OldPassword,
-                NewPassword = requestDto.NewPassword
+                NewPassword = requestDto.NewPassword,
+                DeviceToken = requestDto.DeviceToken
             });
-
-        var tokenUserDto = _mapper.Map<CreateTokenDto>(user);
-        var newAccessToken = _tokenHelper.CreateAccessToken(tokenUserDto);
-
-        user.PasswordResetToken = newAccessToken;
-        user.ResetTokenExpires = DateTime.UtcNow.AddDays(7);
-
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync(CancellationToken.None);
-
-
-        var loginResponseDtoDto = new LoginResponseDto
-        {
-            AccessToken = newAccessToken,
-            RefreshToken = user.PasswordResetToken
-        };
-        return loginResponseDtoDto;
+        
+        return tokenModelResponseDto;
     }
 
     public async Task<TokenModelResponseDto> CreateUserAccount(Guid userId,

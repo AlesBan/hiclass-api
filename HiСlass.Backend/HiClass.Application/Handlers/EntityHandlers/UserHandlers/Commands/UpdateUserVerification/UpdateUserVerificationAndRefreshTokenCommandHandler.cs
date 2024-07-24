@@ -7,7 +7,6 @@ using HiClass.Application.Models.User.Authentication;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 
@@ -18,17 +17,15 @@ public class
     private readonly ISharedLessonDbContext _context;
     private readonly ITokenHelper _tokenHelper;
     private readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
     private readonly IMediator _mediator;
 
     public UpdateUserVerificationAndRefreshTokenCommandHandler(ISharedLessonDbContext sharedLessonDbContext,
         ITokenHelper tokenHelper,
-        IMapper mapper, IConfiguration configuration, IMediator mediator)
+        IMapper mapper, IMediator mediator)
     {
         _context = sharedLessonDbContext;
         _tokenHelper = tokenHelper;
         _mapper = mapper;
-        _configuration = configuration;
         _mediator = mediator;
     }
 
@@ -65,11 +62,12 @@ public class
         user.IsVerified = true;
         user.VerifiedAt = DateTime.UtcNow;
 
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync(CancellationToken.None);
+
         var tokenUserDto = _mapper.Map<CreateTokenDto>(user);
         var newAccessToken = _tokenHelper.CreateAccessToken(tokenUserDto);
         var newRefreshToken = _tokenHelper.CreateRefreshToken(tokenUserDto);
-
-        var refreshTokenValidityDays = int.Parse(_configuration["AUTH_CONSTANTS:REFRESH_TOKEN_VALIDITY_DAYS"]);
 
         var userDevice = user.UserDevices
             .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
@@ -79,6 +77,8 @@ public class
             userDevice.IsActive = true;
             userDevice.LastActive = DateTime.UtcNow;
             userDevice.RefreshToken = newRefreshToken;
+            _context.UserDevices.Update(userDevice);
+            await _context.SaveChangesAsync(CancellationToken.None);
         }
         else
         {
@@ -90,10 +90,6 @@ public class
             };
             await _mediator.Send(command, cancellationToken);
         }
-
-        _context.Users.Update(user);
-
-        await _context.SaveChangesAsync(cancellationToken);
 
         return new TokenModelResponseDto()
         {

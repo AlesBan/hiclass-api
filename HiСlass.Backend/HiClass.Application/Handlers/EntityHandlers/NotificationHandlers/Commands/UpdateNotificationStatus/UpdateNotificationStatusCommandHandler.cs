@@ -44,6 +44,19 @@ namespace HiClass.Application.Handlers.EntityHandlers.NotificationHandlers.Comma
             }
 
             notification.Status = request.Status;
+            
+            switch (request.Status)
+            {
+                case NotificationStatus.Read:
+                    notification.ReadAt = DateTime.UtcNow;
+                    break;
+                case NotificationStatus.Deleted:
+                    notification.IsDeleted = true;
+                    notification.DeletedAt = DateTime.UtcNow;
+                    break;
+                case NotificationStatus.Unread:
+                    break;
+            }
 
             _context.Notifications.Update(notification);
             await _context.SaveChangesAsync(cancellationToken);

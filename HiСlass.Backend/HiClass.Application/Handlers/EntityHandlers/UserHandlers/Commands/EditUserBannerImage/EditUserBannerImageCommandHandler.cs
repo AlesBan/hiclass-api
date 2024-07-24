@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserBannerImage;
 
-public class EditUserBannerImageCommandHandler: IRequestHandler<EditUserBannerImageCommand, User>
+public class EditUserBannerImageCommandHandler : IRequestHandler<EditUserBannerImageCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
 
@@ -19,20 +19,6 @@ public class EditUserBannerImageCommandHandler: IRequestHandler<EditUserBannerIm
     public async Task<User> Handle(EditUserBannerImageCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
-            .FirstOrDefaultAsync(x =>
-                x.UserId == request.UserId, cancellationToken: cancellationToken);
-
-        if (user == null)
-        {
-            throw new UserNotFoundByIdException(request.UserId);
-        }
-
-        user.BannerImageUrl = request.ImageUrl;
-
-        _context.Users.Attach(user).State = EntityState.Modified;
-        await _context.SaveChangesAsync(cancellationToken);
-
-        user = _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -50,8 +36,19 @@ public class EditUserBannerImageCommandHandler: IRequestHandler<EditUserBannerIm
             .ThenInclude(ul => ul.Language)
             .Include(u => u.UserGrades)
             .ThenInclude(ug => ug.Grade)
-            .FirstOrDefault(u =>
-                u.UserId == request.UserId);
+            .FirstOrDefaultAsync(u =>
+                u.UserId == request.UserId, cancellationToken: cancellationToken);
+
+        if (user == null)
+        {
+            throw new UserNotFoundByIdException(request.UserId);
+        }
+
+        user.BannerImageUrl = request.ImageUrl;
+
+        _context.Users.Attach(user).State = EntityState.Modified;
+        await _context.SaveChangesAsync(cancellationToken);
+
         return user;
     }
 }

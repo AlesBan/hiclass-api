@@ -37,7 +37,7 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
     public List<int> GradeNumbers { get; set; } = new();
     public IEnumerable<FeedbackDto> FeedbackDtos { get; set; } = new List<FeedbackDto>();
     public IEnumerable<InvitationDto> AllInvitationDtos { get; set; } = new List<InvitationDto>();
-    public IEnumerable<DeviceDto> DeviceTokens { get; set; } = new List<DeviceDto>();
+    public IEnumerable<DeviceDto> DeviceDtos { get; set; } = new List<DeviceDto>();
 
     public void Mapping(Profile profile)
     {
@@ -159,7 +159,8 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
             .ForMember(dest => dest.AllInvitationDtos,
                 opt => opt.MapFrom(src => src.ReceivedInvitations.Concat(src.SentInvitations)))
             .ForMember(dest => dest.FeedbackDtos,
-                opt => opt.MapFrom(src => src.ReceivedFeedbacks));
-        
+                opt => opt.MapFrom(src => src.ReceivedFeedbacks))
+            .ForMember(dest => dest.DeviceDtos, opt =>
+                opt.MapFrom(src => src.UserDevices.Select(d => d.Device)));
     }
 }
