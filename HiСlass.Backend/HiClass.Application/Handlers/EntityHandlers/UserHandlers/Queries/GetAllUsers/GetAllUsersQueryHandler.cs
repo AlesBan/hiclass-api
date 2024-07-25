@@ -1,5 +1,4 @@
 using HiClass.Application.Interfaces;
-using HiClass.Domain.Entities.Location;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
