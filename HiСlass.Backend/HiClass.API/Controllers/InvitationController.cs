@@ -33,13 +33,15 @@ public class InvitationController : BaseController
         _notificationDtoCreatorHelper = notificationDtoCreatorHelper;
     }
 
-    [HttpPost("create-invitation")]
+    [CheckUserAbilityToSendInvitation]
+    [HttpPost("send-invitation")]
     public async Task<IActionResult> CreateInvitation([FromBody] CreateInvitationRequestDto createInvitationRequestDto)
     {
         var invitation = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
 
         var notificationDto = _notificationDtoCreatorHelper
-            .CreateNotificationDto(invitation.UserReceiverId, NotificationType.Invitation, invitation.UserReceiver.Email);
+            .CreateNotificationDto(invitation.UserReceiverId, NotificationType.Invitation,
+                invitation.UserReceiver.Email);
 
         await _notificationHandlerService.ProcessNotification(notificationDto, Mediator);
 

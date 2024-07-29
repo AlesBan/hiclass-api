@@ -16,10 +16,10 @@ public interface IUserAccountService
     public Task<IEnumerable<FullUserProfileDto>> GetAllUsers(IMediator mediator);
     public Task<TokenModelResponseDto> Register(RegisterRequestDto requestDto, IMediator mediator);
     public Task<TokenModelResponseDto> Login(LoginRequestDto requestDto, IMediator mediator);
+    public Task<TokenModelResponseDto> LoginOrRegister(string email, string deviceToken, IMediator mediator);
     public Task<TokenModelResponseDto> RefreshToken(Guid userId, RefreshTokenRequestDto requestDto, IMediator mediator);
     public Task LogOut(Guid userId, LogOutRequestDto requestDto, IMediator mediator);
     public Task RevokeRefreshTokenAsync(Guid userId, RevokeTokenRequestDto requestDto, IMediator mediator);
-
     public Task<TokenModelResponseDto>
         VerifyEmailUsingEmail(EmailVerificationRequestDto requestDto, IMediator mediator);
     public Task CreateAndReSendVerificationCode(EmailReVerificationRequestDto requestDto, IMediator mediator);

@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace HiClass.API.Filters.Abilities;
 
-public class CheckUserAbilityToCreateClassAttribute : TypeFilterAttribute
+public class CheckUserAbilityToCreateOrEditClassAttribute : TypeFilterAttribute
 {
-    public CheckUserAbilityToCreateClassAttribute() : base(typeof(CheckUserAbilityToCreateClassImplementation))
+    public CheckUserAbilityToCreateOrEditClassAttribute() : base(typeof(CheckUserAbilityToCreateOrEditClassAttributeImplementation))
     {
     }
 }
 
-public class CheckUserAbilityToCreateClassImplementation : IAsyncActionFilter
+public class CheckUserAbilityToCreateOrEditClassAttributeImplementation : IAsyncActionFilter
 {
     public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
@@ -26,7 +26,7 @@ public class CheckUserAbilityToCreateClassImplementation : IAsyncActionFilter
         }
         
         context.Result = new StatusCodeResult((int)HttpStatusCode.Forbidden);
-        throw new UserUnableToCreateClassException();
+        throw new InvalidPositionForClassModificationException();
 
     }
 }

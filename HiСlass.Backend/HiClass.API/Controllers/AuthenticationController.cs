@@ -1,4 +1,6 @@
+using FirebaseAdmin.Auth;
 using HiClass.API.Helpers;
+using HiClass.Application.Common.Exceptions.Firebase;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.PasswordHandling;
 using HiClass.Application.Models.User.RevokeToken;
@@ -29,6 +31,28 @@ public class AuthenticationController : BaseController
     {
         var result = await _userAccountService.Login(requestDto, Mediator);
         return ResponseHelper.GetOkResult(result);
+    }    
+    
+    [HttpPost("google-signin")]
+    public async Task<IActionResult> GoogleSignIn([FromBody] GoogleSingInRequestDto requestDto)
+    {
+        try
+        {
+            var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(requestDto.Token);
+            var email = decodedToken.Claims["email"].ToString();
+            
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new InvalidFirebaseTokenProvidedException();
+            }
+
+            var result = await _userAccountService.LoginOrRegister(email, requestDto.Token, Mediator);
+            return ResponseHelper.GetOkResult(result);
+        }
+        catch
+        {
+            return Unauthorized();
+        }
     }
 
     [Authorize]

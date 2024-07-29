@@ -21,6 +21,7 @@ public class ClassController : BaseController
         _classService = classService;
     }
 
+    [CheckUserAbilityToCreateOrEditClass]
     [HttpPost("create-class")]
     public async Task<IActionResult> CreateClass([FromForm] CreateClassRequestDto requestClassDto)
     {
@@ -35,6 +36,7 @@ public class ClassController : BaseController
         return ResponseHelper.GetOkResult(result);
     }
 
+    [CheckUserAbilityToCreateOrEditClass]
     [HttpPut("edit-class/{classId:guid}")]
     public async Task<IActionResult> EditClass([FromRoute] Guid classId,
         [FromBody] EditClassRequestDto requestClassDto)

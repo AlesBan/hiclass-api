@@ -40,6 +40,24 @@ paths:
       responses:
         '200':
           description: OK
+  /api/Authentication/google-signin:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleSingInRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/GoogleSingInRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/GoogleSingInRequestDto'
+      responses:
+        '200':
+          description: OK
   /api/Authentication/log-out:
     post:
       tags:
@@ -127,6 +145,24 @@ paths:
           application/*+json:
             schema:
               $ref: '#/components/schemas/ResetPasswordRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Authentication/revoke:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeTokenRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RevokeTokenRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RevokeTokenRequestDto'
       responses:
         '200':
           description: OK
@@ -453,7 +489,7 @@ paths:
       responses:
         '200':
           description: OK
-  /api/Invitation/create-invitation:
+  /api/Invitation/send-invitation:
     post:
       tags:
         - Invitation
@@ -1147,6 +1183,19 @@ components:
           minLength: 1
           type: string
       additionalProperties: false
+    GoogleSingInRequestDto:
+      required:
+        - deviceToken
+        - token
+      type: object
+      properties:
+        token:
+          minLength: 1
+          type: string
+        deviceToken:
+          minLength: 1
+          type: string
+      additionalProperties: false
     InstitutionDto:
       type: object
       properties:
@@ -1244,6 +1293,15 @@ components:
           minLength: 1
           type: string
         newPassword:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    RevokeTokenRequestDto:
+      required:
+        - deviceToken
+      type: object
+      properties:
+        deviceToken:
           minLength: 1
           type: string
       additionalProperties: false

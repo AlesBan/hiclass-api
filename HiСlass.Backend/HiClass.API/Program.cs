@@ -48,6 +48,7 @@ builder.Services.AddPersistence(configuration);
 builder.Services.ConfigureCors();
 
 builder.Services.ConfigureAuthentication(configuration);
+builder.Services.ConfigureFirebase(configuration);
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();

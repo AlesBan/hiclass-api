@@ -4,6 +4,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUs
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.GenerateAndSetResetPasswordCode;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginOrRegisterByEmailAndRefreshToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LogOutUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
@@ -101,6 +102,18 @@ public class UserAccountService : IUserAccountService
 
         var tokenModelResponseDto = await mediator.Send(command);
 
+        return tokenModelResponseDto;
+    }
+
+    public Task<TokenModelResponseDto> LoginOrRegister(string email, string deviceToken, IMediator mediator)
+    {
+        var command = new LoginOrRegisterByEmailAndRefreshTokenCommand
+        {
+            Email = email,
+            DeviceToken = deviceToken
+        };
+        
+        var tokenModelResponseDto = mediator.Send(command);
         return tokenModelResponseDto;
     }
 
