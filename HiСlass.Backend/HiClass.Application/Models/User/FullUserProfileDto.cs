@@ -48,13 +48,13 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
         profile.CreateMap<Feedback, FeedbackDto>()
             .ForMember(x => x.FeedbackId, opt => opt.MapFrom(x => x.FeedbackId))
             .ForMember(x => x.InvitationId, opt => opt.MapFrom(x => x.InvitationId))
-            .ForMember(x => x.UserSenderId, opt => opt.MapFrom(x => x.UserSenderId))
+            .ForMember(x => x.UserSenderId, opt => opt.MapFrom(x => x.UserFeedbackSenderId))
             .ForMember(x => x.UserSenderFullName, opt => opt.MapFrom(x =>
-                x.UserSender.FullName))
+                x.UserFeedbackSender.FullName))
             .ForMember(x => x.UserSenderImageUrl, opt => opt.MapFrom(x =>
-                x.UserSender.ImageUrl))
+                x.UserFeedbackSender.ImageUrl))
             .ForMember(x => x.UserSenderFullLocation, opt => opt.MapFrom(x =>
-                x.UserSender.FullLocation))
+                x.UserFeedbackSender.FullLocation))
             .ForMember(x => x.WasTheJointLesson, opt => opt.MapFrom(x => x.WasTheJointLesson))
             .ForMember(x => x.FeedbackText, opt => opt.MapFrom(x => x.FeedbackText))
             .ForMember(x => x.Rating, opt => opt.MapFrom(x => x.Rating))
@@ -66,9 +66,9 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
             .ForMember(x => x.CreatedAt, opt => opt.MapFrom(x => x.CreatedAt))
             .ForMember(x => x.DateOfInvitation, opt => opt.MapFrom(x => x.DateOfInvitation))
             .ForMember(x => x.UserSenderId, opt => opt.MapFrom(x => x.UserSenderId))
-            .ForMember(x => x.UserReceiverId, opt => opt.MapFrom(x => x.UserReceiverId))
+            .ForMember(x => x.UserReceiverId, opt => opt.MapFrom(x => x.UserRecipientId))
             .ForMember(x => x.ClassSenderId, opt => opt.MapFrom(x => x.ClassSenderId))
-            .ForMember(x => x.ClassReceiverId, opt => opt.MapFrom(x => x.ClassReceiverId));
+            .ForMember(x => x.ClassReceiverId, opt => opt.MapFrom(x => x.ClassRecipientId));
         profile.CreateMap<Domain.Entities.Main.Class, Grade>()
             .ForMember(up => up.GradeNumber,
                 opt => opt.MapFrom(u => u.Grade));

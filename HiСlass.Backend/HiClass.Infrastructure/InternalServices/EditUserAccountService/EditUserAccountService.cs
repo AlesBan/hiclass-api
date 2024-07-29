@@ -7,7 +7,6 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUser
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserInstitution;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
-using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Models.Images.Editing.Banner;
 using HiClass.Application.Models.Images.Editing.Image;
 using HiClass.Application.Models.User;
@@ -22,15 +21,12 @@ namespace HiClass.Infrastructure.InternalServices.EditUserAccountService;
 
 public class EditUserAccountService : IEditUserAccountService
 {
-    private readonly ITokenHelper _tokenHelper;
     private readonly IImageHandlerService _imageHandlerService;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
-    public EditUserAccountService(ITokenHelper tokenHelper,
-        IImageHandlerService imageHandlerService, IConfiguration configuration, IMapper mapper)
+    public EditUserAccountService(IImageHandlerService imageHandlerService, IConfiguration configuration, IMapper mapper)
     {
-        _tokenHelper = tokenHelper;
         _imageHandlerService = imageHandlerService;
         _configuration = configuration;
         _mapper = mapper;
@@ -40,7 +36,7 @@ public class EditUserAccountService : IEditUserAccountService
         EditPersonalInfoRequestDto requestUserDto,
         IMediator mediator)
     {
-        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
 
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
@@ -50,7 +46,7 @@ public class EditUserAccountService : IEditUserAccountService
     public async Task<UserProfileDto> EditUserImageAsync(Guid userId, EditImageRequestDto requestUserDto,
         IMediator mediator)
     {
-        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
 
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
@@ -60,7 +56,7 @@ public class EditUserAccountService : IEditUserAccountService
     public async Task<UserProfileDto> EditUserBannerImageAsync(Guid userId, EditBannerImageRequestDto requestUserDto,
         IMediator mediator)
     {
-        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
 
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
@@ -71,7 +67,7 @@ public class EditUserAccountService : IEditUserAccountService
         EditInstitutionRequestDto requestUserDto,
         IMediator mediator)
     {
-        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
 
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
@@ -81,7 +77,7 @@ public class EditUserAccountService : IEditUserAccountService
     public async Task<UserProfileDto> EditUserEmailAsync(Guid userId, EditUserEmailRequestDto requestUserDto,
         IMediator mediator)
     {
-        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
 
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
@@ -91,7 +87,7 @@ public class EditUserAccountService : IEditUserAccountService
     public async Task<UserProfileDto> EditUserProfessionalInfoAsync(Guid userId,
         EditProfessionalInfoRequestDto requestUserDto, IMediator mediator)
     {
-        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
 
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
@@ -102,19 +98,10 @@ public class EditUserAccountService : IEditUserAccountService
         EditUserPasswordHashRequestDto requestUserDto,
         IMediator mediator)
     {
-        var user = await GetResultOfUpdatingUserAsync(userId, requestUserDto, mediator);
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
         var userProfileDto = _mapper.Map<UserProfileDto>(user);
 
         return userProfileDto;
-    }
-
-    private async Task<User> GetResultOfUpdatingUserAsync<TRequestDto>(Guid userId,
-        TRequestDto requestUserDto,
-        IMediator mediator)
-    {
-        var updatedUser = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
-
-        return updatedUser;
     }
 
     private async Task<User> GetUpdatedUserAsync<TRequestDto>(Guid userId, TRequestDto requestUserDto,

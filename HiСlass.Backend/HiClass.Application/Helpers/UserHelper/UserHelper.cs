@@ -16,7 +16,6 @@ namespace HiClass.Application.Helpers.UserHelper;
 public class UserHelper : IUserHelper
 {
     private readonly ISharedLessonDbContext _context;
-
     public UserHelper(ISharedLessonDbContext context)
     {
         _context = context;
@@ -91,41 +90,12 @@ public class UserHelper : IUserHelper
 
     public string GenerateVerificationCode()
     {
-        var random = new Random();
-        var verificationCodeBuilder = new StringBuilder();
-
-        for (var i = 0; i < 6; i++)
-        {
-            verificationCodeBuilder.Append(random.Next(0, 10));
-        }
-
-        return verificationCodeBuilder.ToString();
-    }
-
-    public void CheckResetTokenValidation(User user)
-    {
-        if (user.PasswordResetToken == null)
-        {
-            throw new InvalidResetTokenProvidedException();
-        }
-
-        if (user.ResetTokenExpires < DateTime.Now)
-        {
-            throw new ResetTokenHasExpiredException(user.UserId, user.PasswordResetToken ?? "");
-        }
+        return GenerateCode();
     }
 
     public string GeneratePasswordResetCode()
     {
-        var random = new Random();
-        var verificationCodeBuilder = new StringBuilder();
-
-        for (var i = 0; i < 6; i++)
-        {
-            verificationCodeBuilder.Append(random.Next(0, 10));
-        }
-
-        return verificationCodeBuilder.ToString();
+        return GenerateCode();
     }
 
     public void CheckResetPasswordCode(User user, string code)
@@ -134,5 +104,18 @@ public class UserHelper : IUserHelper
         {
             throw new InvalidResetPasswordCodeException(user.UserId, code);
         }
+    }
+
+    private static string GenerateCode(int length = 6)
+    {
+        var random = new Random();
+        var codeBuilder = new StringBuilder(length);
+
+        for (var i = 0; i < length; i++)
+        {
+            codeBuilder.Append(random.Next(0, 10));
+        }
+
+        return codeBuilder.ToString();
     }
 }

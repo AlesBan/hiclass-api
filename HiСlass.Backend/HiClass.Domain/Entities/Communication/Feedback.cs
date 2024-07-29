@@ -7,14 +7,10 @@ public class Feedback
     public Guid FeedbackId { get; set; }
     public Guid InvitationId { get; set; }
     public Invitation? Invitation { get; set; }
-    public Guid ?UserSenderId { get; set; }
-    public User? UserSender { get; set; }
-    public Guid UserRecipientId { get; set; }
-    public User? UserRecipient { get; set; }
-    public Guid ClassSenderId { get; set; }
-    public Class? ClassSender { get; set; }
-    public Guid ClassReceiverId { get; set; }
-    public Class? ClassReceiver { get; set; }
+    public Guid UserFeedbackSenderId { get; set; }
+    public User? UserFeedbackSender { get; set; }
+    public Guid UserFeedbackReceiverId { get; set; }
+    public User? UserFeedbackReceiver { get; set; }
     public bool WasTheJointLesson { get; set; }
     public string? ReasonForNotConducting { get; set; }
     public string? FeedbackText { get; set; }

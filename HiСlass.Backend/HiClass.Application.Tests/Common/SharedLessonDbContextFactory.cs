@@ -207,9 +207,9 @@ public class SharedLessonDbContextFactory
             {
                 InvitationId = InvitationAId,
                 UserSenderId = UserBId,
-                UserReceiverId = UserAId,
+                UserRecipientId = UserAId,
                 ClassSenderId = ClassBId,
-                ClassReceiverId = ClassAId,
+                ClassRecipientId = ClassAId,
                 DateOfInvitation = DateTime.Today,
                 Status = InvitationStatus.Pending
             },
@@ -217,9 +217,9 @@ public class SharedLessonDbContextFactory
             {
                 InvitationId = InvitationBId,
                 UserSenderId = UserBId,
-                UserReceiverId = UserAId!,
+                UserRecipientId = UserAId!,
                 ClassSenderId = ClassBId,
-                ClassReceiverId = ClassAId!,
+                ClassRecipientId = ClassAId!,
                 DateOfInvitation = DateTime.Today,
                 Status = InvitationStatus.Pending
             },
@@ -228,11 +228,11 @@ public class SharedLessonDbContextFactory
                 InvitationId = InvitationForDeleteId,
                 UserSender = context.Users.FirstOrDefault(u =>
                     u.UserId == UserAId)!,
-                UserReceiver = context.Users.FirstOrDefault(u =>
+                UserRecipient = context.Users.FirstOrDefault(u =>
                     u.UserId == UserBId)!,
                 ClassSender = context.Classes.FirstOrDefault(c =>
                     c.ClassId == ClassAId)!,
-                ClassReceiver = context.Classes.FirstOrDefault(c =>
+                ClassRecipient = context.Classes.FirstOrDefault(c =>
                     c.ClassId == ClassBId)!,
                 DateOfInvitation = DateTime.Today,
                 Status = InvitationStatus.Pending
@@ -248,9 +248,9 @@ public class SharedLessonDbContextFactory
                 FeedbackId = FeedbackAId,
                 Invitation = context.Invitations.FirstOrDefault(i
                     => i.InvitationId == InvitationAId)!,
-                UserRecipient = context.Users.FirstOrDefault(u =>
+                UserFeedbackReceiver = context.Users.FirstOrDefault(u =>
                     u.UserId == UserAId)!,
-                UserSender = context.Users.FirstOrDefault(u =>
+                UserFeedbackSender = context.Users.FirstOrDefault(u =>
                     u.UserId == UserBId)!,
                 WasTheJointLesson = true,
                 ReasonForNotConducting = null,
@@ -262,9 +262,9 @@ public class SharedLessonDbContextFactory
                 FeedbackId = FeedbackBId,
                 Invitation = context.Invitations.FirstOrDefault(i
                     => i.InvitationId == InvitationBId)!,
-                UserRecipient = context.Users.FirstOrDefault(u =>
+                UserFeedbackReceiver = context.Users.FirstOrDefault(u =>
                     u.UserId == UserBId)!,
-                UserSender = context.Users.FirstOrDefault(u =>
+                UserFeedbackSender = context.Users.FirstOrDefault(u =>
                     u.UserId == UserAId)!,
                 WasTheJointLesson = true,
                 ReasonForNotConducting = null,

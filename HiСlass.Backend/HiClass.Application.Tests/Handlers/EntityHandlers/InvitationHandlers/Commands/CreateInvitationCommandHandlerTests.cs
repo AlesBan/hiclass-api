@@ -38,9 +38,9 @@ public class CreateInvitationCommandHandlerTests : TestCommonBase
         // Assert
         Assert.NotNull(await Context.Invitations.SingleOrDefaultAsync(i =>
             i.UserSenderId == userSenderId &&
-            i.UserReceiverId == userReceiverId &&
+            i.UserRecipientId == userReceiverId &&
             i.ClassSenderId == classSenderId &&
-            i.ClassReceiverId == classReceiverId &&
+            i.ClassRecipientId == classReceiverId &&
             i.DateOfInvitation.ToString(CultureInfo.InvariantCulture) == invitationDate.ToString(CultureInfo.InvariantCulture) &&
             i.Status == InvitationStatus.Pending &&
             i.InvitationText == invitationText));

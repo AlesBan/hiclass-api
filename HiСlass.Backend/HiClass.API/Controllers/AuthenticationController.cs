@@ -1,6 +1,9 @@
+using FirebaseAdmin.Auth;
 using HiClass.API.Helpers;
+using HiClass.Application.Common.Exceptions.Firebase;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Application.Models.User.PasswordHandling;
+using HiClass.Application.Models.User.RevokeToken;
 using HiClass.Infrastructure.InternalServices.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,8 +31,30 @@ public class AuthenticationController : BaseController
     {
         var result = await _userAccountService.Login(requestDto, Mediator);
         return ResponseHelper.GetOkResult(result);
-    }
+    }    
     
+    [HttpPost("google-signin")]
+    public async Task<IActionResult> GoogleSignIn([FromBody] GoogleSingInRequestDto requestDto)
+    {
+        try
+        {
+            var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(requestDto.Token);
+            var email = decodedToken.Claims["email"].ToString();
+            
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new InvalidFirebaseTokenProvidedException();
+            }
+
+            var result = await _userAccountService.LoginOrRegister(email, requestDto.Token, Mediator);
+            return ResponseHelper.GetOkResult(result);
+        }
+        catch
+        {
+            return Unauthorized();
+        }
+    }
+
     [Authorize]
     [HttpPost("log-out")]
     public async Task<IActionResult> LogOut([FromBody] LogOutRequestDto requestDto)
@@ -51,7 +76,7 @@ public class AuthenticationController : BaseController
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto requestDto)
     {
         var email = requestDto.Email;
-        await _userAccountService.ForgotPassword(email, Mediator);
+        await _userAccountService.GenerateAndSetResetPasswordCodeAsync(email, Mediator);
         return ResponseHelper.GetOkResult();
     }
 
@@ -60,7 +85,7 @@ public class AuthenticationController : BaseController
     {
         var userEmail = requestDto.Email;
         var resetCode = requestDto.ResetCode;
-        var result = await _userAccountService.CheckResetPasswordCode(userEmail, resetCode, Mediator);
+        var result = await _userAccountService.CheckResetPasswordCodeAsync(userEmail, resetCode, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
@@ -69,22 +94,17 @@ public class AuthenticationController : BaseController
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto requestDto)
     {
         var result = await _userAccountService
-            .ResetPassword(UserId, requestDto, Mediator);
+            .ResetPasswordAsync(UserId, requestDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
 
 
-    // [Authorize]
-    // [HttpPost]
-    // [Route("revoke")]
-    // public async Task<IActionResult> Revoke()
-    // {
-    //     var user = await _userHelper.GetBlankUserById(UserId, Mediator);
-    //
-    //     user.RefreshToken = null;
-    //     await _userHelper.UpdateAsync(user);
-    //
-    //     return ResponseHelper.GetNoContentResult();
-    //
-    // }
+    [Authorize]
+    [HttpPost]
+    [Route("revoke")]
+    public async Task<IActionResult> Revoke([FromBody] RevokeTokenRequestDto requestDto)
+    {
+        await _userAccountService.RevokeRefreshTokenAsync(UserId, requestDto, Mediator);
+        return ResponseHelper.GetOkResult();
+    }
 }

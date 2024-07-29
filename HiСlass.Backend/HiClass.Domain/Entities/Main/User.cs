@@ -14,8 +14,6 @@ public class User
     public byte[] PasswordSalt { get; set; } = new byte[64];
     public string? PasswordResetCode { get; set; } = string.Empty;
     public string? VerificationCode { get; set; } = string.Empty;
-    public string? PasswordResetToken { get; set; } = string.Empty;
-    public DateTime? ResetTokenExpires { get; set; }
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     public bool IsCreatedAccount { get; set; }
     public bool IsVerified { get; set; }

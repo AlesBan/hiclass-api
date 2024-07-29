@@ -22,9 +22,9 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
-        builder.HasOne(i => i.UserReceiver)
+        builder.HasOne(i => i.UserRecipient)
             .WithMany(ur => ur.ReceivedInvitations)
-            .HasForeignKey(i => i.UserReceiverId)
+            .HasForeignKey(i => i.UserRecipientId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
@@ -34,11 +34,10 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
-        builder.HasOne(i => i.ClassReceiver)
+        builder.HasOne(i => i.ClassRecipient)
             .WithMany(cl => cl.ReceivedInvitations)
-            .HasForeignKey(i => i.ClassReceiverId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired();
+            .HasForeignKey(i => i.ClassRecipientId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(i => i.CreatedAt)
             .HasDefaultValueSql("now()")

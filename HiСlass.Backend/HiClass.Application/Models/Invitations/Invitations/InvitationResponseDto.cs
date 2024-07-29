@@ -18,7 +18,7 @@ public class InvitationResponseDto : IMapWith<Invitation>
             .ForMember(x => x.CreatedAt, opt => opt.MapFrom(x => x.CreatedAt))
             .ForMember(x => x.InvitationText, opt => opt.MapFrom(x => x.InvitationText ?? string.Empty))
             .ForMember(x => x.DateOfInvitation, opt => opt.MapFrom(x => x.DateOfInvitation))
-            .ForMember(x => x.UserReceiverEmail, opt => opt.MapFrom(x => x.UserReceiver.Email))
+            .ForMember(x => x.UserReceiverEmail, opt => opt.MapFrom(x => x.UserRecipient.Email))
             .ForMember(x => x.UserSenderEmail, opt => opt.MapFrom(x => x.UserSender.Email));
     }
 }

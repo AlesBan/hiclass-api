@@ -3,11 +3,11 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace HiClass.Application.Common.Exceptions.Invitations;
 
-public class InvitationClassReceiverOwnerIsAnUserSenderException : Exception, IUiException
+public class InvitationReceiverIsSenderException : Exception, IUiException
 {
     private const string ExceptionMessageForUi = "ClassReceiver can't be user's class.";
 
-    public InvitationClassReceiverOwnerIsAnUserSenderException(Guid userSenderId, Guid classReceiverId) :
+    public InvitationReceiverIsSenderException(Guid userSenderId, Guid classReceiverId) :
         base(CreateSerializedExceptionDto(userSenderId, classReceiverId))
     {
     }
@@ -27,7 +27,7 @@ public class InvitationClassReceiverOwnerIsAnUserSenderException : Exception, IU
 
     private static string CreateMessageForLogging(Guid userSenderId, Guid classReceiverId)
     {
-        return $"{userSenderId} gets {nameof(InvitationClassReceiverOwnerIsAnUserSenderException)} exception: " +
+        return $"{userSenderId} gets {nameof(InvitationReceiverIsSenderException)} exception: " +
                $"User {userSenderId} attempted to send invitation to class {classReceiverId} but is the owner of this class.";
     }
 }

@@ -27,9 +27,9 @@ public class UpdateInvitationStatusCommandHandler : IRequestHandler<UpdateInvita
             throw new NotFoundException(nameof(Invitation), invitationId);
         }
 
-        if (invitation.UserReceiverId != request.UserId)
+        if (invitation.UserRecipientId != request.UserId)
         {
-            throw new InvalidUserReceiverIdProvidedException(invitation.InvitationId, request.UserId, invitation.UserReceiverId);
+            throw new InvalidUserReceiverIdProvidedException(invitation.InvitationId, request.UserId, invitation.UserRecipientId);
         }
 
         invitation.Status = request.Status;

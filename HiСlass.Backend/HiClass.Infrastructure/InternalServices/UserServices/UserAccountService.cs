@@ -1,11 +1,14 @@
 using AutoMapper;
-using HiClass.Application.Common.Exceptions.Authentication;
+using HiClass.Application.Handlers.Authentication.RefreshTokenHandlers.Commands;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.CreateUserAccount;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteAllUsers;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.DeleteUser;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.GenerateAndSetResetPasswordCode;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginOrRegisterByEmailAndRefreshToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LogOutUser;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RegisterUser;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.RevokeRefreshToken;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserBannerImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserPassword;
@@ -16,7 +19,6 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetFullUs
 using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
-using HiClass.Application.Interfaces;
 using HiClass.Application.Models.Images.Setting;
 using HiClass.Application.Models.User;
 using HiClass.Application.Models.User.Authentication;
@@ -24,6 +26,7 @@ using HiClass.Application.Models.User.CreateAccount;
 using HiClass.Application.Models.User.EmailVerification;
 using HiClass.Application.Models.User.EmailVerification.ReVerification;
 using HiClass.Application.Models.User.PasswordHandling;
+using HiClass.Application.Models.User.RevokeToken;
 using HiClass.Infrastructure.IntegrationServices.EmailHandlerService;
 using HiClass.Infrastructure.InternalServices.ImageServices;
 using MediatR;
@@ -40,12 +43,11 @@ public class UserAccountService : IUserAccountService
     private readonly IConfiguration _configuration;
     private readonly IImageHandlerService _imageHandlerService;
     private readonly IMapper _mapper;
-    private readonly ISharedLessonDbContext _context;
 
     public UserAccountService(ITokenHelper tokenHelper, IUserHelper userHelper,
         IEmailHandlerService emailHandlerService, IConfiguration configuration,
         IDataForUserHelper dataUserHelper, IImageHandlerService imageHandlerService,
-        IMapper mapper, ISharedLessonDbContext context)
+        IMapper mapper)
     {
         _tokenHelper = tokenHelper;
         _userHelper = userHelper;
@@ -54,7 +56,6 @@ public class UserAccountService : IUserAccountService
         _dataUserHelper = dataUserHelper;
         _imageHandlerService = imageHandlerService;
         _mapper = mapper;
-        _context = context;
     }
 
     public async Task<UserProfileDto> GetUserProfile(Guid userId, IMediator mediator)
@@ -104,37 +105,46 @@ public class UserAccountService : IUserAccountService
         return tokenModelResponseDto;
     }
 
+    public Task<TokenModelResponseDto> LoginOrRegister(string email, string deviceToken, IMediator mediator)
+    {
+        var command = new LoginOrRegisterByEmailAndRefreshTokenCommand
+        {
+            Email = email,
+            DeviceToken = deviceToken
+        };
+        
+        var tokenModelResponseDto = mediator.Send(command);
+        return tokenModelResponseDto;
+    }
+
     public async Task<TokenModelResponseDto> RefreshToken(Guid userId, RefreshTokenRequestDto requestDto,
         IMediator mediator)
     {
-        var (refreshToken, deviceToken) = (requestDto.RefreshToken, requestDto.DeviceToken);
-
-        var user = await _userHelper.GetBlankUserWithDevicesById(userId, mediator);
-        var userDevice = user.UserDevices.FirstOrDefault(x => x.Device!.DeviceToken == deviceToken);
-
-        if (userDevice?.RefreshToken != refreshToken)
+        var command = new RefreshTokenCommand
         {
-            throw new InvalidTokenProvidedException(refreshToken);
-        }
-
-        var createTokenDto = _mapper.Map<CreateTokenDto>(user);
-        var newAccessToken = _tokenHelper.CreateAccessToken(createTokenDto);
-        var newRefreshToken = _tokenHelper.CreateRefreshToken(createTokenDto);
-
-        userDevice.RefreshToken = newRefreshToken;
-        await _userHelper.UpdateAsync(user);
-
-        return new TokenModelResponseDto
-        {
-            AccessToken = newAccessToken,
-            RefreshToken = newRefreshToken
+            UserId = userId,
+            RefreshToken = requestDto.RefreshToken,
+            DeviceToken = requestDto.DeviceToken
         };
-    }
 
+        var tokenModelResponseDto = await mediator.Send(command);
+        return tokenModelResponseDto;
+    }
 
     public async Task LogOut(Guid userId, LogOutRequestDto requestDto, IMediator mediator)
     {
         var command = new LogOutUserCommand
+        {
+            UserId = userId,
+            DeviceToken = requestDto.DeviceToken
+        };
+
+        await mediator.Send(command);
+    }
+
+    public async Task RevokeRefreshTokenAsync(Guid userId, RevokeTokenRequestDto requestDto, IMediator mediator)
+    {
+        var command = new RevokeRefreshTokenCommand()
         {
             UserId = userId,
             DeviceToken = requestDto.DeviceToken
@@ -160,44 +170,30 @@ public class UserAccountService : IUserAccountService
 
     public async Task CreateAndReSendVerificationCode(EmailReVerificationRequestDto requestDto, IMediator mediator)
     {
-        var email = requestDto.Email;
-
-        var user = await _userHelper.GetBlankUserByEmail(email, mediator);
-        var newVerificationCode = _userHelper.GenerateVerificationCode();
-
         var command = new UpdateUserVerificationCodeCommand()
         {
-            UserId = user.UserId,
-            VerificationCode = newVerificationCode
+            Email = requestDto.Email
         };
 
-        await mediator.Send(command);
+        var verificationCode = await mediator.Send(command);
 
-        await _emailHandlerService.SendVerificationEmail(email, newVerificationCode);
+        await _emailHandlerService.SendVerificationEmail(requestDto.Email, verificationCode);
     }
 
-    public async Task ForgotPassword(string userEmail, IMediator mediator)
+    public async Task GenerateAndSetResetPasswordCodeAsync(string userEmail, IMediator mediator)
     {
-        var user = await _userHelper.GetBlankUserByEmail(userEmail, mediator);
+        var command = new UpdateUserResetPasswordCodeCommand
+        {
+            Email = userEmail
+        };
+        var resetPasswordCode = await mediator.Send(command);
 
-        var accessTokenUserDto = _mapper.Map<CreateTokenDto>(user);
-        var newAccessToken = _tokenHelper.CreateAccessToken(accessTokenUserDto);
-
-        user.PasswordResetToken = newAccessToken;
-        user.ResetTokenExpires = DateTime.UtcNow.AddHours(4);
-
-        user.PasswordResetCode = _userHelper.GeneratePasswordResetCode();
-
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync(CancellationToken.None);
-
-        await _emailHandlerService.SendResetPasswordEmail(user.Email, user.PasswordResetCode);
+        await _emailHandlerService.SendResetPasswordEmail(userEmail, resetPasswordCode);
     }
 
-    public async Task<AccessTokenDto> CheckResetPasswordCode(string userEmail, string code, IMediator mediator)
+    public async Task<AccessTokenDto> CheckResetPasswordCodeAsync(string userEmail, string code, IMediator mediator)
     {
         var user = await _userHelper.GetBlankUserByEmail(userEmail, mediator);
-        _userHelper.CheckResetTokenValidation(user);
         _userHelper.CheckResetPasswordCode(user, code);
 
         var tokenUserDto = _mapper.Map<CreateTokenDto>(user);
@@ -206,11 +202,10 @@ public class UserAccountService : IUserAccountService
         return new AccessTokenDto(newAccessToken);
     }
 
-    public async Task<TokenModelResponseDto> ResetPassword(Guid userId, ResetPasswordRequestDto requestDto,
+    public async Task<TokenModelResponseDto> ResetPasswordAsync(Guid userId, ResetPasswordRequestDto requestDto,
         IMediator mediator)
     {
         var user = await _userHelper.GetBlankUserById(userId, mediator);
-        _userHelper.CheckResetTokenValidation(user);
 
         var tokenModelResponseDto = await mediator.Send(
             new UpdateUserPasswordCommand()
@@ -219,7 +214,7 @@ public class UserAccountService : IUserAccountService
                 NewPassword = requestDto.NewPassword,
                 DeviceToken = requestDto.DeviceToken
             });
-        
+
         return tokenModelResponseDto;
     }
 

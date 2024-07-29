@@ -12,6 +12,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(t => t.UserId)
             .IsUnique();
 
+        builder.HasIndex(t => t.Email)
+            .IsUnique();
+
         builder.Property(u => u.IsCreatedAccount)
             .HasDefaultValue(false)
             .IsRequired();

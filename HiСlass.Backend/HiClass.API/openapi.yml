@@ -40,6 +40,24 @@ paths:
       responses:
         '200':
           description: OK
+  /api/Authentication/google-signin:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleSingInRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/GoogleSingInRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/GoogleSingInRequestDto'
+      responses:
+        '200':
+          description: OK
   /api/Authentication/log-out:
     post:
       tags:
@@ -127,6 +145,24 @@ paths:
           application/*+json:
             schema:
               $ref: '#/components/schemas/ResetPasswordRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Authentication/revoke:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeTokenRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RevokeTokenRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RevokeTokenRequestDto'
       responses:
         '200':
           description: OK
@@ -453,7 +489,7 @@ paths:
       responses:
         '200':
           description: OK
-  /api/Invitation/create-invitation:
+  /api/Invitation/send-class-invitation:
     post:
       tags:
         - Invitation
@@ -461,13 +497,31 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateInvitationRequestDto'
+              $ref: '#/components/schemas/CreateClassInvitationRequestDto'
           text/json:
             schema:
-              $ref: '#/components/schemas/CreateInvitationRequestDto'
+              $ref: '#/components/schemas/CreateClassInvitationRequestDto'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/CreateInvitationRequestDto'
+              $ref: '#/components/schemas/CreateClassInvitationRequestDto'
+      responses:
+        '200':
+          description: OK
+  /api/Invitation/send-expert-invitation:
+    post:
+      tags:
+        - Invitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExpertInvitationRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateExpertInvitationRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateExpertInvitationRequestDto'
       responses:
         '200':
           description: OK
@@ -873,26 +927,56 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    CreateFeedbackRequestDto:
+    CreateClassInvitationRequestDto:
       required:
-        - classReceiverId
+        - classRecipientId
         - classSenderId
-        - feedbackText
-        - invitationId
-        - rating
-        - userReceiverId
-        - wasTheJointLesson
+        - dateOfInvitation
+        - invitationText
       type: object
       properties:
-        userReceiverId:
+        classSenderId:
           type: string
           format: uuid
-        classReceiverId:
+        classRecipientId:
+          type: string
+          format: uuid
+        dateOfInvitation:
+          minLength: 1
+          type: string
+        invitationText:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    CreateExpertInvitationRequestDto:
+      required:
+        - classSenderId
+        - dateOfInvitation
+        - invitationText
+        - userRecipientId
+      type: object
+      properties:
+        userRecipientId:
           type: string
           format: uuid
         classSenderId:
           type: string
           format: uuid
+        dateOfInvitation:
+          minLength: 1
+          type: string
+        invitationText:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    CreateFeedbackRequestDto:
+      required:
+        - feedbackText
+        - invitationId
+        - rating
+        - wasTheJointLesson
+      type: object
+      properties:
         invitationId:
           type: string
           format: uuid
@@ -907,27 +991,6 @@ components:
         reasonForNotConducting:
           type: string
           nullable: true
-      additionalProperties: false
-    CreateInvitationRequestDto:
-      required:
-        - classReceiverId
-        - classSenderId
-        - dateOfInvitation
-        - invitationText
-      type: object
-      properties:
-        classSenderId:
-          type: string
-          format: uuid
-        classReceiverId:
-          type: string
-          format: uuid
-        dateOfInvitation:
-          minLength: 1
-          type: string
-        invitationText:
-          minLength: 1
-          type: string
       additionalProperties: false
     DefaultSearchResponseDto:
       type: object
@@ -1147,6 +1210,19 @@ components:
           minLength: 1
           type: string
       additionalProperties: false
+    GoogleSingInRequestDto:
+      required:
+        - deviceToken
+        - token
+      type: object
+      properties:
+        token:
+          minLength: 1
+          type: string
+        deviceToken:
+          minLength: 1
+          type: string
+      additionalProperties: false
     InstitutionDto:
       type: object
       properties:
@@ -1244,6 +1320,15 @@ components:
           minLength: 1
           type: string
         newPassword:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    RevokeTokenRequestDto:
+      required:
+        - deviceToken
+      type: object
+      properties:
+        deviceToken:
           minLength: 1
           type: string
       additionalProperties: false

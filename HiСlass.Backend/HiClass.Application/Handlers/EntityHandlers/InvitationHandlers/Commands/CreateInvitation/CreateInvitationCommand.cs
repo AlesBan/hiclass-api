@@ -9,6 +9,8 @@ namespace HiClass.Application.Handlers.EntityHandlers.InvitationHandlers.Command
 
 public class CreateInvitationCommand : IRequest<Invitation>
 {
+    [Required] public InvitationType Type { get; set; }
+
     [Required]
     [NotEqual(nameof(UserReceiverId), nameof(User))]
     public Guid UserSenderId { get; set; }

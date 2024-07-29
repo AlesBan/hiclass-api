@@ -54,18 +54,18 @@ public class GetFullUserByIdQueryHandler : IRequestHandler<GetFullUserByIdQuery,
             .ThenInclude(ug => ug.Grade)
             .AsNoTracking()
             .Include(u => u.ReceivedFeedbacks)
-            .ThenInclude(rf => rf.UserSender)
+            .ThenInclude(rf => rf.UserFeedbackSender)
             .ThenInclude(rf => rf.Country)
             .Include(u => u.ReceivedFeedbacks)
-            .ThenInclude(rf => rf.UserSender)
+            .ThenInclude(rf => rf.UserFeedbackSender)
             .ThenInclude(rf => rf.City)
             .Include(u => u.UserGrades).ThenInclude(ug => ug.Grade)
             .Include(u => u.ReceivedInvitations)
             .ThenInclude(ri => ri.Feedbacks)
-            .ThenInclude(f => f.UserSender)
+            .ThenInclude(f => f.UserFeedbackSender)
             .Include(u => u.SentInvitations)
             .ThenInclude(ri => ri.Feedbacks)
-            .ThenInclude(f => f.UserSender)
+            .ThenInclude(f => f.UserFeedbackSender)
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
 

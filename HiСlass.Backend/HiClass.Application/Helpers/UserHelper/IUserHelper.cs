@@ -14,7 +14,6 @@ public interface IUserHelper
     public void CheckUserVerification(User user);
     public void CheckUserCreateAccountAbility(User user);
     public string GenerateVerificationCode();
-    public void CheckResetTokenValidation(User user);
     public string GeneratePasswordResetCode();
     public void CheckResetPasswordCode(User user, string code);
 }
