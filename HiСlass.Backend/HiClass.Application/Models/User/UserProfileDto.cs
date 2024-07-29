@@ -37,13 +37,13 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
         profile.CreateMap<Feedback, FeedbackDto>()
             .ForMember(x => x.FeedbackId, opt => opt.MapFrom(x => x.FeedbackId))
             .ForMember(x => x.InvitationId, opt => opt.MapFrom(x => x.InvitationId))
-            .ForMember(x => x.UserSenderId, opt => opt.MapFrom(x => x.UserSenderId))
+            .ForMember(x => x.UserSenderId, opt => opt.MapFrom(x => x.UserFeedbackSenderId))
             .ForMember(x => x.UserSenderFullName, opt => opt.MapFrom(x =>
-                x.UserSender.FullName))
+                x.UserFeedbackSender.FullName))
             .ForMember(x => x.UserSenderImageUrl, opt => opt.MapFrom(x =>
-                x.UserSender.ImageUrl))
+                x.UserFeedbackSender.ImageUrl))
             .ForMember(x => x.UserSenderFullLocation, opt => opt.MapFrom(x =>
-                x.UserSender.FullLocation))
+                x.UserFeedbackSender.FullLocation))
             .ForMember(x => x.WasTheJointLesson, opt => opt.MapFrom(x => x.WasTheJointLesson))
             .ForMember(x => x.FeedbackText, opt => opt.MapFrom(x => x.FeedbackText))
             .ForMember(x => x.Rating, opt => opt.MapFrom(x => x.Rating))

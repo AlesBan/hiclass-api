@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using HiClass.Application.Common.Exceptions.Database;
 using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Common.Exceptions.User;
@@ -21,36 +20,38 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
 
     public async Task<Feedback> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
     {
-        var userTask = _context.Users.SingleOrDefaultAsync(u => u.UserId == request.UserRecipientId, cancellationToken);
-        var invitationTask =
-            _context.Invitations.SingleOrDefaultAsync(i => i.InvitationId == request.InvitationId, cancellationToken);
-
-        var user = await userTask;
-        if (user is null)
-        {
-            throw new UserNotFoundByIdException(request.UserRecipientId);
-        }
-
-        var invitation = await invitationTask;
+        var invitation = await _context.Invitations
+            .SingleOrDefaultAsync(i => i.InvitationId == request.InvitationId, cancellationToken);
         if (invitation is null)
         {
             throw new NotFoundException(nameof(Invitation), request.InvitationId);
         }
 
+        var userFeedbackSenderId = request.UserFeedbackSenderId;
+        var userFeedbackReceiverId = userFeedbackSenderId == invitation.UserSenderId
+            ? invitation.UserRecipientId
+            : invitation.UserSenderId;
+
+
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.UserId == userFeedbackReceiverId,
+            cancellationToken);
+        
+        if (user is null)
+        {
+            throw new UserNotFoundByIdException(userFeedbackReceiverId);
+        }
+
         switch (invitation.Status)
         {
             case var _ when invitation.Status == InvitationStatus.Declined:
-                throw new InvitationIsNotAcceptedException(request.UserSenderId, InvitationStatus.Declined);
+                throw new InvitationIsNotAcceptedException(request.UserFeedbackSenderId, InvitationStatus.Declined);
             case var _ when invitation.Status == InvitationStatus.Pending:
-                throw new InvitationIsNotAcceptedException(request.UserSenderId, InvitationStatus.Pending);
+                throw new InvitationIsNotAcceptedException(request.UserFeedbackSenderId, InvitationStatus.Pending);
         }
 
         var feedback = new Feedback()
         {
-            UserSenderId = request.UserSenderId,
-            UserRecipientId = request.UserRecipientId,
-            ClassSenderId = request.ClassSenderId,
-            ClassReceiverId = request.ClassReceiverId,
+            UserFeedbackSenderId = userFeedbackSenderId,
             InvitationId = request.InvitationId,
             WasTheJointLesson = request.WasTheJointLesson,
             ReasonForNotConducting = request.ReasonForNotConducting,
@@ -61,7 +62,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
 
         await _context.Feedbacks.AddAsync(feedback, cancellationToken);
 
-        var averageRating = await CalculateAverageRating(request.UserRecipientId, cancellationToken);
+        var averageRating = await CalculateAverageRating(userFeedbackReceiverId, cancellationToken);
 
         user.Rating = averageRating;
         _context.Users.Update(user);
@@ -75,7 +76,7 @@ public class CreateFeedbackCommandHandler : IRequestHandler<CreateFeedbackComman
     private async Task<double> CalculateAverageRating(Guid userRecipientId, CancellationToken cancellationToken)
     {
         var ratings = await _context.Feedbacks
-            .Where(f => f.UserRecipientId == userRecipientId && f.Rating.HasValue)
+            .Where(f => f.UserFeedbackReceiverId == userRecipientId && f.Rating.HasValue)
             .Select(f => f.Rating!.Value)
             .ToListAsync(cancellationToken);
 

@@ -8,8 +8,10 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices;
 
 public interface IInvitationService
 {
-    Task<Invitation> CreateInvitation(Guid userSenderId, IMediator mediator,
-        CreateInvitationRequestDto requestInvitationDto);
+    Task<Invitation> CreateClassInvitation(Guid userSenderId, IMediator mediator,
+        CreateClassInvitationRequestDto requestInvitationDto);
+    Task<Invitation> CreateExpertInvitation(Guid userSenderId, IMediator mediator,
+        CreateExpertInvitationRequestDto requestInvitationDto);
 
     Task UpdateInvitationStatus(Guid userReceiverId, IMediator mediator,
         UpdateInvitationStatusRequestDto requestDto);

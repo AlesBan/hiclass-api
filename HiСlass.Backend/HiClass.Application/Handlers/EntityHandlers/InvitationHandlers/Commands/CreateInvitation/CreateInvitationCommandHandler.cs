@@ -4,6 +4,7 @@ using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Communication;
 using HiClass.Domain.Entities.Main;
+using HiClass.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,16 +21,22 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
 
     public async Task<Invitation> Handle(CreateInvitationCommand request, CancellationToken cancellationToken)
     {
-        await ValidateUserReceiverId(request.UserSenderId, request.UserReceiverId, request.ClassReceiverId);
-        await ValidateClassReceiverId(request.UserSenderId, request.ClassReceiverId);
+        await ValidateUserReceiverId(request.Type, request.UserSenderId, request.UserReceiverId,
+            request.ClassReceiverId);
         await ValidateClassSenderId(request.UserSenderId, request.ClassSenderId);
+
+        if (request.Type == InvitationType.ClassInvitation)
+        {
+            await ValidateClassReceiverId(request.UserSenderId, request.ClassReceiverId);
+        }
 
         var invitation = new Invitation
         {
+            Type = request.Type,
             UserSenderId = request.UserSenderId,
-            UserReceiverId = request.UserReceiverId,
+            UserRecipientId = request.UserReceiverId,
             ClassSenderId = request.ClassSenderId,
-            ClassReceiverId = request.ClassReceiverId,
+            ClassRecipientId = request.Type == InvitationType.ClassInvitation ? request.ClassReceiverId : null,
             DateOfInvitation = request.DateOfInvitation.ToUniversalTime(),
             InvitationText = request.InvitationText,
             Status = request.Status,
@@ -44,10 +51,8 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         await Task.Delay(20, cancellationToken);
 
         var savedInvitation = await _context.Invitations
-            .Include(x => x.UserReceiver)
+            .Include(x => x.UserRecipient)
             .Include(x => x.UserSender)
-            .Include(x => x.ClassReceiver)
-            .Include(x => x.ClassSender)
             .FirstOrDefaultAsync(x => x.InvitationId == invitation.InvitationId, cancellationToken);
 
         return savedInvitation!;
@@ -57,7 +62,7 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
     {
         var classSenderIsUserSenderClass = await _context.Classes
             .FindAsync(classSenderId);
-        
+
         if (classSenderIsUserSenderClass == null)
         {
             throw new NotFoundException(nameof(Class), classSenderId);
@@ -86,19 +91,22 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
     }
 
 
-    private async Task ValidateUserReceiverId(Guid userSenderId, Guid userReceiverId, Guid classReceiverId)
+    private async Task ValidateUserReceiverId(InvitationType type, Guid userSenderId, Guid userReceiverId,
+        Guid classReceiverId)
     {
-        var userReceiver = await _context.Users
+        var userRecipient = await _context.Users
             .FindAsync(userReceiverId);
 
-        if (userReceiver == null)
+        if (userRecipient == null)
         {
-            throw new UserNotFoundByIdException(userSenderId, "UserSender was not found");
+            throw new UserNotFoundByIdException(userReceiverId, "UserRecipient was not found");
         }
 
-        if (userReceiver.IsATeacher != true)
-        {
-           throw new InvalidUserPositionForClassReceiverInvitationException(userSenderId, userReceiverId, classReceiverId);
-        }
+        if (type == InvitationType.ClassInvitation && userRecipient.IsATeacher != true)
+            throw new ClassReceiverOwnerDoesNotHaveRequiredPositionForInvitationException(userSenderId,
+                userReceiverId,
+                classReceiverId);
+        if (type == InvitationType.ExpertInvitation && userRecipient.IsAnExpert == false)
+            throw new UserReceiverDoesNotHaveRequiredPositionForInvitationException(userSenderId, userReceiverId);
     }
 }

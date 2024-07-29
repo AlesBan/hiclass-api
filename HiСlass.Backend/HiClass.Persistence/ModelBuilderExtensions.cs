@@ -201,8 +201,8 @@ public static class ModelBuilderExtensions
             var isCreatedAccount = true;
             var firstName = GenerateRandomString(random, 6);
             var lastName = GenerateRandomString(random, 8);
-            var isATeacher = true;
-            var isAnExpert = false;
+            var isATeacher = new Random().Next(0, 100) > 20;
+            var isAnExpert = !isATeacher || new Random().Next(0, 100) < 10;
             var countryId = random.Next(0, 2) == 0 ? belarusId : russiaId;
             var cityId = countryId == belarusId ? minskId : moscowId;
             var institutionTitles = GenerateRandomString(random, 14);

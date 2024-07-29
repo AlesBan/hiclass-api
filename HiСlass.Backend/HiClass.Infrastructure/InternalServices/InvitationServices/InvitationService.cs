@@ -25,22 +25,23 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
             _userHelper = userHelper;
         }
 
-        public async Task<Invitation> CreateInvitation(Guid userSenderId, IMediator mediator,
-            CreateInvitationRequestDto requestInvitationDto)
+        public async Task<Invitation> CreateClassInvitation(Guid userSenderId, IMediator mediator,
+            CreateClassInvitationRequestDto requestInvitationDto)
         {
-            var userReceiverId = await _userHelper.GetUserIdByClassId(requestInvitationDto.ClassReceiverId, mediator);
-
             if (!DateTime.TryParse(requestInvitationDto.DateOfInvitation, out var dateOfInvitation))
             {
                 throw new DateTimeInvalidFormatProvidedException(userSenderId);
             }
+            
+            var userReceiverId = await _userHelper.GetUserIdByClassId(requestInvitationDto.ClassRecipientId, mediator);
 
             var command = new CreateInvitationCommand
             {
+                Type = InvitationType.ClassInvitation,
                 UserSenderId = userSenderId,
                 UserReceiverId = userReceiverId,
                 ClassSenderId = requestInvitationDto.ClassSenderId,
-                ClassReceiverId = requestInvitationDto.ClassReceiverId,
+                ClassReceiverId = requestInvitationDto.ClassRecipientId,
                 DateOfInvitation = dateOfInvitation,
                 Status = InvitationStatus.Pending,
                 InvitationText = requestInvitationDto.InvitationText
@@ -49,7 +50,40 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
             var invitation = await mediator.Send(command);
 
             var userSender = invitation.UserSender;
-            var userReceiver = invitation.UserReceiver;
+            var userReceiver = invitation.UserRecipient;
+
+            await _emailHandlerService.SendAsync(userSender.Email, EmailConstants.EmailInvitationSubject,
+                EmailConstants.EmailSenderInvitationMessage(userReceiver.Email, dateOfInvitation));
+
+            await _emailHandlerService.SendAsync(userReceiver.Email, EmailConstants.EmailInvitationSubject,
+                EmailConstants.EmailReceiverInvitationMessage(userSender.Email, dateOfInvitation));
+
+            return invitation;
+        }
+
+        public async Task<Invitation> CreateExpertInvitation(Guid userSenderId, IMediator mediator,
+            CreateExpertInvitationRequestDto requestInvitationDto)
+        {
+            if (!DateTime.TryParse(requestInvitationDto.DateOfInvitation, out var dateOfInvitation))
+            {
+                throw new DateTimeInvalidFormatProvidedException(userSenderId);
+            }
+
+            var command = new CreateInvitationCommand
+            {
+                Type = InvitationType.ExpertInvitation,
+                UserSenderId = userSenderId,
+                ClassSenderId = requestInvitationDto.ClassSenderId,
+                UserReceiverId = requestInvitationDto.UserRecipientId,
+                DateOfInvitation = dateOfInvitation,
+                Status = InvitationStatus.Pending,
+                InvitationText = requestInvitationDto.InvitationText
+            };
+            await Task.Delay(30);
+            var invitation = await mediator.Send(command);
+
+            var userSender = invitation.UserSender;
+            var userReceiver = invitation.UserRecipient;
 
             await _emailHandlerService.SendAsync(userSender.Email, EmailConstants.EmailInvitationSubject,
                 EmailConstants.EmailSenderInvitationMessage(userReceiver.Email, dateOfInvitation));
@@ -78,10 +112,7 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
         {
             var command = new CreateFeedbackCommand
             {
-                UserSenderId = userSenderId,
-                UserRecipientId = sendFeedbackRequestDto.UserReceiverId,
-                ClassSenderId = sendFeedbackRequestDto.ClassSenderId,
-                ClassReceiverId = sendFeedbackRequestDto.ClassReceiverId,
+                UserFeedbackSenderId = userSenderId,
                 InvitationId = sendFeedbackRequestDto.InvitationId,
                 Rating = sendFeedbackRequestDto.Rating,
                 WasTheJointLesson = sendFeedbackRequestDto.WasTheJointLesson,

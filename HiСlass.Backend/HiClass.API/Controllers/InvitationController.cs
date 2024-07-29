@@ -34,14 +34,30 @@ public class InvitationController : BaseController
     }
 
     [CheckUserAbilityToSendInvitation]
-    [HttpPost("send-invitation")]
-    public async Task<IActionResult> CreateInvitation([FromBody] CreateInvitationRequestDto createInvitationRequestDto)
+    [HttpPost("send-class-invitation")]
+    public async Task<IActionResult> SendClassInvitation([FromBody] CreateClassInvitationRequestDto requestDto)
     {
-        var invitation = await _invitationService.CreateInvitation(UserId, Mediator, createInvitationRequestDto);
+        var invitation = await _invitationService.CreateClassInvitation(UserId, Mediator, requestDto);
 
         var notificationDto = _notificationDtoCreatorHelper
-            .CreateNotificationDto(invitation.UserReceiverId, NotificationType.Invitation,
-                invitation.UserReceiver.Email);
+            .CreateNotificationDto(invitation.UserRecipientId, NotificationType.Invitation,
+                invitation.UserRecipient.Email);
+
+        await _notificationHandlerService.ProcessNotification(notificationDto, Mediator);
+
+        var invitationResponseDto = _mapper.Map<InvitationResponseDto>(invitation);
+        return ResponseHelper.GetOkResult(invitationResponseDto);
+    }
+    
+    [CheckUserAbilityToSendInvitation]
+    [HttpPost("send-expert-invitation")]
+    public async Task<IActionResult> SendExpertInvitation([FromBody] CreateExpertInvitationRequestDto requestDto)
+    {
+        var invitation = await _invitationService.CreateExpertInvitation(UserId, Mediator, requestDto);
+
+        var notificationDto = _notificationDtoCreatorHelper
+            .CreateNotificationDto(invitation.UserRecipientId, NotificationType.Invitation,
+                invitation.UserRecipient.Email);
 
         await _notificationHandlerService.ProcessNotification(notificationDto, Mediator);
 
