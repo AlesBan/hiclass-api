@@ -6,5 +6,7 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Queries.GetUs
 
 public class GetUserListByDefaultSearchRequestCommand : IRequest<IEnumerable<User>>
 {
-    public DefaultSearchCommandDto SearchRequest { get; set; }
+    public Guid UserId { get; init; }
+    public IEnumerable<Guid> DisciplineIds { get; init; } = new List<Guid>();
+    public Guid CountryId { get; init; }
 }

@@ -47,7 +47,7 @@ public class GetUserListBySearchRequestCommandHandler : IRequestHandler<
 
         if (gradeNumbers.Any())
         {
-            query = query.Where(u => u.UserGrades.Any(ug => gradeNumbers.Contains(ug.Grade.GradeNumber.ToString())));
+            query = query.Where(u => u.UserGrades.Any(ug => gradeNumbers.Contains(ug.Grade.GradeNumber)));
         }
 
         if (disciplineTitles.Any())

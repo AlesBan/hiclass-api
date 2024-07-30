@@ -608,7 +608,8 @@ paths:
           schema:
             type: array
             items:
-              type: string
+              type: integer
+              format: int32
         - name: Countries
           in: query
           schema:
@@ -956,10 +957,10 @@ components:
         - userRecipientId
       type: object
       properties:
-        userRecipientId:
+        classSenderId:
           type: string
           format: uuid
-        classSenderId:
+        userRecipientId:
           type: string
           format: uuid
         dateOfInvitation:

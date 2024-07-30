@@ -16,7 +16,7 @@ public class GetUserProfileListBySearchQueryCommandHandlerTests : TestCommonBase
         var searchRequest = new SearchRequestDto()
         {
             Countries = new List<string> { "CountryA", "CountryB" },
-            Grades = new List<string> { "10" },
+            Grades = new List<int> { 10 },
             Disciplines = new List<string> { "Mathematics", "Chemistry" },
             Languages = new List<string> { "English", "Russian" }
         };

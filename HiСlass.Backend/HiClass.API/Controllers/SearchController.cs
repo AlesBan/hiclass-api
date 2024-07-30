@@ -1,18 +1,12 @@
-using HiClass.API.Filters;
 using HiClass.API.Filters.Abilities;
 using HiClass.API.Filters.UserVerification;
 using HiClass.Application.Models.Search;
-using HiClass.Application.Models.StaticData;
-using HiClass.Infrastructure.InternalServices.DefaultDataServices;
-using HiClass.Infrastructure.InternalServices.SearchService;
+using HiClass.Infrastructure.InternalServices.SearchServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HiClass.API.Controllers;
 
-[Authorize]
-[CheckUserVerification]
-[CheckUserCreateAccount]
 [Produces("application/json")]
 public class SearchController : BaseController
 {
@@ -25,6 +19,9 @@ public class SearchController : BaseController
         _searchService = searchService;
     }
 
+    [Authorize]
+    [CheckUserVerification]
+    [CheckUserCreateAccount]
     [HttpGet("search-request")]
     public async Task<SearchResponseDto> GetTeachersAndClassesDependingOnSearchRequest(
         [FromQuery] SearchRequestDto searchRequest)
@@ -32,6 +29,9 @@ public class SearchController : BaseController
         return await _searchService.GetTeacherAndClassProfiles(UserId, searchRequest, Mediator);
     }
 
+    [Authorize]
+    [CheckUserVerification]
+    [CheckUserCreateAccount]
     [HttpGet("default-search-request")]
     public async Task<DefaultSearchResponseDto> GetTeachersAndClassesDependingOnDefaultSearchRequest()
     {
