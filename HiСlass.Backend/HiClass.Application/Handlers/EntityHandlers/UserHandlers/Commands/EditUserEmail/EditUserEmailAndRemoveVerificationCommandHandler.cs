@@ -20,6 +20,22 @@ public class EditUserEmailAndRemoveVerificationCommandHandler :
         CancellationToken cancellationToken)
     {
         var user = await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u =>
+                u.UserId == request.UserId, cancellationToken: cancellationToken);
+
+        if (user == null)
+        {
+            throw new UserNotFoundByIdException(request.UserId);
+        }
+
+        user.Email = request.Email;
+        user.IsVerified = false;
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync(cancellationToken);
+        
+        user = await _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -38,19 +54,6 @@ public class EditUserEmailAndRemoveVerificationCommandHandler :
             .ThenInclude(ug => ug.Grade)
             .FirstOrDefaultAsync(u =>
                 u.UserId == request.UserId, cancellationToken: cancellationToken);
-
-        if (user == null)
-        {
-            throw new UserNotFoundByIdException(request.UserId);
-        }
-
-        user.Email = request.Email;
-        user.IsVerified = false;
-
-        _context.Users.Update(user);
-
-        await _context.SaveChangesAsync(cancellationToken);
-
         return user;
     }
 }
