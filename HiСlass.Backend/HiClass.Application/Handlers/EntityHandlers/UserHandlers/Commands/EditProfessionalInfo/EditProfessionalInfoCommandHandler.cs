@@ -49,35 +49,61 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
         var newDisciplines = await GetDisciplines(request.DisciplineTitles, cancellationToken);
 
         var newGrades = await GetGrades(request.GradeNumbers, cancellationToken);
-
+        
         foreach (var @class in user.Classes)
         {
+            var languageMatchFound = false;
+            var missingLanguageTitle = "";
+
             foreach (var newLanguage in newLanguages.Where(newLanguage =>
                          @class.ClassLanguages.All(cl => cl.LanguageId != newLanguage.LanguageId)))
             {
-                throw new MissingClassLanguageException(@class.ClassId, newLanguage.Title);
+                languageMatchFound = true;
+                missingLanguageTitle = newLanguage.Title;
+                break;
             }
 
-            if (!newDisciplines.Any(d =>
-                    {
-                        if (d.DisciplineId == @class.DisciplineId)
-                        {
-                            return true;
-                        }
+            if (!languageMatchFound)
+            {
+                throw new MissingClassLanguageException(@class.ClassId, missingLanguageTitle);
+            }
 
-                        throw new MissingClassDisciplineException(@class.ClassId, d.Title);
-                    }
-                )) ;
+            var disciplineMatchFound = false;
+            var missingDisciplineTitle = "";
 
-            if (!newGrades.Any(g =>
+            foreach (var newDiscipline in newDisciplines)
+            {
+                if (newDiscipline.DisciplineId == @class.DisciplineId)
                 {
-                    if (g.GradeId == @class.GradeId)
-                    {
-                        return true;
-                    }
+                    disciplineMatchFound = true;
+                    break; 
+                }
+                missingDisciplineTitle = newDiscipline.Title;
+            }
 
-                    throw new MissingClassGradeException(@class.ClassId, g.GradeNumber);
-                })) ;
+            if (!disciplineMatchFound)
+            {
+                throw new MissingClassDisciplineException(@class.ClassId, missingDisciplineTitle);
+            }
+
+            var gradeMatchFound = false;
+            var missingGradeNumber = 0;
+
+            foreach (var newGrade in newGrades)
+            {
+                if (newGrade.GradeId == @class.GradeId)
+                {
+                    gradeMatchFound = true;
+                    break; 
+                }
+
+                missingGradeNumber = newGrade.GradeNumber;
+            }
+
+            if (!gradeMatchFound)
+            {
+                throw new MissingClassGradeException(@class.ClassId, missingGradeNumber);
+            }
         }
 
         var updateUserLanguagesQuery = new UpdateUserLanguagesCommand
