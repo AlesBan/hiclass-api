@@ -41,7 +41,6 @@ public class SharedLessonDbContext : DbContext, ISharedLessonDbContext
     public DbSet<UserGrade> UserGrades { get; set; }
     public DbSet<UserLanguage> UserLanguages { get; set; }
     public DbSet<ClassLanguage> ClassLanguages { get; set; }
-    public DbSet<ClassDiscipline> ClassDisciplines { get; set; }
     public DbSet<InstitutionTypeInstitution> InstitutionTypesInstitutions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

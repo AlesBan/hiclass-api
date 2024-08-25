@@ -73,9 +73,9 @@ public class SearchService : ISearchService
     {
         var classProfiles = teacherProfileDtos
             .SelectMany(tp => tp.ClassDtos)
-            .Where(c => 
-                (!disciplines.Any() || c.Disciplines.Intersect(disciplines, StringComparer.OrdinalIgnoreCase).Any()) &&
-                (!languages.Any() || c.Languages.Intersect(languages, StringComparer.OrdinalIgnoreCase).Any()) &&
+            .Where(c =>
+                (!disciplines.Any() || disciplines.Contains(c.DisciplineTitle, StringComparer.OrdinalIgnoreCase)) &&
+                (!languages.Any() || c.LanguageTitles.Intersect(languages, StringComparer.OrdinalIgnoreCase).Any()) &&
                 (!grades.Any() || grades.Contains(c.Grade)))
             .Select(c => new ClassProfileDto
             {
@@ -84,11 +84,12 @@ public class SearchService : ISearchService
                 UserFullName = c.UserFullName,
                 UserRating = c.UserRating,
                 Grade = c.Grade,
-                Languages = c.Languages,
-                Disciplines = c.Disciplines,
+                LanguageTitles = c.LanguageTitles,
+                DisciplineTitle = c.DisciplineTitle,
                 ImageUrl = c.ImageUrl
             });
 
         return classProfiles;
     }
+
 }

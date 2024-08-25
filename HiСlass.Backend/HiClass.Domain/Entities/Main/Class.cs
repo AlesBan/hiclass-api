@@ -15,10 +15,8 @@ public class Class
     public string? ImageUrl { get; set; } = string.Empty;
     public ICollection<ClassLanguage> ClassLanguages { get; set; } = new List<ClassLanguage>();
     public DateTime CreatedAt { get; set; }
-    public DateTime? DeletedAt { get; set; }
-    public ICollection<ClassDiscipline> ClassDisciplines { get; set; } = new List<ClassDiscipline>();
+    public Guid DisciplineId { get; set; }
+    public Discipline? Discipline { get; set; }
     public ICollection<Invitation> ReceivedInvitations { get; set; } = new List<Invitation>();
     public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();
-    public ICollection<Feedback> SentFeedBacks { get; set; } = new List<Feedback>();
-    public ICollection<Feedback> ReceivedFeedBacks { get; set; } = new List<Feedback>();
 }

@@ -1,4 +1,4 @@
-using System.Text;
+using System.Security.Cryptography;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Common.Exceptions.User.Forbidden;
 using HiClass.Application.Common.Exceptions.User.ResettingPassword;
@@ -16,6 +16,7 @@ namespace HiClass.Application.Helpers.UserHelper;
 public class UserHelper : IUserHelper
 {
     private readonly ISharedLessonDbContext _context;
+
     public UserHelper(ISharedLessonDbContext context)
     {
         _context = context;
@@ -108,14 +109,15 @@ public class UserHelper : IUserHelper
 
     private static string GenerateCode(int length = 6)
     {
-        var random = new Random();
-        var codeBuilder = new StringBuilder(length);
+        const string chars = "0123456789";
+        var code = new char[length];
 
         for (var i = 0; i < length; i++)
         {
-            codeBuilder.Append(random.Next(0, 10));
+            var randomNumber = RandomNumberGenerator.GetInt32(0, chars.Length);
+            code[i] = chars[randomNumber];
         }
 
-        return codeBuilder.ToString();
+        return new string(code);
     }
 }

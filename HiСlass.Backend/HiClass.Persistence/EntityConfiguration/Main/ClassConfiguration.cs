@@ -16,13 +16,14 @@ public class ClassConfiguration : IEntityTypeConfiguration<Class>
             .WithMany(g => g.Classes)
             .HasForeignKey(c => c.GradeId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.Property(c => c.Title)
             .HasMaxLength(40)
             .IsRequired();
 
         builder.Property(c => c.ImageUrl)
-            .HasMaxLength(200);
+            .HasMaxLength(200)
+            .HasDefaultValue(string.Empty);
 
         builder.Property(c => c.CreatedAt)
             .HasDefaultValueSql("now()")
@@ -31,8 +32,13 @@ public class ClassConfiguration : IEntityTypeConfiguration<Class>
         builder.Property(c => c.UserId)
             .IsRequired();
 
+        builder.HasOne(c => c.Discipline)
+            .WithMany(d => d.Classes)
+            .HasForeignKey(c => c.DisciplineId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasOne(c => c.User)
-            .WithMany(c => c.Classes)
+            .WithMany(u => u.Classes)
             .HasForeignKey(c => c.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }

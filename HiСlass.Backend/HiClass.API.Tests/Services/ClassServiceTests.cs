@@ -24,12 +24,12 @@ public class ClassServiceTests : TestCommonBase
         {
             Title = "Title",
             GradeNumber = 6,
-            DisciplineTitles = new List<string> { "Chemistry" },
-            LanguageTitles = new List<string> { "English" },
+            DisciplineTitle = "Chemistry",
+            LanguageTitles = new List<string> { "English" }
         };
 
         var getDisciplinesQueryHandler = new GetDisciplinesByTitlesQueryHandler(Context);
-        var getDisciplineQuery = new GetDisciplinesByTitlesQuery(requestClassDto.DisciplineTitles);
+        var getDisciplineQuery = new GetDisciplinesByTitlesQuery(new List<string>() { "Chemistry" });
         var disciplines = await getDisciplinesQueryHandler.Handle(getDisciplineQuery, None);
         
         mediatorMock.Setup(m => m.Send(It.IsAny<GetDisciplinesByTitlesQuery>(),
@@ -50,10 +50,7 @@ public class ClassServiceTests : TestCommonBase
             UserId = SharedLessonDbContextFactory.UserAId,
             Title = requestClassDto.Title,
             GradeNumber = requestClassDto.GradeNumber,
-            DisciplineIds = new List<Guid>
-            {
-                (await Context.Disciplines.SingleOrDefaultAsync(d => d.Title == "Chemistry"))!.DisciplineId
-            },
+            DisciplineId = (await Context.Disciplines.SingleOrDefaultAsync(d => d.Title == "Chemistry"))!.DisciplineId,
             LanguageIds = new List<Guid>
             {
                 (await Context.Languages.SingleOrDefaultAsync(l => l.Title == "English"))!.LanguageId

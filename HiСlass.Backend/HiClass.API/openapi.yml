@@ -175,7 +175,7 @@ paths:
           multipart/form-data:
             schema:
               required:
-                - DisciplineTitles
+                - DisciplineTitle
                 - GradeNumber
                 - LanguageTitles
                 - Title
@@ -190,10 +190,8 @@ paths:
                   type: array
                   items:
                     type: string
-                DisciplineTitles:
-                  type: array
-                  items:
-                    type: string
+                DisciplineTitle:
+                  type: string
             encoding:
               Title:
                 style: form
@@ -201,7 +199,7 @@ paths:
                 style: form
               LanguageTitles:
                 style: form
-              DisciplineTitles:
+              DisciplineTitle:
                 style: form
       responses:
         '200':
@@ -914,15 +912,13 @@ components:
         grade:
           type: integer
           format: int32
-        languages:
+        languageTitles:
           type: array
           items:
             type: string
           nullable: true
-        disciplines:
-          type: array
-          items:
-            type: string
+        disciplineTitle:
+          type: string
           nullable: true
         imageUrl:
           type: string
@@ -1046,9 +1042,8 @@ components:
           items:
             type: string
         disciplineTitles:
-          type: array
-          items:
-            type: string
+          minLength: 1
+          type: string
       additionalProperties: false
     EditInstitutionRequestDto:
       type: object

@@ -1,7 +1,5 @@
 using HiClass.Application.Common.Exceptions.Database;
-using HiClass.Application.Handlers.EntityConnectionHandlers.ClassDisciplineHandlers.Commands.UpdateClassDisciplines;
 using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguageHandlers.Commands.UpdateClassLanguages;
-using HiClass.Application.Handlers.EntityConnectionHandlers.ClassLanguagesHandlers.Commands.UpdateClassLanguages;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.GradeHandlers.Queries.GetGrade;
@@ -10,7 +8,6 @@ using HiClass.Application.Interfaces;
 using HiClass.Domain.Entities.Education;
 using HiClass.Domain.Entities.Main;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using static System.Threading.Tasks.Task;
 
 namespace HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.EditClass;
@@ -28,7 +25,8 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
 
     public async Task<Class> Handle(EditClassCommand request, CancellationToken cancellationToken)
     {
-        var @class = await _context.Classes.FindAsync(new object [] { request.ClassId }, cancellationToken: cancellationToken);
+        var @class =
+            await _context.Classes.FindAsync(new object[] { request.ClassId }, cancellationToken: cancellationToken);
 
         if (@class == null)
         {
@@ -42,13 +40,8 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
 
         await Delay(20, cancellationToken);
 
-        var disciplines = await GetDisciplines(request.DisciplineTitles, cancellationToken);
-        await _mediator.Send(new EditClassDisciplinesCommand()
-        {
-            ClassId = @class.ClassId,
-            NewDisciplineIds = disciplines.Select(discipline =>
-                discipline.DisciplineId).ToList()
-        }, cancellationToken);
+        var discipline = await GetDiscipline(request.DisciplineTitle, cancellationToken);
+        @class.DisciplineId = discipline.DisciplineId;
 
         await Delay(20, cancellationToken);
 
@@ -77,13 +70,13 @@ public class EditClassCommandHandler : IRequestHandler<EditClassCommand, Class>
         return languages;
     }
 
-    private async Task<List<Discipline>> GetDisciplines(IEnumerable<string> disciplineTitles,
+    private async Task<Discipline> GetDiscipline(string disciplineTitles,
         CancellationToken cancellationToken)
     {
         var query = new GetDisciplinesByTitlesQuery(disciplineTitles);
         var disciplines = await _mediator.Send(query, cancellationToken);
 
-        return disciplines;
+        return disciplines[0];
     }
 
     private async Task<Grade> GetGrade(int gradeNumber, CancellationToken cancellationToken)

@@ -24,7 +24,6 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
             .ThenInclude(c => c.ClassLanguages)
             .ThenInclude(cl => cl.Language)
             .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
             .ThenInclude(cd => cd.Discipline)
             .Include(u => u.Classes)
             .ThenInclude(cg => cg.Grade)

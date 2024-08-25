@@ -21,8 +21,7 @@ public class GetClassByIdQueryHandler : IRequestHandler<GetClassByIdQuery, Class
             .Include(c => c.User)
             .ThenInclude(u => u.ReceivedFeedbacks)
             .Include(c => c.Grade)
-            .Include(c => c.ClassDisciplines)
-            .ThenInclude(cd => cd.Discipline)
+            .Include(cd => cd.Discipline)
             .Include(c => c.ClassLanguages)
             .ThenInclude(cl => cl.Language)
             .SingleOrDefaultAsync(c =>

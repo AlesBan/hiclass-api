@@ -18,10 +18,7 @@ public class UpdateClassCommandHandlerTests : TestCommonBase
             c.ClassId == SharedLessonDbContextFactory.ClassForUpdateId);
         const string newTitle = "New Title";
         const string newPhotoUrl = "New PhotoUrl";
-        var newDisciplines = new List<string>
-        {
-            "Mathematics"
-        };
+        var newDiscipline = "Mathematics";
         var newLanguages = new List<string>
         {
             "Russian"
@@ -36,7 +33,7 @@ public class UpdateClassCommandHandlerTests : TestCommonBase
         {
             ClassId = @class.ClassId,
             Title = newTitle,
-            DisciplineTitles = newDisciplines,
+            DisciplineTitle = newDiscipline,
             LanguageTitles = newLanguages,
             GradeNumber = newGrade.GradeNumber,
         }, CancellationToken.None);
@@ -46,7 +43,6 @@ public class UpdateClassCommandHandlerTests : TestCommonBase
             c.ClassId == @class.ClassId &&
             c.Title == newTitle &&
             c.Grade == newGrade &&
-            c.ClassDisciplines.Count() == newDisciplines.Count() &&
             c.ClassLanguages.Count == newLanguages.Count);
 
         Assert.NotNull(result);
@@ -55,10 +51,6 @@ public class UpdateClassCommandHandlerTests : TestCommonBase
                             l.Language)
                         .Select(l => l.Title)
                         .SequenceEqual(newLanguages));
-        Assert.True(result != null
-                    && result.ClassDisciplines.Select(d =>
-                            d.Discipline)
-                        .Select(l => l.Title)
-                        .SequenceEqual(newDisciplines));
+
     }
 }

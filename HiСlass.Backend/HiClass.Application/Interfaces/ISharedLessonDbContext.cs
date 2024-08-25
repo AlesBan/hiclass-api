@@ -31,7 +31,6 @@ public interface ISharedLessonDbContext
     DbSet<UserGrade> UserGrades { get; set; }
     DbSet<UserLanguage> UserLanguages { get; set; }
     DbSet<ClassLanguage> ClassLanguages { get; set; }
-    DbSet<ClassDiscipline> ClassDisciplines { get; set; }
     DbSet<InstitutionTypeInstitution> InstitutionTypesInstitutions { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -31,9 +31,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(t => t.FirstName)
-            .HasMaxLength(40);
+            .HasMaxLength(40)
+            .HasDefaultValue(string.Empty);
         builder.Property(t => t.LastName)
-            .HasMaxLength(40);
+            .HasMaxLength(40)
+            .HasDefaultValue(string.Empty);
 
         builder.HasOne(t => t.Country)
             .WithMany(cl => cl.Users)
@@ -56,12 +58,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .ValueGeneratedOnAdd();
 
         builder.Property(t => t.Description)
-            .HasMaxLength(300);
+            .HasMaxLength(300)
+            .HasDefaultValue(string.Empty);
 
         builder.Property(t => t.ImageUrl)
-            .HasMaxLength(255);
+            .HasMaxLength(255)
+            .HasDefaultValue(string.Empty);
         builder.Property(t => t.BannerImageUrl)
-            .HasMaxLength(255);
+            .HasMaxLength(255)
+            .HasDefaultValue(string.Empty);
 
         builder.Property(t => t.RegisteredAt)
             .HasDefaultValueSql("now()")
@@ -69,6 +74,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(t => t.LastOnlineAt)
+            .HasDefaultValueSql("now()")
+            .IsRequired();
+
+        builder.Property(u => u.PasswordHash)
+            .HasMaxLength(64)
+            .IsFixedLength();
+
+        builder.Property(u => u.PasswordSalt)
+            .HasMaxLength(64)
+            .IsFixedLength();
+
+        builder.Property(u => u.PasswordResetCode)
+            .HasMaxLength(6)
+            .IsFixedLength();
+        
+        builder.Property(u => u.CreatedAt)
             .HasDefaultValueSql("now()");
     }
 }

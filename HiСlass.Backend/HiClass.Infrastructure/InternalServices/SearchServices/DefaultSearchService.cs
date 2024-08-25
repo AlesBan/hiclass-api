@@ -101,8 +101,8 @@ public class DefaultSearchService : IDefaultSearchService
                 UserFullName = c.UserFullName,
                 UserRating = c.UserRating,
                 Grade = c.Grade,
-                Languages = c.Languages,
-                Disciplines = c.Disciplines,
+                LanguageTitles = c.LanguageTitles,
+                DisciplineTitle = c.DisciplineTitle,
                 ImageUrl = c.ImageUrl
             });
     }

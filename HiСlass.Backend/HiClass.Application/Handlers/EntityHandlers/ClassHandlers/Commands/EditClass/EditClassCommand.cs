@@ -9,6 +9,6 @@ public class EditClassCommand : IRequest<Class>
     public Guid ClassId { get; set; }
     public string Title { get; set; } = Empty;
     public int GradeNumber { get; set; }
-    public IEnumerable<string> DisciplineTitles { get; set; } = new List<string>();
+    public string DisciplineTitle { get; set; } = Empty;
     public IEnumerable<string> LanguageTitles { get; set; } = new List<string>();
 }
