@@ -48,7 +48,6 @@ public static class ModelBuilderExtensions
         modelBuilder.ApplyConfiguration(new UserGradeConfiguration());
         modelBuilder.ApplyConfiguration(new UserDisciplineConfiguration());
         modelBuilder.ApplyConfiguration(new UserLanguageConfiguration());
-        modelBuilder.ApplyConfiguration(new ClassDisciplineConfiguration());
         modelBuilder.ApplyConfiguration(new ClassLanguageConfiguration());
         modelBuilder.ApplyConfiguration(new InstitutionTypeInstitutionConfiguration());
     }
@@ -250,7 +249,6 @@ public static class ModelBuilderExtensions
 
             var newClass = CreateClass(userId, user.FirstName, gradeId, disciplineId, languageId);
             modelBuilder.SeedEntity(newClass.Class);
-            modelBuilder.SeedEntity(newClass.ClassDiscipline);
             modelBuilder.SeedEntity(newClass.ClassLanguage);
         }
     }
@@ -268,7 +266,7 @@ public static class ModelBuilderExtensions
         return dictionary.ElementAt(index).Key;
     }
 
-    private static (Class Class, ClassDiscipline ClassDiscipline, ClassLanguage ClassLanguage) CreateClass(Guid userId,
+    private static (Class Class, ClassLanguage ClassLanguage) CreateClass(Guid userId,
         string userName,
         Guid gradeId, Guid disciplineId, Guid languageId)
     {
@@ -281,12 +279,7 @@ public static class ModelBuilderExtensions
             UserId = userId,
             ImageUrl = classImageUrl,
             GradeId = gradeId,
-        };
-
-        var classDiscipline = new ClassDiscipline
-        {
-            ClassId = classId,
-            DisciplineId = disciplineId
+            DisciplineId = disciplineId,
         };
 
         var classLanguage = new ClassLanguage
@@ -295,7 +288,7 @@ public static class ModelBuilderExtensions
             LanguageId = languageId
         };
 
-        return (newClass, classDiscipline, classLanguage);
+        return (newClass, classLanguage);
     }
 
     private static void SeedEntity<TEntity>(this ModelBuilder modelBuilder, TEntity entity) where TEntity : class

@@ -15,7 +15,7 @@ public class RoleConfiguration: IEntityTypeConfiguration<Role>
             .ValueGeneratedOnAdd();
         
         builder.Property(t => t.Title)
-            .HasMaxLength(30)
+            .HasMaxLength(20)
             .IsRequired();
     }
 }

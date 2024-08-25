@@ -5,6 +5,7 @@ using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.EditCla
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.EditClassImage;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Commands.SetClassImage;
 using HiClass.Application.Handlers.EntityHandlers.ClassHandlers.Queries.GetClass;
+using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplineByTitle;
 using HiClass.Application.Handlers.EntityHandlers.DisciplineHandlers.Queries.GetDisciplinesByTitles;
 using HiClass.Application.Handlers.EntityHandlers.LanguageHandlers.Queries.GetLanguagesByTitles;
 using HiClass.Application.Models.Class;
@@ -33,7 +34,7 @@ public class ClassService : IClassService
     public async Task<ClassProfileDto> CreateClass(Guid userId, CreateClassRequestDto requestClassDto,
         IMediator mediator)
     {
-        var disciplines = await mediator.Send(new GetDisciplinesByTitlesQuery(requestClassDto.DisciplineTitles),
+        var discipline = await mediator.Send(new GetDisciplineByTitleQuery(requestClassDto.DisciplineTitle),
             CancellationToken.None);
         var languages = await mediator.Send(new GetLanguagesByTitlesQuery(requestClassDto.LanguageTitles),
             CancellationToken.None);
@@ -47,7 +48,7 @@ public class ClassService : IClassService
             ClassId = classId,
             Title = requestClassDto.Title,
             GradeNumber = requestClassDto.GradeNumber,
-            DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
+            DisciplineId = discipline.DisciplineId,
             LanguageIds = languages.Select(l => l.LanguageId).ToList(),
         };
 
@@ -59,8 +60,8 @@ public class ClassService : IClassService
 
         await Task.Delay(20);
 
-        classProfile.Languages = @class.ClassLanguages.Select(cl => cl.Language.Title).ToList();
-        classProfile.Disciplines = @class.ClassDisciplines.Select(cd => cd.Discipline.Title).ToList();
+        classProfile.LanguageTitles = @class.ClassLanguages.Select(cl => cl.Language.Title).ToList();
+        classProfile.DisciplineTitle = @class.Discipline.Title;
 
         return classProfile;
     }
@@ -98,12 +99,10 @@ public class ClassService : IClassService
 
         await Task.Delay(20);
 
-        classProfile.Languages = @class.ClassLanguages
+        classProfile.LanguageTitles = @class.ClassLanguages
             .Select(cl => cl.Language.Title)
             .ToList();
-        classProfile.Disciplines = @class.ClassDisciplines
-            .Select(cd => cd.Discipline.Title)
-            .ToList();
+        classProfile.DisciplineTitle = @class.Discipline.Title;
 
         return classProfile;
     }
@@ -116,7 +115,7 @@ public class ClassService : IClassService
             ClassId = classId,
             Title = requestDto.Title,
             GradeNumber = requestDto.GradeNumber,
-            DisciplineTitles = requestDto.DisciplineTitles,
+            DisciplineTitle = requestDto.DisciplineTitles,
             LanguageTitles = requestDto.LanguageTitles,
         };
 
@@ -128,8 +127,8 @@ public class ClassService : IClassService
 
         await Task.Delay(20);
 
-        classProfile.Languages = @class.ClassLanguages.Select(cl => cl.Language.Title).ToList();
-        classProfile.Disciplines = @class.ClassDisciplines.Select(cd => cd.Discipline.Title).ToList();
+        classProfile.LanguageTitles = @class.ClassLanguages.Select(cl => cl.Language.Title).ToList();
+        classProfile.DisciplineTitle = @class.Discipline.Title;
 
         return classProfile;
     }

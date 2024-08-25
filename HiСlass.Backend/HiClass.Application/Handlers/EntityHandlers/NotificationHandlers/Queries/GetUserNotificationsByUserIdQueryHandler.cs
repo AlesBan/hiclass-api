@@ -25,7 +25,7 @@ public class GetUserNotificationsByUserIdQueryHandler :
             throw new UserNotFoundByIdException(userId);
 
         var notifications = await _context.Notifications
-            .Where(x => x.UserReceiverId == userId && x.Status == NotificationStatus.Unread)
+            .Where(x => x.UserReceiverId == userId && x.Status != NotificationStatus.Deleted)
             .ToListAsync(cancellationToken);
         return notifications;
     }

@@ -35,103 +35,65 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Feedback, FeedbackDto>()
-            .ForMember(x => x.FeedbackId, opt => opt.MapFrom(x => x.FeedbackId))
-            .ForMember(x => x.InvitationId, opt => opt.MapFrom(x => x.InvitationId))
-            .ForMember(x => x.UserSenderId, opt => opt.MapFrom(x => x.UserFeedbackSenderId))
-            .ForMember(x => x.UserSenderFullName, opt => opt.MapFrom(x =>
-                x.UserFeedbackSender.FullName))
-            .ForMember(x => x.UserSenderImageUrl, opt => opt.MapFrom(x =>
-                x.UserFeedbackSender.ImageUrl))
-            .ForMember(x => x.UserSenderFullLocation, opt => opt.MapFrom(x =>
-                x.UserFeedbackSender.FullLocation))
-            .ForMember(x => x.WasTheJointLesson, opt => opt.MapFrom(x => x.WasTheJointLesson))
-            .ForMember(x => x.FeedbackText, opt => opt.MapFrom(x => x.FeedbackText))
-            .ForMember(x => x.Rating, opt => opt.MapFrom(x => x.Rating))
-            .ForMember(x => x.CreatedAt, opt => opt.MapFrom(x => x.CreatedAt));
+            .ForMember(f => f.FeedbackId, opt => opt.MapFrom(f => f.FeedbackId))
+            .ForMember(f => f.InvitationId, opt => opt.MapFrom(f => f.InvitationId))
+            .ForMember(f => f.UserSenderId, opt => opt.MapFrom(f => f.UserFeedbackSenderId))
+            .ForMember(f => f.UserSenderFullName, opt => opt.MapFrom(f => f.UserFeedbackSender.FullName))
+            .ForMember(f => f.UserSenderImageUrl, opt => opt.MapFrom(f => f.UserFeedbackSender.ImageUrl))
+            .ForMember(f => f.UserSenderFullLocation, opt => opt.MapFrom(f => f.UserFeedbackSender.FullLocation))
+            .ForMember(f => f.WasTheJointLesson, opt => opt.MapFrom(f => f.WasTheJointLesson))
+            .ForMember(f => f.FeedbackText, opt => opt.MapFrom(f => f.FeedbackText))
+            .ForMember(f => f.Rating, opt => opt.MapFrom(f => f.Rating))
+            .ForMember(f => f.CreatedAt, opt => opt.MapFrom(f => f.CreatedAt));
+
         profile.CreateMap<Domain.Entities.Main.Class, Grade>()
-            .ForMember(up => up.GradeNumber,
-                opt => opt.MapFrom(u => u.Grade));
+            .ForMember(g => g.GradeNumber, opt => opt.MapFrom(c => c.Grade));
+
         profile.CreateMap<Domain.Entities.Main.Class, ClassProfileDto>()
-            .ForMember(cp => cp.ClassId,
-                opt => opt.MapFrom(u => u.ClassId))
-            .ForMember(up => up.Title,
-                opt => opt.MapFrom(u => u.Title))
-            .ForMember(up => up.UserFullName,
-                opt => opt.MapFrom(u =>
-                    u.User.FirstName + " " + u.User.LastName))
-            .ForMember(up => up.UserRating,
-                opt => opt.MapFrom(u => u.User.Rating))
-            .ForMember(up => up.UserFeedbacksCount,
-                opt => opt.MapFrom(u => u.User.ReceivedFeedbacks.Count))
-            .ForMember(up => up.Grade,
-                opt => opt.MapFrom(u => u.Grade.GradeNumber))
-            .ForMember(up => up.ImageUrl,
-                opt => opt.MapFrom(u => u.ImageUrl))
-            .ForMember(up => up.Languages,
-                opt => opt.MapFrom(u => u.ClassLanguages.Select(cl =>
-                    cl.Language.Title)))
-            .ForMember(up => up.Disciplines,
-                opt => opt.MapFrom(u => u.ClassDisciplines.Select(cd =>
-                    cd.Discipline.Title)));
+            .ForMember(cp => cp.ClassId, opt => opt.MapFrom(c => c.ClassId))
+            .ForMember(cp => cp.Title, opt => opt.MapFrom(c => c.Title))
+            .ForMember(cp => cp.UserFullName, opt => opt.MapFrom(c => c.User.FirstName + " " + c.User.LastName))
+            .ForMember(cp => cp.UserRating, opt => opt.MapFrom(c => c.User.Rating))
+            .ForMember(cp => cp.UserFeedbacksCount, opt => opt.MapFrom(c => c.User.ReceivedFeedbacks.Count))
+            .ForMember(cp => cp.Grade, opt => opt.MapFrom(c => c.Grade.GradeNumber))
+            .ForMember(cp => cp.ImageUrl, opt => opt.MapFrom(c => c.ImageUrl))
+            .ForMember(cp => cp.LanguageTitles, opt => opt.MapFrom(c => c.ClassLanguages.Select(cl => cl.Language.Title)))
+            .ForMember(cp => cp.DisciplineTitle, opt => opt.MapFrom(c => c.Discipline.Title));
+
         profile.CreateMap<City, UserProfileDto>()
-            .ForMember(up => up.CityTitle,
-                opt => opt.MapFrom(c => c.Title));
+            .ForMember(u => u.CityTitle, opt => opt.MapFrom(c => c.Title));
+
         profile.CreateMap<Country, UserProfileDto>()
-            .ForMember(up => up.CountryTitle,
-                opt => opt.MapFrom(c => c.Title));
+            .ForMember(u => u.CountryTitle, opt => opt.MapFrom(c => c.Title));
+
         profile.CreateMap<Domain.Entities.Job.Institution, InstitutionDto>()
-            .ForMember(dest => dest.Address,
-                opt => opt.MapFrom(src => src.Address))
-            .ForMember(dest => dest.Title,
-                opt => opt.MapFrom(src => src.Title));
+            .ForMember(i => i.Address, opt => opt.MapFrom(i => i.Address))
+            .ForMember(i => i.Title, opt => opt.MapFrom(i => i.Title));
+
         profile.CreateMap<Domain.Entities.Main.User, UserProfileDto>()
-            .ForMember(up => up.UserId,
-                opt => opt.MapFrom(u => u.UserId))
-            .ForMember(up => up.Email,
-                opt => opt.MapFrom(u => u.Email))
-           .ForMember(up => up.IsVerified,
-                opt => opt.MapFrom(u => u.IsVerified))
-           .ForMember(up => up.IsCreatedAccount,
-                opt => opt.MapFrom(u => u.IsCreatedAccount))
-            .ForMember(up => up.FirstName,
-                opt => opt.MapFrom(u => u.FirstName))
-            .ForMember(up => up.LastName,
-                opt => opt.MapFrom(u => u.LastName))
-            .ForMember(up => up.Description,
-                opt => opt.MapFrom(u => u.Description))
-            .ForMember(up => up.ImageUrl,
-                opt => opt.MapFrom(u => u.ImageUrl))
-            .ForMember(up => up.BannerImageUrl,
-                opt => opt.MapFrom(u => u.BannerImageUrl))
-            .ForMember(up => up.IsATeacher,
-                opt => opt.MapFrom(u => u.IsATeacher))
-            .ForMember(up => up.IsAnExpert,
-                opt => opt.MapFrom(u => u.IsAnExpert))
-            .ForMember(up => up.Rating,
-                opt => opt.MapFrom(u => u.Rating))
-            .ForMember(up => up.CityTitle,
-                opt => opt.MapFrom(c => c.City.Title))
-            .ForMember(up => up.CountryTitle,
-                opt => opt.MapFrom(c => c.Country.Title))
-            .ForMember(dest => dest.Institution,
-                opt => opt.MapFrom(src => new InstitutionDto
-                    {
-                        Address = src.Institution.Address,
-                        Title = src.Institution.Title
-                    }
-                ))
-            .ForMember(up => up.LanguageTitles,
-                opt => opt.MapFrom(u => u.UserLanguages.Select(cl =>
-                    cl.Language.Title)))
-            .ForMember(up => up.DisciplineTitles,
-                opt => opt.MapFrom(u => u.UserDisciplines.Select(cd =>
-                    cd.Discipline.Title)))
-            .ForMember(up => up.GradeNumbers,
-                opt => opt.MapFrom(u => u.UserGrades.Select(cd =>
-                    cd.Grade.GradeNumber)))
-            .ForMember(dest => dest.ClassDtos,
-                opt => opt.MapFrom(src => src.Classes))
-            .ForMember(dest => dest.FeedbackDtos,
-                opt => opt.MapFrom(src => src.ReceivedFeedbacks));
+            .ForMember(u => u.UserId, opt => opt.MapFrom(u => u.UserId))
+            .ForMember(u => u.Email, opt => opt.MapFrom(u => u.Email))
+            .ForMember(u => u.IsVerified, opt => opt.MapFrom(u => u.IsVerified))
+            .ForMember(u => u.IsCreatedAccount, opt => opt.MapFrom(u => u.IsCreatedAccount))
+            .ForMember(u => u.FirstName, opt => opt.MapFrom(u => u.FirstName))
+            .ForMember(u => u.LastName, opt => opt.MapFrom(u => u.LastName))
+            .ForMember(u => u.Description, opt => opt.MapFrom(u => u.Description))
+            .ForMember(u => u.ImageUrl, opt => opt.MapFrom(u => u.ImageUrl))
+            .ForMember(u => u.BannerImageUrl, opt => opt.MapFrom(u => u.BannerImageUrl))
+            .ForMember(u => u.IsATeacher, opt => opt.MapFrom(u => u.IsATeacher))
+            .ForMember(u => u.IsAnExpert, opt => opt.MapFrom(u => u.IsAnExpert))
+            .ForMember(u => u.Rating, opt => opt.MapFrom(u => u.Rating))
+            .ForMember(u => u.CityTitle, opt => opt.MapFrom(u => u.City.Title))
+            .ForMember(u => u.CountryTitle, opt => opt.MapFrom(u => u.Country.Title))
+            .ForMember(u => u.Institution, opt => opt.MapFrom(u => new InstitutionDto
+            {
+                Address = u.Institution.Address,
+                Title = u.Institution.Title
+            }))
+            .ForMember(u => u.LanguageTitles, opt => opt.MapFrom(u => u.UserLanguages.Select(l => l.Language.Title)))
+            .ForMember(u => u.DisciplineTitles, opt => opt.MapFrom(u => u.UserDisciplines.Select(d => d.Discipline.Title)))
+            .ForMember(u => u.GradeNumbers, opt => opt.MapFrom(u => u.UserGrades.Select(g => g.Grade.GradeNumber)))
+            .ForMember(u => u.ClassDtos, opt => opt.MapFrom(u => u.Classes))
+            .ForMember(u => u.FeedbackDtos, opt => opt.MapFrom(u => u.ReceivedFeedbacks));
     }
 }

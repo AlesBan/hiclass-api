@@ -6,7 +6,7 @@ using HiClass.Application.Models.User;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 
-namespace HiClass.Infrastructure.InternalServices.SearchService;
+namespace HiClass.Infrastructure.InternalServices.SearchServices;
 
 public class SearchService : ISearchService
 {
@@ -17,20 +17,19 @@ public class SearchService : ISearchService
         _mapper = mapper;
     }
 
-    public async Task<SearchResponseDto> GetTeacherAndClassProfiles(Guid userId, SearchRequestDto searchRequest,
-        IMediator mediator)
+    public async Task<SearchResponseDto> GetTeacherAndClassProfiles(Guid userId, SearchRequestDto searchRequest, IMediator mediator)
     {
         var userList = await GetUserListBySearchRequest(userId, searchRequest, mediator);
-        var searchResponseDto = await GetSearchResponseDto(userList, searchRequest.Disciplines);
+        var searchResponseDto = await GetSearchResponseDto(userList, searchRequest.Disciplines, searchRequest.Languages,
+            searchRequest.Grades);
         return searchResponseDto;
     }
 
-    private static async Task<IEnumerable<User>> GetUserListBySearchRequest(Guid userId, SearchRequestDto searchRequest,
-        IMediator mediator)
+    private static async Task<IEnumerable<User>> GetUserListBySearchRequest(Guid userId, SearchRequestDto searchRequest, IMediator mediator)
     {
         var query = new GetUserListBySearchRequestCommand
         {
-            SearchRequest = new SearchCommandDto()
+            SearchRequest = new SearchCommandDto
             {
                 UserId = userId,
                 Disciplines = searchRequest.Disciplines,
@@ -45,13 +44,12 @@ public class SearchService : ISearchService
         return userList;
     }
 
-    private async Task<SearchResponseDto> GetSearchResponseDto(IEnumerable<User> userList,
-        IEnumerable<string> languages)
+    private async Task<SearchResponseDto> GetSearchResponseDto(IEnumerable<User> userList, IEnumerable<string> disciplines, IEnumerable<string> languages, IEnumerable<int> grades)
     {
         var userProfileList = (await GetUserProfileList(userList)).ToList();
         var teacherProfiles = GetProfiles(userProfileList, isTeacher: true).ToList();
         var expertProfiles = GetProfiles(userProfileList, isTeacher: false).ToList();
-        var classProfiles = GetClassProfiles(teacherProfiles, languages).ToList();
+        var classProfiles = GetClassProfiles(teacherProfiles, disciplines.ToList(), languages.ToList(), grades.ToList()).ToList();
 
         return new SearchResponseDto
         {
@@ -63,24 +61,22 @@ public class SearchService : ISearchService
 
     private async Task<IEnumerable<UserProfileDto>> GetUserProfileList(IEnumerable<User> userList)
     {
-        var userProfileDtos = userList
-            .Select(user => _mapper.Map<UserProfileDto>(user));
-        return userProfileDtos;
+        return userList.Select(user => _mapper.Map<UserProfileDto>(user));
     }
 
     private static IEnumerable<UserProfileDto> GetProfiles(IEnumerable<UserProfileDto> userProfileList, bool isTeacher)
     {
-        return userProfileList
-            .Where(up => up.IsATeacher == isTeacher);
+        return userProfileList.Where(up => up.IsATeacher == isTeacher);
     }
 
-    private static IEnumerable<ClassProfileDto> GetClassProfiles(IEnumerable<UserProfileDto> teacherProfiles,
-        IEnumerable<string> disciplines)
+    private static IEnumerable<ClassProfileDto> GetClassProfiles(IEnumerable<UserProfileDto> teacherProfileDtos, List<string> disciplines, List<string> languages, List<int> grades)
     {
-        return teacherProfiles
+        var classProfiles = teacherProfileDtos
             .SelectMany(tp => tp.ClassDtos)
-            .Where(c => c.Disciplines.Intersect(disciplines,
-                StringComparer.OrdinalIgnoreCase).Any())
+            .Where(c =>
+                (!disciplines.Any() || disciplines.Contains(c.DisciplineTitle, StringComparer.OrdinalIgnoreCase)) &&
+                (!languages.Any() || c.LanguageTitles.Intersect(languages, StringComparer.OrdinalIgnoreCase).Any()) &&
+                (!grades.Any() || grades.Contains(c.Grade)))
             .Select(c => new ClassProfileDto
             {
                 ClassId = c.ClassId,
@@ -88,9 +84,12 @@ public class SearchService : ISearchService
                 UserFullName = c.UserFullName,
                 UserRating = c.UserRating,
                 Grade = c.Grade,
-                Languages = c.Languages,
-                Disciplines = c.Disciplines,
+                LanguageTitles = c.LanguageTitles,
+                DisciplineTitle = c.DisciplineTitle,
                 ImageUrl = c.ImageUrl
             });
+
+        return classProfiles;
     }
+
 }

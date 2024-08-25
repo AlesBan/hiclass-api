@@ -1,7 +1,5 @@
-using AutoMapper;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Helpers;
-using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Domain.Entities.Main;
@@ -13,36 +11,16 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Edit
 public class EditUserPasswordCommandHandler : IRequestHandler<EditUserPasswordCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
-    private readonly IMapper _mapper;
-    private readonly ITokenHelper _tokenHelper;
 
-    public EditUserPasswordCommandHandler(ISharedLessonDbContext context, ITokenHelper tokenHelper, IMapper mapper)
+    public EditUserPasswordCommandHandler(ISharedLessonDbContext context)
     {
         _context = context;
-        _tokenHelper = tokenHelper;
-        _mapper = mapper;
     }
 
     public async Task<User> Handle(EditUserPasswordCommand request, CancellationToken cancellationToken)
     {
         var user = _context.Users
-            .Include(u => u.City)
-            .Include(u => u.Country)
-            .Include(u => u.Institution)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassLanguages)
-            .ThenInclude(cl => cl.Language)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
-            .ThenInclude(cd => cd.Discipline)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.Grade)
-            .Include(u => u.UserDisciplines)
-            .ThenInclude(ud => ud.Discipline)
-            .Include(u => u.UserLanguages)
-            .ThenInclude(ul => ul.Language)
-            .Include(u => u.UserGrades)
-            .ThenInclude(ug => ug.Grade)
+            .AsNoTracking()
             .FirstOrDefault(u =>
                 u.UserId == request.UserId);
 
@@ -59,6 +37,25 @@ public class EditUserPasswordCommandHandler : IRequestHandler<EditUserPasswordCo
         _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
         
+        user = _context.Users
+            .Include(u => u.City)
+            .Include(u => u.Country)
+            .Include(u => u.Institution)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassLanguages)
+            .ThenInclude(cl => cl.Language)
+            .Include(u => u.Classes)
+            .ThenInclude(cd => cd.Discipline)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.Grade)
+            .Include(u => u.UserDisciplines)
+            .ThenInclude(ud => ud.Discipline)
+            .Include(u => u.UserLanguages)
+            .ThenInclude(ul => ul.Language)
+            .Include(u => u.UserGrades)
+            .ThenInclude(ug => ug.Grade)
+            .FirstOrDefault(u =>
+                u.UserId == request.UserId);
         return user;
     }
 }

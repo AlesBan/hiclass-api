@@ -75,7 +75,6 @@ public class SharedLessonDbContextFactory
         AppendUserGrades(context);
         AppendUserRoles(context);
         AppendClassLanguages(context);
-        AppendClassDisciplines(context);
         AppendEstablishmentTypesEstablishment(context);
 
         AppendInvitations(context);
@@ -317,33 +316,6 @@ public class SharedLessonDbContextFactory
             {
                 Class = context.Classes.FirstOrDefault(c => c.ClassId == ClassForDeleteId)!,
                 Language = context.Languages.FirstOrDefault(l => l.Title == "English")!
-            }
-        );
-    }
-
-    private static void AppendClassDisciplines(ISharedLessonDbContext context)
-    {
-        context.ClassDisciplines.AddRangeAsync(
-            new ClassDiscipline()
-            {
-                Class = context.Classes.FirstOrDefault(c =>
-                    c.ClassId == ClassAId)!,
-                Discipline = context.Disciplines.FirstOrDefault(d =>
-                    d.Title == "Chemistry")!
-            },
-            new ClassDiscipline()
-            {
-                Class = context.Classes.FirstOrDefault(c =>
-                    c.ClassId == ClassForUpdateId)!,
-                Discipline = context.Disciplines.FirstOrDefault(d =>
-                    d.Title == "Chemistry")!
-            },
-            new ClassDiscipline()
-            {
-                Class = context.Classes.FirstOrDefault(c =>
-                    c.ClassId == ClassForDeleteId)!,
-                Discipline = context.Disciplines.FirstOrDefault(d =>
-                    d.Title == "Chemistry")!
             }
         );
     }

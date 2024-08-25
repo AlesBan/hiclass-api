@@ -16,12 +16,10 @@ public class UserDisciplineConfiguration : IEntityTypeConfiguration<UserDiscipli
             .WithMany(t => t.UserDisciplines)
             .HasForeignKey(td => td.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.HasOne(td => td.Discipline)
             .WithMany(d => d.UserDisciplines)
             .HasForeignKey(td => td.DisciplineId)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        
     }
 }

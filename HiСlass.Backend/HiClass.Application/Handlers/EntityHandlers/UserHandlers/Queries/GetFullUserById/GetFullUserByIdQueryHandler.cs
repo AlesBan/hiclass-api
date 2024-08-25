@@ -38,7 +38,6 @@ public class GetFullUserByIdQueryHandler : IRequestHandler<GetFullUserByIdQuery,
             .ThenInclude(cl => cl.Language)
             .AsNoTracking()
             .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
             .ThenInclude(cd => cd.Discipline)
             .AsNoTracking()
             .Include(u => u.Classes)

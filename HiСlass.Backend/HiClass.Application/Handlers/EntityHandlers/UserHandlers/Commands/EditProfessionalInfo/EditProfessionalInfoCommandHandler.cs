@@ -1,4 +1,5 @@
 using HiClass.Application.Common.Exceptions.User;
+using HiClass.Application.Common.Exceptions.User.EditUser;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserDisciplinesHandlers.Commands.UpdateUserDisciplines;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserGradeHandlers.Commands.UpdateUserGrades;
 using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandlers.Commands.UpdateUserLanguages;
@@ -27,6 +28,84 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
     public async Task<User> Handle(EditProfessionalInfoCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassLanguages)
+            .ThenInclude(cl => cl.Language)
+            .Include(u => u.Classes)
+            .ThenInclude(cd => cd.Discipline)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.Grade)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u =>
+                u.UserId == request.UserId, cancellationToken: cancellationToken);
+
+        if (user == null)
+        {
+            throw new UserNotFoundByIdException(request.UserId);
+        }
+
+        var newLanguages = await GetLanguages(request.LanguageTitles, cancellationToken);
+
+        var newDisciplines = await GetDisciplines(request.DisciplineTitles, cancellationToken);
+
+        var newGrades = await GetGrades(request.GradeNumbers, cancellationToken);
+
+        foreach (var @class in user.Classes)
+        {
+            foreach (var newLanguage in newLanguages.Where(newLanguage =>
+                         @class.ClassLanguages.All(cl => cl.LanguageId != newLanguage.LanguageId)))
+            {
+                throw new MissingClassLanguageException(@class.ClassId, newLanguage.Title);
+            }
+
+            if (!newDisciplines.Any(d =>
+                    {
+                        if (d.DisciplineId == @class.DisciplineId)
+                        {
+                            return true;
+                        }
+
+                        throw new MissingClassDisciplineException(@class.ClassId, d.Title);
+                    }
+                )) ;
+
+            if (!newGrades.Any(g =>
+                {
+                    if (g.GradeId == @class.GradeId)
+                    {
+                        return true;
+                    }
+
+                    throw new MissingClassGradeException(@class.ClassId, g.GradeNumber);
+                })) ;
+        }
+
+        var updateUserLanguagesQuery = new UpdateUserLanguagesCommand
+        {
+            UserId = user.UserId,
+            NewLanguageIds = newLanguages.Select(l => l.LanguageId).ToList()
+        };
+
+        var updateUserDisciplinesQuery = new UpdateUserDisciplinesCommand
+        {
+            UserId = user.UserId,
+            NewDisciplineIds = newDisciplines.Select(d => d.DisciplineId).ToList()
+        };
+
+        var updateUserGradesQuery = new UpdateUserGradesCommand()
+        {
+            UserId = user.UserId,
+            NewGradeIds = newGrades.Select(g => g.GradeId).ToList()
+        };
+
+        await _mediator.Send(updateUserLanguagesQuery, cancellationToken);
+        await _mediator.Send(updateUserDisciplinesQuery, cancellationToken);
+        await _mediator.Send(updateUserGradesQuery, cancellationToken);
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        user = await _context.Users
             .Include(u => u.City)
             .Include(u => u.Country)
             .Include(u => u.Institution)
@@ -34,7 +113,6 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
             .ThenInclude(c => c.ClassLanguages)
             .ThenInclude(cl => cl.Language)
             .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
             .ThenInclude(cd => cd.Discipline)
             .Include(u => u.Classes)
             .ThenInclude(c => c.Grade)
@@ -46,42 +124,6 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
             .ThenInclude(ug => ug.Grade)
             .FirstOrDefaultAsync(u =>
                 u.UserId == request.UserId, cancellationToken: cancellationToken);
-
-        if (user == null)
-        {
-            throw new UserNotFoundByIdException(request.UserId);
-        }
-
-        var languages = await GetLanguages(request.LanguageTitles, cancellationToken);
-
-        var disciplines = await GetDisciplines(request.DisciplineTitles, cancellationToken);
-
-        var grades = await GetGrades(request.GradeNumbers, cancellationToken);
-
-        var updateUserLanguagesQuery = new UpdateUserLanguagesCommand
-        {
-            UserId = user.UserId,
-            NewLanguageIds = languages.Select(l => l.LanguageId).ToList()
-        };
-
-        var updateUserDisciplinesQuery = new UpdateUserDisciplinesCommand
-        {
-            UserId = user.UserId,
-            NewDisciplineIds = disciplines.Select(d => d.DisciplineId).ToList()
-        };
-
-        var updateUserGradesQuery = new UpdateUserGradesCommand()
-        {
-            UserId = user.UserId,
-            NewGradeIds = grades.Select(g => g.GradeId).ToList()
-        };
-
-        await _mediator.Send(updateUserLanguagesQuery, cancellationToken);
-        await _mediator.Send(updateUserDisciplinesQuery, cancellationToken);
-        await _mediator.Send(updateUserGradesQuery, cancellationToken);
-
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync(cancellationToken);
 
         return user;
     }

@@ -1,7 +1,7 @@
 using HiClass.Application.Models.Search;
 using MediatR;
 
-namespace HiClass.Infrastructure.InternalServices.SearchService;
+namespace HiClass.Infrastructure.InternalServices.SearchServices;
 
 public interface ISearchService
 {

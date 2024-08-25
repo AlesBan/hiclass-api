@@ -9,8 +9,13 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
     public void Configure(EntityTypeBuilder<City> builder)
     {
         builder.HasKey(c => c.CityId);
+
         builder.HasIndex(c => c.CityId)
             .IsUnique();
+
+        builder.HasIndex(c => new { c.Title, c.CountryId })
+            .IsUnique();
+
         builder.Property(c => c.CityId)
             .HasDefaultValueSql("gen_random_uuid()")
             .ValueGeneratedOnAdd();
@@ -21,6 +26,7 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
 
         builder.HasOne(c => c.Country)
             .WithMany(cn => cn.Cities)
-            .HasForeignKey(c => c.CountryId);
+            .HasForeignKey(c => c.CountryId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

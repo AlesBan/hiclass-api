@@ -52,12 +52,11 @@ public class CreateAccountUserProfileDto : IMapWith<Domain.Entities.Main.User>
                 opt => opt.MapFrom(u => u.Grade.GradeNumber))
             .ForMember(up => up.ImageUrl,
                 opt => opt.MapFrom(u => u.ImageUrl))
-            .ForMember(up => up.Languages,
+            .ForMember(up => up.LanguageTitles,
                 opt => opt.MapFrom(u => u.ClassLanguages.Select(cl =>
                     cl.Language.Title)))
-            .ForMember(up => up.Disciplines,
-                opt => opt.MapFrom(u => u.ClassDisciplines.Select(cd =>
-                    cd.Discipline.Title)));
+            .ForMember(up => up.DisciplineTitle,
+                opt => opt.MapFrom(u => u.Discipline.Title));
         profile.CreateMap<City, CreateAccountUserProfileDto>()
             .ForMember(up => up.CityTitle,
                 opt => opt.MapFrom(c => c.Title));

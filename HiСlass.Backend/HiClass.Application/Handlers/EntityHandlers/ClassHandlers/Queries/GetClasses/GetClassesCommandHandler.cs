@@ -21,7 +21,6 @@ public class GetClassesCommandHandler : IRequestHandler<GetClassesCommand, IEnum
         var user = await _context.Users
             .Include(u => u.ReceivedFeedbacks)
             .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
             .ThenInclude(cd => cd.Discipline)
             .Include(u => u.Classes)
             .ThenInclude(c => c.ClassLanguages)

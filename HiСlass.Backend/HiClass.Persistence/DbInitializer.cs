@@ -11,11 +11,6 @@ public static class DbInitializer
         try
         {
             context.Database.EnsureCreated();
-            
-            if (!context.Database.GetPendingMigrations().Any())
-            {
-                context.Database.Migrate();
-            }
         }
         catch
         {

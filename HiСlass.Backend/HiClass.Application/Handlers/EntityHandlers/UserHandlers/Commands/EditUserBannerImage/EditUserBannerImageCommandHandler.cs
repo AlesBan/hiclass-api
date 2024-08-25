@@ -26,7 +26,6 @@ public class EditUserBannerImageCommandHandler : IRequestHandler<EditUserBannerI
             .ThenInclude(c => c.ClassLanguages)
             .ThenInclude(cl => cl.Language)
             .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
             .ThenInclude(cd => cd.Discipline)
             .Include(u => u.Classes)
             .ThenInclude(c => c.Grade)

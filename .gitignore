@@ -505,6 +505,7 @@ $RECYCLE.BIN/
 
 #Migrations
 Migrations/
+MigrationsScripts/
 
 #Rider
 rider.project.restore.info
@@ -520,6 +521,14 @@ Configurations/
 *.state
 *.pid.lock
 HiСlass.Backend/data/
+
+#Flyway
+flyway/
+flyway.history
+flyway.conf
+flyway.config
+HiСlass.Backend/sql/
+
 
 
 

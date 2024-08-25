@@ -18,23 +18,6 @@ public class EditUserImageCommandHandler : IRequestHandler<EditUserImageCommand,
     public async Task<User> Handle(EditUserImageCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users
-            .Include(u => u.City)
-            .Include(u => u.Country)
-            .Include(u => u.Institution)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassLanguages)
-            .ThenInclude(cl => cl.Language)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.ClassDisciplines)
-            .ThenInclude(cd => cd.Discipline)
-            .Include(u => u.Classes)
-            .ThenInclude(c => c.Grade)
-            .Include(u => u.UserDisciplines)
-            .ThenInclude(ud => ud.Discipline)
-            .Include(u => u.UserLanguages)
-            .ThenInclude(ul => ul.Language)
-            .Include(u => u.UserGrades)
-            .ThenInclude(ug => ug.Grade)
             .FirstOrDefaultAsync(u =>
                 u.UserId == request.UserId, cancellationToken: cancellationToken);
 
@@ -47,7 +30,27 @@ public class EditUserImageCommandHandler : IRequestHandler<EditUserImageCommand,
 
         _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
-
-        return user;
+        
+        user = await _context.Users
+            .Include(u => u.City)
+            .Include(u => u.Country)
+            .Include(u => u.Institution)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.ClassLanguages)
+            .ThenInclude(cl => cl.Language)
+            .Include(u => u.Classes)
+            .ThenInclude(cd => cd.Discipline)
+            .Include(u => u.Classes)
+            .ThenInclude(c => c.Grade)
+            .Include(u => u.UserDisciplines)
+            .ThenInclude(ud => ud.Discipline)
+            .Include(u => u.UserLanguages)
+            .ThenInclude(ul => ul.Language)
+            .Include(u => u.UserGrades)
+            .ThenInclude(ug => ug.Grade)
+            .FirstOrDefaultAsync(u =>
+                u.UserId == request.UserId, cancellationToken: cancellationToken);
+        
+        return user!;
     }
 }

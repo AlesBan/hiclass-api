@@ -10,8 +10,10 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
     public void Configure(EntityTypeBuilder<Notification> builder)
     {
         builder.HasKey(x => x.NotificationId);
+
         builder.HasIndex(x => x.NotificationId)
             .IsUnique();
+
         builder.Property(x => x.NotificationId)
             .HasDefaultValueSql("gen_random_uuid()")
             .ValueGeneratedOnAdd();
@@ -28,13 +30,21 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
             .IsRequired();
 
         builder.Property(c => c.Status)
-            .HasConversion(x => x.ToString(),
+            .HasConversion(
+                x => x.ToString(),
                 x => (NotificationStatus)Enum.Parse(typeof(NotificationStatus), x))
             .IsRequired();
 
         builder.Property(c => c.Type)
-            .HasConversion(x => x.ToString(),
+            .HasConversion(
+                x => x.ToString(),
                 x => (NotificationType)Enum.Parse(typeof(NotificationType), x))
             .IsRequired();
+
+        builder.Property(c => c.Message)
+            .HasMaxLength(255);
+
+        builder.Property(c => c.IsDeleted)
+            .HasDefaultValue(false);
     }
 }
