@@ -56,7 +56,7 @@ public class EditProfessionalInfoCommandHandler : IRequestHandler<EditProfession
             var missingLanguageTitle = "";
 
             foreach (var newLanguage in newLanguages.Where(newLanguage =>
-                         @class.ClassLanguages.All(cl => cl.LanguageId != newLanguage.LanguageId)))
+                         @class.ClassLanguages.Any(cl => cl.LanguageId == newLanguage.LanguageId)))
             {
                 languageMatchFound = true;
                 missingLanguageTitle = newLanguage.Title;
