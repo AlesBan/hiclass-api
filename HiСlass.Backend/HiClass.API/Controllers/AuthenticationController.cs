@@ -46,7 +46,7 @@ public class AuthenticationController : BaseController
                 throw new InvalidFirebaseTokenProvidedException();
             }
 
-            var result = await _userAccountService.LoginOrRegister(email, requestDto.Token, Mediator);
+            var result = await _userAccountService.LoginOrRegister(email, requestDto.DeviceToken, Mediator);
             return ResponseHelper.GetOkResult(result);
         }
         catch
