@@ -61,6 +61,9 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Logi
             var newAccessToken = _tokenHelper.CreateAccessToken(existingUserTokenDto);
             var newRefreshToken = _tokenHelper.CreateRefreshToken(existingUserTokenDto);
 
+            user.IsVerified = true;
+            await _context.SaveChangesAsync(CancellationToken.None);
+            
             var userDevice = user.UserDevices
                 .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
 

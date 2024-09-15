@@ -105,7 +105,7 @@ public class UserAccountService : IUserAccountService
         return tokenModelResponseDto;
     }
 
-    public Task<TokenModelResponseDto> LoginOrRegister(string email, string deviceToken, IMediator mediator)
+    public async Task<TokenModelResponseDto> LoginOrRegister(string email, string deviceToken, IMediator mediator)
     {
         var command = new LoginOrRegisterByEmailAndRefreshTokenCommand
         {
@@ -113,7 +113,7 @@ public class UserAccountService : IUserAccountService
             DeviceToken = deviceToken
         };
         
-        var tokenModelResponseDto = mediator.Send(command);
+        var tokenModelResponseDto = await mediator.Send(command);
         return tokenModelResponseDto;
     }
 
