@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginOrRegisterByEmailAndRefreshToken;
 
-public class LoginOrRegisterByEmailAndRefreshTokenCommand : IRequest<TokenModelResponseDto>
+public class GoogleLoginOrRegisterByEmailAndRefreshTokenCommand : IRequest<TokenModelResponseDto>
 {
     [Required] public string Email { get; set; } = string.Empty;
 

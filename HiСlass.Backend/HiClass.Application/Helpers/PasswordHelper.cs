@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Domain.Entities.Main;
 
@@ -11,6 +12,8 @@ public class PasswordHelper
         CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
         user.PasswordHash = passwordHash;
         user.PasswordSalt = passwordSalt;
+
+        user.IsPasswordSet = true; 
     }
 
     public static void VerifyPasswordHash(User user, string password)

@@ -10,6 +10,8 @@ public class User
 {
     public Guid UserId { get; set; } = Guid.NewGuid();
     public string Email { get; set; } = string.Empty;
+    public bool IsGoogleSignedIn { get; set; }
+    public bool IsPasswordSet { get; set; }
     public byte[] PasswordHash { get; set; } = new byte[64];
     public byte[] PasswordSalt { get; set; } = new byte[64];
     public string? PasswordResetCode { get; set; } = string.Empty;

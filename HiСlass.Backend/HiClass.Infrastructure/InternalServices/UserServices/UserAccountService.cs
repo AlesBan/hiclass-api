@@ -107,7 +107,7 @@ public class UserAccountService : IUserAccountService
 
     public async Task<TokenModelResponseDto> LoginOrRegister(string email, string deviceToken, IMediator mediator)
     {
-        var command = new LoginOrRegisterByEmailAndRefreshTokenCommand
+        var command = new GoogleLoginOrRegisterByEmailAndRefreshTokenCommand
         {
             Email = email,
             DeviceToken = deviceToken

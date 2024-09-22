@@ -15,6 +15,8 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
 {
     public Guid UserId { get; set; }
     public string Email { get; set; } = string.Empty;
+    public bool IsGoogleSignedIn { get; set; }
+    public bool IsPasswordSet { get; set; }
     public string RefreshToken { get; set; } = string.Empty;
     public bool IsVerified { get; set; }
     public string VerificationCode { get; set; } = string.Empty;
@@ -59,6 +61,7 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
             .ForMember(x => x.FeedbackText, opt => opt.MapFrom(x => x.FeedbackText))
             .ForMember(x => x.Rating, opt => opt.MapFrom(x => x.Rating))
             .ForMember(x => x.CreatedAt, opt => opt.MapFrom(x => x.CreatedAt));
+        
         profile.CreateMap<Invitation, InvitationDto>()
             .ForMember(x => x.Feedbacks, opt => opt.MapFrom(x => x.Feedbacks))
             .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))
@@ -69,9 +72,11 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
             .ForMember(x => x.UserReceiverId, opt => opt.MapFrom(x => x.UserRecipientId))
             .ForMember(x => x.ClassSenderId, opt => opt.MapFrom(x => x.ClassSenderId))
             .ForMember(x => x.ClassReceiverId, opt => opt.MapFrom(x => x.ClassRecipientId));
+        
         profile.CreateMap<Domain.Entities.Main.Class, Grade>()
             .ForMember(up => up.GradeNumber,
                 opt => opt.MapFrom(u => u.Grade));
+        
         profile.CreateMap<Domain.Entities.Main.Class, ClassProfileDto>()
             .ForMember(cp => cp.ClassId,
                 opt => opt.MapFrom(u => u.ClassId))
@@ -93,50 +98,40 @@ public class FullUserProfileDto : IMapWith<Domain.Entities.Main.User>
                     cl.Language.Title)))
             .ForMember(up => up.DisciplineTitle,
                 opt => opt.MapFrom(u => u.Discipline.Title));
+        
         profile.CreateMap<City, FullUserProfileDto>()
             .ForMember(up => up.CityTitle,
                 opt => opt.MapFrom(c => c.Title));
+        
         profile.CreateMap<Country, FullUserProfileDto>()
             .ForMember(up => up.CountryTitle,
                 opt => opt.MapFrom(c => c.Title));
+        
         profile.CreateMap<Domain.Entities.Job.Institution, InstitutionDto>()
             .ForMember(dest => dest.Address,
                 opt => opt.MapFrom(src => src.Address))
             .ForMember(dest => dest.Title,
                 opt => opt.MapFrom(src => src.Title));
+        
         profile.CreateMap<Domain.Entities.Main.User, FullUserProfileDto>()
-            .ForMember(up => up.UserId,
-                opt => opt.MapFrom(u => u.UserId))
-            .ForMember(up => up.Email,
-                opt => opt.MapFrom(u => u.Email))
-            .ForMember(up => up.IsVerified,
-                opt => opt.MapFrom(u => u.IsVerified))
-            .ForMember(up => up.VerificationCode,
-                opt => opt.MapFrom(u => u.VerificationCode))
-            .ForMember(up => up.PasswordResetCode,
-                opt => opt.MapFrom(u => u.PasswordResetCode))
-            .ForMember(up => up.IsCreateAccount,
-                opt => opt.MapFrom(u => u.IsCreatedAccount))
-            .ForMember(up => up.FirstName,
-                opt => opt.MapFrom(u => u.FirstName))
-            .ForMember(up => up.LastName,
-                opt => opt.MapFrom(u => u.LastName))
-            .ForMember(up => up.Description,
-                opt => opt.MapFrom(u => u.Description))
-            .ForMember(up => up.ImageUrl,
-                opt => opt.MapFrom(u => u.ImageUrl))
-            .ForMember(up => up.BannerPhotoUrl,
-                opt => opt.MapFrom(u => u.BannerImageUrl))
-            .ForMember(up => up.IsATeacher,
-                opt => opt.MapFrom(u => u.IsATeacher))
-            .ForMember(up => up.IsAnExpert,
-                opt => opt.MapFrom(u => u.IsAnExpert))
-            .ForMember(up => up.Rating,
-                opt => opt.MapFrom(u => u.Rating))
-            .ForMember(up => up.CityTitle,
-                opt => opt.MapFrom(c => c.City.Title))
-            .ForMember(up => up.CountryTitle,
-                opt => opt.MapFrom(c => c.Country.Title))
+            .ForMember(up => up.UserId, opt => opt.MapFrom(u => u.UserId))
+            .ForMember(up => up.Email, opt => opt.MapFrom(u => u.Email))
+            .ForMember(u => u.IsGoogleSignedIn, opt => opt.MapFrom(u => u.IsGoogleSignedIn))
+            .ForMember(u => u.IsPasswordSet, opt => opt.MapFrom(u => u.IsPasswordSet))
+            .ForMember(up => up.IsVerified, opt => opt.MapFrom(u => u.IsVerified))
+            .ForMember(up => up.VerificationCode, opt => opt.MapFrom(u => u.VerificationCode))
+            .ForMember(up => up.PasswordResetCode, opt => opt.MapFrom(u => u.PasswordResetCode))
+            .ForMember(up => up.IsCreateAccount, opt => opt.MapFrom(u => u.IsCreatedAccount))
+            .ForMember(up => up.FirstName, opt => opt.MapFrom(u => u.FirstName))
+            .ForMember(up => up.LastName, opt => opt.MapFrom(u => u.LastName))
+            .ForMember(up => up.Description, opt => opt.MapFrom(u => u.Description))
+            .ForMember(up => up.ImageUrl, opt => opt.MapFrom(u => u.ImageUrl))
+            .ForMember(up => up.BannerPhotoUrl, opt => opt.MapFrom(u => u.BannerImageUrl))
+            .ForMember(up => up.IsATeacher, opt => opt.MapFrom(u => u.IsATeacher))
+            .ForMember(up => up.IsAnExpert, opt => opt.MapFrom(u => u.IsAnExpert))
+            .ForMember(up => up.Rating, opt => opt.MapFrom(u => u.Rating))
+            .ForMember(up => up.CityTitle, opt => opt.MapFrom(c => c.City.Title))
+            .ForMember(up => up.CountryTitle, opt => opt.MapFrom(c => c.Country.Title))
             .ForMember(dest => dest.Institution,
                 opt => opt.MapFrom(src => new InstitutionDto
                     {

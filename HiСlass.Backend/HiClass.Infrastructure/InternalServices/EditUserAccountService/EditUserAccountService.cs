@@ -7,6 +7,7 @@ using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUser
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserImage;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserInstitution;
 using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
+using HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserPassword;
 using HiClass.Application.Models.Images.Editing.Banner;
 using HiClass.Application.Models.Images.Editing.Image;
 using HiClass.Application.Models.User;
@@ -103,6 +104,16 @@ public class EditUserAccountService : IEditUserAccountService
 
         return userProfileDto;
     }
+    
+    public async Task<UserProfileDto> SetUserPasswordAsync(Guid userId,
+        SetUserPasswordHashRequestDto requestUserDto,
+        IMediator mediator)
+    {
+        var user = await GetUpdatedUserAsync(userId, requestUserDto, mediator);
+        var userProfileDto = _mapper.Map<UserProfileDto>(user);
+
+        return userProfileDto;
+    }
 
     private async Task<User> GetUpdatedUserAsync<TRequestDto>(Guid userId, TRequestDto requestUserDto,
         IMediator mediator)
@@ -165,7 +176,13 @@ public class EditUserAccountService : IEditUserAccountService
                 {
                     UserId = userId, 
                     OldPassword = passwordRequestDto.OldPassword,
-                    NewPassword = passwordRequestDto.Password
+                    NewPassword = passwordRequestDto.NewPassword
+                });
+            case SetUserPasswordHashRequestDto passwordRequestDto:
+                return await mediator.Send(new SetUserPasswordCommand
+                {
+                    UserId = userId, 
+                    NewPassword = passwordRequestDto.NewPassword
                 });
             default:
                 throw new UnknownTypeException(userId);
