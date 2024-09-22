@@ -43,6 +43,12 @@ public class LoginAndRefreshTokenCommandHandler : IRequestHandler<LoginAndRefres
         }
 
         _userHelper.CheckUserVerification(user);
+        
+        if (!user.IsPasswordSet)
+        {
+            throw new UserPasswordNotSetException(user.UserId);
+        }
+        
         PasswordHelper.VerifyPasswordHash(user, request.Password);
 
         var tokenUserDto = _mapper.Map<CreateTokenDto>(user);

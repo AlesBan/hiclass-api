@@ -1,23 +1,22 @@
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Helpers;
 using HiClass.Application.Interfaces;
-using HiClass.Application.Models.User.Authentication;
 using HiClass.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.EditUserPasswordHash;
+namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.SetUserPassword;
 
-public class EditUserPasswordCommandHandler : IRequestHandler<EditUserPasswordCommand, User>
+public class SetUserPasswordCommandHandler: IRequestHandler<SetUserPasswordCommand, User>
 {
     private readonly ISharedLessonDbContext _context;
 
-    public EditUserPasswordCommandHandler(ISharedLessonDbContext context)
+    public SetUserPasswordCommandHandler(ISharedLessonDbContext context)
     {
         _context = context;
     }
-
-    public async Task<User> Handle(EditUserPasswordCommand request, CancellationToken cancellationToken)
+    
+    public async Task<User> Handle(SetUserPasswordCommand request, CancellationToken cancellationToken)
     {
         var user = _context.Users
             .AsNoTracking()
@@ -28,16 +27,17 @@ public class EditUserPasswordCommandHandler : IRequestHandler<EditUserPasswordCo
         {
             throw new UserNotFoundByIdException(request.UserId);
         }
-        
-        if (!user.IsPasswordSet)
-        {
-            throw new UserPasswordNotSetException(request.UserId);
-        }
 
-        PasswordHelper.VerifyPasswordHash(user, request.OldPassword);
+        if (user.IsPasswordSet)
+        {
+            throw new UserPasswordAlreadySetException(request.UserId);
+        }
+        
         PasswordHelper.CreatePasswordHash(request.NewPassword, out var passwordHash, out var passwordSalt);
         user.PasswordHash = passwordHash;
         user.PasswordSalt = passwordSalt;
+        
+        user.IsPasswordSet = true;
 
         _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);

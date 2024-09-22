@@ -347,6 +347,24 @@ paths:
       responses:
         '200':
           description: OK
+  /api/EditUser/set-password:
+    put:
+      tags:
+        - EditUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUserPasswordHashRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SetUserPasswordHashRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SetUserPasswordHashRequestDto'
+      responses:
+        '200':
+          description: OK
   /api/Image/set-user-image:
     put:
       tags:
@@ -1118,14 +1136,17 @@ components:
           nullable: true
       additionalProperties: false
     EditUserPasswordHashRequestDto:
+      required:
+        - newPassword
+        - oldPassword
       type: object
       properties:
         oldPassword:
+          minLength: 1
           type: string
-          nullable: true
-        password:
+        newPassword:
+          minLength: 1
           type: string
-          nullable: true
       additionalProperties: false
     EmailReVerificationRequestDto:
       required:
@@ -1347,6 +1368,13 @@ components:
             $ref: '#/components/schemas/ClassProfileDto'
           nullable: true
       additionalProperties: false
+    SetUserPasswordHashRequestDto:
+      type: object
+      properties:
+        newPassword:
+          type: string
+          nullable: true
+      additionalProperties: false
     UpdateInvitationStatusRequestDto:
       type: object
       properties:
@@ -1374,6 +1402,10 @@ components:
         email:
           type: string
           nullable: true
+        isGoogleSignedIn:
+          type: boolean
+        isPasswordSet:
+          type: boolean
         isVerified:
           type: boolean
         isCreatedAccount:

@@ -14,6 +14,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(t => t.Email)
             .IsUnique();
+        
+        builder.Property(u => u.IsGoogleSignedIn)
+            .HasDefaultValue(false)
+            .IsRequired();
+        
+        builder.Property(u => u.IsPasswordSet)
+            .HasDefaultValue(false)
+            .IsRequired();
 
         builder.Property(u => u.IsCreatedAccount)
             .HasDefaultValue(false)

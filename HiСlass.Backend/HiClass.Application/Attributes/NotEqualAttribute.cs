@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using HiClass.Application.Common.Exceptions.Client;
 using HiClass.Application.Common.Exceptions.Invitations;
 using HiClass.Application.Common.Exceptions.Properties;
 
@@ -7,20 +8,20 @@ namespace HiClass.Application.Attributes;
 public class NotEqualAttribute : ValidationAttribute
 {
     private readonly string _propertyName;
-    private readonly string _otherProperty;
+    private readonly string _otherPropertyTitle;
 
-    public NotEqualAttribute(string otherProperty, string propertyName)
+    public NotEqualAttribute(string otherPropertyTitle, string propertyName)
     {
+        _otherPropertyTitle = otherPropertyTitle;
         _propertyName = propertyName;
-        _otherProperty = otherProperty;
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        var otherPropertyInfo = validationContext.ObjectType.GetProperty(_otherProperty);
+        var otherPropertyInfo = validationContext.ObjectType.GetProperty(_otherPropertyTitle);
 
         if (otherPropertyInfo == null)
-            throw new NullPropertyException(_otherProperty);
+            throw new NullPropertyException(_otherPropertyTitle);
 
         var otherPropertyValue = otherPropertyInfo.GetValue(validationContext.ObjectInstance);
 
@@ -32,16 +33,20 @@ public class NotEqualAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
-        if (_propertyName.Contains("Class"))
+        var errorMessage = _propertyName switch
         {
-            throw new EqualityInvitationClassIdPropertiesException();
-        }
+            _ when _propertyName.Contains("Class") =>
+                "ClassSenderId and ClassReceiverId must not be the same.",
 
-        if (_propertyName.Contains("User"))
-        {
-            throw new EqualityInvitationUserIdPropertiesException();
-        }
-        
-        return ValidationResult.Success;
+            _ when _propertyName.Contains("User") =>
+                "UserSenderId and UserReceiverId must not be the same.",
+
+            _ when _propertyName.Contains("String") && _otherPropertyTitle.Contains("Password") =>
+                "NewPassword cannot be equal to OldPassword.",
+
+            _ => "Fields must not be equal."
+        };
+
+        throw new EqualityPropertiesException(errorMessage);
     }
 }

@@ -13,6 +13,8 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
 {
     public Guid UserId { get; set; }
     public string Email { get; set; } = string.Empty;
+    public bool IsGoogleSignedIn { get; set; }
+    public bool IsPasswordSet { get; set; }
     public bool IsVerified { get; set; } 
     public bool IsCreatedAccount { get; set; } 
     public string FirstName { get; set; } = string.Empty;
@@ -73,6 +75,8 @@ public class UserProfileDto : IMapWith<Domain.Entities.Main.User>
         profile.CreateMap<Domain.Entities.Main.User, UserProfileDto>()
             .ForMember(u => u.UserId, opt => opt.MapFrom(u => u.UserId))
             .ForMember(u => u.Email, opt => opt.MapFrom(u => u.Email))
+            .ForMember(u => u.IsGoogleSignedIn, opt => opt.MapFrom(u => u.IsGoogleSignedIn))
+            .ForMember(u => u.IsPasswordSet, opt => opt.MapFrom(u => u.IsPasswordSet))
             .ForMember(u => u.IsVerified, opt => opt.MapFrom(u => u.IsVerified))
             .ForMember(u => u.IsCreatedAccount, opt => opt.MapFrom(u => u.IsCreatedAccount))
             .ForMember(u => u.FirstName, opt => opt.MapFrom(u => u.FirstName))

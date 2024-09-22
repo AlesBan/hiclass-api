@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.LoginOrRegisterByEmailAndRefreshToken
 {
-    public class LoginOrRegisterByEmailAndRefreshTokenCommandHandler : IRequestHandler<LoginOrRegisterByEmailAndRefreshTokenCommand, TokenModelResponseDto>
+    public class GoogleLoginOrRegisterByEmailAndRefreshTokenCommandHandler : IRequestHandler<GoogleLoginOrRegisterByEmailAndRefreshTokenCommand, TokenModelResponseDto>
     {
         private readonly ISharedLessonDbContext _context;
         private readonly IMapper _mapper;
         private readonly ITokenHelper _tokenHelper;
         private readonly IMediator _mediator;
 
-        public LoginOrRegisterByEmailAndRefreshTokenCommandHandler(ISharedLessonDbContext context, IMapper mapper, ITokenHelper tokenHelper, IMediator mediator)
+        public GoogleLoginOrRegisterByEmailAndRefreshTokenCommandHandler(ISharedLessonDbContext context, IMapper mapper, ITokenHelper tokenHelper, IMediator mediator)
         {
             _context = context;
             _mapper = mapper;
@@ -24,7 +24,7 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Logi
             _mediator = mediator;
         }
 
-        public async Task<TokenModelResponseDto> Handle(LoginOrRegisterByEmailAndRefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<TokenModelResponseDto> Handle(GoogleLoginOrRegisterByEmailAndRefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var userEmail = request.Email;
             
@@ -62,6 +62,8 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Logi
             var newRefreshToken = _tokenHelper.CreateRefreshToken(existingUserTokenDto);
 
             user.IsVerified = true;
+            user.IsGoogleSignedIn = true;
+            
             await _context.SaveChangesAsync(CancellationToken.None);
             
             var userDevice = user.UserDevices

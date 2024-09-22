@@ -54,4 +54,11 @@ public class EditUserController : BaseController
         var result = await _editUserAccountService.EditUserPasswordAsync(UserId, requestUserDto, Mediator);
         return ResponseHelper.GetOkResult(result);
     }
+    
+    [HttpPut("set-password")]
+    public async Task<IActionResult> SetUserPassword([FromBody] SetUserPasswordHashRequestDto requestUserDto)
+    {
+        var result = await _editUserAccountService.SetUserPasswordAsync(UserId, requestUserDto, Mediator);
+        return ResponseHelper.GetOkResult(result);
+    }
 }
