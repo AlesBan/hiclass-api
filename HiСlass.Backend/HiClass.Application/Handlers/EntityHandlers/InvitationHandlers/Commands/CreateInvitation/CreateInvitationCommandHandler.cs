@@ -77,7 +77,7 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
     private async Task ValidateClassReceiverId(Guid userSenderId, Guid classReceiverId)
     {
         var classReceiverIsUserSenderClass = await _context.Classes
-            .FirstOrDefaultAsync(c => c.ClassId == classReceiverId);
+            .FindAsync(classReceiverId);
 
         if (classReceiverIsUserSenderClass == null)
         {
@@ -94,19 +94,19 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
     private async Task ValidateUserReceiverId(InvitationType type, Guid userSenderId, Guid userReceiverId,
         Guid classReceiverId)
     {
-        var userRecipient = await _context.Users
+        var userReceiver = await _context.Users
             .FindAsync(userReceiverId);
 
-        if (userRecipient == null)
+        if (userReceiver == null)
         {
-            throw new UserNotFoundByIdException(userReceiverId, "UserRecipient was not found");
+            throw new UserNotFoundByIdException(userReceiverId, "UserReceiver was not found");
         }
 
-        if (type == InvitationType.ClassInvitation && userRecipient.IsATeacher != true)
+        if (type == InvitationType.ClassInvitation && userReceiver.IsATeacher != true)
             throw new ClassReceiverOwnerDoesNotHaveRequiredPositionForInvitationException(userSenderId,
                 userReceiverId,
                 classReceiverId);
-        if (type == InvitationType.ExpertInvitation && userRecipient.IsAnExpert == false)
+        if (type == InvitationType.ExpertInvitation && userReceiver.IsAnExpert == false)
             throw new UserReceiverDoesNotHaveRequiredPositionForInvitationException(userSenderId, userReceiverId);
     }
 }

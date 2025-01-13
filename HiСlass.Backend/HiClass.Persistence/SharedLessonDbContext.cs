@@ -47,7 +47,7 @@ public class SharedLessonDbContext : DbContext, ISharedLessonDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.AppendConfigurations();
-        // modelBuilder.SeedingDefaultData(_configuration);
+        modelBuilder.AppendConfigurations(); 
+        //modelBuilder.SeedingDefaultData(_configuration);
     }
 }
