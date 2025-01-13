@@ -41,7 +41,7 @@ public class InvitationController : BaseController
 
         var notificationDto = _notificationDtoCreatorHelper
             .CreateNotificationDto(invitation.UserRecipientId, NotificationType.Invitation,
-                invitation.UserRecipient.Email);
+                invitation.UserSender.Email);
 
         await _notificationHandlerService.ProcessNotification(notificationDto, Mediator);
 

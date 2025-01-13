@@ -227,6 +227,7 @@ public static class ModelBuilderExtensions
             {
                 UserId = userId,
                 Email = email,
+                IsPasswordSet = true,
                 IsVerified = isVerified,
                 IsCreatedAccount = isCreatedAccount,
                 FirstName = firstName,
