@@ -7,6 +7,5 @@ namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.Logi
 public class GoogleLoginOrRegisterByEmailAndRefreshTokenCommand : IRequest<TokenModelResponseDto>
 {
     [Required] public string Email { get; set; } = string.Empty;
-
     [Required] public string DeviceToken { get; set; } = string.Empty;
 }

@@ -42,8 +42,6 @@ public class LoginAndRefreshTokenCommandHandler : IRequestHandler<LoginAndRefres
             throw new UserNotFoundByEmailException(request.Email);
         }
 
-        _userHelper.CheckUserVerification(user);
-        
         if (!user.IsPasswordSet)
         {
             throw new UserPasswordNotSetException(user.UserId);
@@ -56,7 +54,7 @@ public class LoginAndRefreshTokenCommandHandler : IRequestHandler<LoginAndRefres
         var newRefreshToken = _tokenHelper.CreateRefreshToken(tokenUserDto);
 
         var userDevice = user.UserDevices
-            .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
+            .FirstOrDefault(ud => ud.Device?.DeviceToken == request.DeviceToken);
 
         if (userDevice != null)
         {
@@ -64,13 +62,12 @@ public class LoginAndRefreshTokenCommandHandler : IRequestHandler<LoginAndRefres
             userDevice.LastActive = DateTime.UtcNow;
             userDevice.RefreshToken = newRefreshToken;
             _context.UserDevices.Update(userDevice);
-            await _context.SaveChangesAsync(CancellationToken.None);
         }
         else
         {
             var command = new CreateUserDeviceCommand
             {
-                DeviceToken = request.DeviceToken,
+                DeviceToken = request.DeviceToken, 
                 UserId = user.UserId,
                 RefreshToken = newRefreshToken,
             };

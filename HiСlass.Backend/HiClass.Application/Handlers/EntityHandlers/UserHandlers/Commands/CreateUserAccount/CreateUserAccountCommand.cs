@@ -17,6 +17,6 @@ public class CreateUserAccountCommand : IRequest<TokenModelResponseDto>
     [Required] public IEnumerable<Guid> DisciplineIds { get; set; } = new List<Guid>();
     [Required] public IEnumerable<Guid> LanguageIds { get; set; } = new List<Guid>();
     [Required] public IEnumerable<Guid> GradeIds { get; set; } = new List<Guid>();
-    [Required] public string DeviceToken { get; set; } = string.Empty;
-
+    public string DeviceToken { get; set; } = string.Empty;
+    public string RefreshToken { get; set; } = string.Empty;
 }

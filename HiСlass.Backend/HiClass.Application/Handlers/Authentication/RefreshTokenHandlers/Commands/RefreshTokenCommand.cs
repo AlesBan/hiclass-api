@@ -8,5 +8,5 @@ public class RefreshTokenCommand : IRequest<TokenModelResponseDto>
 {
     [Required] public Guid UserId { get; set; }
     [Required] public string RefreshToken { get; set; } = string.Empty;
-    [Required] public string DeviceToken { get; set; } = string.Empty;
+    public string DeviceToken { get; set; } = string.Empty;
 }

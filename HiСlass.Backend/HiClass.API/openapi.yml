@@ -748,7 +748,6 @@ paths:
               required:
                 - CityLocation
                 - CountryLocation
-                - DeviceToken
                 - DisciplineTitles
                 - FirstName
                 - GradesEnumerable
@@ -756,9 +755,12 @@ paths:
                 - IsATeacher
                 - LanguageTitles
                 - LastName
+                - RefreshToken
               type: object
               properties:
                 DeviceToken:
+                  type: string
+                RefreshToken:
                   type: string
                 FirstName:
                   type: string
@@ -795,6 +797,8 @@ paths:
                     format: int32
             encoding:
               DeviceToken:
+                style: form
+              RefreshToken:
                 style: form
               FirstName:
                 style: form
@@ -1159,20 +1163,22 @@ components:
       additionalProperties: false
     EmailVerificationRequestDto:
       required:
-        - deviceToken
         - email
         - verificationCode
       type: object
       properties:
         deviceToken:
-          minLength: 1
           type: string
+          nullable: true
         email:
           minLength: 1
           type: string
         verificationCode:
           minLength: 1
           type: string
+        refreshToken:
+          type: string
+          nullable: true
       additionalProperties: false
     FeedbackDto:
       required:
@@ -1229,7 +1235,6 @@ components:
       additionalProperties: false
     GoogleSingInRequestDto:
       required:
-        - deviceToken
         - token
       type: object
       properties:
@@ -1237,8 +1242,8 @@ components:
           minLength: 1
           type: string
         deviceToken:
-          minLength: 1
           type: string
+          nullable: true
       additionalProperties: false
     InstitutionDto:
       type: object
@@ -1264,16 +1269,18 @@ components:
       format: int32
     LogOutRequestDto:
       required:
-        - deviceToken
+        - refreshToken
       type: object
       properties:
         deviceToken:
+          type: string
+          nullable: true
+        refreshToken:
           minLength: 1
           type: string
       additionalProperties: false
     LoginRequestDto:
       required:
-        - deviceToken
         - email
         - password
       type: object
@@ -1286,8 +1293,8 @@ components:
           minLength: 1
           type: string
         deviceToken:
-          minLength: 1
           type: string
+          nullable: true
       additionalProperties: false
     NotificationStatus:
       enum:
@@ -1297,21 +1304,17 @@ components:
       type: integer
       format: int32
     RefreshTokenRequestDto:
-      required:
-        - deviceToken
-        - refreshToken
       type: object
       properties:
         refreshToken:
-          minLength: 1
           type: string
+          nullable: true
         deviceToken:
-          minLength: 1
           type: string
+          nullable: true
       additionalProperties: false
     RegisterRequestDto:
       required:
-        - deviceToken
         - email
         - password
       type: object
@@ -1324,28 +1327,34 @@ components:
           minLength: 1
           type: string
         deviceToken:
-          minLength: 1
           type: string
+          nullable: true
       additionalProperties: false
     ResetPasswordRequestDto:
       required:
-        - deviceToken
         - newPassword
+        - refreshToken
       type: object
       properties:
         deviceToken:
+          type: string
+          nullable: true
+        newPassword:
           minLength: 1
           type: string
-        newPassword:
+        refreshToken:
           minLength: 1
           type: string
       additionalProperties: false
     RevokeTokenRequestDto:
       required:
-        - deviceToken
+        - refreshToken
       type: object
       properties:
         deviceToken:
+          type: string
+          nullable: true
+        refreshToken:
           minLength: 1
           type: string
       additionalProperties: false

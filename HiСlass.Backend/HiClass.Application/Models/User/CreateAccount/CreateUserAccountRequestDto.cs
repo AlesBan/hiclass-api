@@ -6,15 +6,19 @@ namespace HiClass.Application.Models.User.CreateAccount;
 
 public class CreateUserAccountRequestDto
 {
-    [Required] public string DeviceToken { get; set; } = string.Empty;
+    public string DeviceToken { get; set; } = string.Empty;
+    [Required] public string RefreshToken { get; set; } = string.Empty;
     [Required] public string FirstName { get; set; } = string.Empty;
     [Required] public string LastName { get; set; } = string.Empty;
+
     [Required]
     [AtLeastOneOfPositionTrue("IsATeacher", "IsAnExpert")]
     public bool IsATeacher { get; set; }
+
     [Required]
     [AtLeastOneOfPositionTrue("IsATeacher", "IsAnExpert")]
     public bool IsAnExpert { get; set; }
+
     [Required] public string CityLocation { get; set; } = string.Empty;
     [Required] public string CountryLocation { get; set; } = string.Empty;
     [Required] public InstitutionDto InstitutionDto { get; set; }

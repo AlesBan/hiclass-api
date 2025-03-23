@@ -8,6 +8,7 @@ using HiClass.Application.Handlers.EntityConnectionHandlers.UserLanguagesHandler
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Models.User.Authentication;
+using HiClass.Domain.EntityConnections;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,14 +33,14 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
     public async Task<TokenModelResponseDto> Handle(CreateUserAccountCommand request,
         CancellationToken cancellationToken)
     {
-        var user = _context
+        var user = await _context
             .Users
             .Include(u => u.Country)
             .Include(u => u.City)
             .Include(u => u.Institution)
             .Include(u => u.UserDevices)
             .ThenInclude(ud => ud.Device)
-            .FirstOrDefault(u => u.UserId == request.UserId);
+            .FirstOrDefaultAsync(u => u.UserId == request.UserId, cancellationToken);
 
         if (user == null)
         {
@@ -64,8 +65,22 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
         var newAccessToken = _tokenHelper.CreateAccessToken(tokenUserDto);
         var newRefreshToken = _tokenHelper.CreateRefreshToken(tokenUserDto);
 
-        var userDevice = user.UserDevices
-            .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
+        UserDevice userDevice;
+
+        if (!string.IsNullOrEmpty(request.DeviceToken))
+        {
+            userDevice = user.UserDevices
+                .FirstOrDefault(ud => ud.Device?.DeviceToken == request.DeviceToken)!;
+        }
+        else if (!string.IsNullOrEmpty(request.RefreshToken))
+        {
+            userDevice = user.UserDevices
+                .FirstOrDefault(ud => ud.RefreshToken == request.RefreshToken)!;
+        }
+        else
+        {
+            userDevice = null;
+        }
 
         if (userDevice != null)
         {
@@ -73,7 +88,6 @@ public class CreateUserAccountCommandHandler : IRequestHandler<CreateUserAccount
             userDevice.LastActive = DateTime.UtcNow;
             userDevice.RefreshToken = newRefreshToken;
             _context.UserDevices.Update(userDevice);
-            await _context.SaveChangesAsync(CancellationToken.None);
         }
         else
         {
