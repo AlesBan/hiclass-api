@@ -1,6 +1,7 @@
 using HiClass.Application.Common.Exceptions.Device;
 using HiClass.Application.Common.Exceptions.User;
 using HiClass.Application.Interfaces;
+using HiClass.Domain.EntityConnections;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,14 +28,36 @@ public class LogOutUserCommandHandler : IRequestHandler<LogOutUserCommand>
             throw new UserNotFoundByIdException(request.UserId);
         }
 
-        var userDevice = user.UserDevices
-            .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
+        UserDevice userDevice;
 
-        if (userDevice is null)
+        // Если DeviceToken передан, ищем устройство по нему
+        if (!string.IsNullOrEmpty(request.DeviceToken))
         {
-            throw new UserDeviceNotFoundByDeviceTokenException(request.DeviceToken);
+            userDevice = user.UserDevices
+                .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
+
+            if (userDevice is null)
+            {
+                throw new UserDeviceNotFoundByDeviceTokenException(request.DeviceToken);
+            }
+        }
+        // Если DeviceToken не передан, ищем устройство по RefreshToken
+        else if (!string.IsNullOrEmpty(request.RefreshToken))
+        {
+            userDevice = user.UserDevices
+                .FirstOrDefault(ud => ud.RefreshToken == request.RefreshToken);
+
+            if (userDevice is null)
+            {
+                throw new UserDeviceNotFoundByRefreshTokenException(request.RefreshToken);
+            }
+        }
+        else
+        {
+            throw new ArgumentException("Either DeviceToken or RefreshToken must be provided.");
         }
 
+        // Завершаем сессию
         userDevice.RefreshToken = null;
         userDevice.IsActive = false;
         userDevice.LastActive = DateTime.UtcNow;

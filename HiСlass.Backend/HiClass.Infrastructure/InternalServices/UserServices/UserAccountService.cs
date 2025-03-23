@@ -97,7 +97,7 @@ public class UserAccountService : IUserAccountService
         {
             Email = requestUserDto.Email,
             Password = requestUserDto.Password,
-            DeviceToken = requestUserDto.DeviceToken
+            DeviceToken = requestUserDto.DeviceToken,
         };
 
         var tokenModelResponseDto = await mediator.Send(command);
@@ -136,7 +136,8 @@ public class UserAccountService : IUserAccountService
         var command = new LogOutUserCommand
         {
             UserId = userId,
-            DeviceToken = requestDto.DeviceToken
+            DeviceToken = requestDto.DeviceToken,
+            RefreshToken = requestDto.RefreshToken
         };
 
         await mediator.Send(command);
@@ -147,7 +148,8 @@ public class UserAccountService : IUserAccountService
         var command = new RevokeRefreshTokenCommand()
         {
             UserId = userId,
-            DeviceToken = requestDto.DeviceToken
+            DeviceToken = requestDto.DeviceToken,
+            RefreshToken = requestDto.RefreshToken
         };
 
         await mediator.Send(command);
@@ -160,7 +162,8 @@ public class UserAccountService : IUserAccountService
         {
             DeviceToken = requestDto.DeviceToken,
             Email = requestDto.Email,
-            VerificationCode = requestDto.VerificationCode
+            VerificationCode = requestDto.VerificationCode,
+            RefreshToken = requestDto.RefreshToken
         };
 
         var tokenModelResponseDto = await mediator.Send(command);
@@ -212,7 +215,8 @@ public class UserAccountService : IUserAccountService
             {
                 UserId = user.UserId,
                 NewPassword = requestDto.NewPassword,
-                DeviceToken = requestDto.DeviceToken
+                DeviceToken = requestDto.DeviceToken,
+                RefreshToken = requestDto.RefreshToken
             });
 
         return tokenModelResponseDto;
@@ -299,6 +303,7 @@ public class UserAccountService : IUserAccountService
         var query = new CreateUserAccountCommand
         {
             UserId = userId,
+            RefreshToken = requestUserDto.RefreshToken,
             DeviceToken = requestUserDto.DeviceToken,
             FirstName = requestUserDto.FirstName,
             LastName = requestUserDto.LastName,
@@ -309,7 +314,7 @@ public class UserAccountService : IUserAccountService
             InstitutionId = institution.InstitutionId,
             DisciplineIds = disciplines.Select(d => d.DisciplineId).ToList(),
             LanguageIds = languages.Select(l => l.LanguageId).ToList(),
-            GradeIds = grades.Select(g => g.GradeId).ToList(),
+            GradeIds = grades.Select(g => g.GradeId).ToList()
         };
 
         return query;

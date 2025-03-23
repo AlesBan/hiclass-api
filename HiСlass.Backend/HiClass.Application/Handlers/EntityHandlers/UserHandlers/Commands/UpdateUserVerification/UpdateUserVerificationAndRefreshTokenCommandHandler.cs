@@ -5,14 +5,13 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Application.Models.User.Authentication;
 using HiClass.Domain.Entities.Main;
+using HiClass.Domain.EntityConnections;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace HiClass.Application.Handlers.EntityHandlers.UserHandlers.Commands.UpdateUserVerification;
 
-public class
-    UpdateUserVerificationAndRefreshTokenCommandHandler : IRequestHandler<UpdateUserVerificationAndRefreshTokenCommand,
-    TokenModelResponseDto>
+public class UpdateUserVerificationAndRefreshTokenCommandHandler : IRequestHandler<UpdateUserVerificationAndRefreshTokenCommand, TokenModelResponseDto>
 {
     private readonly ISharedLessonDbContext _context;
     private readonly ITokenHelper _tokenHelper;
@@ -69,8 +68,22 @@ public class
         var newAccessToken = _tokenHelper.CreateAccessToken(tokenUserDto);
         var newRefreshToken = _tokenHelper.CreateRefreshToken(tokenUserDto);
 
-        var userDevice = user.UserDevices
-            .FirstOrDefault(ud => ud.Device.DeviceToken == request.DeviceToken);
+        UserDevice userDevice;
+
+        if (!string.IsNullOrEmpty(request.DeviceToken))
+        {
+            userDevice = user.UserDevices
+                .FirstOrDefault(ud => ud.Device?.DeviceToken == request.DeviceToken)!;
+        }
+        else if (!string.IsNullOrEmpty(request.RefreshToken))
+        {
+            userDevice = user.UserDevices
+                .FirstOrDefault(ud => ud.RefreshToken == request.RefreshToken)!;
+        }
+        else
+        {
+            userDevice = null;
+        }
 
         if (userDevice != null)
         {
@@ -78,18 +91,19 @@ public class
             userDevice.LastActive = DateTime.UtcNow;
             userDevice.RefreshToken = newRefreshToken;
             _context.UserDevices.Update(userDevice);
-            await _context.SaveChangesAsync(CancellationToken.None);
         }
         else
         {
             var command = new CreateUserDeviceCommand
             {
-                DeviceToken = request.DeviceToken,
+                DeviceToken = request.DeviceToken, // Может быть null
                 UserId = user.UserId,
                 RefreshToken = newRefreshToken,
             };
             await _mediator.Send(command, cancellationToken);
         }
+
+        await _context.SaveChangesAsync(CancellationToken.None);
 
         return new TokenModelResponseDto()
         {

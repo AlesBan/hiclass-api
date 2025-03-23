@@ -4,5 +4,6 @@ namespace HiClass.Application.Models.User.Authentication;
 
 public class LogOutRequestDto
 {
-    [Required] public string DeviceToken { get; set; } = string.Empty;
+    public string DeviceToken { get; set; } = string.Empty;
+    [Required] public string RefreshToken { get; set; } = string.Empty;
 }
