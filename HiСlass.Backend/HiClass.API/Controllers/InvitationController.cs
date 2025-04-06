@@ -37,7 +37,7 @@ public class InvitationController : BaseController
     [HttpPost("send-class-invitation")]
     public async Task<IActionResult> SendClassInvitation([FromBody] CreateClassInvitationRequestDto requestDto)
     {
-        var invitation = await _invitationService.CreateClassInvitation(UserId, Mediator, requestDto);
+        var invitation = await _invitationService.CreateClassInvitationAndSendEmailInvitation(UserId, Mediator, requestDto);
 
         var notificationDto = _notificationDtoCreatorHelper
             .CreateNotificationDto(invitation.UserRecipientId, NotificationType.Invitation,
@@ -53,7 +53,7 @@ public class InvitationController : BaseController
     [HttpPost("send-expert-invitation")]
     public async Task<IActionResult> SendExpertInvitation([FromBody] CreateExpertInvitationRequestDto requestDto)
     {
-        var invitation = await _invitationService.CreateExpertInvitation(UserId, Mediator, requestDto);
+        var invitation = await _invitationService.CreateExpertInvitationAndSendEmailInvitation(UserId, Mediator, requestDto);
 
         var notificationDto = _notificationDtoCreatorHelper
             .CreateNotificationDto(invitation.UserRecipientId, NotificationType.Invitation,
