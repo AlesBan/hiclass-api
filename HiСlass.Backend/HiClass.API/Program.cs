@@ -11,13 +11,14 @@ using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
 using HiClass.Infrastructure.IntegrationServices.Aws;
-using HiClass.Infrastructure.IntegrationServices.EmailHandlerService;
 using HiClass.Infrastructure.IntegrationServices.Firebase.FirebaseConnector;
 using HiClass.Infrastructure.IntegrationServices.Firebase.FireBaseNotificationSender;
 using HiClass.Infrastructure.InternalServices.ClassServices;
 using HiClass.Infrastructure.InternalServices.DeviceHandlerService;
 using HiClass.Infrastructure.InternalServices.EditUserAccountService;
-using HiClass.Infrastructure.InternalServices.EmailHandlerService;
+using HiClass.Infrastructure.InternalServices.EmailServices;
+using HiClass.Infrastructure.InternalServices.EmailServices.EmailHandlerService;
+using HiClass.Infrastructure.InternalServices.EmailServices.EmailTemplateService;
 using HiClass.Infrastructure.InternalServices.ImageServices;
 using HiClass.Infrastructure.InternalServices.InvitationServices;
 using HiClass.Infrastructure.InternalServices.NotificationHandlerService;
@@ -59,7 +60,10 @@ builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<IEditUserAccountService, EditUserAccountService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
+
 builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
+builder.Services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
+
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<IStaticDataService, StaticDataService>();
 builder.Services.AddScoped<INotificationHandlerService, NotificationHandlerService>();

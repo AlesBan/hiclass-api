@@ -1,4 +1,4 @@
-namespace HiClass.Application.Models.User.Editing;
+namespace HiClass.Application.Models.User.Editing.Requests;
 
 public class EditInstitutionRequestDto
 {
