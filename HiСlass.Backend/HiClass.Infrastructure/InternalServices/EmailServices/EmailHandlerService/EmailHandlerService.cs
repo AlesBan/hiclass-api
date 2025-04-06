@@ -27,8 +27,8 @@ public class EmailHandlerService : IEmailHandlerService
     {
         var htmlContent = await _templateService.LoadTemplateAsync("EmailVerification", new Dictionary<string, string>
         {
-            {"MC:SUBJECT", EmailConstants.EmailVerificationSubject},
-            {"verificationCode", verificationCode}
+            { "MC:SUBJECT", EmailConstants.EmailVerificationSubject },
+            { "verificationCode", verificationCode }
         });
 
         await SendHtmlEmailAsync(userEmail, EmailConstants.EmailVerificationSubject, htmlContent);
@@ -38,40 +38,42 @@ public class EmailHandlerService : IEmailHandlerService
     {
         var htmlContent = await _templateService.LoadTemplateAsync("PasswordReset", new Dictionary<string, string>
         {
-            {"MC:SUBJECT", EmailConstants.EmailResetPasswordSubject},
-            {"resetPasswordCode", resetPasswordCode}
+            { "MC:SUBJECT", EmailConstants.EmailResetPasswordSubject },
+            { "resetPasswordCode", resetPasswordCode }
         });
 
         await SendHtmlEmailAsync(userEmail, EmailConstants.EmailResetPasswordSubject, htmlContent);
     }
 
-    public async Task SendClassInvitationEmail(string senderEmail, string receiverEmail, DateTime invitationDate, string invitationText)
+    public async Task SendClassInvitationEmail(string senderEmail, string receiverEmail, DateTime invitationDate,
+        string invitationText)
     {
         // Письмо отправителю
         var senderHtml = await _templateService.LoadTemplateAsync("InvitationSent", new Dictionary<string, string>
         {
-            {"MC:SUBJECT", EmailConstants.EmailInvitationSubject},
-            {"receiverEmail", receiverEmail},
-            {"invitationDate", invitationDate.ToString("dd.MM.yyyy")},
-            {"invitationTime", invitationDate.ToString("HH:mm")},
-            {"additionalMessage", "You have sent an invitation"}
+            { "MC:SUBJECT", EmailConstants.EmailInvitationSubject },
+            { "receiverEmail", receiverEmail },
+            { "invitationDate", invitationDate.ToString("dd.MM.yyyy") },
+            { "invitationTime", invitationDate.ToString("HH:mm") },
+            { "additionalMessage", "You have sent an invitation" }
         });
 
         // Письмо получателю
         var receiverHtml = await _templateService.LoadTemplateAsync("InvitationReceived", new Dictionary<string, string>
         {
-            {"MC:SUBJECT", EmailConstants.EmailInvitationSubject},
-            {"senderEmail", senderEmail},
-            {"invitationDate", invitationDate.ToString("dd.MM.yyyy")},
-            {"invitationTime", invitationDate.ToString("HH:mm")},
-            {"additionalMessage", invitationText}
+            { "MC:SUBJECT", EmailConstants.EmailInvitationSubject },
+            { "senderEmail", senderEmail },
+            { "invitationDate", invitationDate.ToString("dd.MM.yyyy") },
+            { "invitationTime", invitationDate.ToString("HH:mm") },
+            { "additionalMessage", invitationText }
         });
 
         await SendHtmlEmailAsync(senderEmail, EmailConstants.EmailInvitationSubject, senderHtml);
         await SendHtmlEmailAsync(receiverEmail, EmailConstants.EmailInvitationSubject, receiverHtml);
     }
 
-    public async Task SendExpertInvitationEmail(string senderEmail, string receiverEmail, DateTime invitationDate, string invitationText)
+    public async Task SendExpertInvitationEmail(string senderEmail, string receiverEmail, DateTime invitationDate,
+        string invitationText)
     {
         // Аналогично SendClassInvitationEmail, но с другим текстом если нужно
         await SendClassInvitationEmail(senderEmail, receiverEmail, invitationDate, invitationText);
@@ -89,7 +91,7 @@ public class EmailHandlerService : IEmailHandlerService
             HtmlBody = htmlContent,
             TextBody = "Please view this email in an HTML-compatible email client."
         };
-        
+
         email.Body = bodyBuilder.ToMessageBody();
 
         using var client = new MailKit.Net.Smtp.SmtpClient();
@@ -105,8 +107,7 @@ public class EmailHandlerService : IEmailHandlerService
         }
         catch (Exception ex)
         {
-            // Логирование ошибки может быть добавлено здесь
-            throw new EmailManagerException();
+            throw new EmailManagerException("ex.Message:\n" + "ex.Message" + "ex:\n" + ex);
         }
         finally
         {
