@@ -1,5 +1,7 @@
 using System.Reflection;
 using Amazon.S3;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using HiClass.API.Configuration;
 using HiClass.API.Configuration.Swagger;
 using HiClass.API.Helpers.NotificationDtoCreatorHelper;
@@ -10,6 +12,7 @@ using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
+using HiClass.Infrastructure.Configuration;
 using HiClass.Infrastructure.IntegrationServices.Aws;
 using HiClass.Infrastructure.IntegrationServices.Firebase.FirebaseConnector;
 using HiClass.Infrastructure.IntegrationServices.Firebase.FireBaseNotificationSender;
@@ -49,7 +52,11 @@ builder.Services.ConfigureCors();
 
 builder.Services.ConfigureAuthentication(configuration);
 builder.Services.ConfigureFirebase(configuration);
-
+    
+builder.Services.AddHangfireConfiguration();
+builder.Services.AddHangfire(config => config.UseMemoryStorage());
+builder.Services.AddHangfireServer();
+    
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
@@ -61,8 +68,8 @@ builder.Services.AddScoped<IEditUserAccountService, EditUserAccountService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 
+builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 builder.Services.AddScoped<IEmailHandlerService, EmailHandlerService>();
-builder.Services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
 
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<IStaticDataService, StaticDataService>();
@@ -77,7 +84,6 @@ builder.Services.AddScoped<ITokenHelper, TokenHelper>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IDataForUserHelper, DataForUserHelper>();
 builder.Services.AddScoped<INotificationDtoCreatorHelper, NotificationDtoCreatorHelper>();
-
 
 builder.Services.AddScoped<IFirebaseConnector, FirebaseConnector>();
 builder.Services.AddScoped<IFireBaseNotificationSender, FireBaseNotificationSender>();
