@@ -1,3 +1,5 @@
+// EmailHandlerService.cs
+using Hangfire;
 using HiClass.Application.Common.Exceptions.Server.EmailManager;
 using HiClass.Application.Constants;
 using HiClass.Application.Models.EmailManager;
@@ -12,74 +14,81 @@ public class EmailHandlerService : IEmailHandlerService
 {
     private readonly EmailManagerCredentials _emailCredentials;
     private readonly IEmailTemplateService _templateService;
+    private readonly IBackgroundJobClient _backgroundJob;
 
     public EmailHandlerService(
         IConfiguration configuration,
-        IEmailTemplateService templateService)
+        IEmailTemplateService templateService,
+        IBackgroundJobClient backgroundJob)
     {
         _emailCredentials = new EmailManagerCredentials(
             configuration["EMAIL_MANAGER:EMAIL"],
             configuration["EMAIL_MANAGER:PASSWORD"]);
         _templateService = templateService;
+        _backgroundJob = backgroundJob;
     }
 
-    public async Task SendVerificationEmail(string userEmail, string verificationCode)
+    public Task SendVerificationEmail(string userEmail, string verificationCode)
     {
-        var htmlContent = await _templateService.LoadTemplateAsync("EmailVerification", new Dictionary<string, string>
-        {
-            { "MC:SUBJECT", EmailConstants.EmailVerificationSubject },
-            { "verificationCode", verificationCode }
-        });
-
-        await SendHtmlEmailAsync(userEmail, EmailConstants.EmailVerificationSubject, htmlContent);
+        return QueueEmailAsync(userEmail, "EmailVerification", EmailConstants.EmailVerificationSubject, 
+            new Dictionary<string, string>
+            {
+                { "MC:SUBJECT", EmailConstants.EmailVerificationSubject },
+                { "verificationCode", verificationCode }
+            });
     }
 
-    public async Task SendResetPasswordEmail(string userEmail, string resetPasswordCode)
+    public Task SendResetPasswordEmail(string userEmail, string resetPasswordCode)
     {
-        var htmlContent = await _templateService.LoadTemplateAsync("PasswordReset", new Dictionary<string, string>
-        {
-            { "MC:SUBJECT", EmailConstants.EmailResetPasswordSubject },
-            { "resetPasswordCode", resetPasswordCode }
-        });
-
-        await SendHtmlEmailAsync(userEmail, EmailConstants.EmailResetPasswordSubject, htmlContent);
+        return QueueEmailAsync(userEmail, "PasswordReset", EmailConstants.EmailResetPasswordSubject,
+            new Dictionary<string, string>
+            {
+                { "MC:SUBJECT", EmailConstants.EmailResetPasswordSubject },
+                { "resetPasswordCode", resetPasswordCode }
+            });
     }
 
-    public async Task SendClassInvitationEmail(string senderEmail, string receiverEmail, DateTime invitationDate,
-        string invitationText)
+    public async Task SendClassInvitationEmail(string senderEmail, string receiverEmail, 
+        DateTime invitationDate, string invitationText)
     {
-        // Письмо отправителю
-        var senderHtml = await _templateService.LoadTemplateAsync("InvitationSent", new Dictionary<string, string>
-        {
-            { "MC:SUBJECT", EmailConstants.EmailInvitationSubject },
-            { "receiverEmail", receiverEmail },
-            { "invitationDate", invitationDate.ToString("dd.MM.yyyy") },
-            { "invitationTime", invitationDate.ToString("HH:mm") },
-            { "additionalMessage", "You have sent an invitation" }
-        });
+        await QueueEmailAsync(senderEmail, "InvitationSent", EmailConstants.EmailInvitationSubject,
+            new Dictionary<string, string>
+            {
+                { "MC:SUBJECT", EmailConstants.EmailInvitationSubject },
+                { "receiverEmail", receiverEmail },
+                { "invitationDate", invitationDate.ToString("dd.MM.yyyy") },
+                { "invitationTime", invitationDate.ToString("HH:mm") },
+                { "additionalMessage", "You have sent an invitation" }
+            });
 
-        // Письмо получателю
-        var receiverHtml = await _templateService.LoadTemplateAsync("InvitationReceived", new Dictionary<string, string>
-        {
-            { "MC:SUBJECT", EmailConstants.EmailInvitationSubject },
-            { "senderEmail", senderEmail },
-            { "invitationDate", invitationDate.ToString("dd.MM.yyyy") },
-            { "invitationTime", invitationDate.ToString("HH:mm") },
-            { "additionalMessage", invitationText }
-        });
-
-        await SendHtmlEmailAsync(senderEmail, EmailConstants.EmailInvitationSubject, senderHtml);
-        await SendHtmlEmailAsync(receiverEmail, EmailConstants.EmailInvitationSubject, receiverHtml);
+        await QueueEmailAsync(receiverEmail, "InvitationReceived", EmailConstants.EmailInvitationSubject,
+            new Dictionary<string, string>
+            {
+                { "MC:SUBJECT", EmailConstants.EmailInvitationSubject },
+                { "senderEmail", senderEmail },
+                { "invitationDate", invitationDate.ToString("dd.MM.yyyy") },
+                { "invitationTime", invitationDate.ToString("HH:mm") },
+                { "additionalMessage", invitationText }
+            });
     }
 
-    public async Task SendExpertInvitationEmail(string senderEmail, string receiverEmail, DateTime invitationDate,
-        string invitationText)
+    public Task SendExpertInvitationEmail(string senderEmail, string receiverEmail, 
+        DateTime invitationDate, string invitationText)
     {
-        // Аналогично SendClassInvitationEmail, но с другим текстом если нужно
-        await SendClassInvitationEmail(senderEmail, receiverEmail, invitationDate, invitationText);
+        return SendClassInvitationEmail(senderEmail, receiverEmail, invitationDate, invitationText);
     }
 
-    private async Task SendHtmlEmailAsync(string emailReceiver, string subject, string htmlContent)
+    private async Task QueueEmailAsync(string emailReceiver, string templateName, 
+        string subject, Dictionary<string, string> replacements)
+    {
+        var htmlContent = await _templateService.LoadTemplateAsync(templateName, replacements);
+        
+        _backgroundJob.Enqueue(() => 
+            SendEmailBackgroundJob(emailReceiver, subject, htmlContent));
+    }
+
+    [AutomaticRetry(Attempts = 3, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+    public async Task SendEmailBackgroundJob(string emailReceiver, string subject, string htmlContent)
     {
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(_emailCredentials.Email));
@@ -107,7 +116,7 @@ public class EmailHandlerService : IEmailHandlerService
         }
         catch (Exception ex)
         {
-            throw new EmailManagerException("ex.Message:\n" + "ex.Message" + "ex:\n" + ex);
+            throw new EmailManagerException($"Error sending email: {ex.Message}");
         }
         finally
         {

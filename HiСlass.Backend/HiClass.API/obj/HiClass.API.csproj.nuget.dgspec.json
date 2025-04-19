@@ -71,7 +71,7 @@
             },
             "Microsoft.Extensions.Configuration.UserSecrets": {
               "target": "Package",
-              "version": "[6.0.1, )"
+              "version": "[6.0.2, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -79,15 +79,15 @@
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.5.0, )"
+              "version": "[6.9.0, )"
             },
             "Swashbuckle.AspNetCore.Annotations": {
               "target": "Package",
-              "version": "[6.6.2, )"
+              "version": "[6.9.0, )"
             },
             "Swashbuckle.AspNetCore.Newtonsoft": {
               "target": "Package",
-              "version": "[6.6.2, )"
+              "version": "[6.9.0, )"
             }
           },
           "imports": [
@@ -304,7 +304,7 @@
           "dependencies": {
             "AWSSDK.S3": {
               "target": "Package",
-              "version": "[3.7.305.23, )"
+              "version": "[4.0.0-preview.13, )"
             },
             "AutoMapper": {
               "target": "Package",
@@ -320,19 +320,31 @@
             },
             "Google.Apis.Auth": {
               "target": "Package",
-              "version": "[1.68.0, )"
+              "version": "[1.69.0, )"
             },
             "Google.Cloud.Firestore": {
               "target": "Package",
-              "version": "[3.7.0, )"
+              "version": "[3.10.0, )"
+            },
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.8.18, )"
+            },
+            "Hangfire.MemoryStorage": {
+              "target": "Package",
+              "version": "[1.8.1.1, )"
             },
             "MailKit": {
               "target": "Package",
-              "version": "[4.3.0, )"
+              "version": "[4.11.0, )"
             },
             "Microsoft.AspNetCore.Http.Features": {
               "target": "Package",
               "version": "[6.0.0-preview.4.21253.5, )"
+            },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[6.0.1, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
