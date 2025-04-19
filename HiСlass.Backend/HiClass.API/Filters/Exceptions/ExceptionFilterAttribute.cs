@@ -56,7 +56,7 @@ namespace HiClass.API.Filters.Exceptions
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    _logger.LogError(ex, "Error in exception filter: {Message}", ex.Message);
                     return Task.CompletedTask;
                 }
             }
@@ -94,12 +94,16 @@ namespace HiClass.API.Filters.Exceptions
             private void LogException(string controllerName, string actionName, Exception exception,
                 string exceptionMessageForLogging, bool isUnknownException = false)
             {
-                var logMessage = $"Source: {exception.Source}\n" +
-                                 $"Controller: {controllerName}\n" +
-                                 $"Action: {actionName}\n" +
-                                 $"ExceptionName: {exception.GetType().Name}\n" +
-                                 $"Message: {exceptionMessageForLogging}\n" +
-                                 (isUnknownException ? $"StackTrace: {exception.StackTrace}" : string.Empty);
+                var timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                
+                var logMessage = $"[{timestamp}] Error occurred:\n" +
+                                $"Source: {exception.Source}\n" +
+                                $"Controller: {controllerName}\n" +
+                                $"Action: {actionName}\n" +
+                                $"ExceptionType: {exception.GetType().Name}\n" +
+                                $"Message: {exceptionMessageForLogging}\n" +
+                                (isUnknownException ? $"StackTrace: {exception.StackTrace}\n" : string.Empty) +
+                                $"InnerException: {exception.InnerException?.Message ?? "N/A"}";
 
                 _logger.LogError("{Message}", logMessage);
             }
@@ -130,7 +134,8 @@ namespace HiClass.API.Filters.Exceptions
                 return new ExceptionDto
                 {
                     ExceptionTitle = exceptionTitle,
-                    ExceptionMessage = exceptionMessage
+                    ExceptionMessage = exceptionMessage,
+                    Timestamp = DateTime.UtcNow
                 };
             }
         }

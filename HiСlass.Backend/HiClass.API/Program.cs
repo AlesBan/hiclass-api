@@ -4,6 +4,7 @@ using Hangfire;
 using Hangfire.MemoryStorage;
 using HiClass.API.Configuration;
 using HiClass.API.Configuration.Swagger;
+using HiClass.API.Filters.Hangfire;
 using HiClass.API.Helpers.NotificationDtoCreatorHelper;
 using HiClass.API.Middleware;
 using HiClass.Application;
@@ -90,6 +91,9 @@ builder.Services.AddScoped<IFireBaseNotificationSender, FireBaseNotificationSend
 
 builder.Services.AddTransient<DatabaseConnectionMiddleware>();
 
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Infrastructure", LogLevel.Warning);
+builder.Logging.AddFilter("Hangfire", LogLevel.Warning);
 
 var app = builder.Build();
 
@@ -120,5 +124,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    DashboardTitle = "Hangfire Dashboard",
+    Authorization = new[] { new HangfireAuthorizationFilter() },
+    DisplayStorageConnectionString = false
+});
 
 app.Run();
