@@ -1,10 +1,7 @@
 using System.Reflection;
 using Amazon.S3;
-using Hangfire;
-using Hangfire.MemoryStorage;
 using HiClass.API.Configuration;
 using HiClass.API.Configuration.Swagger;
-using HiClass.API.Filters.Hangfire;
 using HiClass.API.Helpers.NotificationDtoCreatorHelper;
 using HiClass.API.Middleware;
 using HiClass.Application;
@@ -13,7 +10,6 @@ using HiClass.Application.Helpers.DataHelper;
 using HiClass.Application.Helpers.TokenHelper;
 using HiClass.Application.Helpers.UserHelper;
 using HiClass.Application.Interfaces;
-using HiClass.Infrastructure.Configuration;
 using HiClass.Infrastructure.IntegrationServices.Aws;
 using HiClass.Infrastructure.IntegrationServices.Firebase.FirebaseConnector;
 using HiClass.Infrastructure.IntegrationServices.Firebase.FireBaseNotificationSender;
@@ -30,6 +26,7 @@ using HiClass.Infrastructure.InternalServices.SearchServices;
 using HiClass.Infrastructure.InternalServices.StaticDataServices;
 using HiClass.Infrastructure.InternalServices.UserServices;
 using HiClass.Persistence;
+using Resend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,11 +50,7 @@ builder.Services.ConfigureCors();
 
 builder.Services.ConfigureAuthentication(configuration);
 builder.Services.ConfigureFirebase(configuration);
-    
-builder.Services.AddHangfireConfiguration();
-builder.Services.AddHangfire(config => config.UseMemoryStorage());
-builder.Services.AddHangfireServer();
-    
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
@@ -95,6 +88,17 @@ builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogL
 builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Infrastructure", LogLevel.Warning);
 builder.Logging.AddFilter("Hangfire", LogLevel.Warning);
 
+
+builder.Services.AddOptions<ResendClientOptions>()
+    .Configure(options =>
+    {
+        options.ApiToken = builder.Configuration["EMAIL_RESEND:APIKEY"]
+                           ?? throw new InvalidOperationException("Resend API key not configured");
+    });
+
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.AddTransient<IResend, ResendClient>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -125,11 +129,5 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-app.UseHangfireDashboard("/hangfire", new DashboardOptions
-{
-    DashboardTitle = "Hangfire Dashboard",
-    Authorization = new[] { new HangfireAuthorizationFilter() },
-    DisplayStorageConnectionString = false
-});
 
 app.Run();

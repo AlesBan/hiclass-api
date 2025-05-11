@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {
+    "net8.0": {
       "AutoMapper/12.0.1": {
         "type": "package",
         "dependencies": {
@@ -21,12 +21,12 @@
       "AWSSDK.Core/4.0.0-preview.13": {
         "type": "package",
         "compile": {
-          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+          "lib/net8.0/AWSSDK.Core.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+          "lib/net8.0/AWSSDK.Core.dll": {
             "related": ".pdb;.xml"
           }
         }
@@ -37,26 +37,13 @@
           "AWSSDK.Core": "[4.0.0-preview.13, 5.0.0-preview.13)"
         },
         "compile": {
-          "lib/netcoreapp3.1/AWSSDK.S3.dll": {
+          "lib/net8.0/AWSSDK.S3.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/netcoreapp3.1/AWSSDK.S3.dll": {
+          "lib/net8.0/AWSSDK.S3.dll": {
             "related": ".pdb;.xml"
-          }
-        }
-      },
-      "BouncyCastle.Cryptography/2.5.1": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/BouncyCastle.Cryptography.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/BouncyCastle.Cryptography.dll": {
-            "related": ".xml"
           }
         }
       },
@@ -102,12 +89,12 @@
           "System.Management": "6.0.1"
         },
         "compile": {
-          "lib/net6.0/DiffEngine.dll": {
+          "lib/net7.0/DiffEngine.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/DiffEngine.dll": {
+          "lib/net7.0/DiffEngine.dll": {
             "related": ".xml"
           }
         }
@@ -115,12 +102,12 @@
       "EmptyFiles/4.4.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/EmptyFiles.dll": {
+          "lib/net7.0/EmptyFiles.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/EmptyFiles.dll": {
+          "lib/net7.0/EmptyFiles.dll": {
             "related": ".xml"
           }
         },
@@ -391,12 +378,12 @@
           "Microsoft.Extensions.Logging.Abstractions": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/Grpc.Net.Client.dll": {
+          "lib/net8.0/Grpc.Net.Client.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Grpc.Net.Client.dll": {
+          "lib/net8.0/Grpc.Net.Client.dll": {
             "related": ".pdb;.xml"
           }
         }
@@ -407,164 +394,13 @@
           "Grpc.Core.Api": "2.66.0"
         },
         "compile": {
-          "lib/net6.0/Grpc.Net.Common.dll": {
+          "lib/net8.0/Grpc.Net.Common.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Grpc.Net.Common.dll": {
+          "lib/net8.0/Grpc.Net.Common.dll": {
             "related": ".pdb;.xml"
-          }
-        }
-      },
-      "Hangfire/1.8.18": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.AspNetCore": "[1.8.18]",
-          "Hangfire.Core": "[1.8.18]",
-          "Hangfire.SqlServer": "[1.8.18]"
-        }
-      },
-      "Hangfire.AspNetCore/1.8.18": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.NetCore": "[1.8.18]"
-        },
-        "compile": {
-          "lib/netcoreapp3.0/Hangfire.AspNetCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netcoreapp3.0/Hangfire.AspNetCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-      },
-      "Hangfire.Core/1.8.18": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "11.0.1"
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.Core.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.Core.dll": {
-            "related": ".xml"
-          }
-        },
-        "resource": {
-          "lib/netstandard2.0/ca/Hangfire.Core.resources.dll": {
-            "locale": "ca"
-          },
-          "lib/netstandard2.0/de/Hangfire.Core.resources.dll": {
-            "locale": "de"
-          },
-          "lib/netstandard2.0/es/Hangfire.Core.resources.dll": {
-            "locale": "es"
-          },
-          "lib/netstandard2.0/fa/Hangfire.Core.resources.dll": {
-            "locale": "fa"
-          },
-          "lib/netstandard2.0/fr/Hangfire.Core.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/netstandard2.0/nb/Hangfire.Core.resources.dll": {
-            "locale": "nb"
-          },
-          "lib/netstandard2.0/nl/Hangfire.Core.resources.dll": {
-            "locale": "nl"
-          },
-          "lib/netstandard2.0/pt-BR/Hangfire.Core.resources.dll": {
-            "locale": "pt-BR"
-          },
-          "lib/netstandard2.0/pt-PT/Hangfire.Core.resources.dll": {
-            "locale": "pt-PT"
-          },
-          "lib/netstandard2.0/pt/Hangfire.Core.resources.dll": {
-            "locale": "pt"
-          },
-          "lib/netstandard2.0/sv/Hangfire.Core.resources.dll": {
-            "locale": "sv"
-          },
-          "lib/netstandard2.0/tr-TR/Hangfire.Core.resources.dll": {
-            "locale": "tr-TR"
-          },
-          "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll": {
-            "locale": "zh-TW"
-          },
-          "lib/netstandard2.0/zh/Hangfire.Core.resources.dll": {
-            "locale": "zh"
-          }
-        }
-      },
-      "Hangfire.MemoryStorage/1.8.1.1": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.Core": "1.7.35"
-        },
-        "compile": {
-          "lib/netstandard1.3/Hangfire.MemoryStorage.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/Hangfire.MemoryStorage.dll": {}
-        }
-      },
-      "Hangfire.NetCore/1.8.18": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.Core": "[1.8.18]",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.0.0",
-          "Microsoft.Extensions.Hosting.Abstractions": "3.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "3.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.1/Hangfire.NetCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/Hangfire.NetCore.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Hangfire.SqlServer/1.8.18": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.Core": "[1.8.18]"
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "MailKit/4.11.0": {
-        "type": "package",
-        "dependencies": {
-          "MimeKit": "4.11.0",
-          "System.Formats.Asn1": "8.0.1"
-        },
-        "compile": {
-          "lib/netstandard2.1/MailKit.dll": {
-            "related": ".dll.config;.pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/MailKit.dll": {
-            "related": ".dll.config;.pdb;.xml"
           }
         }
       },
@@ -924,20 +760,20 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
+          "buildTransitive/net6.0/_._": {}
         }
       },
       "Microsoft.Extensions.FileProviders.Abstractions/6.0.0": {
@@ -1199,21 +1035,24 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
-      "Microsoft.Extensions.Options/6.0.0": {
+      "Microsoft.Extensions.Options/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Primitives": "6.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Primitives": "8.0.0"
         },
         "compile": {
-          "lib/netstandard2.1/Microsoft.Extensions.Options.dll": {
+          "lib/net8.0/Microsoft.Extensions.Options.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard2.1/Microsoft.Extensions.Options.dll": {
+          "lib/net8.0/Microsoft.Extensions.Options.dll": {
             "related": ".xml"
           }
+        },
+        "build": {
+          "buildTransitive/net6.0/Microsoft.Extensions.Options.targets": {}
         }
       },
       "Microsoft.Extensions.Options.ConfigurationExtensions/6.0.0": {
@@ -1236,34 +1075,31 @@
           }
         }
       },
-      "Microsoft.Extensions.Primitives/6.0.0": {
+      "Microsoft.Extensions.Primitives/8.0.0": {
         "type": "package",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
         "compile": {
-          "lib/net6.0/Microsoft.Extensions.Primitives.dll": {
+          "lib/net8.0/Microsoft.Extensions.Primitives.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Microsoft.Extensions.Primitives.dll": {
+          "lib/net8.0/Microsoft.Extensions.Primitives.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
+          "buildTransitive/net6.0/_._": {}
         }
       },
       "Microsoft.IdentityModel.Abstractions/7.2.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/Microsoft.IdentityModel.Abstractions.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Microsoft.IdentityModel.Abstractions.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.Abstractions.dll": {
             "related": ".xml"
           }
         }
@@ -1274,12 +1110,12 @@
           "Microsoft.IdentityModel.Tokens": "7.2.0"
         },
         "compile": {
-          "lib/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
             "related": ".xml"
           }
         }
@@ -1290,12 +1126,12 @@
           "Microsoft.IdentityModel.Abstractions": "7.2.0"
         },
         "compile": {
-          "lib/net6.0/Microsoft.IdentityModel.Logging.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.Logging.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Microsoft.IdentityModel.Logging.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.Logging.dll": {
             "related": ".xml"
           }
         }
@@ -1306,12 +1142,12 @@
           "Microsoft.IdentityModel.Logging": "7.2.0"
         },
         "compile": {
-          "lib/net6.0/Microsoft.IdentityModel.Tokens.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.Tokens.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Microsoft.IdentityModel.Tokens.dll": {
+          "lib/net8.0/Microsoft.IdentityModel.Tokens.dll": {
             "related": ".xml"
           }
         }
@@ -1585,24 +1421,6 @@
           "build/netcoreapp3.1/Microsoft.TestPlatform.TestHost.props": {}
         }
       },
-      "MimeKit/4.11.0": {
-        "type": "package",
-        "dependencies": {
-          "BouncyCastle.Cryptography": "2.5.1",
-          "System.Security.Cryptography.Pkcs": "8.0.1",
-          "System.Text.Encoding.CodePages": "8.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.1/MimeKit.dll": {
-            "related": ".dll.config;.pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/MimeKit.dll": {
-            "related": ".dll.config;.pdb;.xml"
-          }
-        }
-      },
       "Moq/4.20.70": {
         "type": "package",
         "dependencies": {
@@ -1697,6 +1515,22 @@
           }
         }
       },
+      "Resend/0.1.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Resend.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Resend.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Shouldly/4.2.1": {
         "type": "package",
         "dependencies": {
@@ -1720,12 +1554,12 @@
       "System.CodeDom/7.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.CodeDom.dll": {
+          "lib/net7.0/System.CodeDom.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/System.CodeDom.dll": {
+          "lib/net7.0/System.CodeDom.dll": {
             "related": ".xml"
           }
         },
@@ -1735,16 +1569,13 @@
       },
       "System.Collections.Immutable/8.0.0": {
         "type": "package",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
         "compile": {
-          "lib/net6.0/System.Collections.Immutable.dll": {
+          "lib/net8.0/System.Collections.Immutable.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/System.Collections.Immutable.dll": {
+          "lib/net8.0/System.Collections.Immutable.dll": {
             "related": ".xml"
           }
         },
@@ -1797,22 +1628,6 @@
           }
         }
       },
-      "System.Formats.Asn1/8.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/System.Formats.Asn1.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/System.Formats.Asn1.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
       "System.IdentityModel.Tokens.Jwt/7.2.0": {
         "type": "package",
         "dependencies": {
@@ -1820,12 +1635,12 @@
           "Microsoft.IdentityModel.Tokens": "7.2.0"
         },
         "compile": {
-          "lib/net6.0/System.IdentityModel.Tokens.Jwt.dll": {
+          "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/System.IdentityModel.Tokens.Jwt.dll": {
+          "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll": {
             "related": ".xml"
           }
         }
@@ -1865,12 +1680,12 @@
           "System.CodeDom": "7.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Management.dll": {
+          "lib/net7.0/System.Management.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/System.Management.dll": {
+          "lib/net7.0/System.Management.dll": {
             "related": ".xml"
           }
         },
@@ -1878,7 +1693,7 @@
           "buildTransitive/net6.0/_._": {}
         },
         "runtimeTargets": {
-          "runtimes/win/lib/net6.0/System.Management.dll": {
+          "runtimes/win/lib/net7.0/System.Management.dll": {
             "assetType": "runtime",
             "rid": "win"
           }
@@ -1920,56 +1735,6 @@
         },
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "System.Security.Cryptography.Pkcs/8.0.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Formats.Asn1": "8.0.1"
-        },
-        "compile": {
-          "lib/net6.0/System.Security.Cryptography.Pkcs.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/System.Security.Cryptography.Pkcs.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net6.0/System.Security.Cryptography.Pkcs.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "System.Text.Encoding.CodePages/8.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/System.Text.Encoding.CodePages.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/System.Text.Encoding.CodePages.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net6.0/System.Text.Encoding.CodePages.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
         }
       },
       "System.Text.Encodings.Web/6.0.0": {
@@ -2020,12 +1785,12 @@
       "System.Threading.Channels/7.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.Threading.Channels.dll": {
+          "lib/net7.0/System.Threading.Channels.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/System.Threading.Channels.dll": {
+          "lib/net7.0/System.Threading.Channels.dll": {
             "related": ".xml"
           }
         },
@@ -2131,7 +1896,7 @@
       },
       "HiClass.Application/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
+        "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "AutoMapper": "12.0.1",
           "HiClass.Domain": "1.0.0",
@@ -2153,7 +1918,7 @@
       },
       "HiClass.Application.Tests/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
+        "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "HiClass.Application": "1.0.0",
           "HiClass.Domain": "1.0.0",
@@ -2173,7 +1938,7 @@
       },
       "HiClass.Domain/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
+        "framework": ".NETCoreApp,Version=v8.0",
         "compile": {
           "bin/placeholder/HiClass.Domain.dll": {}
         },
@@ -2183,7 +1948,7 @@
       },
       "HiClass.Infrastructure/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
+        "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "AWSSDK.S3": "4.0.0-preview.13",
           "AutoMapper": "12.0.1",
@@ -2191,15 +1956,13 @@
           "FirebaseAdmin": "3.0.0",
           "Google.Apis.Auth": "1.69.0",
           "Google.Cloud.Firestore": "3.10.0",
-          "Hangfire": "1.8.18",
-          "Hangfire.MemoryStorage": "1.8.1.1",
           "HiClass.Application": "1.0.0",
           "HiClass.Domain": "1.0.0",
-          "MailKit": "4.11.0",
           "Microsoft.AspNetCore.Http.Features": "6.0.0-preview.4.21253.5",
           "Microsoft.Extensions.Hosting": "6.0.1",
           "Newtonsoft.Json": "13.0.3",
-          "RabbitMQ.Client": "6.8.1"
+          "RabbitMQ.Client": "6.8.1",
+          "Resend": "0.1.2"
         },
         "compile": {
           "bin/placeholder/HiClass.Infrastructure.dll": {}
@@ -2210,7 +1973,7 @@
       },
       "HiClass.Persistence/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
+        "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "HiClass.Application": "1.0.0",
           "HiClass.Infrastructure": "1.0.0",
@@ -2295,26 +2058,6 @@
         "lib/netstandard2.0/AWSSDK.S3.xml",
         "tools/install.ps1",
         "tools/uninstall.ps1"
-      ]
-    },
-    "BouncyCastle.Cryptography/2.5.1": {
-      "sha512": "zy8TMeTP+1FH2NrLaNZtdRbBdq7u5MI+NFZQOBSM69u5RFkciinwzV2eveY6Kjf5MzgsYvvl6kTStsj3JrXqkg==",
-      "type": "package",
-      "path": "bouncycastle.cryptography/2.5.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "README.md",
-        "bouncycastle.cryptography.2.5.1.nupkg.sha512",
-        "bouncycastle.cryptography.nuspec",
-        "lib/net461/BouncyCastle.Cryptography.dll",
-        "lib/net461/BouncyCastle.Cryptography.xml",
-        "lib/net6.0/BouncyCastle.Cryptography.dll",
-        "lib/net6.0/BouncyCastle.Cryptography.xml",
-        "lib/netstandard2.0/BouncyCastle.Cryptography.dll",
-        "lib/netstandard2.0/BouncyCastle.Cryptography.xml",
-        "packageIcon.png"
       ]
     },
     "Castle.Core/5.1.1": {
@@ -2925,243 +2668,6 @@
         "packageIcon.png"
       ]
     },
-    "Hangfire/1.8.18": {
-      "sha512": "EY+UqMHTOQAtdjeJf3jlnj8MpENyDPTpA6OHMncucVlkaongZjrx+gCN4bgma7vD3BNHqfQ7irYrfE5p1DOBEQ==",
-      "type": "package",
-      "path": "hangfire/1.8.18",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "README.md",
-        "hangfire.1.8.18.nupkg.sha512",
-        "hangfire.nuspec",
-        "icon.png"
-      ]
-    },
-    "Hangfire.AspNetCore/1.8.18": {
-      "sha512": "5D6Do0qgoAnakvh4KnKwhIoUzFU84Z0sCYMB+Sit+ygkpL1P6JGYDcd/9vDBcfr5K3JqBxD4Zh2IK2LOXuuiaw==",
-      "type": "package",
-      "path": "hangfire.aspnetcore/1.8.18",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "hangfire.aspnetcore.1.8.18.nupkg.sha512",
-        "hangfire.aspnetcore.nuspec",
-        "icon.png",
-        "lib/net451/Hangfire.AspNetCore.dll",
-        "lib/net451/Hangfire.AspNetCore.xml",
-        "lib/net461/Hangfire.AspNetCore.dll",
-        "lib/net461/Hangfire.AspNetCore.xml",
-        "lib/netcoreapp3.0/Hangfire.AspNetCore.dll",
-        "lib/netcoreapp3.0/Hangfire.AspNetCore.xml",
-        "lib/netstandard1.3/Hangfire.AspNetCore.dll",
-        "lib/netstandard1.3/Hangfire.AspNetCore.xml",
-        "lib/netstandard2.0/Hangfire.AspNetCore.dll",
-        "lib/netstandard2.0/Hangfire.AspNetCore.xml"
-      ]
-    },
-    "Hangfire.Core/1.8.18": {
-      "sha512": "oNAkV8QQoYg5+vM2M024NBk49EhTO2BmKDLuQaKNew23RpH9OUGtKDl1KldBdDJrD8TMFzjhWCArol3igd2i2w==",
-      "type": "package",
-      "path": "hangfire.core/1.8.18",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "README.md",
-        "hangfire.core.1.8.18.nupkg.sha512",
-        "hangfire.core.nuspec",
-        "icon.png",
-        "lib/net451/Hangfire.Core.dll",
-        "lib/net451/Hangfire.Core.xml",
-        "lib/net451/ca/Hangfire.Core.resources.dll",
-        "lib/net451/de/Hangfire.Core.resources.dll",
-        "lib/net451/es/Hangfire.Core.resources.dll",
-        "lib/net451/fa/Hangfire.Core.resources.dll",
-        "lib/net451/fr/Hangfire.Core.resources.dll",
-        "lib/net451/nb/Hangfire.Core.resources.dll",
-        "lib/net451/nl/Hangfire.Core.resources.dll",
-        "lib/net451/pt-BR/Hangfire.Core.resources.dll",
-        "lib/net451/pt-PT/Hangfire.Core.resources.dll",
-        "lib/net451/pt/Hangfire.Core.resources.dll",
-        "lib/net451/sv/Hangfire.Core.resources.dll",
-        "lib/net451/tr-TR/Hangfire.Core.resources.dll",
-        "lib/net451/zh-TW/Hangfire.Core.resources.dll",
-        "lib/net451/zh/Hangfire.Core.resources.dll",
-        "lib/net46/Hangfire.Core.dll",
-        "lib/net46/Hangfire.Core.xml",
-        "lib/net46/ca/Hangfire.Core.resources.dll",
-        "lib/net46/de/Hangfire.Core.resources.dll",
-        "lib/net46/es/Hangfire.Core.resources.dll",
-        "lib/net46/fa/Hangfire.Core.resources.dll",
-        "lib/net46/fr/Hangfire.Core.resources.dll",
-        "lib/net46/nb/Hangfire.Core.resources.dll",
-        "lib/net46/nl/Hangfire.Core.resources.dll",
-        "lib/net46/pt-BR/Hangfire.Core.resources.dll",
-        "lib/net46/pt-PT/Hangfire.Core.resources.dll",
-        "lib/net46/pt/Hangfire.Core.resources.dll",
-        "lib/net46/sv/Hangfire.Core.resources.dll",
-        "lib/net46/tr-TR/Hangfire.Core.resources.dll",
-        "lib/net46/zh-TW/Hangfire.Core.resources.dll",
-        "lib/net46/zh/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/Hangfire.Core.dll",
-        "lib/netstandard1.3/Hangfire.Core.xml",
-        "lib/netstandard1.3/ca/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/de/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/es/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/fa/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/fr/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/nb/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/nl/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/pt-BR/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/pt-PT/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/pt/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/sv/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/tr-TR/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/zh-TW/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/zh/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/Hangfire.Core.dll",
-        "lib/netstandard2.0/Hangfire.Core.xml",
-        "lib/netstandard2.0/ca/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/de/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/es/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/fa/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/fr/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/nb/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/nl/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/pt-BR/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/pt-PT/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/pt/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/sv/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/tr-TR/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/zh/Hangfire.Core.resources.dll"
-      ]
-    },
-    "Hangfire.MemoryStorage/1.8.1.1": {
-      "sha512": "qXq7rr2c4UoX5aFZcji817RPTzNR/hX4T27jhp7YNYcGiGNsyi2bjp+yX9AhICQlyrm4/W7YDGgm/mxVkeEAng==",
-      "type": "package",
-      "path": "hangfire.memorystorage/1.8.1.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "hangfire.memorystorage.1.8.1.1.nupkg.sha512",
-        "hangfire.memorystorage.nuspec",
-        "lib/net40/Hangfire.MemoryStorage.dll",
-        "lib/netstandard1.3/Hangfire.MemoryStorage.dll"
-      ]
-    },
-    "Hangfire.NetCore/1.8.18": {
-      "sha512": "3KAV9AZ1nqQHC54qR4buNEEKRmQJfq+lODtZxUk5cdi68lV8+9K2f4H1/mIfDlPpgjPFjEfCobNoi2+TIpKySw==",
-      "type": "package",
-      "path": "hangfire.netcore/1.8.18",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "hangfire.netcore.1.8.18.nupkg.sha512",
-        "hangfire.netcore.nuspec",
-        "icon.png",
-        "lib/net451/Hangfire.NetCore.dll",
-        "lib/net451/Hangfire.NetCore.xml",
-        "lib/net461/Hangfire.NetCore.dll",
-        "lib/net461/Hangfire.NetCore.xml",
-        "lib/netstandard1.3/Hangfire.NetCore.dll",
-        "lib/netstandard1.3/Hangfire.NetCore.xml",
-        "lib/netstandard2.0/Hangfire.NetCore.dll",
-        "lib/netstandard2.0/Hangfire.NetCore.xml",
-        "lib/netstandard2.1/Hangfire.NetCore.dll",
-        "lib/netstandard2.1/Hangfire.NetCore.xml"
-      ]
-    },
-    "Hangfire.SqlServer/1.8.18": {
-      "sha512": "yBfI2ygYfN/31rOrahfOFHee1mwTrG0ppsmK9awCS0mAr2GEaB9eyYqg/lURgZy8AA8UVJVs5nLHa2hc1pDAVQ==",
-      "type": "package",
-      "path": "hangfire.sqlserver/1.8.18",
-      "hasTools": true,
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "hangfire.sqlserver.1.8.18.nupkg.sha512",
-        "hangfire.sqlserver.nuspec",
-        "icon.png",
-        "lib/net451/Hangfire.SqlServer.dll",
-        "lib/net451/Hangfire.SqlServer.xml",
-        "lib/netstandard1.3/Hangfire.SqlServer.dll",
-        "lib/netstandard1.3/Hangfire.SqlServer.xml",
-        "lib/netstandard2.0/Hangfire.SqlServer.dll",
-        "lib/netstandard2.0/Hangfire.SqlServer.xml",
-        "tools/install.sql"
-      ]
-    },
-    "MailKit/4.11.0": {
-      "sha512": "JVoRxJ+QRqFMRtEM4veStj3pMLBPRulQGV+iZm6Tq1pnr66Dy6dFYOW9Uw02nxAVzdZAN8G+y3BsUPtgZcKXhA==",
-      "type": "package",
-      "path": "mailkit/4.11.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "docs/ExchangeOAuth2.md",
-        "docs/FAQ.md",
-        "docs/GMailOAuth2.md",
-        "docs/README.md",
-        "icons/mailkit-50.png",
-        "lib/net462/MailKit.dll",
-        "lib/net462/MailKit.dll.config",
-        "lib/net462/MailKit.pdb",
-        "lib/net462/MailKit.xml",
-        "lib/net47/MailKit.dll",
-        "lib/net47/MailKit.dll.config",
-        "lib/net47/MailKit.pdb",
-        "lib/net47/MailKit.xml",
-        "lib/net48/MailKit.dll",
-        "lib/net48/MailKit.dll.config",
-        "lib/net48/MailKit.pdb",
-        "lib/net48/MailKit.xml",
-        "lib/net8.0/MailKit.dll",
-        "lib/net8.0/MailKit.dll.config",
-        "lib/net8.0/MailKit.pdb",
-        "lib/net8.0/MailKit.xml",
-        "lib/netstandard2.0/MailKit.dll",
-        "lib/netstandard2.0/MailKit.dll.config",
-        "lib/netstandard2.0/MailKit.pdb",
-        "lib/netstandard2.0/MailKit.xml",
-        "lib/netstandard2.1/MailKit.dll",
-        "lib/netstandard2.1/MailKit.dll.config",
-        "lib/netstandard2.1/MailKit.pdb",
-        "lib/netstandard2.1/MailKit.xml",
-        "mailkit.4.11.0.nupkg.sha512",
-        "mailkit.nuspec"
-      ]
-    },
     "MediatR/6.0.0": {
       "sha512": "R01T5Af1kSH9lBvlxdTeJOr+ugPwfy0FsFq15XsNAIA8GSUYwHW7lfvYGwhBynwJVXWxRwieqxOxCFEV9GO+SQ==",
       "type": "package",
@@ -3652,27 +3158,34 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
-      "sha512": "xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+      "sha512": "cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/6.0.0",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
         "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3972,23 +3485,49 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Options/6.0.0": {
-      "sha512": "dzXN0+V1AyjOe2xcJ86Qbo233KHuLEY0njf/P2Kw8SfJU+d45HNS2ctJdnEnrWbM9Ye2eFgaC5Mj9otRMU6IsQ==",
+    "Microsoft.Extensions.Options/8.0.0": {
+      "sha512": "JOVOfqpnqlVLUzINQ2fox8evY2SKLYJ3BV8QDe/Jyp21u1T7r45x/R/5QdteURMR5r01GxeJSBBUOCOyaNXA3g==",
       "type": "package",
-      "path": "microsoft.extensions.options/6.0.0",
+      "path": "microsoft.extensions.options/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/Microsoft.Extensions.Options.dll",
-        "lib/net461/Microsoft.Extensions.Options.xml",
+        "analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Options.SourceGeneration.dll",
+        "analyzers/dotnet/roslyn4.4/cs/cs/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/de/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/es/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/fr/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/it/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/ja/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/ko/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/pl/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/pt-BR/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/ru/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/tr/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/zh-Hans/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "analyzers/dotnet/roslyn4.4/cs/zh-Hant/Microsoft.Extensions.Options.SourceGeneration.resources.dll",
+        "buildTransitive/net461/Microsoft.Extensions.Options.targets",
+        "buildTransitive/net462/Microsoft.Extensions.Options.targets",
+        "buildTransitive/net6.0/Microsoft.Extensions.Options.targets",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Options.targets",
+        "buildTransitive/netstandard2.0/Microsoft.Extensions.Options.targets",
+        "lib/net462/Microsoft.Extensions.Options.dll",
+        "lib/net462/Microsoft.Extensions.Options.xml",
+        "lib/net6.0/Microsoft.Extensions.Options.dll",
+        "lib/net6.0/Microsoft.Extensions.Options.xml",
+        "lib/net7.0/Microsoft.Extensions.Options.dll",
+        "lib/net7.0/Microsoft.Extensions.Options.xml",
+        "lib/net8.0/Microsoft.Extensions.Options.dll",
+        "lib/net8.0/Microsoft.Extensions.Options.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Options.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Options.xml",
         "lib/netstandard2.1/Microsoft.Extensions.Options.dll",
         "lib/netstandard2.1/Microsoft.Extensions.Options.xml",
-        "microsoft.extensions.options.6.0.0.nupkg.sha512",
+        "microsoft.extensions.options.8.0.0.nupkg.sha512",
         "microsoft.extensions.options.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -4012,27 +3551,32 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Primitives/6.0.0": {
-      "sha512": "9+PnzmQFfEFNR9J2aDTfJGGupShHjOuGw4VUv+JB044biSHrnmCIMD+mJHmb2H7YryrfBEXDurxQ47gJZdCKNQ==",
+    "Microsoft.Extensions.Primitives/8.0.0": {
+      "sha512": "bXJEZrW9ny8vjMF1JV253WeLhpEVzFo1lyaZu1vQ4ZxWUlVvknZ/+ftFgVheLubb4eZPSwwxBeqS1JkCOjxd8g==",
       "type": "package",
-      "path": "microsoft.extensions.primitives/6.0.0",
+      "path": "microsoft.extensions.primitives/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Extensions.Primitives.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
         "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Primitives.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/Microsoft.Extensions.Primitives.dll",
-        "lib/net461/Microsoft.Extensions.Primitives.xml",
+        "lib/net462/Microsoft.Extensions.Primitives.dll",
+        "lib/net462/Microsoft.Extensions.Primitives.xml",
         "lib/net6.0/Microsoft.Extensions.Primitives.dll",
         "lib/net6.0/Microsoft.Extensions.Primitives.xml",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.xml",
+        "lib/net7.0/Microsoft.Extensions.Primitives.dll",
+        "lib/net7.0/Microsoft.Extensions.Primitives.xml",
+        "lib/net8.0/Microsoft.Extensions.Primitives.dll",
+        "lib/net8.0/Microsoft.Extensions.Primitives.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.xml",
-        "microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+        "microsoft.extensions.primitives.8.0.0.nupkg.sha512",
         "microsoft.extensions.primitives.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -4322,41 +3866,6 @@
         "microsoft.testplatform.testhost.nuspec"
       ]
     },
-    "MimeKit/4.11.0": {
-      "sha512": "6p0RC1qwBGBHxf7hvzuR1GngzigF+Q6HQUTbD2RbmDrnS2m1qO2rgqOhYtn8n8JH7WGZ+7RthS8lfMuMzeg8AA==",
-      "type": "package",
-      "path": "mimekit/4.11.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "docs/FAQ.md",
-        "docs/README.md",
-        "icons/mimekit-50.png",
-        "lib/net462/MimeKit.dll",
-        "lib/net462/MimeKit.pdb",
-        "lib/net462/MimeKit.xml",
-        "lib/net47/MimeKit.dll",
-        "lib/net47/MimeKit.pdb",
-        "lib/net47/MimeKit.xml",
-        "lib/net48/MimeKit.dll",
-        "lib/net48/MimeKit.pdb",
-        "lib/net48/MimeKit.xml",
-        "lib/net8.0/MimeKit.dll",
-        "lib/net8.0/MimeKit.dll.config",
-        "lib/net8.0/MimeKit.pdb",
-        "lib/net8.0/MimeKit.xml",
-        "lib/netstandard2.0/MimeKit.dll",
-        "lib/netstandard2.0/MimeKit.dll.config",
-        "lib/netstandard2.0/MimeKit.pdb",
-        "lib/netstandard2.0/MimeKit.xml",
-        "lib/netstandard2.1/MimeKit.dll",
-        "lib/netstandard2.1/MimeKit.dll.config",
-        "lib/netstandard2.1/MimeKit.pdb",
-        "lib/netstandard2.1/MimeKit.xml",
-        "mimekit.4.11.0.nupkg.sha512",
-        "mimekit.nuspec"
-      ]
-    },
     "Moq/4.20.70": {
       "sha512": "4rNnAwdpXJBuxqrOCzCyICXHSImOTRktCgCWXWykuF1qwoIsVvEnR7PjbMk/eLOxWvhmj5Kwt+kDV3RGUYcNwg==",
       "type": "package",
@@ -4476,6 +3985,21 @@
         "lib/netstandard2.0/RabbitMQ.Client.xml",
         "rabbitmq.client.6.8.1.nupkg.sha512",
         "rabbitmq.client.nuspec"
+      ]
+    },
+    "Resend/0.1.2": {
+      "sha512": "kHCWey9b+FJ4vIwUazU61kJxcv26wFn8EH6p/Nef+wLNmrq6Gij+k7SRslExkNN/lijjPwUwSdC4bawNZnA5Ng==",
+      "type": "package",
+      "path": "resend/0.1.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net8.0/Resend.dll",
+        "lib/net8.0/Resend.xml",
+        "resend.0.1.2.nupkg.sha512",
+        "resend.nuspec"
       ]
     },
     "Shouldly/4.2.1": {
@@ -4605,35 +4129,6 @@
         "runtimes/win/lib/netcoreapp3.1/System.Diagnostics.EventLog.xml",
         "system.diagnostics.eventlog.6.0.0.nupkg.sha512",
         "system.diagnostics.eventlog.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Formats.Asn1/8.0.1": {
-      "sha512": "XqKba7Mm/koKSjKMfW82olQdmfbI5yqeoLV/tidRp7fbh5rmHAQ5raDI/7SU0swTzv+jgqtUGkzmFxuUg0it1A==",
-      "type": "package",
-      "path": "system.formats.asn1/8.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Formats.Asn1.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Formats.Asn1.targets",
-        "lib/net462/System.Formats.Asn1.dll",
-        "lib/net462/System.Formats.Asn1.xml",
-        "lib/net6.0/System.Formats.Asn1.dll",
-        "lib/net6.0/System.Formats.Asn1.xml",
-        "lib/net7.0/System.Formats.Asn1.dll",
-        "lib/net7.0/System.Formats.Asn1.xml",
-        "lib/net8.0/System.Formats.Asn1.dll",
-        "lib/net8.0/System.Formats.Asn1.xml",
-        "lib/netstandard2.0/System.Formats.Asn1.dll",
-        "lib/netstandard2.0/System.Formats.Asn1.xml",
-        "system.formats.asn1.8.0.1.nupkg.sha512",
-        "system.formats.asn1.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
@@ -4806,85 +4301,6 @@
         "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
         "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
         "system.runtime.compilerservices.unsafe.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Security.Cryptography.Pkcs/8.0.1": {
-      "sha512": "CoCRHFym33aUSf/NtWSVSZa99dkd0Hm7OCZUxORBjRB16LNhIEOf8THPqzIYlvKM0nNDAPTRBa1FxEECrgaxxA==",
-      "type": "package",
-      "path": "system.security.cryptography.pkcs/8.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Security.Cryptography.Pkcs.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Security.Cryptography.Pkcs.targets",
-        "lib/net462/System.Security.Cryptography.Pkcs.dll",
-        "lib/net462/System.Security.Cryptography.Pkcs.xml",
-        "lib/net6.0/System.Security.Cryptography.Pkcs.dll",
-        "lib/net6.0/System.Security.Cryptography.Pkcs.xml",
-        "lib/net7.0/System.Security.Cryptography.Pkcs.dll",
-        "lib/net7.0/System.Security.Cryptography.Pkcs.xml",
-        "lib/net8.0/System.Security.Cryptography.Pkcs.dll",
-        "lib/net8.0/System.Security.Cryptography.Pkcs.xml",
-        "lib/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
-        "lib/netstandard2.0/System.Security.Cryptography.Pkcs.xml",
-        "lib/netstandard2.1/System.Security.Cryptography.Pkcs.dll",
-        "lib/netstandard2.1/System.Security.Cryptography.Pkcs.xml",
-        "runtimes/win/lib/net6.0/System.Security.Cryptography.Pkcs.dll",
-        "runtimes/win/lib/net6.0/System.Security.Cryptography.Pkcs.xml",
-        "runtimes/win/lib/net7.0/System.Security.Cryptography.Pkcs.dll",
-        "runtimes/win/lib/net7.0/System.Security.Cryptography.Pkcs.xml",
-        "runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll",
-        "runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.xml",
-        "system.security.cryptography.pkcs.8.0.1.nupkg.sha512",
-        "system.security.cryptography.pkcs.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Text.Encoding.CodePages/8.0.0": {
-      "sha512": "OZIsVplFGaVY90G2SbpgU7EnCoOO5pw1t4ic21dBF3/1omrJFpAGoNAVpPyMVOC90/hvgkGG3VFqR13YgZMQfg==",
-      "type": "package",
-      "path": "system.text.encoding.codepages/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Text.Encoding.CodePages.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Text.Encoding.CodePages.targets",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net462/System.Text.Encoding.CodePages.dll",
-        "lib/net462/System.Text.Encoding.CodePages.xml",
-        "lib/net6.0/System.Text.Encoding.CodePages.dll",
-        "lib/net6.0/System.Text.Encoding.CodePages.xml",
-        "lib/net7.0/System.Text.Encoding.CodePages.dll",
-        "lib/net7.0/System.Text.Encoding.CodePages.xml",
-        "lib/net8.0/System.Text.Encoding.CodePages.dll",
-        "lib/net8.0/System.Text.Encoding.CodePages.xml",
-        "lib/netstandard2.0/System.Text.Encoding.CodePages.dll",
-        "lib/netstandard2.0/System.Text.Encoding.CodePages.xml",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "runtimes/win/lib/net6.0/System.Text.Encoding.CodePages.dll",
-        "runtimes/win/lib/net6.0/System.Text.Encoding.CodePages.xml",
-        "runtimes/win/lib/net7.0/System.Text.Encoding.CodePages.dll",
-        "runtimes/win/lib/net7.0/System.Text.Encoding.CodePages.xml",
-        "runtimes/win/lib/net8.0/System.Text.Encoding.CodePages.dll",
-        "runtimes/win/lib/net8.0/System.Text.Encoding.CodePages.xml",
-        "system.text.encoding.codepages.8.0.0.nupkg.sha512",
-        "system.text.encoding.codepages.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
@@ -5177,7 +4593,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net6.0": [
+    "net8.0": [
       "HiClass.Application >= 1.0.0",
       "HiClass.Application.Tests >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.9.0-release-23619-01",
@@ -5202,14 +4618,14 @@
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
-        "net6.0"
+        "net8.0"
       ],
       "sources": {
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {
             "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj": {
               "projectPath": "D:\\Coding\\Projects\\hiclass-api\\HiСlass.Backend\\HiClass.Application.Tests\\HiClass.Application.Tests.csproj"
@@ -5224,11 +4640,16 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
-      "net6.0": {
-        "targetAlias": "net6.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "dependencies": {
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
@@ -5267,7 +4688,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.420\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.408/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
