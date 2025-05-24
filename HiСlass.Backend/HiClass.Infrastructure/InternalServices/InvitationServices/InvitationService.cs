@@ -55,7 +55,7 @@ namespace HiClass.Infrastructure.InternalServices.InvitationServices
             var userSender = invitation.UserSender; 
             var userReceiver = invitation.UserRecipient;
 
-            // Отправка HTML-писем с использованием шаблонов
+
             await _emailHandlerService.SendClassInvitationEmail(
                 userSender.Email,
                 userReceiver.Email,

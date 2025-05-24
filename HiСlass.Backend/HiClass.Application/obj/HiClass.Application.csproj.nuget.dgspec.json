@@ -53,11 +53,11 @@
             },
             "MediatR": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.1.0, )"
             },
             "MediatR.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
-              "version": "[6.0.1, )"
+              "version": "[8.1.0, )"
             },
             "Microsoft.AspNetCore.Http.Features": {
               "target": "Package",
@@ -65,15 +65,15 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.26, )"
+              "version": "[8.0.15, )"
             },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
-              "version": "[6.0.1, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.IdentityModel.JsonWebTokens": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.9.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -81,7 +81,7 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.9.0, )"
             }
           },
           "imports": [
